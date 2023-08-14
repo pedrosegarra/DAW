@@ -1,16 +1,18 @@
 site_name: Despliegue de aplicaciones web
-site_url: https://raul-profesor.github.io/DEAW
+site_url: https://jmunozji.github.io/DAW
 
 theme:
   name: material
+  logo: assets/logocaminas.png
+  
   palette: 
     - media: "(prefers-color-scheme: light)"    
     # Palette toggle for light mode
       scheme: default
-      primary: green
-      accent: blue
+      primary: blue
+      accent: green 
       toggle:
-        icon: material/toggle-switch-off-outline
+        icon: material/weather-night
         name: Cambiar a modo oscuro
 
     # Palette toggle for dark mode
@@ -19,7 +21,7 @@ theme:
       primary: black
       accent: deep orange
       toggle:
-        icon: material/toggle-switch-off-outline
+        icon: material/weather-sunny
         name: Cambiar a modo claro
   language: es
   features:
