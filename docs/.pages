@@ -1,25 +1,25 @@
 nav:
-    - Tema 1:
+    - Unidad 1:
       - Teoría:
-        - debian_teoria.md
+        - Ud1_0Introalmodulo.md
       - Prácticas:
         - ... | debian.md
-    - Tema 2:
+    - Unidad 2:
       - Teoría:
         - ArqWeb.md
       - Prácticas:
         - ... | P1.*.md
-    - Tema 3:
+    - Unidad 3:
       - Teoría:
         - ServAplic.md
       - Prácticas:
         - ... | P3.*.md
-    - Tema 4:
+    - Unidad 4:
       - Teoría: 
         - dns.md
       - Prácticas:
         - ... | P4.*.md
-    - Tema 5:
+    - Unidad 5:
       - Teoría: 
         - index_git.md
         - cvs.md
@@ -37,7 +37,7 @@ nav:
         - referencias.md
       - Prácticas:
         - ... | P5.*.md      
-    - Tema 6:
+    - Unidad 6:
       - Teoría: 
         - index_docker.md
         - introduction.md
@@ -51,7 +51,7 @@ nav:
         - tips.md
       - Prácticas:
         - ... | P6.*.md 
-    - Tema 7:
+    - Unidad 7:
       - Teoría: 
         - cicd.md
       - Prácticas:
