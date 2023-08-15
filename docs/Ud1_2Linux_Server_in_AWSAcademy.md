@@ -111,4 +111,8 @@ Podemos comprobar cómo la capacidad del disco y la memoria coinciden con la que
 
 Al finalizar cada sesion de trabajo recuerda que debes finalizar el laboratorio. Ve a la consola de AWS Academy y presiona "Finalizar laboratorio". Si no lo haces, el laboratorio se cerrará automáticamente después de 4 horas pero habrás gastado más saldo del necesario.
 
-![LinuxServerInstallationAWS](img/Linux_Server_in_AWSAcademy/24.png)
+![LinuxServerInstallationAWS](img/Linux_Server_in_AWSAcademy/21.png)
+
+Comprueba que el laboratorio esta parado. El punto junto a AWS deberá estar de color rojo.
+
+![LinuxServerInstallationAWS](img/Linux_Server_in_AWSAcademy/22.png)
