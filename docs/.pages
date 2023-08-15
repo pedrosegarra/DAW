@@ -3,7 +3,8 @@ nav:
       - Teoría:
         - Ud1_0Introalmodulo.md
       - Prácticas:
-        - ... | debian.md
+        - Ud1_2Linux_Server_in_AWSAcademy.md
+        - Ud1_3Windows_Server_in_AWSAcademy.md
     - Unidad 2:
       - Teoría:
         - ArqWeb.md
