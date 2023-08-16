@@ -1,15 +1,14 @@
 nav:
-    - Unidad 1:
+    - Ud 1. Introducción al módulo:
       - Teoría:
-        - Ud1_0Introalmodulo.md
+        - Ud1_1Introalmodulo.md
       - Prácticas:
-        - Ud1_2Linux_Server_in_AWSAcademy.md
-        - Ud1_3Windows_Server_in_AWSAcademy.md
-    - Unidad 2:
+        - ... | P1_*.md
+    - Ud 2. Servidores web:
       - Teoría:
-        - ArqWeb.md
+        - ... | Ud2_*.md
       - Prácticas:
-        - ... | P1.*.md
+        - ... | P2_*.md
     - Unidad 3:
       - Teoría:
         - ServAplic.md
