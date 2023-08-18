@@ -1,9 +1,4 @@
 nav:
-    - Ud 1. Introducción al módulo:
-      - Teoría:
-        - Ud1_1Introalmodulo.md
-      - Prácticas:
-        - ... | P1_*.md
     - Ud 2. Servidores web:
       - Teoría:
         - ... | Ud2_*.md
@@ -56,4 +51,3 @@ nav:
         - cicd.md
       - Prácticas:
         - ... | P7.*.md    
-

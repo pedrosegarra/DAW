@@ -82,7 +82,7 @@ Veamos a continuación las bases teóricas de la conexión SSH que nos permitir�
 
 Para conectarnos a una máquina de forma remota y segura en modo comando, la opción más recomendable es SSH.
 
-![](img/ssh.webp)
+![](Ud1_1/ssh.webp)
 
 SSH o Secure Shell es un protocolo de red criptográfico para operar servicios de red de forma segura a través de una red no protegida. Las aplicaciones típicas incluyen línea de comandos remota, inicio de sesión y ejecución de comandos remota, pero cualquier servicio de red puede protegerse con SSH.
 
@@ -112,7 +112,7 @@ Este tipo de cifrado utiliza la misma clave para cifrar y para descifrar la info
 
 Este tipo de cifrado utiliza la misma clave para cifrar y para descifrar la información. Por este motivo, la clave debe ser secreta y sólo conocida por el emisor y el receptor del mensaje.
 
-![](img/simetrico.png)
+![](Ud1_1/simetrico.png)
 
 **Ventajas**
 
@@ -128,7 +128,7 @@ Este tipo de cifrado utiliza la misma clave para cifrar y para descifrar la info
 
 En este tipo de cifrados cada usuario utiliza un par de claves: una clave pública y una clave privada. Un mensaje cifrado con la clave pública sólo se puede descifrar con su correspondiente clave privada y viceversa.
 
-![](img/asimetrico.png)
+![](Ud1_1/asimetrico.png)
 
 La *clave pública* es accesible a cualquier persona que quiera consultarla, no hace falta que sea transmitida por un canal seguro como en el caso anterior.
 
