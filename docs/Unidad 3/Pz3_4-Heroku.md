@@ -29,7 +29,7 @@ A pesar de que trataremos un poco más en profundidad Github en el siguiente tem
 
 GitHub es un servicio basado en la nube que aloja un sistema de control de versiones (VCS) llamado Git. Éste permite a los desarrolladores colaborar y realizar cambios en proyectos compartidos, a la vez que mantienen un seguimiento detallado de su progreso.
 
-![](img/github-logo.png)
+![](../img/github-logo.png)
 
 El control de versiones es un sistema que ayuda a rastrear y gestionar los cambios realizados en un archivo o conjunto de archivos. Utilizado principalmente por ingenieros de software para hacer un seguimiento de las modificaciones realizadas en el código fuente, el sistema de control de versiones les permite analizar todos los cambios y revertirlos sin repercusiones si se comete un error.
 
@@ -39,7 +39,7 @@ Heroku es una solución de Plataforma como Servicio (PaaS) basada en la nube par
 
 Para proporcionar este servicio se dispone de unos contenedores virtuales que son los encargados de mantener y ejecutar las aplicaciones. Estos contenedores virtuales son totalmente escalables bajo demanda. Tanto en número como en capacidades.
 
-![](img/heroku-logo.png){: style="height:250px;width:600px"}
+![](../img/heroku-logo.png){: style="height:250px;width:600px"}
 
 Una ventaja de elegir Heroku es su capacidad de soportar múltiples lenguajes de programación. Los principales a utilizar son: Node.js, Ruby, Python, Java, PHP, Go, Scala y Clojure. Aunque esta cantidad de lenguajes puede aumentar en el caso de utilizar Heroku Buildpacks, que permiten compilar las aplicaciones en multitud de ellos más.
 
@@ -52,7 +52,7 @@ Netlify es un proveedor de alojamiento en la nube que proporciona servicios de b
 
 Funciona conectándose a un repositorio de GitHub, de donde extrae el código fuente. A continuación, ejecutará un proceso de construcción para pre-renderizar las páginas de nuestro sitio web/aplicación en archivos estáticos.
 
-![](img/netlify.jpg){: style="height:350px;width:600px"}
+![](../img/netlify.jpg){: style="height:350px;width:600px"}
 
 
 Hay numerosas razones a favor de usar Netlify, aquí están algunas de ellas:
@@ -232,17 +232,17 @@ Ahora, dentro del directorio que habíamos creado previamente para nuestra aplic
 
     Y lo iniciamos: `git init`
 
-    ![](img/git1.png)
+    ![](../img/git1.png)
 
 2. Ahora añadimos todos los archivos presentes en el directorio (`.`) para ser enviados al repositorio: `git add .`
     
     Y los preparamos para que sean envidos al repositorio: `git commit -m "Comentario explicativo del commit"`
     
-    ![](img/git2.png)
+    ![](../img/git2.png)
 
 3. Creamos nuestra aplicación en Heroku: `heroku create`
 
-    ![](img/git3.png)
+    ![](../img/git3.png)
 
     Esto creará un git remoto que conectará con nuestro repositorio git local
 
@@ -251,25 +251,25 @@ Ahora, dentro del directorio que habíamos creado previamente para nuestra aplic
 
     Y comprobamos que la instancia está corriendo: `heroku ps:scale web=1`
 
-    ![](img/git4.png)
+    ![](../img/git4.png)
 
-    ![](img/git5.png)
+    ![](../img/git5.png)
 
 5. El comando `heroku open` abriría nuestra aplicación en el navegador. Sin embargo, por el problema explicado antes de estar conectados por SSH, esto no ocurrirá. No obstante, podemos acceder a nuestra aplicación de otra forma rápida y sencilla desde nuestro dashboard de Heroku:
 
     + Localizamos nuestra aplicación:
 
-        ![](img/heroku_dashboard_app_1.png)
+        ![](../img/heroku_dashboard_app_1.png)
 
     + Y tras hacer click en ella, localizamos el botón que nos permite abrirla y volvemos a hacer click:
   
-         ![](img/heroku_dashboard_app_2.png)
+         ![](../img/heroku_dashboard_app_2.png)
 
     + Comprobando que nuestra aplicación, efectivametne se ha desplegado en Heroku y funciona a la perfección:
   
-         ![](img/heroku_dashboard_app_3.png)
+         ![](../img/heroku_dashboard_app_3.png)
 
-         ![](img/heroku_dashboard_app_4.png)
+         ![](../img/heroku_dashboard_app_4.png)
 
 
 ## Aplicación para Netlify
@@ -313,14 +313,14 @@ En este caso, siguiendo las instrucciones de [la documentación](https://docs.ne
 
 + Generamos el token de acceso
 
-    ![](img/token-netlify.png)
+    ![](../img/token-netlify.png)
 
-    ![](img/token-netlify-2.png)
+    ![](../img/token-netlify-2.png)
 
 
 + Lo establecemos como variable de ambiente:
 
-    ![](img/token-netlify-3.png)
+    ![](../img/token-netlify-3.png)
 
 	Y nos logueamos
 	```
@@ -368,7 +368,7 @@ netlify deploy --prod
 
 En primer lugar, vamos a eliminar el site que hemos desplegado antes en Netlify para evitarnos cualquier problema y/o conflicto:
 
-![](img/delete_site_netlify.png)
+![](../img/delete_site_netlify.png)
 
 En segundo lugar, vamos a borrar el directorio donde se halla el repositorio clonado en el paso anterior para así poder empezar de 0:
 
@@ -396,7 +396,7 @@ cd practica3.4/color-shades-generator-main/
 ```
 Ahora debemos crear un repositorio <u>**completamente vacío**</u> en Github que se llame `practicaTresCuatro`:
 
-![](img/github_new.png)
+![](../img/github_new.png)
 
 Y tras ello, volviendo al terminal a la carpeta donde estábamos, la iniciamos como repositorio, añadimos todo el contenido de la misma para el commit, hacemos el commit con el mensaje correspondiente y creamos la rama main:
 
@@ -417,27 +417,27 @@ $ git push -u origin main
 
 Ahora que ya tenemos subido el código a GitHub, de alguna manera debemos *enganchar* o enlazar nuestra cuenta de Github con la de Netlify para que éste último pueda traerse el código de allí, hacer el build y desplegarlo. Así pues, entramos en nuestro dashboard de Netlify y le damos a importar proyecto existente de `git`:
 
-![](img/github_netlify.png)
+![](../img/github_netlify.png)
 
 Le indicamos que concretamente de Github:
 
-![](img/github_netlify2.png)
+![](../img/github_netlify2.png)
 
 Y nos saltará una ventana pidiendo que autoricemos a Netlify a acceder a nuestros repositorios de Github:
 
-![](img/github_netlify6.png)
+![](../img/github_netlify6.png)
 
 Y luego le indicaremos que no acceda a todos nuestros repositorios sino sólo al repositorio que necesitamos, que es donde tenemos el código de nuestra aplicación:
 
-![](img/github_netlify4.png)
+![](../img/github_netlify4.png)
 
 Y ya quedará todo listo:
 
-![](img/github_netlify3.png)
+![](../img/github_netlify3.png)
 
 Y desplegamos la aplicación:
 
-![](img/github_netlify7.png)
+![](../img/github_netlify7.png)
 
 Netlify se encargará de hacer el `build` de forma automática tal y como hemos visto en la imagen de arriba, con el comando `npm run build`, publicando el contenido del directorio `build`.
 
@@ -450,7 +450,7 @@ Lo que hemos conseguido de esta forma es que, cualquier cambio que hagamos en el
 
   + Dentro de la carpeta `public` encontramos el archivo `robots.txt`, cuyo cometido es indicar a los rastreadores de los buscadores a qué URLs del sitio pueden acceder. A este archivo se puede acceder a través de la URL del site:
 
-    ![](img/robots.png)
+    ![](../img/robots.png)
 
   + Dentro de la carpeta `public`, utilizando el editor de texto que prefiráis en vuestro terminal, modificad el archivo `robots.txt` para que excluya un directorio que se llame `nombre_apellido`, utilizando obviamente vuestro nombre y apellido.
 
@@ -462,13 +462,13 @@ Lo que hemos conseguido de esta forma es que, cualquier cambio que hagamos en el
   + Haz un nuevo `commit` y `push` (del caso anterior, recuerda el commando `git` previo para añadir los archivos a hacer commit)
   + Comprueba en el dashboard de Netlify que se ha producido un nuevo deploy de la aplicación hace escasos segundos
 
-    ![](img/github_netlify8.png)
+    ![](../img/github_netlify8.png)
 
-    ![](img/github_netlify9.png)
+    ![](../img/github_netlify9.png)
           
   + Accede a `https://url_de_la_aplicacion/robots.txt` y comprueba que, efectivamente, se ve reflejado el cambio
 
-    ![](img/robots2.png)
+    ![](../img/robots2.png)
 
 
 
