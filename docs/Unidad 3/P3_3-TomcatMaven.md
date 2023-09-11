@@ -117,7 +117,7 @@ Donde lo que añadimos es el bloque `<plugin>` dentro del bloque `<plugins>`.
         <plugin>
         <groupId>org.apache.tomcat.maven</groupId>
         <artifactId>tomcat7-maven-plugin</artifactId>
-        <version>2.0</version>
+        <version>2.2</version>
         <configuration>
             <url>http://localhost:8080/manager/text</url> #(2)
             <server>DesplieguesTomcat</server> #(3)
@@ -138,7 +138,7 @@ Donde lo que añadimos es el bloque `<plugin>` dentro del bloque `<plugins>`.
 
 El paso final consiste en ejecutar un "build" de Maven mientras también invocas la función de implementación del complemento Tomcat-Maven, lo cual puedes hacer con el siguiente comando:
 
-`mvn install tomcat7:deploy`
+`mvn tomcat7:deploy`
 
 Si todo va bien responderá algo así:
 
@@ -172,55 +172,63 @@ Y si la ejecutamos podremos comprobar su funcionamiento. Se trata del famoso jue
 
 ![](P3_3/03.gif)
 
-
-A PARTIR DE AQUÍ HABRÍA QUE GENERAR UN PROYECTO NUEVO MAVEN QUE COMPILE A UN WAR
-## Despliegue 
-
-Teniendo ya todo listo para realizar despliegues, ahora crearemos una aplicación Java <u>de prueba</u> para ver si podemos desplegarla sobre la arquitectura que hemos montado. Para ello utilizamos el comando:
-
-```sh
-    mvn archetype:generate -DgroupId=raul -DartifactId=war-deploy -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
-```
-
-Podéis sustituir los valores de `groupID` y `artifactId` (este será el nombre de la aplicación) por lo que queráis.
-
-Tras generar esta aplicación, los comandos finales que se utilizan en Maven para desplegar, volver a desplegar o desplegar una aplicación, son:
+Como referencia, los comandos que se utilizan en Maven para desplegar, volver a desplegar o replegar una aplicación, son:
 
 + `mvn tomcat7:deploy`
 + `mvn tomcat7:redeploy`
 + `mvn tomcat7:undeploy`
 
-Así pues, tras el despliegue con Maven nos indicará que todo ha ido correctamente con un mensaje de `BUILD SUCCESS`, tal que así:
 
-![](../img/build.png)
+## Despliegue de un proyecto nuevo
 
-Y, accediendo a través de la GUI, debemos ver que la aplicación está desplegado y que podemos acceder a ella perfectamente:
+En el paso anterior hemos desplegado un proyecto que hemos descargado de GitHub y que ya estaba preparado para ser desplegado con Maven. Ahora vamos a crear una una aplicación Java <u>de prueba</u> desde cero para ver si podemos desplegarla sobre la arquitectura que hemos montado. 
 
-![](../img/maven-desplegado.png)
+Para ello colócate en el directorio en el que quieras crear la estructura de carpetas de Maven y ejecuta el comando:
 
-##### Tarea
-Realizar el despliegue con la aplicación de prueba.
+```sh
+    mvn archetype:generate -DgroupId=IESElCaminas -DartifactId=miapp -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+```
 
-Repetir el despliegue pero esta vez con otra aplicación que no es la de prueba. Más adelante ya hablaremos de `git` pero de momento, usaremos los comandos que veremos a continuación.
+Podéis sustituir los valores de `groupID` (nombre organización) y `artifactId` (nombre de la aplicación) por lo que queráis.
 
-Nos clonamos el repositorio:
+Comprueba que se ha creado un directorio `miapp` donde habías ejecutado el comando. Entra dentro y comprueba que tienes el archivo `pom.xml` y el directorio `src`. Edita el POM e incluye la sección del plugin de tomcat7-maven en la sección de `<plugins>` como en el caso anterior. En este caso, además, deberemos incluir el plugin "maven-war" que nos permitirá compilar un archivo .war compatible con el plugin tomcat7-maven. Por tanto, incluiremos 2 bloques `<plugin>` dentro de la sección `<plugins>`:
 
-   `git clone https://github.com/cameronmcnz/rock-paper-scissors.git`
+```yaml hl_lines="4-18"
+  <build>
+    <finalName>miapp</finalName>
+    <plugins>  
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>3.4.0</version>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.tomcat.maven</groupId>
+            <artifactId>tomcat7-maven-plugin</artifactId>
+            <version>2.2</version>
+            <configuration>
+                <url>http://localhost:8080/manager/text</url>
+                <server>DesplieguesTomcat</server>
+                <path>/miapp</path>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
 
-Nos situamos dentro de él:
+Ya puedes desplegar la aplicación con 
 
-   `cd rock-paper-scissors`
+ `mvn tomcat7:deploy`
 
-Y cambiamos de rama:
+Comprueba nuevamente que puedes verla en el Gestor de Aplicaciones Web de Tomcat y que puedes ejecutarla. En este caso es un simple "Hello world!". Navega la estructura de directorios que Maven ha creado en el directorio `miapp`. Fíjate cómo es la misma que creamos manualmente en la práctica anterior. Y compara el proceso que seguimos en la anterior práctica creando y editando el fichero index.html, web.xml, compilando la aplicación para generar el .war, etc. Maven ha hecho todo eso por nosotros con un solo comando `mvn tomcat7:deploy`.
 
-   `git checkout patch-1`
+## Para saber más
 
-Tras esto debemos proceder exactamente igual que en el caso anterior, con la ventaja de que ya tenemos configurados los usuarios de Tomcat y los parámetros de Maven.
+Hemos usado el plugin tomcat7-maven para realizar los despliegues. Pero no es el único. Otro plugin, de funcionamiento parecido es "cargo".
 
-Así pues, sólo habría que añadir el bloque `<plugin>...</plugin>` adecuado para poder hacer nuestro despliegue.
+En este enlace tienes un ejemplo de cómo realizar un despliegue utilizando "cargo":
 
-!!!task 
-    Documenta, incluyendo capturas de pantallas, el proceso que has seguido para realizar el despliegue de esta nueva aplicación, así como el resultado final.
+[How to deploy the java application to Tomcat 9 webserver using Maven](https://devopspilot.com/content/tomcat/tutorials/how-to-deploy-java-application-to-tomcat-using-maven.html)
 
 ### Cuestiones
 
@@ -246,8 +254,6 @@ En principio esto representa un gran riesgo de seguridad, ¿sabrías razonar o a
 
 [Step-by-step Maven Tomcat WAR file deploy example](https://www.theserverside.com/video/Step-by-step-Maven-Tomcat-WAR-file-deploy-example)
 
-[How to deploy the java application to Tomcat 9 webserver using Maven](https://devopspilot.com/content/tomcat/tutorials/how-to-deploy-java-application-to-tomcat-using-maven.html)
-
 [How to Install Apache Maven on Debian 11 Bullseye](https://www.how2shout.com/linux/how-to-install-apache-maven-on-debian-11-bullseye/)
 
 [How to Deploy a WAR File to Tomcat](https://www.baeldung.com/tomcat-deploy-war)
@@ -261,13 +267,3 @@ En principio esto representa un gran riesgo de seguridad, ¿sabrías razonar o a
 [Why are plain text passwords in the config files?](https://cwiki.apache.org/confluence/display/TOMCAT/Password)
 
 [How to avoid storing passwords in the clear for tomcat's server.xml Resource definition of a DataSource?](https://stackoverflow.com/questions/129160/how-to-avoid-storing-passwords-in-the-clear-for-tomcats-server-xml-resource-def)
-
-## Evaluación
-
-| Criterio                                                                                                                                      | Puntuación   |
-|-----------------------------------------------------------------------------------------------------------------------------------------------|--------------|
-| Despliegue manual de un `.war` en Tomcat correcto y bien documentado                                                                                                      | **1 punto**      |
-| Despliegue del `.war` de prueba utilizando maven correcto y bien documentado                                                                          | **0.25 puntos**  |
-| Despliegue de una aplicación con maven desde un repositorio de Github correcto y bien documentado                                                                       | **4.75 puntos** |
-| Cuestiones                                                                                                                                    | **2 puntos**     |
-| Se ha prestado especial atención al formato del documento, utilizando la plantilla actualizada y haciendo un correcto uso del lenguaje técnico | **2 puntos**     |
