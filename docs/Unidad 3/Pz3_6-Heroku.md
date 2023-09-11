@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 3.4 - Despliegue de una aplicación Node.js en Heroku (PaaS) y Netlify (Paas)'
+title: 'Práctica 3.6 - Despliegue de una aplicación Node.js en Heroku (PaaS) y Netlify (Paas)'
 ---
 
-# Práctica 3.4: Despliegue de una aplicación Node.js en Heroku (PaaS) y una aplicación React en Netlify (PaaS)
+# Práctica 3.6: Despliegue de una aplicación Node.js en Heroku (PaaS) y una aplicación React en Netlify (PaaS)
 
 <!-- ## Prerrequisitos
 

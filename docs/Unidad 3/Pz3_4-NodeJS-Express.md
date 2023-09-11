@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 3.2 - Despliegue de aplicaciones con Node Express'
+title: 'Práctica 3.4 - Despliegue de aplicaciones con Node Express'
 ---
 
-# Práctica 3.2: Despliegue de aplicaciones con Node Express
+# Práctica 3.4: Despliegue de aplicaciones con Node Express
 
 ## Introducción
 
