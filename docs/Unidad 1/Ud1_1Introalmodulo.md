@@ -106,8 +106,6 @@ Los pares de claves pública-privada SSH encriptados asimétricamente son una me
 
 Es decir, SSH opta por el cifrado híbrido, donde se utiliza el cifrado asimétrico para intercambiar unas claves que serán las que se utilizarán posteriormente en el intercambio de información.
 
-Este tipo de cifrado utiliza la misma clave para cifrar y para descifrar la información. Por este motivo, la clave debe ser secreta y solo conocida por el emisor y el receptor del mensaje.
-
 ##### Cifrados simétricos o de clave privada
 
 Este tipo de cifrado utiliza la misma clave para cifrar y para descifrar la información. Por este motivo, la clave debe ser secreta y sólo conocida por el emisor y el receptor del mensaje.
