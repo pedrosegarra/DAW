@@ -23,9 +23,10 @@ Esta práctica es muy sencilla y va a consistir en realizar la instalación del 
 #### Creación de la máquina virtual
 
 Para empezar, entra en AWS Academy y crea un nuevo EC2 Debian con estas características. 
-    * Llámale P3Tomcat.
-    * Dale los recursos que te ofrece por defecto.
-    * El acceso al servidor Tomcat se realiza por el puerto TCP 8080. Puedes modificar el Grupo de seguridad ahora para permitir el acceso por http, https y TCP 8080 ahora o editarlo más tarde.
+
+* Llámale P3Tomcat.
+* Dale los recursos que te ofrece por defecto.
+* El acceso al servidor Tomcat se realiza por el puerto TCP 8080. Puedes modificar el Grupo de seguridad ahora para permitir el acceso por http, https y TCP 8080 ahora o editarlo más tarde.
 
 #### Instalación de Java
 
