@@ -28,33 +28,33 @@ Seguiremos las instrucciones de instalación que encontramos [aquí](https://git
 
 1. Descargar e importar la clave GPG de Nodesource
 
-```bash
-sudo apt-get update
-sudo apt-get install -y ca-certificates curl gnupg
-sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-```
-
+    ```bash
+    sudo apt-get update
+    sudo apt-get install -y ca-certificates curl gnupg
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+    ```
 2. Crear el repositorio deb
 
-```bash
-NODE_MAJOR=20
-echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
-```
+    ```bash
+    NODE_MAJOR=20
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+    ```
 
-Opcional: Puedes cambiar NODE_MAJOR dependiendo de la versión que necesites.
-* NODE_MAJOR=16
-* NODE_MAJOR=18
-* NODE_MAJOR=20
+    Opcional: Puedes cambiar NODE_MAJOR dependiendo de la versión que necesites.
+
+    * NODE_MAJOR=16
+    * NODE_MAJOR=18
+    * NODE_MAJOR=20
 
 3. Ejecutar la actualización e instalación
 
-```bash
-sudo apt-get update
-sudo apt-get install nodejs -y
-```
+    ```bash
+    sudo apt-get update
+    sudo apt-get install nodejs -y
+    ```
 
-En lugar de acceder a `http://localhost:3000`, debéis acceder desde vuestra máquina local a `http://IP-maq-virtual:3000`, utilizando la IP concreta de vuestra máquina virtual.
+    En lugar de acceder a `http://localhost:3000`, debéis acceder desde vuestra máquina local a `http://IP-maq-virtual:3000`, utilizando la IP concreta de vuestra máquina virtual.
 
 ### Instalación de Express
 
