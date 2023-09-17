@@ -34,7 +34,6 @@ Seguiremos las instrucciones de instalación que encontramos [aquí](https://git
     sudo mkdir -p /etc/apt/keyrings
     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
     ```
-    
 2. Crear el repositorio deb
 
     ```bash
@@ -47,7 +46,6 @@ Seguiremos las instrucciones de instalación que encontramos [aquí](https://git
     * NODE_MAJOR=16
     * NODE_MAJOR=18
     * NODE_MAJOR=20
-
 3. Ejecutar la actualización e instalación
 
     ```bash
