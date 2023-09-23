@@ -52,8 +52,13 @@ Seguiremos las instrucciones de instalación que encontramos [aquí](https://git
     sudo apt-get update
     sudo apt-get install nodejs -y
     ```
-
-    En lugar de acceder a `http://localhost:3000`, debéis acceder desde vuestra máquina local a `http://IP-maq-virtual:3000`, utilizando la IP concreta de vuestra máquina virtual.
+4. Para comprobar que Node.js está correctamente instalado ejecuta:
+   ```bash
+    $ node --version
+    v20.7.0
+    $ npm --version
+    10.1.0
+   ```  
 
 ### Instalación de Express
 
