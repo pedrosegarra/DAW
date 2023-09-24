@@ -4,14 +4,12 @@ title: 'Práctica 3.6 - Despliegue de una aplicación Node.js en Heroku (PaaS) y
 
 # Práctica 3.6: Despliegue de una aplicación Node.js en Heroku (PaaS) y una aplicación React en Netlify (PaaS)
 
-<!-- ## Prerrequisitos
-
 !!!note "Nota"
     Para esta práctica vamos a crearnos cuentas en distintos servicios cuando se os pida:
 
     [Heroku](https://www.heroku.com/)
     [GitHub](https://github.com/)
-    [Netlify](https://www.netlify.com/) -->
+    [Netlify](https://www.netlify.com/)
 
 ## Introducción
 
@@ -25,7 +23,7 @@ A la hora de desplegar la aplicación en producción, podría utilizarse el mét
 
 ### ¿Qué es Github?
 
-A pesar de que trataremos un poco más en profundidad Github en el siguiente tema, daremos una breve explicación aquí.
+A pesar de que trataremos un poco más en profundidad Github en un tema posterior, daremos una breve explicación aquí.
 
 GitHub es un servicio basado en la nube que aloja un sistema de control de versiones (VCS) llamado Git. Éste permite a los desarrolladores colaborar y realizar cambios en proyectos compartidos, a la vez que mantienen un seguimiento detallado de su progreso.
 
@@ -42,9 +40,6 @@ Para proporcionar este servicio se dispone de unos contenedores virtuales que so
 ![](../img/heroku-logo.png){: style="height:250px;width:600px"}
 
 Una ventaja de elegir Heroku es su capacidad de soportar múltiples lenguajes de programación. Los principales a utilizar son: Node.js, Ruby, Python, Java, PHP, Go, Scala y Clojure. Aunque esta cantidad de lenguajes puede aumentar en el caso de utilizar Heroku Buildpacks, que permiten compilar las aplicaciones en multitud de ellos más.
-
-!!!note
-    Tanto **Github**, como **Heroku**, como **Netlify** pueden ser controlados desde el terminal de nuestro Linux, por lo que seguiremos el procedimiento de contectarnos vía SSH a nuestro Debian y realizar las operaciones por terminal.
 
 ### ¿Qué es Netlify?
 
@@ -67,10 +62,14 @@ Hay numerosas razones a favor de usar Netlify, aquí están algunas de ellas:
 
   + Netlify proporciona una práctica función de envío de formularios que nos permite recoger información de los usuarios.
 
+!!!note
+    Tanto **Github**, como **Heroku**, como **Netlify** pueden ser controlados desde el terminal de nuestro Linux, por lo que seguiremos el procedimiento de contectarnos vía SSH a nuestro Debian y realizar las operaciones por terminal.
 
 ## Creación de nuestra aplicación para Heroku
 
-Tras loguearnos por SSH en nuestro Debian, nos crearemos un directorio para albergar la aplicacón con el nombre que queramos. En ese directorio, crearemos los 3 archivos (dos `.html` y un `.js`)que conformarán nuestra sencilla aplicación de ejemplo:
+Vamos a realizar la práctica utilizando la máquina virtual que creamos en la práctica P3.4 que llamamos "DebianNodejs". También podríamos usar usar la creada en la P3.5 "DebianNodejsCluster" pero nos generará un mayor coste en AWS Academy.
+
+Tras loguearnos por SSH en nuestro Debian, nos crearemos un directorio para albergar la aplicación con el nombre "practicaheroku". En ese directorio, crearemos los 3 archivos (dos `.html` y un `.js`)que conformarán nuestra sencilla aplicación de ejemplo:
 
 === "head.html"
 
@@ -109,46 +108,51 @@ Tras loguearnos por SSH en nuestro Debian, nos crearemos un directorio para albe
     ```javascript
     var http = require('http');
     var fs = require('fs'); // para obtener los datos del archivo html
-    var port = process.env.PORT || 8080; //Para que funcione en Heroku ya que da error 137 con el puerto 3000
+    var port = process.env.PORT || 8080;    //Para que funcione en Heroku ya que da error 137 con el puerto 3000
 
     http.createServer(function (req, res) {
-        res.writeHead(200, { 'Content-Type': 'text/html' });
+        // Set the default status code and content type for the response
+        var statusCode = 200;
+        var contentType = 'text/html';
 
-        // req.url almacena el path o ruta de la URL
+        // req.url stores the path or route of the URL
         var url = req.url;
+
         if (url === "/") {
-    // fs.readFile busca el archivo HTML
-    // el primer parámetro es el path al archivo HTML
-    // y el segundo es el callback de la función
-    // si el archivo no se encuentra, la función devuelve un error
-    // si el archivo se encuentra, el contenido del mismo se encuentra en pgres    
             fs.readFile("head.html", function (err, pgres) {
-                if (err)
-                    res.write("HEAD.HTML NOT FOUND");
-                else {
-                    // Las siguientes 3 lineas
-                    // tienen la función de enviar el archivo html
-                    // y finalizar el proceso de respuesta
-                    res.writeHead(200, { 'Content-Type': 'text/html' });
-                    res.write(pgres);
-                    res.end();
+                // el primer parámetro es el path al archivo HTML
+                // y el segundo es el callback de la función
+                // si el archivo no se encuentra, la función devuelve un error
+                // si el archivo se encuentra, el contenido del mismo se encuentra en pgres
+                if (err) {
+                    // If the file is not found, set a 404 status code and content type
+                    statusCode = 404;
+                    contentType = 'text/plain';
+                    pgres = 'HEAD.HTML NOT FOUND';
                 }
+
+                // Set the response headers once and send the response
+                res.writeHead(statusCode, { 'Content-Type': contentType });
+                res.end(pgres);
             });
-        }
-        else if (url === "/tailPage") {
+        } else if (url === "/tailPage") {
             fs.readFile("tail.html", function (err, pgres) {
-                if (err)
-                    res.write("TAIL.HTML NOT FOUND");
-                else {
-                    res.writeHead(200, { 'Content-Type': 'text/html' });
-                    res.write(pgres);
-                    res.end();
+                if (err) {
+                    statusCode = 404;
+                    contentType = 'text/plain';
+                    pgres = 'TAIL.HTML NOT FOUND';
                 }
+
+                res.writeHead(statusCode, { 'Content-Type': contentType });
+                res.end(pgres);
             });
+        } else {
+            // Handle other routes or URLs as needed
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.end('Page not found');
         }
-        
     }).listen(port, function () {
-        console.log("SERVER STARTED PORT: 8080");
+        console.log("SERVER STARTED PORT: " + port);
     });
     ```
 
@@ -199,10 +203,42 @@ Lo siguiente será loguearnos en nuestra cuenta de Heroku mediante el terminal, 
 ```sh
 heroku login
 ```
-Esto en teoría nos abre una pestaña del navegador para loguearnos en nuestra cuenta. Puesto que estamos conectados por SSH a nuestra Debian, no sucederá esto ya que el único puerto por el que nos comunicamos es por el 22. Necesitaríamos un túnel SSH para redirigir los puertos de la máquina Debian remota a la nuestra y que nos abriese el navegador en nuestra máquina. 
+Esto en teoría nos abre una pestaña del navegador para loguearnos en nuestra cuenta. Puesto que estamos conectados por SSH a nuestra Debian, no sucederá esto ya que estamos en un terminal sin capacidades gráficas. Lo que haremos será crear un proxy inverso a través de SSH que nos permitirá que las peticiones de páginas web de nuestra máquina local se dirijan al servidor remoto a través del tunel SSH y salgan de nuestro servidor Debian con su IP, como si fuera él quien las hiciera. Para ello haremos lo siguiente.
 
-Puesto que esto escapa de los objetivos del módulo y con el fin de agilizar el proceso, simplemente copiaremos la URL y la pegaremos en nuestro navegador para loguearnos.
+1. Cierra la conexión SSH en tu terminal local y lanza una nueva con este comando:
+   ```bash
+   sudo ssh -i "daw.pem" -D 443 admin@ec2-xx-xx-xx-xx.compute-1.amazonaws.com
+   ```
 
+   La opción -D establece un servidor SOCKS en el puerto local 443. Como nos vamos a conectar por https usaremos ese puerto.
+2. Configura tu navegador web local para usar el servidor SOCKS como proxy. Dependiendo del navegador que estés utilizando, los pasos pueden variar:
+   1. Firefox:
+      + Abre Firefox.
+      + Ve a "Opciones" o "Preferencias" (dependiendo de tu sistema operativo).
+      + En la barra de búsqueda, escribe "Proxy".
+      + Haz clic en "Configuración de la red".
+      + Selecciona "Configuración manual del proxy".
+      + En "SOCKS Host", ingresa localhost y en "Puerto", ingresa 443.
+      + Marca la opción "SOCKS v5".
+      + Haz clic en "Aceptar".
+   2. Chrome:
+      1. Chrome no admite la configuración directa de un proxy SOCKS desde su interfaz de usuario. Puedes usar una extensión como "Proxy SwitchyOmega" para configurar un proxy SOCKS en Chrome.   
+3. Con la configuración del proxy establecida en tu navegador, cualquier solicitud de página web que hagas desde tu navegador pasará a través del servidor remoto como si el servidor remoto estuviera haciendo las solicitudes. Esto oculta tu dirección IP local y utiliza la del servidor remoto.
+4. Ahora puedes abrir tu navegador y navegar a cualquier página web como lo harías normalmente. El tráfico pasará a través del servidor remoto antes de llegar a su destino.
+   Recuerda que esta configuración solo afectará las solicitudes hechas desde el navegador configurado. Otros programas o aplicaciones en tu equipo local no usarán automáticamente este proxy a menos que se configuren para hacerlo. Para desactivar el proxy, simplemente revierte la configuración en tu navegador web.
+
+Ahora que ya tenemos el navegador preparado, vuelve al terminal con nuestro servidor Debian y ejecuta el comando de login.
+
+```sh
+$ heroku login
+heroku: Press any key to open up the browser to login or q to exit: 
+Opening browser to https://cli-auth.heroku.com/auth/cli/browser/0f52dd14-45d0-4b9a-b891-565258097f92?requestor=SFMyNTY.g2gDbQAAAAw1NC44MC4yMTAuNTZuBgBoDInGigFiAAFRgA.Q5VcF-T9kPlbI2-EHpkyMlkodGeX2-RKdx1dBEFSlLA
+heroku: Waiting for login...
+Logging in... done
+Logged in as j.munozjimeno@edu.gva.es
+```
+
+Verás que te dice que está abriendo un "browser" para el login. Pero no lo hace. Simplemente copiaremos la URL y la pegaremos en nuestro navegador para loguearnos. Recuerda, tiene que ser el navegador que prepararmos antes. Así, la petición es como si la realizara nuestro server Debian a la web de autenticación de Heroku. Si todo va bien nos permitirá logernos con el usuario previamente creado.
 
 Antes de continuar, conviene asegurarnos de que tenemos la última versión de git en nuestra Debian:
 
