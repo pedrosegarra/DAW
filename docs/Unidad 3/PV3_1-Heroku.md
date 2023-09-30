@@ -1,15 +1,18 @@
 ---
-title: 'Práctica 3.6 - Despliegue de una aplicación Node.js en Heroku (PaaS) y Netlify (Paas)'
+title: 'Práctica Voluntaria 3.1 - Despliegue de una aplicación Node.js en Heroku (PaaS)'
 ---
 
-# Práctica 3.6: Despliegue de una aplicación Node.js en Heroku (PaaS) y una aplicación React en Netlify (PaaS)
+# Práctica Voluntaria 3.1: Despliegue de una aplicación Node.js en Heroku (PaaS)
 
-!!!note "Nota"
-    Para esta práctica vamos a crearnos cuentas en distintos servicios cuando se os pida:
+!!!warning "Atención"
+    De un tiempo a esta parte Heroku se ha convertido en una plataforma de pago. En el momento de escribir esta guía[^1] ofrece el ["Student Developer Program"](https://blog.heroku.com/github-student-developer-program) que proporciona un crédito gratuíto de $13/mes durante 12 meses para aquellos alumnos poseedores de una cuenta "Github Student". Pero incluso bajo estas condiciones exige proporcionar una tarjeta de crédito para validar la cuenta. Este es el motivo de dejar esta práctica como voluntaria y no obligatoria.
+    
+    Si deseas continuar, empieza por crearte una cuenta GitHub para estudiante (habla con tu centro) y una cuenta en Heroku dentro del GitHub Student Developer Program:
 
     [Heroku](https://www.heroku.com/)
     [GitHub](https://github.com/)
-    [Netlify](https://www.netlify.com/)
+
+[^1]: Septiembre 2023
 
 ## Introducción
 
@@ -19,7 +22,7 @@ La práctica anterior podría asemejarse a las pruebas que realiza un desarrolla
 
 Ya sabemos que entendemos el *despliegue o deployment* como el proceso de mover nuestro código típicamente de un sistema de control de versiones a una plataforma de hosting donde se aloja y es servida a los usuarios finales. 
 
-A la hora de desplegar la aplicación en producción, podría utilizarse el método de copiar los archivos al servidor concreto vía el vetusto FTP, SSH u otros y desplegarla para dejarla funcionando. No obstante, esta práctica se acerca más a la realidad ya que utilizaremos un repositorio de Github y una plataforma de PaaS (Platform as a Service) como Heroku o Netlify para desplegar adecuadamente nuestra aplicación en producción.
+A la hora de desplegar la aplicación en producción, podría utilizarse el método de copiar los archivos al servidor concreto vía el vetusto FTP, SSH u otros y desplegarla para dejarla funcionando. No obstante, esta práctica se acerca más a la realidad ya que utilizaremos un repositorio de Github y una plataforma de PaaS (Platform as a Service) como Heroku para desplegar adecuadamente nuestra aplicación en producción.
 
 ### ¿Qué es Github?
 
@@ -41,26 +44,7 @@ Para proporcionar este servicio se dispone de unos contenedores virtuales que so
 
 Una ventaja de elegir Heroku es su capacidad de soportar múltiples lenguajes de programación. Los principales a utilizar son: Node.js, Ruby, Python, Java, PHP, Go, Scala y Clojure. Aunque esta cantidad de lenguajes puede aumentar en el caso de utilizar Heroku Buildpacks, que permiten compilar las aplicaciones en multitud de ellos más.
 
-### ¿Qué es Netlify?
-
-Netlify es un proveedor de alojamiento en la nube que proporciona servicios de backend sin servidor (*serverless*) para sitios web estáticos. Está diseñado para maximizar la productividad en el sentido de que permite a los desarrolladores (especialmente orientados al frontend), y a los ingenieros construir, probar y desplegar rápidamente sitios web/aplicaciones.
-
-Funciona conectándose a un repositorio de GitHub, de donde extrae el código fuente. A continuación, ejecutará un proceso de construcción para pre-renderizar las páginas de nuestro sitio web/aplicación en archivos estáticos.
-
-![](../img/netlify.jpg){: style="height:350px;width:600px"}
-
-
-Hay numerosas razones a favor de usar Netlify, aquí están algunas de ellas:
-
-  + Netlify hace que sea increíblemente sencillo desplegar un sitio web - de hecho, la forma más sencilla de lograrlo es utilizar GitHub, GitLab o Bitbucket para configurar el despliegue continuo.
-  
-  + Netlify hace que sea súper fácil lanzar un sitio web con su solución de gestión de DNS incorporada.
-   
-  + Podríamos desplegar fácilmente sólo una rama específica de nuestro proyecto Git - esto es útil para probar nuevas características que pueden o no llegar a la rama maestra/principal, o para determinar rápidamente cómo un PR (Pull Request) afectará a su sitio.
-
-  + Netlify te permite previsualizar cualquier despliegue que hagas o quieras hacer - esto te permite a ti y a tu equipo ver cómo se verán los cambios en producción sin tener que desplegarlos en tu sitio existente.
-
-  + Netlify proporciona una práctica función de envío de formularios que nos permite recoger información de los usuarios.
+La desventaja la vimos al principio, , desde el punto de vista educativo, es que de un tiempo a esta parte se ha convertido en una plataforma de pago y exige proporcionar una tarjeta de crédito para validar la cuenta incluso en el Student Developer Program.
 
 !!!note
     Tanto **Github**, como **Heroku**, como **Netlify** pueden ser controlados desde el terminal de nuestro Linux, por lo que seguiremos el procedimiento de contectarnos vía SSH a nuestro Debian y realizar las operaciones por terminal.
@@ -308,218 +292,6 @@ Ahora, dentro del directorio que habíamos creado previamente para nuestra aplic
          ![](../img/heroku_dashboard_app_4.png)
 
 
-## Aplicación para Netlify
-
-Puesto que el interés en este módulo radica en el proceso de despliegue, suponiendo que la parte de desarrollo ya es abordada en otros módulos, vamos a utilizar una aplicación de ejemplo que nos ahorre tiempo para centrarnos en el despliegue.
-
-Nos clonaremos [este](https://github.com/StackAbuse/color-shades-generator) repositorio:
-
-`git clone https://github.com/StackAbuse/color-shades-generator`
-
-
-## Proceso de despliegue en Netlify
-
-Por mera curiosidad y ambición de aprendizaje, vamos a ver dos métodos de despliegue en Netlify:
-
-+ Despliegue manual desde el CLI de Netlify, es decir, desde el terminal, a partir de un directorio local de nuestra máquina.
-+ Despliegue desde un código publicado en uno de nuestros repositorios de Github
-
-El primero nos permitirá conocer el CLI de Netlify y el segundo nos acercara más a una experiencia real de despliegue.
-
-!!!task
-    Vuestra primera tarea será [registraros en Netlify](https://www.netlify.com/) con vuestro email (no con vuestra cuenta de Github) y decirle que no cuando os pida enlazar con vuestra cuenta de Github (lo haremos más adelante).
-
-### Despliegue mediante CLI
-
-Una vez registrados, debemos instalar el CLI de Netlify para ejecutar sus comandos desde el terminal:
-
-```sh
-sudo npm install netlify-cli -g
-```
-
-Está claro que para realizar acciones de deploy, Netlify nos solicitará una autenticación, esto se hace mediante el comando:
-
-```sh
-netlify login
-```
-
-El cual nos muestra una pantalla del navegador para que concedamos la autorización pertinente. Sin embargo, recordemos el problema de que estamos conectados por SSH a nuestro servidor y no tenemos la posibilidad del uso de un entorno gráfico.
-
-En este caso, siguiendo las instrucciones de [la documentación](https://docs.netlify.com/cli/get-started/#obtain-a-token-in-the-netlify-ui):
-
-+ Generamos el token de acceso
-
-    ![](../img/token-netlify.png)
-
-    ![](../img/token-netlify-2.png)
-
-
-+ Lo establecemos como variable de ambiente:
-
-    ![](../img/token-netlify-3.png)
-
-	Y nos logueamos
-	```
-	netlify login
-	```
-
-Bueno, tenemos el código de nuestra aplicación, tenemos nuestra cuenta en Netlify y tenemos el CLI necesario para ejecutar comandos desde el terminal en esa cuenta... ¿Podemos proceder al despliegue sin mayores complicaciones?
-
-La respuesta es **NO**, como buenos desarrolladores y en base a experiencias anteriores, ya sabéis que hay que hacer un *build* de la aplicación para, posteriormente, desplegarla. Vamos a ello.
-
-En primer lugar, como sabemos, debemos instalar todas las dependencias que vienen indicadas en el archivo `package.json`:
-
-```sh
-npm install
-```
-Y cuando ya las tengamos instaladas podemos proceder a realizar el build:
-
-```sh
-npm run build
-```
-
-Esto nos creará una nueva carpeta llamada `build` que contendrá la aplicación que debemos desplegar. Y ya podemos hacer un pre-deploy de la aplicación de la que hemos hecho build antes:
-
-```
-netlify deploy
-```
-Nos hará algunas preguntas para el desplieuge:
-
-+ Indicamos que queremos crear y configurar un nuevo site
-+ El Team lo dejamos por defecto
-+ Le indicamos el nombre que queremos emplear para la web (`nombre-practica3-4`) y el directorio a utilizar para el deploy (directorio `./build`).
-
-Y si nos indica que todo ha ido bien e incluso podemos ver el "borrador" (Website Draft URL) de la web que nos aporta, podemos pasarla a producción finalmente tal y como nos indica la misma salida del comando:
-
-```
-If everything looks good on your draft URL, deploy it to your main site URL with the --prod flag.
-netlify deploy --prod
-```
-
-!!!warning 
-    No olvides desplegar finalmente en producción y comprobar que puedes acceder a la URL.
-
-
-### Despliegue mediante conexión con Github
-
-En primer lugar, vamos a eliminar el site que hemos desplegado antes en Netlify para evitarnos cualquier problema y/o conflicto:
-
-![](../img/delete_site_netlify.png)
-
-En segundo lugar, vamos a borrar el directorio donde se halla el repositorio clonado en el paso anterior para así poder empezar de 0:
-
-```
-rm -rf directorio_repositorio
-```
-
-Como queremos simular que hemos picado el código a man o en local y lo vamos a subir a Github por primera vez, nos descargaremos los fuentes en formato `.zip` sin que tenga ninguna referencia a Github:
-
-```sh
-wget https://github.com/StackAbuse/color-shades-generator/archive/refs/heads/main.zip
-```
-Creamos una carpeta nueva y descomprimimos dentro el zip:
-
-```sh
-mkdir practica3.4
-
-unzip main.zip -d practica3.4/
-```
-
-Entramos en la carpeta donde está el código:
-
-```
-cd practica3.4/color-shades-generator-main/
-```
-Ahora debemos crear un repositorio <u>**completamente vacío**</u> en Github que se llame `practicaTresCuatro`:
-
-![](../img/github_new.png)
-
-Y tras ello, volviendo al terminal a la carpeta donde estábamos, la iniciamos como repositorio, añadimos todo el contenido de la misma para el commit, hacemos el commit con el mensaje correspondiente y creamos la rama main:
-
-
-```sh
-$ git init
-$ git add .
-$ git commit -m "Subiendo el código..."
-$ git branch -M main
-```
-
-Y ahora sólo queda referenciar nuestra carpeta al repositorio recién creado en Github y hacer un `push` para subir todo el contenido del commit a él:
-
-```
-$ git remote add origin https://github.com/username/practicaTresCuatro.git
-$ git push -u origin main
-```
-
-Ahora que ya tenemos subido el código a GitHub, de alguna manera debemos *enganchar* o enlazar nuestra cuenta de Github con la de Netlify para que éste último pueda traerse el código de allí, hacer el build y desplegarlo. Así pues, entramos en nuestro dashboard de Netlify y le damos a importar proyecto existente de `git`:
-
-![](../img/github_netlify.png)
-
-Le indicamos que concretamente de Github:
-
-![](../img/github_netlify2.png)
-
-Y nos saltará una ventana pidiendo que autoricemos a Netlify a acceder a nuestros repositorios de Github:
-
-![](../img/github_netlify6.png)
-
-Y luego le indicaremos que no acceda a todos nuestros repositorios sino sólo al repositorio que necesitamos, que es donde tenemos el código de nuestra aplicación:
-
-![](../img/github_netlify4.png)
-
-Y ya quedará todo listo:
-
-![](../img/github_netlify3.png)
-
-Y desplegamos la aplicación:
-
-![](../img/github_netlify7.png)
-
-Netlify se encargará de hacer el `build` de forma automática tal y como hemos visto en la imagen de arriba, con el comando `npm run build`, publicando el contenido del directorio `build`.
-
-!!!warning "Atención"
-    Tras el deploy, en "Site settings" podeís y debéis cambiar el nombre de la aplicación por nombre-practica3-4, donde *nombre* es vuestro nombre.
-
-Lo que hemos conseguido de esta forma es que, cualquier cambio que hagamos en el proyecto y del que hagamos `commit` y `push` en Github, automáticamente genere un nuevo despliegue en Netlify. Es el principio de lo que más adelante veremos como *despliegue continuo*.
-
-<u>Comprobemos que realmente es así:</u>
-
-  + Dentro de la carpeta `public` encontramos el archivo `robots.txt`, cuyo cometido es indicar a los rastreadores de los buscadores a qué URLs del sitio pueden acceder. A este archivo se puede acceder a través de la URL del site:
-
-    ![](../img/robots.png)
-
-  + Dentro de la carpeta `public`, utilizando el editor de texto que prefiráis en vuestro terminal, modificad el archivo `robots.txt` para que excluya un directorio que se llame `nombre_apellido`, utilizando obviamente vuestro nombre y apellido.
-
-    ```
-    User-agent: *
-    Disallow: /nombre_y_apellido/
-    ```
-  
-  + Haz un nuevo `commit` y `push` (del caso anterior, recuerda el commando `git` previo para añadir los archivos a hacer commit)
-  + Comprueba en el dashboard de Netlify que se ha producido un nuevo deploy de la aplicación hace escasos segundos
-
-    ![](../img/github_netlify8.png)
-
-    ![](../img/github_netlify9.png)
-          
-  + Accede a `https://url_de_la_aplicacion/robots.txt` y comprueba que, efectivamente, se ve reflejado el cambio
-
-    ![](../img/robots2.png)
-
-
-
-
-
-## Cuestiones
-
-1. Investiga y explica que es un Dyno en terminología Heroku.
-
-2. En Heroku no todo es de color de rosa, tiene sus limitaciones y desventajas. Busca, investiga y explica algunas de ellas detalladamente.
-
-!!!task
-    Documenta la realización de toda esta práctica adecuadamente, con las explicaciones y justificaciones necesarias y las capturas de pantalla pertinentes.
-
-
 ## Referencias
 
 [¿Qué es Github?](https://www.hostinger.es/tutoriales/que-es-github)
@@ -530,20 +302,3 @@ Lo que hemos conseguido de esta forma es que, cualquier cambio que hagamos en el
 
 [List of all limitations in Heroku platform](https://riptutorial.com/heroku/example/21465/list-of-all-limitations-in-heroku-platform)
 
-[How to deploy your website to Netlify for free](https://medium.com/geekculture/how-to-deploy-your-website-to-netlify-for-free-830e91705b7f)
-
-[4 Ways To Deploy Your Static Site with Netlify](https://prettystatic.com/4-ways-to-deploy-your-static-site-with-netlify/)
-
-[Guide to Deploying a React App to Netlify](https://stackabuse.com/guide-to-deploying-a-react-app-to-netlify/)
-
-## Evaluación
-
-| Criterio                                                                                                                                      | Puntuación   |
-|-----------------------------------------------------------------------------------------------------------------------------------------------|--------------|
-| Despliegue correcto y bien documentado en Heroku     | **2 puntos**      |
-| Despliegue correcto y bien documentado en Netlify mediante CLI       | **0.75 puntos**  |
-| Despliegue correcto y bien documentado en Netlify de forma manual desde el dashboard       | **2 puntos**  |
-| Cambio de nombre del site       | **0.25 puntos**  |
-| Comprobación correcta y bien documentada de despliegue automático al hacer push en Github       | **3 puntos**  |
-| Respuestas correctas a las cuestiones            | **1 puntos**     |
-| Se ha prestado especial atención al formato del documento, utilizando la plantilla actualizada y haciendo un correcto uso del lenguaje técnico | **1 puntos**     |
