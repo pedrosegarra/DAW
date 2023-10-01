@@ -1,5 +1,5 @@
 ---
-title: 'Práctica 3.7 - Despliegue de una aplicación Flask'
+title: 'Práctica 3.7 - Despliegue de una aplicación Flask (Python)'
 ---
 
 # Práctica 3.7: Despliegue de una aplicación Flask (Python)
@@ -28,7 +28,7 @@ Flask es un “micro” Framework escrito en Python y concebido para facilitar e
 
 La palabra “micro” no designa a que sea un proyecto pequeño o que nos permita hacer páginas web pequeñas sino que al instalar Flask tenemos las herramientas necesarias para crear una aplicación web funcional pero si se necesita en algún momento una nueva funcionalidad hay un conjunto muy grande extensiones (plugins) que se pueden instalar con Flask que le van dotando de funcionalidad.
 
-![](../img/flask.png)
+![](P3_7/flask.png)
 
 De principio en la instalación no se tienen todas las funcionalidades que se pueden necesitar pero de una manera muy sencilla se pueden extender el proyecto con nuevas funcionalidades por medio de plugins.
 
@@ -46,7 +46,7 @@ Los servidores web procesan y distribuyen las solicitudes de los navegadores y o
 
 WSGI (Web Server Gateway Interface) proporciona un conjunto de reglas para estandarizar el comportamiento y la comunicación entre servidores web y aplicaciones web. Mediante el uso de servidores y aplicaciones web compatibles con WSGI, los desarrolladores pueden concentrar su tiempo y energía en el desarrollo de aplicaciones web en lugar de administrar la comunicación entre la aplicación y el servidor web.
 
-![](../img/gunicorn.png){: style="height:300px;width:550px"}
+![](P3_7/gunicorn.png){: style="height:300px;width:550px"}
 
 Finalmente, Gunicorn, que es la abreviatura de Green Unicorn, es un servidor de aplicaciones WSGI que se encuentra entre el servidor web y su aplicación web, gestionando la comunicación entre los dos. Acepta solicitudes del servidor y las traduce (a través de WSGI) en algo que la aplicación web puede entender antes de pasarla a la aplicación web real. Envía respuestas desde la aplicación web al servidor. También se encarga de ejecutar varias instancias de la aplicación web, reiniciándolas según sea necesario y distribuyendo solicitudes a instancias saludables.
 
@@ -71,83 +71,85 @@ De esta forma, tendremos entornos independientes entre sí, parecido a como ocur
 
 `Pipenv` es una herramienta que apunta a traer todo lo mejor del mundo de empaquetado (bundler, composer, npm, cargo, yarn, etc.) al mundo de Python. 
 
-![](../img/pipenv.jpg){: style="height:300px;width:550px"}
+![](P3_7/pipenv.jpg){: style="height:300px;width:550px"}
 
 Automáticamente crea y maneja un entorno virtual para tus proyectos, también permite agregar/eliminar paquetes desde tu Pipfile así como como instalar/desinstalar paquetes. También genera lo más importante , el archivo `Pipfile.lock`, que es usado para producir determinado build.
 
 
-![](../img/pip.png){: style="height:300px;width:550px"}
+![](P3_7/pip.png){: style="height:300px;width:550px"}
 
 ## Procedimiento completo para el despliegue
+
+Vamos a empezar creando un EC2 Debian para esta práctica. 
+
+* Llámale P3.7Flask
+* Ponle un procesador t2.medium, con 2 vCPU
+* Crea un grupo de seguridad con acceso a puertos SSH, HTTP, HTTPS y TCP 5000. Llámale igual que al EC2.
+* Conéctate al servidor
+* Instala el servidor Web Nginx.
+
+Vamos a ello.
 
 1. Instalamos el gestor de paquetes de Python pip:
     
     ```bash
-    sudo apt-get update
-
+    sudo apt-get update && sudo apt-get upgrade
     sudo apt-get install python3-pip
     ```
 
 2. Instalamos el paquete `pipenv` para gestionar los entornos virtuales:
     
     ```bash
-    pip3 install pipenv
+    sudo apt-get install pipenv
     ```
    
 3. Y comprobamos que está instalado correctamente mostrando su versión:
      
-    ```bash
-    PATH=$PATH:/home/raul/.local/bin
-    
+    ```bash 
     pipenv --version
     ```
    
-4. Creamos el directorio en el que almacenaremos nuestro proyecto:
+4. Creamos el directorio en el que almacenaremos nuestro proyecto. Al crearlo con `sudo`, los permisos pertenecen a root y hemos de hacer que sea de nuestro usuario con chown. Y finalmente le damos los permisos adecuados como vimos en la práctica de Nginx.
      
     ```bash
-    sudo mkdir /var/www/nombre_mi_aplicacion
-    ```
-   
-5. Al crearlo con `sudo`, los permisos pertenecen a root:
-     
-    ![](../img/permisos_root.png)
-   
-6. Hay que cambiarlo para que el dueño sea nuestro usuario (`raul-debian` en mi caso) y pertenezca al grupo `www-data`, el usuario usado por defecto por el servidor web para correr:
-     
-    ```bash
-    sudo chown -R $USER:www-data /var/www/mi_aplicacion
-    ```
-   
-7. Establecemos los permisos adecuados a este directorio, para que pueda ser leído por todo el mundo:
-  
-    ```bash
-    chmod -R 775 /var/www/mi_aplicacion   
+    $ sudo mkdir /var/www/practica_flask
+    $ sudo chown -R $USER:www-data /var/www/practica_flask
+    $ chmod -R 775 /var/www/practica_flask/
+    $ ls -la /var/www/practica_flask/
+    drwxrwxr-x 2 admin www-data 4096 Sep 30 10:56 .
     ```
        
     !!!warning
         Es **indispensable** asignar estos permisos, de otra forma obtendríamos un error al acceder a la aplicación cuando pongamos en marcha **Nginx**
 
-8. Dentro del directorio de nuestra aplicación, creamos un archivo oculto `.env` que contendrá las variables de entorno necesarias:
+5. Dentro del directorio de nuestra aplicación, creamos un archivo oculto `.env` que contendrá las variables de entorno necesarias:
 
     ```bash
+    cd /var/www/practica_flask
     touch .env
     ```
 
-9. Editamos el archivo y añadimos las variables, indicando cuál es el archivo `.py` de la aplicación y el entorno, que en nuestro caso será producción: 
+6. Editamos el archivo y añadimos las variables, indicando cuál es el archivo `.py` de la aplicación y el entorno, que en nuestro caso será producción: 
 
-    ![](../img/var_entorno.png)    
-
+    ```bash
+    FLASK_APP=wsgi.py
+    FLASK_ENV=production
+    ```
+    
     !!!note "Nota"
         En el mundo laboral real, se supone que la aplicación previamente ha pasado por los entornos de dev, test y preprod para el desarrollo y prueba de la misma, antes de pasarla a producción.
 
 10. Iniciamos ahora nuestro entorno virtual. `Pipenv` cargará las variables de entorno desde el fichero `.env` de forma automática:
     
     ```bash
+    cd /var/www/practica_flask
     pipenv shell
     ```
     Veremos que se nos inicia el entorno virtual, cosa que comprobamos porque aparece su nombre al inicio del prompt del shell:
 
-    ![](../img/entorno_virt.png)
+    ```bash
+    (practica_flask) admin@ip-172-31-63-141:/var/www/practica_flask$ 
+    ```
 
 11. Usamos `pipenv` para instalar las dependencias necesarias para nuestro proyecto:
 
@@ -162,23 +164,39 @@ Automáticamente crea y maneja un entorno virtual para tus proyectos, también p
     ```
     Y tras crear los archivos, los editamos para dejarlos así:
 
-    ![](../img/app-wsgi.png)
+    application.py
+    ```bash 
+    from flask import Flask
+        app=Flask(__name__)
+        @app.route('/')
+        def index():
+                '''Index page route'''
+                return '<h1>Aplicacion desplegada<h1>'
+    ```
+    wsgi.py
+    ```bash
+    from application import app
+        if __name__=='__main__':
+        app.run(debug=false)
+    ```
+
+
 
 13. Corramos ahora nuestra aplicación a modo de comprobación con el servidor web integrado de Flask. Si especificamos la dirección `0.0.0.0` lo que le estamos diciendo al servidor es que escuche en todas sus interfaces, si las tuviera:
 
-    ![](../img/flask-server.png)
+    ![](P3_7/flask-server.png)
 
 
-14. Ahora podremos acceder a la aplicación desde nuestro ordenador, nuestra máquina anfitrión, introduciendo en un navegador web: `http://IP-maq-virtual:5000`:
+14. Ahora podremos acceder a la aplicación desde nuestro ordenador, nuestra máquina anfitrión, introduciendo en un navegador web: `http://IP-maq-virtual:5000`. Ojo, la IP que aparecerá es la interna de la máquina, no la externa. Desde tu equipo local deberás acceder a la IP externa. Si algo falla comprueba la IP y las reglas del grupo de seguridad que creaste en AWS:
 
-    ![](../img/app-1.png)
+    ![](P3_7/app-1.png)
 
     Tras la comprobación, paramos el servidor con `CTRL+C`
 
-15. Comprobemos ahora que Gunicorn funciona correctamente también. Si os ha funcionado el servidor de desarrollo de Flask, podéis usar el siguiente comando para probar que la alicación funciona correctamente usando Gunicorn, accediendo con vuestro navegador de la misma forma que en el paso anterior:
+15. Comprobemos ahora que Gunicorn funciona correctamente también. Si os ha funcionado el servidor de desarrollo de Flask, podéis usar el siguiente comando para probar que la aplicación funciona correctamente usando Gunicorn:
     
     ```bash
-    gunicorn --workers 4 --bind 0.0.0.0:5000 wsgi:app
+    gunicorn --workers 2 --bind 0.0.0.0:5000 wsgi:app
     ```
     Donde:
     
@@ -188,10 +206,12 @@ Automáticamente crea y maneja un entorno virtual para tus proyectos, también p
 
     + `wsgi:app` es el nombre del archivo con extensión `.py` y `app` es la instancia de la aplicación Flask dentro del archivo.
 
+    Accede ahora con el navegador de la misma forma que en el paso anterior.
+
 
 16. Todavía dentro de nuestro entorno virtual, debemos tomar nota de cual es el path o ruta desde la que se ejecuta `gunicorn` para poder configurar más adelante un servicio del sistema. Podemos averigurarlo así:
     
-    ![](../img/path-gunicorn.png)
+    ![](P3_7/path-gunicorn.png)
 
     !!!tip
         Y tras ello debemos salir de nuestro entorno virtual con el sencillo comando `deactivate`
@@ -204,15 +224,29 @@ Automáticamente crea y maneja un entorno virtual para tus proyectos, también p
     sudo systemctl status nginx
     ```
 
-18. Ya fuera de nuestro entorno virtual, crearemos un archivo para que [systemd](https://es.wikipedia.org/wiki/Systemd) corra Gunicorn como un servicio del sistema más:
+18. Ya fuera de nuestro entorno virtual, crearemos un archivo para que [systemd](https://es.wikipedia.org/wiki/Systemd) corra Gunicorn como un servicio del sistema más. En el ejemplo al servicio le vamos a llamar `flask_app.service`:
 
-    ![](../img/gunicorn-service.png)
+    ```bash
+    [Unit]
+    Description=flask_app.service
+    After=network.target
+
+    [Service]
+    User=admin
+    Group=www-data
+    Environment="PATH=/home/admin/.local/share/virtualenvs/practica_flask-gV07D8Rz/bin:$PATH"
+    WorkingDirectory=/var/www/practica_flask/
+    ExecStart=/home/admin/.local/share/virtualenvs/practica_flask-gV07D8Rz/bin/gunicorn --workers 2 --bind unix:/var/www/practica_flask/flask_app.sock -m 007 wsgi:app
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
 
     Donde:
 
-    - **`User`**: Establece el usuario que tiene permisos sobre el directorio del proyecto (el que pusistéis en el paso 5)
-    - **`Group`**: Establece el grupo que tiene permisos sobre el directorio del proyecto (el que pusistéis en el paso 5)
-    - **`Environment`**: Establece el directorio `bin` (donde se guardan los binarios ejecutables) dentro del entorno virtual (lo vistéis en el paso 14)
+    - **`User`**: Establece el usuario que tiene permisos sobre el directorio del proyecto (el que pusisteis en el paso 4)
+    - **`Group`**: Establece el grupo que tiene permisos sobre el directorio del proyecto (el que pusisteis en el paso 4)
+    - **`Environment`**: Establece el directorio `bin` (donde se guardan los binarios ejecutables) dentro del entorno virtual (lo visteis en el paso 13)
     - **`WorkingDirectory`**: Establece el directorio base donde reside nuestro proyecto 
     - **`ExecStart`**: Establece el *path* donde se encuentra el ejecutable de `gunicorn` dentro del entorno virtual, así como las opciones y comandos con los que se iniciará 
 
@@ -222,29 +256,32 @@ Automáticamente crea y maneja un entorno virtual para tus proyectos, también p
 19. Ahora, como cada vez que se crea un servicio nuevo de `systemd`, se habilita y se inicia:
 
     ```bash
-    systemctl enable nombre_mi_servicio
+    systemctl enable flask_app
 
-    systemctl start nombre_mi_servicio
+    systemctl start flask_app
     ```
 
-    Recordad que el nombre del servicio es el nombre del archivo que creastéis en el paso anterior.
+    Recordad que el nombre del servicio es el nombre del archivo que creasteis en el paso anterior.
 
+    No intentéis acceder a través del navegador todavía. Hasta que no configuremos nginx adecuadamente no tendremos acceso a nuestra aplicación.
+
+    Comprueba que en el directorio `/var/www/practica_flask/` se ha creado el fichero `flask_app.sock`.
 
     Pasemos ahora a configurar <u>**Nginx**</u>, que es algo que ya deberíamos tener dominado de capítulos anteriores.
 
-20. Creamos un archivo con el nombre de nuestra aplicación y dentro estableceremos la configuración para ese sitio web. El archivo, como recordáis, debe estar en `/etc/nginx/sites-available/nombre_aplicacion` y tras ello lo editamos para que quede:
+20. Creamos un archivo con el nombre de nuestra aplicación y dentro estableceremos la configuración para ese sitio web. El archivo, como recordáis, debe estar en `/etc/nginx/sites-available/practica_flask` y tras ello lo editamos para que quede:
 
     ```yaml
     server {
         listen 80;
-        server_name mi_aplicacion www.mi_aplicacion; #(1)
+        server_name practica_flask www.practica_flask; #(1)
 
-        access_log /var/log/nginx/mi_aplicacion.access.log; #(2)
-        error_log /var/log/nginx/mi_aplicacion.error.log;
+        access_log /var/log/nginx/practica_flask.access.log; #(2)
+        error_log /var/log/nginx/practica_flask.error.log;
 
         location / { 
                 include proxy_params;
-                proxy_pass http://unix:/var/www/nombre_aplicacion/nombre_aplicacion.sock; #(3)
+                proxy_pass http://unix:/var/www/practica_flask/flask_app.sock; #(3)
         }
     }   
     ```
@@ -259,19 +296,19 @@ Automáticamente crea y maneja un entorno virtual para tus proyectos, también p
 21. Recordemos que ahora debemos crear un link simbólico del archivo de sitios webs disponibles al de sitios web activos:
 
     ```bash
-    sudo ln -s /etc/nginx/sites-available/nombre_aplicacion /etc/nginx/sites-enabled/
+    sudo ln -s /etc/nginx/sites-available/practica_flask /etc/nginx/sites-enabled/
     ```
 
     Y nos aseguramos de que se ha creado dicho link simbólico:
 
     ```bash
-    ls -l /etc/nginx/sites-enabled/ | grep nombre_aplicacion
+    ls -l /etc/nginx/sites-enabled/ | grep practica_flask
     ```
 
 22. Nos aseguramos de que la configuración de Nginx no contiene errores, reiniciamos Nginx y comprobamos que se estado es activo:
 
     ```bash
-    nginx -t
+    sudo nginx -t
 
     sudo systemctl restart nginx
 
@@ -286,58 +323,32 @@ Automáticamente crea y maneja un entorno virtual para tus proyectos, también p
 
     Y deberemos añadirle la línea:
     
-     `192.168.X.X myproject www.myproject`
+     `IPSERVIDORDEBIAN practica_flask www.practica_flask`
      
-    donde debéis sustituir la IP por la que tenga vuestra máquina virtual.
+    donde debéis sustituir la IPSERVIDORDEBIAN por la que tenga vuestro servidor Debian en AWS.
 
 24. El último paso es comprobar que todo el desplieuge se ha realizado de forma correcta y está funcionando, para ello accedemos desde nuestra máquina anfitrión a:
 
-    `http://nombre_aplicacion`
+    `http://practica_flask`
 
     O:
 
-    `http://www.nombre_aplicacion`
+    `http://www.practica_flask`
 
     Y debería mostraros la misma página que en el paso 14:
 
-    ![](../img/app_final_funcinando.png)      
+    ![](P3_7/app_final_funcinando.png)      
 
+25.  Recuerda que configuramos el servicio flask_app.service para que se inicie automáticamente al arrancar el servidor. Desde AWS reinicia el servidor y comprueba si puedes acceder a `http://practica_flask` directamente tras su arranque.
 
+    !!!Ojo
+        Tras reiniciarse el servidor Debian podría cambiar su IP externa
 
-
-!!!task "Ejercicio"
-    Repite todo el proceso con la aplicación del siguiente repositorio: `https://github.com/raul-profesor/Practica-3.5`
-
-    Recuerda que deberás clonar el repositorio en tu directorio `/var/www`:
-
-    `git clone https://github.com/raul-profesor/Practica-3.5`
-
-    Y, ***tras activar el entorno virtual dentro del directorio del repositorio clonado***, para instalar las dependencias del proyecto de la aplicación deberás hacer:
-
-    `pipenv install -r requirements.txt`
-
-    Y un último detalle, si miráis el código del proyecto, quee es muy sencillo, veréis que *Gunicorn* debe iniciarse ahora así:
-
-    ```
-    gunicorn --workers 4 --bind 0.0.0.0:5000 wsgi:app
-
-    ```
-
-    Y el resto sería proceder tal y como hemos hecho en esta práctica.
-
-
-!!!warning Atención
-    Documenta adecuadamente con explicaciones y capturas de pantalla los procesos de despliegue de **ambas** aplicaciones en Flask, así como las respuestas a las cuestiones planteadas.
 
 ## Cuestiones
 
 !!!task "Cuestion 1"
     Busca, lee, entiende y explica qué es y para que sirve un servidor *WSGI*
-
-## Tareas de ampliación
-
-!!!task "Ampliación"
-    Despliega cualquiera de las dos aplicaciones Flask presentadas aquí en Heroku.
 
 ## Referencias
 
@@ -347,12 +358,3 @@ Automáticamente crea y maneja un entorno virtual para tus proyectos, también p
 
 [Deploy flask app with Nginx using Gunicorn](https://faun.pub/deploy-flask-app-with-nginx-using-gunicorn-7fda4f50066a)
 
-## Evaluación
-
-| Criterio                                                                                                                                      | Puntuación   |
-|-----------------------------------------------------------------------------------------------------------------------------------------------|--------------|
-| Despliegue correcto, completo y bien documentado del primer ejemplo     | **2 puntos**      |
-| Despliegue correcto, completo y bien documentado del segundo ejemplo       | **5 puntos**  |
-| Respuestas correctas a las cuestiones            | **1 puntos**     |
-| Tarea de ampliación            | **1 punto**     |
-| Se ha prestado especial atención al formato del documento, utilizando la plantilla actualizada y haciendo un correcto uso del lenguaje técnico | **2 puntos**     |
