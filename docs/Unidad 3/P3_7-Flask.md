@@ -4,14 +4,6 @@ title: 'Práctica 3.7 - Despliegue de una aplicación Flask (Python)'
 
 # Práctica 3.7: Despliegue de una aplicación Flask (Python)
 
-## Prerrequisitos
-
-Servidor Debian con los siguientes paquetes instalados:
-
- * Nginx
- * Gunicorn
- * Pipenv
-
 ## Introducción
 
 ### ¿Qué es un framework?
