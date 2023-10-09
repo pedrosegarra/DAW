@@ -98,7 +98,7 @@ Si comprobamos en nuestro Gestor de Aplicaciones Web de Tomcat veremos que apare
 
 ### Creamos los archivos .java y .class
 
-Dentro de la carpeta prueba crea el archivo hola1.java con el código siguiente:
+Dentro de la carpeta `prueba` crea el archivo `hola1.java` con el código siguiente:
 
 ```java
 import javax.servlet.*;
@@ -129,7 +129,8 @@ Desde el directorio prueba ejecuta:
 
 ¿Se ha podido complilar? Probablemente no, ¿verdad? Mira en los errores y recuerda lo que hemos hablado ya sobre las versiones de Java. ¿Se te ocurre dónde puede estar el error? 
 
-Recuerda que comentamos que a partir de Java 11 las rutas de paquetes javax.* pasaron a jakarta.*. Prueba a cambiar las rutas en `hola1.java` y vuelve a complilar. ¿Se ha compilado bien ahora? Nuevamente, comprueba la importancia de usar las mismas versiones en desarrollo y despliegue.
+!!!Atención
+    Recuerda que comentamos que a partir de Java 11 las rutas de paquetes javax.* pasaron a jakarta.*. Prueba a cambiar las rutas en `hola1.java` y vuelve a complilar. ¿Se ha compilado bien ahora? Nuevamente, comprueba la importancia de usar las mismas versiones en desarrollo y despliegue.
 
 Si no hay ningún problema el fichero hola1.java se compilará y aparecerá un fichero
 `hola1.class`.
