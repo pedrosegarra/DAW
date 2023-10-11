@@ -6,8 +6,9 @@ title: 'Práctica  3.6 - Despliegue de una aplicación en Netlify (Paas)'
 
 !!!note "Nota"
     Para esta práctica vamos a crearnos cuentas en distintos servicios cuando se os pida:
-
+    
     [GitHub](https://github.com/)
+    
     [Netlify](https://www.netlify.com/)
 
 ## Introducción

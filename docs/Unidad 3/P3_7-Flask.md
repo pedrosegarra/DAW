@@ -196,7 +196,7 @@ Vamos a ello.
   
     + `--bind 0.0.0.0:5000` hace que el servidor escuche peticiones por todas sus interfaces de red y en el puerto 5000
 
-    + `wsgi:app` es el nombre del archivo con extensión `.py` y `app` es la instancia de la aplicación Flask dentro del archivo.
+    + En `wsgi:app`, `wsgi` es el nombre del archivo con extensión `.py` y `app` es la instancia de la aplicación Flask dentro del archivo.
 
     Accede ahora con el navegador de la misma forma que en el paso anterior.
 

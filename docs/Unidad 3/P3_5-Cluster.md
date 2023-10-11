@@ -75,7 +75,7 @@ Esta aplicación contiene dos rutas, una ruta raíz `/` que devuelve la cadena `
 Si a este parámetro `n`, le damos un valor muy alto, nos permitirá simular operaciones intensivas y de ejecución prolongada en el servidor. Le damos como valor límite `5000000000` para evitar una operación demasiado costosa para nuestro ordenador.
 
 !!!task
-    1. Debéis conectaros al servidor Debian de la práctica anterior mediante SSH
+    1. Debéis conectaros al servidor Debian mediante SSH
     2. Debéis crear un directorio para el proyecto de esta aplicación. Llámale `pruebacluster`.
     3. DENTRO del directorio ejecutaréis 2 comandos:
           1. `npm init` para crear automáticamente la estructura de carpetas y el archivo `package.json` (Con ir dándole a <ENTER\> a todas las preguntas, os basta)
