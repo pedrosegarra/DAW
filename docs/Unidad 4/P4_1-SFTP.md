@@ -163,7 +163,7 @@ Cuando hayas terminado, puedes usar el comando quit para salir de la sesión FTP
 
 #### Acceso con Cliente FTP gráfico 
 
-Vamos a utilizar como **cliente FTP** con entrono gráfico a [Filezilla](https://filezilla-project.org/) Tras descargar <U>**el cliente FTP**</u> en nuestro ordenador, introducimos los datos necesarios para conectarnos a nuestro servidor FTP en Debian:
+Vamos a utilizar como **cliente FTP** con entorno gráfico a [Filezilla](https://filezilla-project.org/), que dispone de versiones para GNU/Linux, Mac OS X y Windows. Tras descargar <U>**el cliente FTP**</u> en nuestro ordenador, introducimos los datos necesarios para conectarnos a nuestro servidor FTP en Debian:
 
 ![](../img/ftp1.png)
 
