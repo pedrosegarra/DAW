@@ -87,7 +87,7 @@ Para ello necesitamos un servidor FTP que ya tenemos instalado y configurado en 
 
 
 
-## 2. Cliente FTP en nuestro ordenador local
+### 2. Cliente FTP en nuestro ordenador local
 
 Tras descargar <U>**el cliente FTP**</u> en nuestro ordenador, introducimos los datos necesarios para conectarnos a nuestro servidor FTP en Debian:
 
