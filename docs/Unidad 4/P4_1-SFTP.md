@@ -73,7 +73,7 @@ sudo systemctl restart --now vsftpd
     Configura un nuevo dominio (nombre web) para el .zip con el nuevo sitio web que os proporcionado. 
     **En este caso debéis transferir los archivos a vuestra Debian mediante SFTP.**
 
-Tras acabar esta configuración, ya podremos acceder a nuestro servidor mediante un **cliente FTP** adecuado, como por ejemplo [Filezilla](https://filezilla-project.org/) con entorno gráfico o por comando con ftp, de dos formas, a saber:
+Tras acabar esta configuración, ya podremos acceder a nuestro servidor mediante un **cliente FTP** adecuado, como por ejemplo [Filezilla](https://filezilla-project.org/) con entorno gráfico o por comando con ftp. Para ello debemos tener en cuenta si el modo de acceso es inseguro o es seguro:
 
 + Mediante el puerto por defecto del protocolo <u>inseguro</u> FTP, el **21**, pero utilizando certificados que cifran el intercambio de datos convirtiéndolo así en <u>seguro</u>
   
