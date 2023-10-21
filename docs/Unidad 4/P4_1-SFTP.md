@@ -1,16 +1,17 @@
-### Configurar servidor SFTP en Debian
+# Configurar servidor SFTP en Debian
 
 
-Para ello utilizaremos una de las instancias creadas en AWS donde tengamos el Linux Server Debian (por ejemplo en la [P1.1. Linux Server en AWSAcademy](https://jmunozji.github.io/DAW/Unidad%201/P1_1/)). 
+Para ello utilizaremos una de las instancias creadas en AWS donde tengamos el Linux Server Debian (por ejemplo [P1.1. Linux Server en AWSAcademy](https://jmunozji.github.io/DAW/Unidad%201/P1_1/)). 
 
+## Instalación del servidor VSFTPD
 
-En primer lugar, lo instalaremos desde los repositorios:
+En primer lugar, actualizaremos los repositorios de Ububtu e instalaremos el **servidor vsftpd** :
 
 ```sh
 sudo apt-get update
 sudo apt-get install vsftpd
 ```
-Ahora vamos a crear una carpeta en nuestro *home* en Debian:
+Ahora vamos a crear una carpeta en nuestro *home* en Debian que llamaremos ftp:
 
 ```sh
 mkdir /home/nombre_usuario/ftp
@@ -18,19 +19,23 @@ mkdir /home/nombre_usuario/ftp
 
 En la configuración de *vsftpd* indicaremos que este será el directorio al cual vsftpd se cambia después de conectarse el usuario.
 
-Ahora vamos a crear los certificados de seguridad necesarios para aportar la capa de cifrado a nuestra conexión (algo parecido a HTTPS)
+## Certificados de Seguridad con OpenSSL
+
+Ahora vamos a crear los certificados de seguridad necesarios para aportar la capa de cifrado a nuestra conexión (algo parecido a HTTPS)  y para ello utilizaremos OpenSSL
 
 ```sh
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem
 ```
 
-Y una vez realizados estos pasos, procedemos a realizar la configuración de *vsftpd* propiamente dicha. Se trata, con el editor de texto que más os guste, de editar el archivo de configuración de este servicio, por ejemplo con *nano*:
+## Configuración del servidor VSFTPD
+
+Y una vez realizados estos pasos, procedemos a realizar la configuración de *vsftpd* propiamente dicha. Se trata, con el editor de texto que más os guste, de editar el archivo de configuración de este servicio, por ejemplo con *nano* o *vim*:
 
 ```sh
 sudo nano /etc/vsftpd.conf
 ```
 
-En primer lugar, buscaremos las siguientes líneas del archivo y las eliminaremos por completo:
+1. En primer lugar, buscaremos las siguientes líneas del archivo y las **eliminaremos por completo**:
 
 ```linuxconfig
 rsa_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
@@ -38,7 +43,7 @@ rsa_private_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
 ssl_enable=NO
 ```
 
-Tras ello, añadiremos estas líneas en su lugar
+2. Tras ello, **añadiremos** estas líneas en su lugar;
 
 ```linuxconfig 
 rsa_cert_file=/etc/ssl/private/vsftpd.pem
@@ -56,14 +61,17 @@ ssl_ciphers=HIGH
 local_root=/home/nombre_usuario/ftp
 ```
 
-Y, tras guardar los cambios, reiniciamos el servicio para que coja la nueva configuración:
+3. Y, tras guardar los cambios, **reiniciamos el servicio** para que coja la nueva configuración:
 
 ```sh
 sudo systemctl restart --now vsftpd
 ```
 
+## Comprobación de que servidor SFTP funciona correctamente
+
 !!!task "Tarea"
-    Configura un nuevo dominio (nombre web) para el .zip con el nuevo sitio web que os proporcionado. **En este caso debéis transferir los archivos a vuestra Debian mediante SFTP.**
+    Configura un nuevo dominio (nombre web) para el .zip con el nuevo sitio web que os proporcionado. 
+    **En este caso debéis transferir los archivos a vuestra Debian mediante SFTP.**
 
 
 Tras acabar esta configuración, ya podremos acceder a nuestro servidor mediante un cliente FTP adecuado, como por ejemplo [Filezilla](https://filezilla-project.org/) de dos formas, a saber:
