@@ -66,19 +66,28 @@ local_root=/home/nombre_usuario/ftp
 ```sh
 sudo systemctl restart --now vsftpd
 ```
-
+ 
 ## Comprobación de que servidor SFTP funciona correctamente
 
 !!!task "Tarea"
     Configura un nuevo dominio (nombre web) para el .zip con el nuevo sitio web que os proporcionado. 
     **En este caso debéis transferir los archivos a vuestra Debian mediante SFTP.**
 
+Tras acabar esta configuración, ya podremos acceder a nuestro servidor mediante un **cliente FTP** adecuado, como por ejemplo [Filezilla](https://filezilla-project.org/) con entorno gráfico o por comando con ftp, de dos formas, a saber:
 
-Tras acabar esta configuración, ya podremos acceder a nuestro servidor mediante un cliente FTP adecuado, como por ejemplo [Filezilla](https://filezilla-project.org/) de dos formas, a saber:
-
-+ Mediante el puerto por defecto del protocolo <u>inseguro</u> FTP, el 21, pero utilizando certificados que cifran el intercambio de datos convirtiéndolo así en <u>seguro</u>
++ Mediante el puerto por defecto del protocolo <u>inseguro</u> FTP, el **21**, pero utilizando certificados que cifran el intercambio de datos convirtiéndolo así en <u>seguro</u>
   
-+ Haciendo uso del protocolo *SFTP*, dedicado al intercambio de datos mediante una conexión similar a SSH, utilizando de hecho el puerto 22.
++ Haciendo uso del protocolo *SFTP*, dedicado al intercambio de datos mediante una conexión similar a SSH, utilizando de hecho el puerto **22**.
+
+La que vamos a intentar es realizar una transferencia de archivos entre nuestro servidor FTP en Debian (instancia AWS) y el cliente FTP (nuestro ordenador). 
+
+Para ello necesitamos un servidor FTP que ya tenemos instalado y configurado en Dedian y debemos disponer de un cliente en nuestro ordenador local, podermos utilziar estas dos opciones (en modo comando o en modo gráfico), veamos pues;
+    
+### 1. Cliente FTP de consola tendremos el comando ftp
+
+
+
+## 2. Cliente FTP en nuestro ordenador local
 
 Tras descargar <U>**el cliente FTP**</u> en nuestro ordenador, introducimos los datos necesarios para conectarnos a nuestro servidor FTP en Debian:
 
