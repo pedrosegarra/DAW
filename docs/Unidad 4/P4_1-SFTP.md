@@ -1,5 +1,9 @@
 ### Configurar servidor SFTP en Debian
 
+
+Para ello utilizaremos una de las instancias creadas en AWS donde tengamos ya instalado el Debian (por ejemplo en la P1.1. Linux Server en AWSAcademy). 
+
+
 En primer lugar, lo instalaremos desde los repositorios:
 
 ```sh
