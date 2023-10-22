@@ -1,4 +1,4 @@
-# Desplegar un servidor FTP con vsftpd
+# Práctica 4.2 - Desplegar un servidor FTP con vsftpd
 
 Para ello vamos a partir de la instancia AWS creada con Debian que realizamos en la [P1.1. Linux Server en AWSAcademy](https://jmunozji.github.io/DAW/Unidad%201/P1_1/)). En el caso de que hayas eliminado esa instancia, vuelve a crearla.
 
