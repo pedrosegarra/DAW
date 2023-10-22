@@ -43,16 +43,14 @@ Pasamos a modificar el archivo de configuración de este **servicio vsftpd.conf*
 ```sh
 sudo nano /etc/vsftpd.conf
 ```
-
-1. En primer lugar, buscaremos las siguientes líneas del archivo y las **eliminaremos por completo**:
+En primer lugar, buscaremos las siguientes líneas del archivo y las **eliminaremos por completo**:
 
 ```linuxconfig
 rsa_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
 rsa_private_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
 ssl_enable=NO
 ```
-
-2. Tras ello, **añadiremos** estas líneas en su lugar;
+Tras ello, **añadiremos** estas líneas en su lugar;
 
 ```linuxconfig 
 rsa_cert_file=/etc/ssl/private/vsftpd.pem
