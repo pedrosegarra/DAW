@@ -46,7 +46,7 @@ Dejaremos en blanco la información que nos solicta al ejecutar este línea de c
 
 ## 2. Configuración del servidor vsftpd
 
-Y una vez realizados estos pasos, procedemos a realizar la configuración de *vsftpd* propiamente dicha. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso. Haz una copia: 
+Y una vez realizados estos pasos, procedemos a realizar la configuración de *vsftpd* propiamente dicha. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
 
 ```sh
 sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
@@ -57,7 +57,7 @@ Pasamos a modificar el archivo de configuración de este **servicio vsftpd.conf*
 ```sh
 sudo nano /etc/vsftpd.conf
 ```
-En primer lugar, buscaremos las siguientes líneas del archivo y las **eliminaremos por completo o COMENTAREMOS**:
+En primer lugar, buscaremos las siguientes líneas del archivo y las **eliminaremos por completo o comentaremos estas líneas**:
 
 ```linuxconfig
 rsa_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
@@ -92,8 +92,9 @@ sudo systemctl restart --now vsftpd
 
 ## 4. Comprobar la Conexión FTP al servidor vsftpd
 
-> Para poner realizar una conexión FTP al sercidor FTP, debemos tener en cuenta si el modo de acceso es 
-*Mediante el puerto por defecto del protocolo <u>inseguro</u> FTP*, el **puerto 21**, pero utilizando certificados que cifran el intercambio de datos convirtiéndolo así en <u>seguro</u> o *haciendo uso del protocolo SFTP*, que es un protocolo dedicado al intercambio de datos mediante una conexión similar a SSH, utilizando de hecho el **puerto 22**.
+> Para poner realizar una conexión FTP al servidor FTP, debemos tener en cuenta si el modo de acceso es
+>> - *Mediante el puerto por defecto del protocolo <u>inseguro</u> FTP*, el **puerto 21**, pero utilizando certificados que cifran el intercambio de datos convirtiéndolo así en <u>seguro</u>
+>> - o *haciendo uso del protocolo SFTP*, que es un protocolo dedicado al intercambio de datos mediante una conexión similar a SSH, utilizando de hecho el **puerto 22**.
 
 !!!task "Tarea"
     Configura un nuevo dominio (nombre web) para el .zip con el nuevo sitio web que os proporcionado. 
