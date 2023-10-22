@@ -40,3 +40,11 @@ quit
 ![Practica 4_1](P4_1/P4_1_4.png)
 
 
+>En definitiva los permisos del usuario anónimo en un servidor ftp se establecerán para que solamente pueda moverse por los directorios y descargar archivos, nunca subirlos, esto es, normalmente el usuario anónimo no podrá crear ni eliminar ficheros y directorios.
+
+
+
+
+
+
+
