@@ -8,23 +8,26 @@ Utiliza el comando ftp, esto hará que entres dentro del servidor ftp de tu orde
 
 ```
 ftp
+```
+```
 help
 ```
 
-`help`
-
-
 Vamos a conectar con una red pública como es ftp.rediris.es con el usuario anónimo, por lo que no hace falta registrarse con ningún usuario, pulsamos intro cuando nos pida el usuario. 
 
-`open ftp.rediris.es`
+```
+open ftp.rediris.es
+```
 
 Posteriormente vamos listar el contenido de archivo y directorios y accederemos a la carpeta /debian/doc para descargar el archivo constitution.txt, para ello sigue las indicaciones siguientes 
-`ls
-`cd /debian/doc`
-`get constitution.txt`
 
+```
+get constitution.txt
+```
 
 Para comprobar que se ha descargado correctamente, salimos del servidor ftp y listamos los archivos de nuestra máquina. Donde podemos observar que el archivo se ha descargado correctamente.
-`quit`
-`ls`
+```
+quit
+```
+
 
