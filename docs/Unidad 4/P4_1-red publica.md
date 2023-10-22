@@ -1,6 +1,10 @@
-## PRACTICA 1 - ACCESO AL SERVIDOR FTP PÚBLICO ftp.rediris.es ##
+# PRACTICA 1 - ACCESO AL SERVIDOR FTP PÚBLICO ftp.rediris.es ##
 
-# OBJETIVO: Conectarse a un servidor público utilizando los comandos básicos de ftp y descargar un archivo   
+### Objetivo: 
+
+Conectarse a un servidor público utilizando los comandos básicos de ftp y descargar un archivo   
+
+### Proceso: 
 
 Abre un terminal cmd en Linux, o PowerShell en Windows. 
 
