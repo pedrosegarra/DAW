@@ -6,7 +6,11 @@ Abre un terminal cmd en Linux, o PowerShell en Windows.
 
 Utiliza el comando ftp, esto hará que entres dentro del servidor ftp de tu ordenador y visualiza los comandos ftp disponibles en tu máquina con el comando help.
 
-`ftp`
+```
+ftp
+help
+```
+
 `help`
 
 
