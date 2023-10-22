@@ -4,7 +4,7 @@ Para ello vamos a partir de la instancia AWS creada con Debian que realizamos en
 
 Para esta práctica hemos elegido como servidor SFTP **vsftpd** frente al servidor **proFTPD**
 
-## Instalación del servidor vsftpd
+## 1. Instalación del servidor vsftpd
 
 En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsftpd** :
 
@@ -30,15 +30,15 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/privat
 >> *OpenSSL es una biblioteca de código abierto ampliamente utilizada que proporciona una implementación de los protocolos de seguridad SSL (Secure Sockets Layer) y TLS (Transport Layer Security). Estos protocolos se utilizan para cifrar las comunicaciones en línea y garantizar la seguridad y la privacidad de los datos que se transmiten a través de Internet. OpenSSL ofrece una serie de funciones y herramientas para habilitar la seguridad en aplicaciones y servicios, así como para administrar certificados digitales y claves de cifrado.*
 
 
-## Configuración del servidor vsftpd
+## 2. Configuración del servidor vsftpd
 
 Y una vez realizados estos pasos, procedemos a realizar la configuración de *vsftpd* propiamente dicha. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso. Haz una copia: 
 
 ```sh
-sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.confinicial
+sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
 ```
 
-Pasamos a modificar el archivo de configuración de este servicio **vsftpd.conf** utilizando un editor como puede ser *nano* o *vim* :
+Pasamos a modificar el archivo de configuración de este **servicio vsftpd.conf** utilizando un editor como puede ser *nano* o *vim* :
 
 ```sh
 sudo nano /etc/vsftpd.conf
@@ -70,29 +70,7 @@ ssl_ciphers=HIGH
 local_root=/home/nombre_usuario/ftp
 ```
 
-## Iniciar el servicio y habilitamos para que se inicie automáticamente al arrancar:
-
-```sh
-sudo systemctl start vsftpd
-sudo systemctl enable vsftpd
-```
-
-## Agrega usuarios FTP
-
-Para que los usuarios se puedan conectar al servidor FTP se deben crear credenciales, para ello debes crear cuentas de usuario y asignarles permisos en el sistema de archivos. Puedes usar el comando **useradd** para crear usuarios. En nuestro caso, vamos a crear el usuario **usuftp** con contraseña la misma, **usuftp**.
-
-```sh
-sudo adduser usuftp
-```
-
-A continuación crearemos un archivo nuevo : 
-
-```sh
-sudo nano /etc/vsftpd.userlist
-```
-Y añade dentro de este archivo el usuario **usuftp** y guardalo.
-
-## Reinicia el servicio 
+## 3. Reinicia el servicio 
 
 Finalmente **reiniciamos el servicio** para que coja la nueva configuración realizada en todos estos pasos.
 
@@ -100,7 +78,7 @@ Finalmente **reiniciamos el servicio** para que coja la nueva configuración rea
 sudo systemctl restart --now vsftpd
 ```
 
-## Comprobar la Conexión FTP al servidor vsftpd
+## 4. Comprobar la Conexión FTP al servidor vsftpd
 
 > Para poner realizar una conexión FTP al sercidor FTP, debemos tener en cuenta si el modo de acceso es 
 *Mediante el puerto por defecto del protocolo <u>inseguro</u> FTP*, el **puerto 21**, pero utilizando certificados que cifran el intercambio de datos convirtiéndolo así en <u>seguro</u> o *haciendo uso del protocolo SFTP*, que es un protocolo dedicado al intercambio de datos mediante una conexión similar a SSH, utilizando de hecho el **puerto 22**.
