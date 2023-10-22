@@ -92,6 +92,14 @@ sudo systemctl restart --now vsftpd
 
 ## 4. Comprobar la Conexión FTP al servidor vsftpd
 
+DESCARGAR EL ARCHIVO DE CONFIGURACION DE BACKUP 
+
+¿CON QUE USUARIO CONSIGO ACCEDER AL SERVIDOR FTP DESDE MI PC PARA PODER SUBIR O BAJAR ARCHIVOS ??
+
+- EL USUARIO admin ? profe ? DEBEN ESTAR DENTRO DEL etc/group y dentro de etc/ftp 
+
+------ ESTO ES DE RAUL PRIETO QUE NO ENTIENDO ------
+
 > Para poner realizar una conexión FTP al servidor FTP, debemos tener en cuenta si el modo de acceso es
 >> - *Mediante el puerto por defecto del protocolo <u>inseguro</u> FTP*, el **puerto 21**, pero utilizando certificados que cifran el intercambio de datos convirtiéndolo así en <u>seguro</u>
 >> - o *haciendo uso del protocolo SFTP*, que es un protocolo dedicado al intercambio de datos mediante una conexión similar a SSH, utilizando de hecho el **puerto 22**.
