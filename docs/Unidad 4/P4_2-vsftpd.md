@@ -6,30 +6,31 @@ Para ello vamos a partir de la instancia AWS creada con Debian que realizamos en
 
 En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsftpd** :
 
-```sh
+```
 sudo apt-get update
 sudo apt-get install vsftpd
 ```
 
-Se crea el *usuario ftp* dentro del fichero /etc/passwd, y el *grupo ftp* en /etc/group. Para comprobar que el servidor se ha iniciado buscamos el proceso:
-
-```
-ps –ef | grep vsftpd
-```
-
-o con otro comando que es nmap pero hay que instalarlo primero nmap
-
-```
-apt install nmap
-nmap localhost
+Se crea el **usuario ftp** dentro del fichero /etc/passwd, y el **grupo ftp** en /etc/group. Puedes comprobarlo visualizando ambos ficheros.
+```sh
+cat /etc/passwd
+cat /etc/group
 ```
 
-Ahora vamos a crear una carpeta en nuestro `home` en Debian que llamaremos `ftp`:
+Para comprobar que el servidor se ha iniciado buscamos el proceso:
+
+```sh
+ps -ef|grep vsftpd
+```
+> Vermos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsftpd **/usr/sbin/vsftpd** 
+
+Ahora vamos a crear una carpeta en nuestro `home` en Debian que llamaremos `ftp`. Recuerda que debes cambiar nombre_usuario por admin (en Debian).
 
 ```sh
 mkdir /home/nombre_usuario/ftp
 ```
-Posteriormente en el archivo de *configuración de vsftpd* indicaremos que este será el directorio al cual vsftpd se cambia después de conectarse el usuario.
+
+Posteriormente en el archivo de configuración de **vsftpd.conf** indicaremos que este será el directorio al cual vsftpd se cambia después de conectarse el usuario e incluiremos la línea siguiente: `local_root=/home/admin/ftp`
 
 ### Certificados de Seguridad con OpenSSL
 
@@ -38,8 +39,10 @@ El servidor vsftpd admite FTPS (FTP sobre SSL/TLS), que cifra las comunicaciones
 ```sh
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem
 ```
+Dejaremos en blanco la información que nos solicta al ejecutar este línea de comando.
 
->> *OpenSSL es una biblioteca de código abierto ampliamente utilizada que proporciona una implementación de los protocolos de seguridad SSL (Secure Sockets Layer) y TLS (Transport Layer Security). Estos protocolos se utilizan para cifrar las comunicaciones en línea y garantizar la seguridad y la privacidad de los datos que se transmiten a través de Internet. OpenSSL ofrece una serie de funciones y herramientas para habilitar la seguridad en aplicaciones y servicios, así como para administrar certificados digitales y claves de cifrado.*
+!!! note "*OpenSSL"
+*OpenSSL es una biblioteca de código abierto ampliamente utilizada que proporciona una implementación de los protocolos de seguridad SSL (Secure Sockets Layer) y TLS (Transport Layer Security). Estos protocolos se utilizan para cifrar las comunicaciones en línea y garantizar la seguridad y la privacidad de los datos que se transmiten a través de Internet. OpenSSL ofrece una serie de funciones y herramientas para habilitar la seguridad en aplicaciones y servicios, así como para administrar certificados digitales y claves de cifrado.*
 
 
 ## 2. Configuración del servidor vsftpd
@@ -55,7 +58,7 @@ Pasamos a modificar el archivo de configuración de este **servicio vsftpd.conf*
 ```sh
 sudo nano /etc/vsftpd.conf
 ```
-En primer lugar, buscaremos las siguientes líneas del archivo y las **eliminaremos por completo**:
+En primer lugar, buscaremos las siguientes líneas del archivo y las **eliminaremos por completo o COMENTAREMOS**:
 
 ```linuxconfig
 rsa_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
