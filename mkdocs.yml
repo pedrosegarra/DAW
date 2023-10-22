@@ -31,6 +31,7 @@ theme:
     - toc.integrate
     - search.highlight
     - content.code.annotate
+    - content.code.copy
 markdown_extensions:
   - meta
   - tables
@@ -38,10 +39,13 @@ markdown_extensions:
   - pymdownx.superfences
   - admonition
   - pymdownx.inlinehilite
+  - pymdownx.arithmatex:
+      generic: true
   - pymdownx.snippets
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.superfences
+  - pymdownx.mark
   - pymdownx.tabbed:
       alternate_style: true 
   - attr_list
@@ -66,45 +70,46 @@ nav:
   - ... | Unidad 1/*.md
   - ... | Unidad 2/*.md
   - ... | Unidad 3/*.md
-  - Unidad 4:
-      - Teoría: 
-        - dns.md
-      - Prácticas:
-        - ... | P4.*.md
-  - Unidad 5:
-      - Teoría: 
-        - index_git.md
-        - cvs.md
-        - introduccion.md
-        - git.md
-        - usobasico.md
-        - usoavanzado.md
-        - ramas.md
-        - github.md
-        - github-zenodo.md
-        - github-flow.md
-        - github-avanzado.md
-        - commands.md
-        - gitflow.md
-        - referencias.md
-      - Prácticas:
-        - ... | P5.*.md      
-  - Unidad 6:
-      - Teoría: 
-        - index_docker.md
-        - introduction.md
-        - installation.md
-        - images.md
-        - containers.md
-        - data.md
-        - wordpress.md
-        - docker-compose.md
-        - dockerfile.md
-        - tips.md
-      - Prácticas:
-        - ... | P6.*.md 
-  - Unidad 7:
-      - Teoría: 
-        - cicd.md
-      - Prácticas:
-        - ... | P7.*.md    
+#  - ... | Unidad 4/*.md
+#  - Unidad 4:
+#      - Teoría: 
+#        - dns.md
+#      - Prácticas:
+#        - ... | P4.*.md
+#  - Unidad 5:
+#      - Teoría: 
+#        - index_git.md
+#       - cvs.md
+#        - introduccion.md
+#        - git.md
+#        - usobasico.md
+#        - usoavanzado.md
+#        - ramas.md
+#        - github.md
+#        - github-zenodo.md
+#        - github-flow.md
+#        - github-avanzado.md
+#        - commands.md
+#        - gitflow.md
+#        - referencias.md
+#      - Prácticas:
+#       - ... | P5.*.md      
+#  - Unidad 6:
+#      - Teoría: 
+#        - index_docker.md
+#        - introduction.md
+#        - installation.md
+#        - images.md
+#        - containers.md
+#        - data.md
+#        - wordpress.md
+#        - docker-compose.md
+#        - dockerfile.md
+#        - tips.md
+#      - Prácticas:
+#        - ... | P6.*.md
+#  - Unidad 7:
+#      - Teoría: 
+#        - cicd.md
+#      - Prácticas:
+#        - ... | P7.*.md    
