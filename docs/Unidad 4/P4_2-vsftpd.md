@@ -4,7 +4,6 @@ Para ello vamos a partir de la instancia AWS creada con Debian que realizamos en
 
 Para esta práctica hemos elegido como servidor SFTP **vsftpd** frente al servidor **proFTPD**
 
-
 ## Instalación del servidor vsftpd
 
 En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsftpd** :
@@ -13,28 +12,23 @@ En primer lugar, actualizaremos los repositorios de Ububtu y a continuación ins
 sudo apt-get update
 sudo apt-get install vsftpd
 ```
-Ahora vamos a crear una carpeta en nuestro *home* en Debian que llamaremos ftp:
+Ahora vamos a crear una carpeta en nuestro `home` en Debian que llamaremos `ftp`:
 
 ```sh
 mkdir /home/nombre_usuario/ftp
 ```
-En la configuración de *vsftpd* indicaremos que este será el directorio al cual vsftpd se cambia después de conectarse el usuario.
-
-Dentro de la carpeta /home/nombre_usuario crea un archivo que utilizaremos para luego poder descargarlo, de la siguiente forma
-
-```sh
-sudo nano /home/nombre_usuario/descargar.txt
-```
-
-Escribe tu nombre y apellidos dentro del archivo **descargar.txt**
+Posteriormente en el archivo de *configuración de vsftpd* indicaremos que este será el directorio al cual vsftpd se cambia después de conectarse el usuario.
 
 ### Certificados de Seguridad con OpenSSL
 
-Ahora vamos a crear los certificados de seguridad necesarios para aportar la capa de cifrado a nuestra conexión (algo parecido a HTTPS) y para ello utilizaremos OpenSSL
+El servidor vsftpd admite FTPS (FTP sobre SSL/TLS), que cifra las comunicaciones entre el cliente y el servidor.  Por ello vamos a utiliza OpenSSL para crear los certificados de seguridad necesarios para aportar la capa de cifrado entre el cliente y el servidor a nuestra conexión (algo parecido a HTTPS), con el siguiente comando;
 
 ```sh
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem
 ```
+
+>> *OpenSSL es una biblioteca de código abierto ampliamente utilizada que proporciona una implementación de los protocolos de seguridad SSL (Secure Sockets Layer) y TLS (Transport Layer Security). Estos protocolos se utilizan para cifrar las comunicaciones en línea y garantizar la seguridad y la privacidad de los datos que se transmiten a través de Internet. OpenSSL ofrece una serie de funciones y herramientas para habilitar la seguridad en aplicaciones y servicios, así como para administrar certificados digitales y claves de cifrado.*
+
 
 ## Configuración del servidor vsftpd
 
