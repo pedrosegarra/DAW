@@ -8,7 +8,7 @@ title: 'Práctica 3.1: Instalación de Tomcat.'
 
 En esta práctica vamos a instalar el servidor de aplicaciones Apache Tomcat en su última versión disponible.
 
-Si consultamos el apartado de [versiones de Tomcat](https://tomcat.apache.org/whichversion.html){:target="_blank"} en su página oficial, nos daremos cuenta de que la última versión disponible en el momento de redacción de esta práctica es la 11.0.x que soporta versiones de Java 21 y posteriores. Esto podría hacer que algunos despliegues que realicemos con ficheros .war desarrollados en versiones anteriores de java planteen problemas. Esto nos servirá para ver la importancia de usar las mismas versiones en fase de desarrollo y fase de despliegue y acordar entre desarrolladores y encargados de despliegue cualquier actualización antes de llevarla a cabo.
+Si consultamos el apartado de [versiones de Tomcat](https://tomcat.apache.org/whichversion.html){:target="_blank"} en su página oficial, nos daremos cuenta de que la última versión estable disponible en el momento de redacción de esta práctica es la 10.1.15 que soporta versiones de Java 11 y posteriores. Esto podría hacer que algunos despliegues que realicemos con ficheros .war desarrollados en versiones anteriores de java planteen problemas. Esto nos servirá para ver la importancia de usar las mismas versiones en fase de desarrollo y fase de despliegue y acordar entre desarrolladores y encargados de despliegue cualquier actualización antes de llevarla a cabo.
 
 En Java 9 se introdujeron novedades como un nuevo sistema de módulos (Jigsaw), [entre otras](https://blog.codmind.com/java-9-analisis-de-las-novedades/){:target="_blank"}.
 
