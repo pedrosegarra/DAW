@@ -22,7 +22,7 @@ Para comprobar que el servidor se ha iniciado buscamos el proceso:
 ```sh
 ps -ef|grep vsftpd
 ```
-> Vermos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsftpd **/usr/sbin/vsftpd** 
+Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsftpd **/usr/sbin/vsftpd** 
 
 Ahora vamos a crear una carpeta en nuestro `home` en Debian que llamaremos `ftp`. Recuerda que debes cambiar nombre_usuario por admin (en Debian).
 
@@ -41,8 +41,7 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/privat
 ```
 Dejaremos en blanco la información que nos solicta al ejecutar este línea de comando.
 
-!!! note "*OpenSSL"
-*OpenSSL es una biblioteca de código abierto ampliamente utilizada que proporciona una implementación de los protocolos de seguridad SSL (Secure Sockets Layer) y TLS (Transport Layer Security). Estos protocolos se utilizan para cifrar las comunicaciones en línea y garantizar la seguridad y la privacidad de los datos que se transmiten a través de Internet. OpenSSL ofrece una serie de funciones y herramientas para habilitar la seguridad en aplicaciones y servicios, así como para administrar certificados digitales y claves de cifrado.*
+> *OpenSSL es una biblioteca de código abierto ampliamente utilizada que proporciona una implementación de los protocolos de seguridad SSL (Secure Sockets Layer) y TLS (Transport Layer Security). Estos protocolos se utilizan para cifrar las comunicaciones en línea y garantizar la seguridad y la privacidad de los datos que se transmiten a través de Internet. OpenSSL ofrece una serie de funciones y herramientas para habilitar la seguridad en aplicaciones y servicios, así como para administrar certificados digitales y claves de cifrado.*
 
 
 ## 2. Configuración del servidor vsftpd
