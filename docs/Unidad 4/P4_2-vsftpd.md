@@ -11,7 +11,7 @@ sudo apt-get update
 sudo apt-get install vsftpd
 ```
 
-Se crea el **usuario ftp** dentro del fichero /etc/passwd, y el **grupo ftp** en /etc/group. Puedes comprobarlo visualizando ambos ficheros.
+Se crea el usuario *ftp* dentro del fichero **/etc/passwd**, y el grupo *ftp* en **/etc/group**. Puedes comprobarlo visualizando ambos ficheros.
 ```sh
 cat /etc/passwd
 cat /etc/group
