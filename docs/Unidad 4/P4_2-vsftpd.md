@@ -2,8 +2,6 @@
 
 Para ello vamos a partir de la instancia AWS creada con Debian que realizamos en la [P1.1. Linux Server en AWSAcademy](https://jmunozji.github.io/DAW/Unidad%201/P1_1/)). En el caso de que hayas eliminado esa instancia, vuelve a crearla.
 
-Para esta práctica hemos elegido como servidor SFTP **vsftpd** frente al servidor **proFTPD**
-
 ## 1. Instalación del servidor vsftpd
 
 En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsftpd** :
