@@ -12,6 +12,20 @@ En primer lugar, actualizaremos los repositorios de Ububtu y a continuación ins
 sudo apt-get update
 sudo apt-get install vsftpd
 ```
+
+Se crea el *usuario ftp* dentro del fichero /etc/passwd, y el *grupo ftp* en /etc/group. Para comprobar que el servidor se ha iniciado buscamos el proceso:
+
+```
+ps –ef | grep vsftpd
+```
+
+o con otro comando que es nmap pero hay que instalarlo primero nmap
+
+```
+apt install nmap
+nmap localhost
+```
+
 Ahora vamos a crear una carpeta en nuestro `home` en Debian que llamaremos `ftp`:
 
 ```sh
