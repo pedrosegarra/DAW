@@ -1,4 +1,4 @@
-# PRACTICA 1 - ACCESO AL SERVIDOR FTP PÚBLICO ftp.rediris.es ##
+# Práctica 4.1 - Acceso a un servidor FTP público ftp.rediris.es ##
 
 ### Objetivo: 
 
@@ -16,6 +16,7 @@ ftp
 ```
 help
 ```
+[]()
 
 Vamos a conectar con una red pública como es ftp.rediris.es con el usuario anónimo, por lo que no hace falta registrarse con ningún usuario, pulsamos intro cuando nos pida el usuario. 
 
