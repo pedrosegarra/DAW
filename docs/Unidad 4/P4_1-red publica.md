@@ -16,23 +16,27 @@ ftp
 ```
 help
 ```
-[]()
+![Practica 4_1](P4_1/P4_1_1.png)
 
 Vamos a conectar con una red pública como es ftp.rediris.es con el usuario anónimo, por lo que no hace falta registrarse con ningún usuario, pulsamos intro cuando nos pida el usuario. 
 
 ```
 open ftp.rediris.es
 ```
+![Practica 4_1](P4_1/P4_1_2.png)
+
 
 Posteriormente vamos listar el contenido de archivo y directorios y accederemos a la carpeta /debian/doc para descargar el archivo constitution.txt, para ello sigue las indicaciones siguientes 
 
 ```
 get constitution.txt
 ```
+![Practica 4_1](P4_1/P4_1_3.png)
 
 Para comprobar que se ha descargado correctamente, salimos del servidor ftp y listamos los archivos de nuestra máquina. Donde podemos observar que el archivo se ha descargado correctamente.
 ```
 quit
 ```
+![Practica 4_1](P4_1/P4_1_4.png)
 
 
