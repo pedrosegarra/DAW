@@ -113,24 +113,6 @@ Name (nombre_de_host_ftp:tu_nombre_de_usuario_ftp):
 
 4. A continuación, el cliente FTP te pedirá que ingreses un usuario (en nuestro caso recuerda que era **usuftp**)  y presiona "Enter". Luego, se te pedirá que ingreses la contraseña (recuerda que era **usuftp**). Si las credenciales son correctas, deberías obtener acceso al servidor FTP. Verifica que el prompt a cambiado a ftp> (quiere decir que has conectado correctamente).
 
-5. *Una vez conectado*, puedes utilizar **comandos FTP** para realizar diversas acciones, como listar directorios, descargar archivos, cargar archivos, eliminar archivos y más. Aquí tienes algunos comandos FTP básicos, :
-
-> `help`  (Utilizando el comando help podemos contar con ayuda interactiva acerca de todos los comandos disponibles.)  
-> `ls`  (Lista los archivos y directorios en el directorio remoto.)  
-> `cd`  (Cambia de directorio en el servidor remoto.)  
-> `get`  (Descarga un archivo desde el servidor remoto.)  
-> `put`  (Carga un archivo en el servidor remoto.)  
-> `delete` (Elimina un archivo en el servidor remoto.)  
-> `quit` (Cierra la sesión FTP y sale del cliente FTP.) 
-
-
-Descarga el archivo **descargar.txt** que habías creado en /home/nombre_usuario 
-
-Modifícalo en tu ordenador añadiendo la frase "lo he modificado en mi ordenador" y lo guardas como **descargar_modificado.txt**
-Y posteriormente lo subes a la misma ubicación.
-
-Cuando hayas terminado, puedes usar el comando quit para salir de la sesión FTP.
-
 #### Acceso con Cliente FTP gráfico 
 
 Vamos a utilizar como **cliente FTP** con entorno gráfico a [Filezilla](https://filezilla-project.org/), que dispone de versiones para GNU/Linux, Mac OS X y Windows. Tras descargar <U>**el cliente FTP**</u> en nuestro ordenador, introducimos los datos necesarios para conectarnos a nuestro servidor FTP en Debian:
