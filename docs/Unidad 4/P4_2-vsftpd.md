@@ -20,7 +20,7 @@ cat /etc/group
 Para comprobar que el servidor se ha iniciado buscamos el proceso:
 
 ```sh
-ps -ef|grep vsftpd
+ps -ef | grep vsftpd
 ```
 Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsftpd **/usr/sbin/vsftpd** 
 
