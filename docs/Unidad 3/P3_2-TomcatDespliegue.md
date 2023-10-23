@@ -131,7 +131,9 @@ public void service(HttpServletRequest req, HttpServletResponse res)
 
 Desde el directorio prueba ejecuta: 
 
-`javac -classpath /usr/share/tomcat10/lib/servlet-api.jar hola1.java` 
+```sh
+javac -classpath /usr/share/tomcat10/lib/servlet-api.jar hola1.java
+``` 
 
 ¿Se ha podido complilar? Probablemente no, ¿verdad? Mira en los errores y recuerda lo que hemos hablado ya sobre las versiones de Java. ¿Se te ocurre dónde puede estar el error? 
 
