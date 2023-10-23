@@ -25,7 +25,7 @@ Realizaremos el despliegue manual de una aplicación ya previamente empaquetada 
       * Replegar es para desinstalarla.
       * Reiniciar es muy útil si en algún momento no se están reflejando los cambios que estamos realizando, por ejemplo al cambiar el contenido de alguna clase.
 
-4. Comprobamos el funcionamiento. Entrar en http://IP_SERVIDOR:8080/sample verás esto:
+4. Comprobamos el funcionamiento. Entrar en `http://IP_SERVIDOR:8080/sample` verás esto:
 
     ![](P3_2/03.png)
 
@@ -62,7 +62,7 @@ Observa un par de cosas.
 
 Por tanto, para desplegar nuevas aplicaciones manualmente deberemos logarnos primero como usuario `tomcat` y luego generar una estructura de carpetas para la aplicación a desplegar similar a la de "sample", que es la estructura que necesita Tomcat.
 
-Para entrar como usuario `tomcat` veamos primero cómo está creado en el fichero /etc/passwd:
+Para entrar como usuario `tomcat` veamos primero cómo está creado en el fichero `/etc/passwd`:
 
 ```sh
 cat /etc/passwd
@@ -78,19 +78,25 @@ El último campo indica la ruta del shell asignado al usuario. Vemos que tiene `
 
 Como desconocemos la password del usuario `tomcat` le asignaremos una nueva. Vamos a ponerle password `ieselcaminas`.
 
-`sudo passwd tomcat`
+```sh
+sudo passwd tomcat
+```
 
 Ahora entraremos en el sistema como usuario `tomcat`
 
-`su tomcat`
+```sh
+su tomcat
+```
+
 
 Ahora ya podemos empezar a desplegar nuestra aplicación a la que llamaremos "prueba". Crearemos la siguiente estructura de carpetas dentro de `/var/lib/tomcat10/webapps`.
 
 ![](P3_2/06.png)
 
 Podemos hacerlo en un solo comando con:
-
-`mkdir -p /var/lib/tomcat10/webapps/prueba/WEB-INF/classes`
+```sh
+mkdir -p /var/lib/tomcat10/webapps/prueba/WEB-INF/classes
+```
 
 Si comprobamos en nuestro Gestor de Aplicaciones Web de Tomcat veremos que aparece nuestra nueva aplicación llamada "prueba" en la lista de aplicaciones. Aunque si intentamos hacer algo nos dará error al no contener nada todavía.
 
