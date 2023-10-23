@@ -234,3 +234,11 @@ Observa cómo para mapear el servlet hemos tenido que hacerlo en el fichero `web
 
       * Cambia el texto que muestra el fragmento de código java en hola1.jsp
       * Crea un segundo servlet que llamaremos `hola2` y haz que en la página index.html tengas una línea adicional que diga `Ir a servlet2` que ejecute dicho servlet.
+
+### Crea el Host Virtual - Voluntario
+
+En la práctica 1 vimos cómo podíamos acceder al Tomcat Web Application Manager y al  Tomcat Virtual Host Manager.
+
+Un host virtual en Tomcat nos permitirá acceder a una aplicación desplegada a través de un nombre de dominio de esa aplicación, sin necesidad de acceder al raíz del servidor tomcat y poner al final /app (sustituyendo app por el nombre de la aplicación). Es como los host virtuales que configuramos en Nginx en el tema anterior.
+
+Llegados a este punto, ya tienes un par de aplicaciones desplegadas. Busca en internet cómo crear un web virtual y crea uno para una de ellas. Recuerda que tendrás que modificar el fichero /etc/hosts para acceder al host virtual creado.
