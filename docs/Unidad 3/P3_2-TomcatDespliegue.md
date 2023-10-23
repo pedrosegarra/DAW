@@ -90,9 +90,7 @@ Ahora ya podemos empezar a desplegar nuestra aplicación a la que llamaremos "pr
 
 Podemos hacerlo en un solo comando con:
 
-```sh
-mkdir -p /var/lib/tomcat10/webapps/prueba/WEB-INF/classes
-```
+`mkdir -p /var/lib/tomcat10/webapps/prueba/WEB-INF/classes`
 
 Si comprobamos en nuestro Gestor de Aplicaciones Web de Tomcat veremos que aparece nuestra nueva aplicación llamada "prueba" en la lista de aplicaciones. Aunque si intentamos hacer algo nos dará error al no contener nada todavía.
 
