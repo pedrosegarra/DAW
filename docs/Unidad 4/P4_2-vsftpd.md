@@ -20,7 +20,7 @@ cat /etc/group
 Para comprobar que el servidor se ha iniciado buscamos el proceso:
 
 ```sh
-ps -ef|grep vsftpd
+ps -ef | grep vsftpd
 ```
 Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsftpd **/usr/sbin/vsftpd** 
 
@@ -91,6 +91,14 @@ sudo systemctl restart --now vsftpd
 ```
 
 ## 4. Comprobar la Conexión FTP al servidor vsftpd
+
+DESCARGAR EL ARCHIVO DE CONFIGURACION DE BACKUP 
+
+¿CON QUE USUARIO CONSIGO ACCEDER AL SERVIDOR FTP DESDE MI PC PARA PODER SUBIR O BAJAR ARCHIVOS ??
+
+- EL USUARIO admin ? profe ? DEBEN ESTAR DENTRO DEL etc/group y dentro de etc/ftp 
+
+------ ESTO ES DE RAUL PRIETO QUE NO ENTIENDO ------
 
 > Para poner realizar una conexión FTP al servidor FTP, debemos tener en cuenta si el modo de acceso es
 >> - *Mediante el puerto por defecto del protocolo <u>inseguro</u> FTP*, el **puerto 21**, pero utilizando certificados que cifran el intercambio de datos convirtiéndolo así en <u>seguro</u>

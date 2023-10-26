@@ -25,7 +25,7 @@ Realizaremos el despliegue manual de una aplicación ya previamente empaquetada 
       * Replegar es para desinstalarla.
       * Reiniciar es muy útil si en algún momento no se están reflejando los cambios que estamos realizando, por ejemplo al cambiar el contenido de alguna clase.
 
-4. Comprobamos el funcionamiento. Entrar en http://IP_SERVIDOR:8080/sample verás esto:
+4. Comprobamos el funcionamiento. Entrar en `http://IP_SERVIDOR:8080/sample` verás esto:
 
     ![](P3_2/03.png)
 
@@ -62,7 +62,7 @@ Observa un par de cosas.
 
 Por tanto, para desplegar nuevas aplicaciones manualmente deberemos logarnos primero como usuario `tomcat` y luego generar una estructura de carpetas para la aplicación a desplegar similar a la de "sample", que es la estructura que necesita Tomcat.
 
-Para entrar como usuario `tomcat` veamos primero cómo está creado en el fichero /etc/passwd:
+Para entrar como usuario `tomcat` veamos primero cómo está creado en el fichero `/etc/passwd`:
 
 ```sh
 cat /etc/passwd
@@ -78,19 +78,25 @@ El último campo indica la ruta del shell asignado al usuario. Vemos que tiene `
 
 Como desconocemos la password del usuario `tomcat` le asignaremos una nueva. Vamos a ponerle password `ieselcaminas`.
 
-`sudo passwd tomcat`
+```sh
+sudo passwd tomcat
+```
 
 Ahora entraremos en el sistema como usuario `tomcat`
 
-`su tomcat`
+```sh
+su tomcat
+```
+
 
 Ahora ya podemos empezar a desplegar nuestra aplicación a la que llamaremos "prueba". Crearemos la siguiente estructura de carpetas dentro de `/var/lib/tomcat10/webapps`.
 
 ![](P3_2/06.png)
 
 Podemos hacerlo en un solo comando con:
-
-`mkdir -p /var/lib/tomcat10/webapps/prueba/WEB-INF/classes`
+```sh
+mkdir -p /var/lib/tomcat10/webapps/prueba/WEB-INF/classes
+```
 
 Si comprobamos en nuestro Gestor de Aplicaciones Web de Tomcat veremos que aparece nuestra nueva aplicación llamada "prueba" en la lista de aplicaciones. Aunque si intentamos hacer algo nos dará error al no contener nada todavía.
 
@@ -125,7 +131,9 @@ public void service(HttpServletRequest req, HttpServletResponse res)
 
 Desde el directorio prueba ejecuta: 
 
-`javac -classpath /usr/share/tomcat10/lib/servlet-api.jar hola1.java` 
+```sh
+javac -classpath /usr/share/tomcat10/lib/servlet-api.jar hola1.java
+``` 
 
 ¿Se ha podido complilar? Probablemente no, ¿verdad? Mira en los errores y recuerda lo que hemos hablado ya sobre las versiones de Java. ¿Se te ocurre dónde puede estar el error? 
 
@@ -234,3 +242,11 @@ Observa cómo para mapear el servlet hemos tenido que hacerlo en el fichero `web
 
       * Cambia el texto que muestra el fragmento de código java en hola1.jsp
       * Crea un segundo servlet que llamaremos `hola2` y haz que en la página index.html tengas una línea adicional que diga `Ir a servlet2` que ejecute dicho servlet.
+
+### Crea el Host Virtual - Voluntario
+
+En la práctica 1 vimos cómo podíamos acceder al Tomcat Web Application Manager y al  Tomcat Virtual Host Manager.
+
+Un host virtual en Tomcat nos permitirá acceder a una aplicación desplegada a través de un nombre de dominio de esa aplicación, sin necesidad de acceder al raíz del servidor tomcat y poner al final /app (sustituyendo app por el nombre de la aplicación). Es como los host virtuales que configuramos en Nginx en el tema anterior.
+
+Llegados a este punto, ya tienes un par de aplicaciones desplegadas. Busca en internet cómo crear un web virtual y crea uno para una de ellas. Recuerda que tendrás que modificar el fichero /etc/hosts para acceder al host virtual creado.
