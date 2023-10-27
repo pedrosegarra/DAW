@@ -6,8 +6,12 @@
 https://jamj2000.github.io/despliegueaplicacionesweb/4/diapositivas#/3/7
 https://howtoforge.es/como-instalar-el-servidor-ftp-vsftpd-y-asegurarlo-con-tls-en-debian-11/
 
-MUY SENCILLO Y BIEN EXPLICADO:
+VER ESTOS DOS SON MUY SENCILLO Y BIEN EXPLICADO:
 https://www.trucosinformaticos.com/linux/ubuntu/instalacion-y-configuracion-de-un-servidor-ftp-vsftpd-en-ubuntu-22-04-trucosinformaticos/
+https://linuxpasion.com/como-instalar-y-configurar-un-servidor-ftp-vsftpd-con-ssl-tls-en-ubuntu-20-04
+
+COMUNIDAD : https://help.ubuntu.com/community/vsftpd
+
 
 # Práctica 4.2 - Instalar y Configurar el servidor vsftpd
 
