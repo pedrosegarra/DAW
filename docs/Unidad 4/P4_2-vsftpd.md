@@ -1,6 +1,19 @@
+
+# REHACER ESTA PRÁCTICA
+
+– seguir esta
+ https://ubunlog.com/vsftpd-instalar-un-servidor-ftp-ubuntu/
+https://jamj2000.github.io/despliegueaplicacionesweb/4/diapositivas#/3/7
+https://howtoforge.es/como-instalar-el-servidor-ftp-vsftpd-y-asegurarlo-con-tls-en-debian-11/
+
+MUY SENCILLO Y BIEN EXPLICADO:
+https://www.trucosinformaticos.com/linux/ubuntu/instalacion-y-configuracion-de-un-servidor-ftp-vsftpd-en-ubuntu-22-04-trucosinformaticos/
+
 # Práctica 4.2 - Instalar y Configurar el servidor vsftpd
 
-Para ello vamos a partir de la instancia AWS creada con Debian que realizamos en la [P1.1. Linux Server en AWSAcademy](https://jmunozji.github.io/DAW/Unidad%201/P1_1/)). En el caso de que hayas eliminado esa instancia, vuelve a crearla.
+Hoy en día existe una amplia gama de servidores FTP de código abierto, como FTPD, VSFTPD, PROFTPD y pureftpd. Entre todos ellos, VSFTPD es un protocolo muy seguro, rápido y el más utilizado para transferir archivos entre dos sistemas.
+VSFTPD también se conoce como «Demonio de Protocolo de Transferencia de Archivos Muy Seguro» con soporte de SSL, IPv6, FTPS explícito e implícito
+
 
 ## 1. Instalación del servidor vsftpd
 
