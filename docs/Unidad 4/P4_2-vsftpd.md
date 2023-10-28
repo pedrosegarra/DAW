@@ -17,7 +17,7 @@ COMUNIDAD : https://help.ubuntu.com/community/vsftpd
 ## OBJETIVO:
 En esta práctica, aprenderemos cómo  instalar y configurar un servidor FTP usando vsftpd en un servidor basado en Ubuntu. También aprenderemos cómo asegurar la conexión usando el protocolo SSL/TLS.
 
-## Vamos a aprender alguna cosa sobre el SERVIDOR VSFTPD:
+## Vamos a aprender sobre el servidor vsftpd:
 
 Hoy en día existe una amplia gama de servidores FTP de código abierto, como FTPD, VSFTPD, PROFTPD y pureftpd. Entre todos ellos, VSFTPD es un protocolo muy seguro, rápido y el más utilizado para transferir archivos entre dos sistemas. VSFTPD también se conoce como «Demonio de Protocolo de Transferencia de Archivos Muy Seguro» con soporte de SSL, IPv6, FTPS explícito e implícito.
 
@@ -30,10 +30,11 @@ Hoy en día existe una amplia gama de servidores FTP de código abierto, como FT
 - El archivo `/etc/ftpusers` tiene como función denegar el acceso a ciertos usuarios, evitando que puedan autenticarse y utilizar los servicios de FTP.
 - El archivo `/etc/vsftpd.user_list` se utiliza para controlar el acceso permitido a un grupo específico de usuarios. Este archivo no se instala, por lo cual hay que crearlo antes de comenzar a trabajar con la configuración.
 - El archivo `/etc/vsftpd.chroot_list` tiene como propósito principal controlar qué usuarios pueden ser "encarcelados" en sus respectivos directorios de inicio (chroot) cuando se conectan al servidor FTP.
-- El archivo /var/log/vsftpd.log es un archivo de registro útil para el monitoreo, la solución de problemas y la auditoría de actividades en el servidor FTP.
+- El archivo `/var/log/vsftpd.log` es un archivo de registro útil para el monitoreo, la solución de problemas y la auditoría de actividades en el servidor FTP.
 
+Vamos a empezar a trabajar ;
 
-## 1. Instalación del servidor vsftpd
+## Paso 1. Instalación del servidor vsftpd
 
 En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsftpd** :
 
@@ -42,7 +43,8 @@ sudo apt-get update
 sudo apt-get install vsftpd
 ```
 
-Se crea el usuario *ftp* dentro del fichero **/etc/passwd**, y el grupo *ftp* en **/etc/group**. Puedes comprobarlo visualizando ambos ficheros.
+Se crea el usuario *ftp* dentro del fichero **/etc/passwd**, y el grupo *ftp* en **/etc/group** del Servidor Linux. Puedes comprobarlo visualizando ambos ficheros.
+
 ```sh
 cat /etc/passwd
 cat /etc/group
@@ -53,7 +55,13 @@ Para comprobar que el servidor se ha iniciado buscamos el proceso:
 ```sh
 ps -ef | grep vsftpd
 ```
+También podemos utilizar el comando:
+```sh
+systemctl status vsftpd
+```
 Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsftpd **/usr/sbin/vsftpd** 
+
+
 
 Ahora vamos a crear una carpeta en nuestro `home` en Debian que llamaremos `ftp`. Recuerda que debes cambiar nombre_usuario por admin (en Debian).
 
