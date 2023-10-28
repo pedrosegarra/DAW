@@ -1,12 +1,12 @@
 
 COMUNIDAD : https://help.ubuntu.com/community/vsftpd
 
-# Práctica 4.2 - Instalar y Configurar el servidor vsftpd (Very Secure FTP Daemon)
+# Práctica 4.2 - Instalar y Configurar el servidor vsftpd 
 
 ## OBJETIVO:
 En esta práctica, aprenderemos cómo  instalar y configurar un servidor FTP usando vsftpd en un servidor basado en Ubuntu. También aprenderemos cómo asegurar la conexión usando el protocolo SSL/TLS.
 
-## Vamos a aprender sobre el servidor vsftpd:
+## Vamos a aprender sobre el servidor vsftpd (Very Secure FTP Daemon):
 
 Hoy en día existe una amplia gama de servidores FTP de código abierto, como FTPD, VSFTPD, PROFTPD y pureftpd. Entre todos ellos, VSFTPD es un protocolo muy seguro, rápido y el más utilizado para transferir archivos entre dos sistemas. VSFTPD también se conoce como «Demonio de Protocolo de Transferencia de Archivos Muy Seguro» con soporte de SSL, IPv6, FTPS explícito e implícito.
 
