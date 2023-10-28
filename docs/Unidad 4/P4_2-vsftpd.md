@@ -25,7 +25,7 @@ Vamos a empezar a trabajar ;
 
 Crea una instancia en AWS son el sistema Debian, como has realizado hasta el momento, que llamarás **P4-vsftpd**
 
-## Paso 1. Instalación del servidor vsftpd
+## 1. Instalación del servidor vsftpd
 
 En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsftpd** :
 
@@ -46,13 +46,13 @@ Para comprobar que el servidor se ha iniciado buscamos el proceso:
 ```sh
 ps -ef | grep vsftpd
 ```
-También podemos utilizar el comando:
+También podemos utilizar el comando para consultar el estado del servicio:
 ```sh
 systemctl status vsftpd
 ```
 Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsftpd **/usr/sbin/vsftpd** 
 
-
+## 2. Usuarios y Carpetas
 
 Ahora vamos a crear una carpeta en nuestro `home` en Debian que llamaremos `ftp`. Recuerda que debes cambiar nombre_usuario por admin (en Debian).
 
@@ -62,19 +62,41 @@ mkdir /home/nombre_usuario/ftp
 
 Posteriormente en el archivo de configuración de **vsftpd.conf** indicaremos que este será el directorio al cual vsftpd se cambia después de conectarse el usuario e incluiremos la línea siguiente: `local_root=/home/admin/ftp`
 
-### Certificados de Seguridad con OpenSSL
+### 3. Proteger el Vsftpd con SSL/TLS. 
 
-El servidor vsftpd admite FTPS (FTP sobre SSL/TLS), que cifra las comunicaciones entre el cliente y el servidor.  Por ello vamos a utiliza OpenSSL para crear los certificados de seguridad necesarios para aportar la capa de cifrado entre el cliente y el servidor a nuestra conexión (algo parecido a HTTPS), con el siguiente comando;
+**Generar un certificado autofirmado con OpenSSL**
+
+Digamos que quieres transferir datos encriptados a través de FTP, para ello necesitas crear un certificado SSL y necesitas habilitar la conexión SSL/TLS.
+
+Puedes crear un certificado utilizando OpenSSL con el siguiente comando:
+
+Ya hemos visto que el servidor vsftpd admite FTPS (FTP sobre SSL/TLS), es decir que cifra las comunicaciones entre el cliente y el servidor. Así que para poder transferir datos encriptados a través de FTP, necesitaremos crear un certificado SSL y habilitar la conexión SSL/TLS. Por ello vamos a utilizar OpenSSL con el siguiente comando;
 
 ```sh
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem
+
+
+sudo openssl req \ 
+-x509 -nodes -days 365 \ 
+-newkey rsa:2048 \ 
+-keyout /etc/ssl/private/vsftpd-key.pem \ 
+-out /etc/ssl/certs/vsftpd-cert.pem
 ```
-Dejaremos en blanco la información que nos solicta al ejecutar este línea de comando.
+Este comando genera un certificado SSL autofirmado válido por 365 días y guarda la clave privada y el certificado en /etc/ssl/private/vsftpd-key.pem y /etc/ssl/certs/vsftpd-cert.pem.
 
-> *OpenSSL es una biblioteca de código abierto ampliamente utilizada que proporciona una implementación de los protocolos de seguridad SSL (Secure Sockets Layer) y TLS (Transport Layer Security). Estos protocolos se utilizan para cifrar las comunicaciones en línea y garantizar la seguridad y la privacidad de los datos que se transmiten a través de Internet. OpenSSL ofrece una serie de funciones y herramientas para habilitar la seguridad en aplicaciones y servicios, así como para administrar certificados digitales y claves de cifrado.*
+Tenemos que tener en cuenta que nos pedirá que ingresemos cierta información, como el país, el estado/provincia y el nombre común. Puede ingresar los valores que desee o dejarlos en blanco.
 
+**Habilitar el cifrado SSL**
 
-## 2. Configuración del servidor vsftpd
+Una vez que tengamos el certificado SSL y la clave privada, tendremos que modificar el archivo /etc/vsftpd.conf y actualizar las siguientes directivas.
+
+- rsa_cert_file: indicaremos la ruta del archivo del certificado.
+- rsa_private_key_file: indicaremos la ruta del archivo de clave privada.
+- ssl_enable: indicaremos el valor en YES para habilitar el cifrado SSL.
+
+Lo vamos a realizar en el siguiente apartado junto con otros parámetros.
+
+## 4. Configuración del servidor vsftpd
 
 Y una vez realizados estos pasos, procedemos a realizar la configuración de *vsftpd* propiamente dicha. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
 
@@ -112,7 +134,7 @@ ssl_ciphers=HIGH
 local_root=/home/nombre_usuario/ftp
 ```
 
-## 3. Reinicia el servicio 
+## 4. Reinicia el servicio 
 
 Finalmente **reiniciamos el servicio** para que coja la nueva configuración realizada en todos estos pasos.
 
@@ -120,7 +142,7 @@ Finalmente **reiniciamos el servicio** para que coja la nueva configuración rea
 sudo systemctl restart --now vsftpd
 ```
 
-## 4. Comprobar la Conexión FTP al servidor vsftpd
+## 5. Comprobar la Conexión FTP al servidor vsftpd
 
 DESCARGAR EL ARCHIVO DE CONFIGURACION DE BACKUP 
 
