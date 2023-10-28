@@ -25,7 +25,7 @@ Vamos a empezar a trabajar ;
 
 Crea una instancia en AWS son el sistema Debian, como has realizado hasta el momento, que llamarás **P4-vsftpd**
 
-## 1. Instalación del servidor vsftpd
+## PASO 1. Instalación del servidor vsftpd
 
 En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsftpd** :
 
@@ -52,7 +52,60 @@ systemctl status vsftpd
 ```
 Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsftpd **/usr/sbin/vsftpd** 
 
-## 2. Usuarios y Carpetas
+
+## PASO 2. Configuración del servidor vsftpd
+
+Ahora repasaremos algunas configuraciones importantes para que vsftpd funcione. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
+
+```sh
+sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
+```
+
+**1. Acceso FTP**
+
+En este tutorial, permitiremos el acceso FTP solo a los usuarios locales y deshabilitaremos cualquier acceso anónimo. Para hacer esto, asegúrese de que las siguientes líneas existan y sean las siguientes.
+
+```linuxconfig
+anonymous_enable=NO
+local_enable=YES
+```
+
+**2. Habilitar la carga de archivos**
+El propósito singular más importante de FTP aquí es poder escribir en el servidor. Descomenta la siguiente línea para habilitar la carga de archivos eliminando # delante de ella.
+
+```linuxconfig
+write_enable=YES
+```
+
+**3. Cárcel de Chroot**
+FTP funciona mejor cuando un usuario está restringido a un directorio determinado. Vsftpd logra eso usando chroot jails. Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, descomente la siguiente línea.
+
+```linuxconfig
+chroot_local_user=YES
+allow_writeable_chroot=YES
+```
+
+**5. Restricción de usuarios**
+Para permitir que solo ciertos usuarios inicien sesión en el servidor FTP, agregue las siguientes líneas en la parte inferior.
+
+```linuxconfig
+userlist_enable=YES
+userlist_file=/etc/vsftpd.userlist
+userlist_deny=NO
+```
+
+Con esta opción habilitada, debemos especificar qué usuarios deberían poder usar FTP y agregar sus nombres de usuario en el archivo /etc/vsftpd.userlist.
+
+Reinicie vsftpd para habilitar la configuración.
+
+$ sudo systemctl restart vsftpd
+### Paso 4: configuración del directorio de usuarios
+
+Ahora, vamos a crear una nueva cuenta de usuario para transacciones FTP., utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante.
+
+```sh
+sudo adduser testuser
+```
 
 Ahora vamos a crear una carpeta en nuestro `home` en Debian que llamaremos `ftp`. Recuerda que debes cambiar nombre_usuario por admin (en Debian).
 
