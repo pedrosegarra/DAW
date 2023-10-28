@@ -12,7 +12,7 @@ https://linuxpasion.com/como-instalar-y-configurar-un-servidor-ftp-vsftpd-con-ss
 
 COMUNIDAD : https://help.ubuntu.com/community/vsftpd
 
-# Práctica 4.2 - Instalar y Configurar el servidor vsftpd
+# Práctica 4.2 - Instalar y Configurar el servidor vsftpd (Very Secure FTP Daemon)
 
 ## OBJETIVO:
 En esta práctica, aprenderemos cómo  instalar y configurar un servidor FTP usando vsftpd en un servidor basado en Ubuntu. También aprenderemos cómo asegurar la conexión usando el protocolo SSL/TLS.
@@ -27,23 +27,12 @@ Hoy en día existe una amplia gama de servidores FTP de código abierto, como FT
 `/usr/sbin/vsftpd`
 `/srv/ftp`
 
-Propiedad de root y cuyo grupo es ftp, donde se alojarán los archivos para usuarios anónimos (accesos anónimos).
+- El directorio `/srv/ftp` este directorio se utiliza para organizar y administrar los archivos y directorios que están disponibles para los usuarios que se conectan al servidor FTP. 
+- El archivo `/etc/vsftpd.conf` es el archivo de configuración principal del servidor vsftpd donde se especifican numerosos parámetros de configuración que controlan el comportamiento y la seguridad del servidor FTP.
+- El archivo `/etc/ftpusers` tiene como función denegar el acceso a ciertos usuarios, evitando que puedan autenticarse y utilizar los servicios de FTP.
+- El archivo `/etc/vsftpd.user_list` se utiliza para controlar el acceso permitido a un grupo específico de usuarios.
+- El archivo `/etc/vsftpd.chroot_list` tiene como propósito principal controlar qué usuarios pueden ser "encarcelados" en sus respectivos directorios de inicio (chroot) cuando se conectan al servidor FTP.
 
-/etc/ftpusers
-
-**Contiene la lista de los usuarios locales a enjaular.**
-`/etc/vsftpd.chroot_list`
-
-**Archivo de configuración de VSFTPD**
-Está muy bien explicado todos los parámetros, siempre que controlemos el inglés.
-`/etc/vsftpd.conf`
-
-
-| Column 1 | Column 2 | Column 3 |
-|----------|----------|----------|
-| Row 1    | Cell 2   | Cell 3   |
-| Row 2    | Cell 5   | Cell 6   |
-| Row 3    | Cell 8   | Cell 9   |
 
 
 ## 1. Instalación del servidor vsftpd
