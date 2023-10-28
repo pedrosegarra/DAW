@@ -23,6 +23,8 @@ Hoy en día existe una amplia gama de servidores FTP de código abierto, como FT
 
 Vamos a empezar a trabajar ;
 
+Crea una instancia en AWS son el sistema Debian, como has realizado hasta el momento, que llamarás **P4-vsftpd**
+
 ## Paso 1. Instalación del servidor vsftpd
 
 En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsftpd** :
