@@ -12,11 +12,38 @@ https://linuxpasion.com/como-instalar-y-configurar-un-servidor-ftp-vsftpd-con-ss
 
 COMUNIDAD : https://help.ubuntu.com/community/vsftpd
 
-
 # Práctica 4.2 - Instalar y Configurar el servidor vsftpd
 
-Hoy en día existe una amplia gama de servidores FTP de código abierto, como FTPD, VSFTPD, PROFTPD y pureftpd. Entre todos ellos, VSFTPD es un protocolo muy seguro, rápido y el más utilizado para transferir archivos entre dos sistemas.
-VSFTPD también se conoce como «Demonio de Protocolo de Transferencia de Archivos Muy Seguro» con soporte de SSL, IPv6, FTPS explícito e implícito
+## OBJETIVO:
+En esta práctica, aprenderemos cómo  instalar y configurar un servidor FTP usando vsftpd en un servidor basado en Ubuntu. También aprenderemos cómo asegurar la conexión usando el protocolo SSL/TLS.
+
+## Vamos a aprender alguna cosa sobre el SERVIDOR VSFTPD:
+
+Hoy en día existe una amplia gama de servidores FTP de código abierto, como FTPD, VSFTPD, PROFTPD y pureftpd. Entre todos ellos, VSFTPD es un protocolo muy seguro, rápido y el más utilizado para transferir archivos entre dos sistemas. VSFTPD también se conoce como «Demonio de Protocolo de Transferencia de Archivos Muy Seguro» con soporte de SSL, IPv6, FTPS explícito e implícito.
+
+**Archivos y directorios que se crean en el sistema:**
+
+`/etc/init.d/vsftpd`
+`/usr/sbin/vsftpd`
+`/srv/ftp`
+
+Propiedad de root y cuyo grupo es ftp, donde se alojarán los archivos para usuarios anónimos (accesos anónimos).
+
+/etc/ftpusers
+
+**Contiene la lista de los usuarios locales a enjaular.**
+`/etc/vsftpd.chroot_list`
+
+**Archivo de configuración de VSFTPD**
+Está muy bien explicado todos los parámetros, siempre que controlemos el inglés.
+`/etc/vsftpd.conf`
+
+
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Row 1    | Cell 2   | Cell 3   |
+| Row 2    | Cell 5   | Cell 6   |
+| Row 3    | Cell 8   | Cell 9   |
 
 
 ## 1. Instalación del servidor vsftpd
