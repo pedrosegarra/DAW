@@ -23,16 +23,21 @@ Hoy en día existe una amplia gama de servidores FTP de código abierto, como FT
 
 **Archivos y directorios que se crean en el sistema:**
 
-`/etc/init.d/vsftpd`
-`/usr/sbin/vsftpd`
-`/srv/ftp`
-
-- El directorio `/srv/ftp` este directorio se utiliza para organizar y administrar los archivos y directorios que están disponibles para los usuarios que se conectan al servidor FTP. 
+- `/etc/init.d/vsftpd` es el script de inicio en sistemas basados en Linux que permite administrar el servicio vsftpd, a través de  tareas como iniciar, detener, reiniciar y administrar el servicio de FTP. Los comandos en Ubuntu serán estos.
+ ```sh
+systemctl start vsftpd
+systemctl stop vsftpd
+systemctl restart vsftpd
+systemctl reload vsftpd
+systemctl status vsftpd 
+``
+- El archivo `/usr/sbin/vsftpd` este archivo es el binario principal que se utiliza para iniciar y ejecutar el servidor FTP vsftpd. Es responsable de escuchar en el puerto FTP (por lo general, el puerto 21) y gestionar las conexiones de los clientes FTP. Este archivo lee la configuración del archivo `/etc/vsftpd.conf` al iniciarse para personalizar el comportamiento del servidor FTP. 
+- El directorio `/srv/ftp` este directorio raíz por defecto del servidor FTP, que se utiliza para organizar y administrar los archivos y directorios que están disponibles para los usuarios que se conectan al servidor FTP. Es donde se alojarán los archivos para usuarios anónimos (accesos anónimos) sino se indica lo contrario en la configuración.
 - El archivo `/etc/vsftpd.conf` es el archivo de configuración principal del servidor vsftpd donde se especifican numerosos parámetros de configuración que controlan el comportamiento y la seguridad del servidor FTP.
 - El archivo `/etc/ftpusers` tiene como función denegar el acceso a ciertos usuarios, evitando que puedan autenticarse y utilizar los servicios de FTP.
-- El archivo `/etc/vsftpd.user_list` se utiliza para controlar el acceso permitido a un grupo específico de usuarios.
+- El archivo `/etc/vsftpd.user_list` se utiliza para controlar el acceso permitido a un grupo específico de usuarios. Este archivo no se instala, por lo cual hay que crearlo antes de comenzar a trabajar con la configuración.
 - El archivo `/etc/vsftpd.chroot_list` tiene como propósito principal controlar qué usuarios pueden ser "encarcelados" en sus respectivos directorios de inicio (chroot) cuando se conectan al servidor FTP.
-
+- El archivo /var/log/vsftpd.log es un archivo de registro útil para el monitoreo, la solución de problemas y la auditoría de actividades en el servidor FTP.
 
 
 ## 1. Instalación del servidor vsftpd
