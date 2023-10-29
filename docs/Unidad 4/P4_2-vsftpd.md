@@ -91,17 +91,17 @@ Cuando chroot está habilitado para usuarios locales, están restringidos a sus 
 ```linuxconfig
 chroot_local_user=YES
 ```
-Para evitar cualquier vulnerabilidad de seguridad, chroot cuando está habilitado no funcionará siempre que el directorio al que los usuarios estén restringidos sea escribible.
+Para evitar cualquier vulnerabilidad de seguridad, chroot cuando está habilitado, no funcionará siempre que el directorio al que los usuarios estén restringidos sea escribible. Para sortear esta limitación, tenemos dos métodos para **permitir la carga de archivos cuando chroot está habilitado.**
 
-Para sortear esta limitación, tenemos dos métodos para permitir la carga de archivos cuando chroot está habilitado.
-
-Método 1 – Este método funciona mediante el uso de un directorio diferente para cargas FTP. Para este tutorial, crearemos un directorio ftp dentro de la casa del usuario para que sirva como chroot y una segunda carga de directorio grabable para cargar los archivos. Para lograr esto, agregue las siguientes líneas al final del archivo.
+- Método 1 – Este método funciona mediante el uso de un directorio diferente para cargas FTP. 
+En nuestro caso, hemos decidio crear un directorio ftp dentro de cada home del usuario para que sirva como chroot y un segundo directorio para la carga de archivos que llamamos *upload*. Para lograr esto, agregamos las siguientes líneas al final del archivo.
 
 ```linuxconfig
 user_sub_token=$USER
 local_root=/home/$USER/ftp
 ```
-Método 2 – El segundo método es simplemente otorgar acceso de escritura al directorio de inicio como un todo. Agregue la siguiente línea para lograr esto.
+- Método 2 – El segundo método es simplemente otorgar acceso de escritura al directorio de inicio como un todo. 
+Agregamos la siguiente línea para lograr esto.
 ```linuxconfig
 allow_writeable_chroot=YES
 ```
