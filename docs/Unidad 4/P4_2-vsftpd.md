@@ -216,3 +216,11 @@ Cierra la conexión.
 ftp> bye
 ```
 
+## Paso 6 - Comprobación de la descarga
+
+Comprobamos que el archivo se ha descargado correctamente en nuestra máquina local.
+La descarga la dejará en la misma carpeta donde se haya producido la conexión ftp. En nuestro caso, la misma carpeta que nos encontremos al salir con el quit.
+
+
+
+
