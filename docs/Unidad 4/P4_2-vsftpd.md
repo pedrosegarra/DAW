@@ -47,6 +47,7 @@ ps -ef | grep vsftpd
 ```
 Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsftpd **/usr/sbin/vsftpd** 
 
+
 ## PASO 2. Configuración del servidor vsftpd
 
 Ahora repasaremos algunas configuraciones importantes para que vsftpd funcione. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
@@ -94,23 +95,61 @@ Reiniciamos vsftpd para habilitar la configuración realizada.
 sudo systemctl restart vsftpd
 ```
 
-### Paso 4: configuración del directorio de usuarios
 
-Ahora, vamos a crear una nueva cuenta de usuario para transacciones FTP, utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante.
+### Paso 3: configuración del directorio de usuarios
+
+1. Ahora, vamos a crear una nueva cuenta de usuario para transacciones FTP, utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante. Estableceremos como contraseña iescaminas.
 
 ```sh
 sudo adduser testuser
 ```
------------------------------
-Ahora vamos a crear una carpeta en nuestro `home` en Debian que llamaremos `ftp`. Recuerda que debes cambiar nombre_usuario por admin (en Debian).
+
+2. Agreguamos el nuevo usuario `testuser` a la lista de usuarios de FTP permitidos.
 
 ```sh
-mkdir /home/nombre_usuario/ftp
+echo "testuser" | sudo tee -a /etc/vsftpd.userlist
+```
+3. Crearemos un directorio FTP y de archivos de datos para este nuevo usuario. Este paso es si desea un directorio diferente como raíz FTP (recuerda que el que tiene por defecto el servidor ftp es  `/srv/ftp`) y otro diferente para cargar archivos para sortear la limitación de chroot jail.
+
+- Creamos la carpeta FTP.
+```sh
+sudo mkdir /home/testuser/ftp
+```
+- Establecer su propiedad publica, para ello cambiaremos el propietario a `nobody` y el grupo a `nogroup`, donde `nobody` es un usuario que generalmente tiene permisos mínimos y se utiliza para ejecutar servicios o procesos que no deben tener acceso a recursos del sistema y `nogroup` es un grupo que también se utiliza para limitar el acceso a recursos y archivos.
+  
+```sh
+sudo chown nobody:nogroup /home/testuser/ftp
 ```
 
-Posteriormente en el archivo de configuración de **vsftpd.conf** indicaremos que este será el directorio al cual vsftpd se cambia después de conectarse el usuario e incluiremos la línea siguiente: `local_root=/home/admin/ftp`
+- Elimina los permisos de escritura en la carpeta.
+```sh
+sudo chmod a-w /home/testuser/ftp
+```
+
+- Verificamos los permisos antes de continuar.
+```sh
+sudo ls -al /home/testuser/ftp
+```
+
+- Ahora vamos a crear el directorio de escritura real para los archivos.
+
+```sh
+sudo mkdir /home/testuser/ftp/upload
+sudo chown testuser:testuser /home/testuser/ftp/upload
+```
+Comprueba los permisos.
+
+```sh
+sudo ls -al /home/testuser/ftp
+```
+Finalmente, agreguemos un archivo test.txt para usar en las pruebas.
+
+```sh
+echo "vsftpd test file" | sudo tee /home/testuser/ftp/upload/test.txt
+```
 
 
-## Comprobar la Conexión FTP al servidor vsftpd SIN CIFRADO
+
+## Paso 5 – Pruebe el acceso FTP
 
 
