@@ -3,7 +3,7 @@ COMUNIDAD : https://help.ubuntu.com/community/vsftpd
 
 # Práctica 4.2 - Instalar y Configurar el servidor vsftpd 
 
-En esta práctica, aprenderemos cómo  instalar y configurar un servidor FTP usando vsftpd en un servidor basado en Ubuntu. También aprenderemos cómo crear grupos de usuarios.
+En esta práctica, aprenderemos cómo  instalar y configurar un servidor FTP usando vsftpd en un servidor basado en Ubuntu. 
 
 **Información básica sobre el servidor vsftpd (Very Secure FTP Daemon):**
 
