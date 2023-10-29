@@ -102,10 +102,10 @@ Comprueba los permisos.
 ```sh
 sudo ls -al /home/userftp/ftp
 ```
-Finalmente, agregamos un archivo test.txt para usar en las pruebas.
+Finalmente, agregamos un archivo pruebaftp.txt para usar en las pruebas.
 
 ```sh
-echo "esto es una prueba con vsftpd" | sudo tee /home/userftp/ftp/upload/test.txt
+echo "esto es una prueba con vsftpd" | sudo tee /home/userftp/ftp/upload/pruebaftp.txt
 ```
 
 ## PASO 3. Configuración del servidor vsftpd
