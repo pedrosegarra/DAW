@@ -4,9 +4,16 @@ En esta práctica, aprenderemos cómo asegurar la conexión usando el protocolo 
 Para ello necesitaremos primero crear un certificado SSL y segundo tendremos que habilitar la conexión SSL/TLS dentro del archivo de configuración del servidor vsftpd. 
 Vemos estos pasos;
 
-## Paso 1. Servidor vsftpd 
+## Instancia en AWS 
 
 Primero abriremos la instancia AWS P4-vsftpd creada en la práctica anterior, donde ya teníamos instalado el servidor vsftpd y usuarios con permisos a FTP.
+
+Añade una Regla de Entrada: En la pestaña "Reglas de entrada", debes añadir una regla para permitir el tráfico en el puerto FTP que necesitas. En este caso vamos a añadir 
+**Para FTPS o SFTP con cifrado (puerto 22), también crea una regla con el protocolo TCP y el puerto 22.**
+
+
+## Paso 1. Servidor vsftpd 
+
 Comprobamos que está funcionando.
 
 
