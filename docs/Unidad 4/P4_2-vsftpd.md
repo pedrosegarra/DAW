@@ -27,10 +27,19 @@ https://linuxpasion.com/como-instalar-y-configurar-un-servidor-ftp-vsftpd-con-ss
 https://howtoforge.es/como-instalar-el-servidor-ftp-vsftpd-y-asegurarlo-con-tls-en-debian-11/
 --------------------------------------
 
-
-## PASO 1. Instalación del servidor vsftpd
+## Creamos una instancia AWS
 
 Vamos a instalar el servidor vsftpd en una VM Debian en AWS. Crear una instancia nueva que llamarás **P4-vsftpd**
+
+**Añade una Regla de Entrada:**
+En la pestaña "Reglas de entrada", debes añadir una regla para permitir el tráfico en el puerto FTP que necesitas. 
+
+- Para FTP no cifrado (puerto 21), crea una regla con el protocolo TCP y el puerto 21.
+- Para FTPS o SFTP con cifrado (puerto 22), también crea una regla con el protocolo TCP y el puerto 22.
+
+Asegúrate de especificar la fuente del tráfico, lo que puede ser tu propia dirección IP si deseas acceder al servidor FTP desde tu ubicación actual o cualquier otra fuente si deseas permitir el acceso desde cualquier lugar (ten en cuenta que esto puede ser menos seguro).
+
+## PASO 1. Instalación del servidor vsftpd 
 
 En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsftpd** :
 
