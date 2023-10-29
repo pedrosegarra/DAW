@@ -96,20 +96,20 @@ sudo systemctl restart vsftpd
 ```
 
 
-### Paso 3: configuración del directorio de usuarios
+### Paso 3: Configuración del directorio de usuarios
 
-1. Ahora, vamos a crear una nueva cuenta de usuario para transacciones FTP, utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante. Estableceremos como contraseña iescaminas.
+1. Ahora, vamos a crear una nueva cuenta de usuario para transacciones FTP, utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante. Estableceremos como contraseña la misma que el usuario.
 
 ```sh
 sudo adduser testuser
 ```
 
-2. Agreguamos el nuevo usuario `testuser` a la lista de usuarios de FTP permitidos.
+2. Agregamos el nuevo usuario `testuser` a la lista de usuarios de FTP permitidos.
 
 ```sh
 echo "testuser" | sudo tee -a /etc/vsftpd.userlist
 ```
-3. Crearemos un directorio FTP y de archivos de datos para este nuevo usuario. Este paso es si desea un directorio diferente como raíz FTP (recuerda que el que tiene por defecto el servidor ftp es  `/srv/ftp`) y otro diferente para cargar archivos para sortear la limitación de chroot jail.
+3. Crearemos un directorio FTP y de archivos de datos para este nuevo usuario. Este paso es cuando se desea un directorio diferente como raíz FTP (recuerda que el que tiene por defecto el servidor ftp es  `/srv/ftp`) y otro diferente para cargar archivos para sortear la limitación de chroot jail.
 
 - Creamos la carpeta FTP.
 ```sh
@@ -148,8 +148,6 @@ Finalmente, agreguemos un archivo test.txt para usar en las pruebas.
 echo "vsftpd test file" | sudo tee /home/testuser/ftp/upload/test.txt
 ```
 
-
-
-## Paso 5 – Pruebe el acceso FTP
+## Paso 4 – Comprobación del acceso FTP
 
 
