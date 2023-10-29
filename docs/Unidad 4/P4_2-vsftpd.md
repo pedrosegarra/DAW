@@ -71,26 +71,26 @@ echo "testuser" | sudo tee -a /etc/vsftpd.userlist
 
 Este paso lo realizamos cuando se desea un directorio diferente como raíz FTP (recuerda que el que tiene por defecto el servidor ftp es  `/srv/ftp`) y otro diferente para cargar archivos para sortear la limitación de chroot jail.
 
-- Creamos la carpeta FTP. 
+Creamos la carpeta FTP. 
 ```sh
 sudo mkdir /home/testuser/ftp
 ```
-- Establecer su propiedad, para ello cambiaremos el propietario a `nobody` y el grupo a `nogroup`, donde `nobody` es un usuario que generalmente tiene permisos mínimos y se utiliza para ejecutar servicios o procesos que no deben tener acceso a recursos del sistema y `nogroup` es un grupo que también se utiliza para limitar el acceso a recursos y archivos.
+Establecer su propiedad, para ello cambiaremos el propietario a `nobody` y el grupo a `nogroup`, donde `nobody` es un usuario que generalmente tiene permisos mínimos y se utiliza para ejecutar servicios o procesos que no deben tener acceso a recursos del sistema y `nogroup` es un grupo que también se utiliza para limitar el acceso a recursos y archivos.
   
 ```sh
 sudo chown nobody:nogroup /home/testuser/ftp
 ```
-- Elimina los permisos de escritura en la carpeta.
+Elimina los permisos de escritura en la carpeta.
 ```sh
 sudo chmod a-w /home/testuser/ftp
 ```
 
-- Verificamos los permisos antes de continuar.
+Verificamos los permisos antes de continuar.
 ```sh
 sudo ls -al /home/testuser/ftp
 ```
 
-- Ahora vamos a crear el directorio de escritura real para los archivos, donde se puedan subir los archivos. Le vamos a dar la propiedad al usuario creado `testuser` y le damos todos los permisos
+Ahora vamos a crear el directorio de escritura real para los archivos, donde se puedan subir los archivos. Le vamos a dar la propiedad al usuario creado `testuser` y le damos todos los permisos
 
 ```sh
 sudo mkdir /home/testuser/ftp/upload
@@ -102,11 +102,12 @@ Comprueba los permisos.
 ```sh
 sudo ls -al /home/testuser/ftp
 ```
-Finalmente, agreguemos un archivo test.txt para usar en las pruebas.
+Finalmente, agregamos un archivo test.txt para usar en las pruebas.
 
 ```sh
-echo "vsftpd test file" | sudo tee /home/testuser/ftp/upload/test.txt
+echo "esto es una prueba con vsftpd" | sudo tee /home/testuser/ftp/upload/test.txt
 ```
+
 ## PASO 3. Configuración del servidor vsftpd
 
 Ahora repasaremos algunas configuraciones importantes para que vsftpd funcione. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
