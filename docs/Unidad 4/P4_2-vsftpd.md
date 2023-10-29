@@ -199,7 +199,7 @@ Recuerda para volver al prompt , debes pulsar q
 
 -------------------------------------------------------------------------
 
-## Paso 5 – Comprobación del acceso FTP
+## Paso 5: Comprobación del acceso FTP
 Nuestro servidor FTP es completamente funcional en este momento. Podemos hacer una pequeña prueba antes de continuar.
 
 Intentemos iniciar sesión como un usuario anónimo. Vemos que funciona según lo previsto, es decir, no se permiten usuarios anónimos.
