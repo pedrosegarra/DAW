@@ -22,6 +22,9 @@ Archivos y directorios que se crean en el sistema:
 
 Vamos a empezar a trabajar. 
 
+IMPORTANTE: he seguido https://linuxpasion.com/como-instalar-y-configurar-un-servidor-ftp-vsftpd-con-ssl-tls-en-ubuntu-20-04
+
+
 ## PASO 1. Instalación del servidor vsftpd
 
 Vamos a instalar el servidor vsftpd en una VM Debian en AWS. Crear una instancia nueva que llamarás **P4-vsftpd**
@@ -57,6 +60,12 @@ sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
 ```
 Estas son las modificaciones que vamos a realizar dentro del archivo de configuración:
 
+Comienza abriendo el archivo de configuración.
+
+```sh
+sudo nano /etc/vsftpd.conf
+```
+
 **1. Acceso FTP a usuarios locales**
 En este tutorial, permitiremos el acceso FTP solo a los usuarios locales y deshabilitaremos cualquier acceso anónimo. Para hacer esto, asegúrese de que las siguientes líneas existan y sean las siguientes.
 
@@ -71,7 +80,7 @@ El propósito singular más importante de FTP aquí es poder escribir en el serv
 ```linuxconfig
 write_enable=YES
 ```
-
+---------------------
 **3. Cárcel de Chroot para los usuarios locales**
 FTP funciona mejor cuando un usuario está restringido a un directorio determinado. Vsftpd logra eso usando chroot jails. Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, descomente la siguiente línea.
 
@@ -79,7 +88,7 @@ FTP funciona mejor cuando un usuario está restringido a un directorio determina
 chroot_local_user=YES
 allow_writeable_chroot=YES
 ```
-
+---------------------
 **4. Restricción de usuarios**
 Para permitir que solo ciertos usuarios inicien sesión en el servidor FTP, agreguamos las siguientes líneas en la parte inferior. Con esta opción habilitada, debemos especificar qué usuarios deberían poder usar FTP y agregar sus nombres de usuario en el archivo /etc/vsftpd.userlist.
 
@@ -89,12 +98,16 @@ userlist_file=/etc/vsftpd.userlist
 userlist_deny=NO
 ```
 
-Reiniciamos vsftpd para habilitar la configuración realizada.
+Guarda y cierra el archivo. Reiniciamos el servicio vsftpd para habilitar la configuración realizada.
 
 ```sh
 sudo systemctl restart vsftpd
 ```
+A continuación, asegúrate de que el servicio vsftpd está en su estado de ejecución ejecutando el siguiente comando en el Terminal:
 
+```sh
+sudo systemctl status vsftpd
+```
 
 ### Paso 3: Configuración del directorio de usuarios
 
@@ -109,18 +122,19 @@ sudo adduser testuser
 ```sh
 echo "testuser" | sudo tee -a /etc/vsftpd.userlist
 ```
-3. Crearemos un directorio FTP y de archivos de datos para este nuevo usuario. Este paso es cuando se desea un directorio diferente como raíz FTP (recuerda que el que tiene por defecto el servidor ftp es  `/srv/ftp`) y otro diferente para cargar archivos para sortear la limitación de chroot jail.
+3. Crearemos un directorio FTP y de archivos de datos para este nuevo usuario.
 
-- Creamos la carpeta FTP.
+Este paso lo realizamos cuando se desea un directorio diferente como raíz FTP (recuerda que el que tiene por defecto el servidor ftp es  `/srv/ftp`) y otro diferente para cargar archivos para sortear la limitación de chroot jail.
+
+- Creamos la carpeta FTP. 
 ```sh
 sudo mkdir /home/testuser/ftp
 ```
-- Establecer su propiedad publica, para ello cambiaremos el propietario a `nobody` y el grupo a `nogroup`, donde `nobody` es un usuario que generalmente tiene permisos mínimos y se utiliza para ejecutar servicios o procesos que no deben tener acceso a recursos del sistema y `nogroup` es un grupo que también se utiliza para limitar el acceso a recursos y archivos.
+- Establecer su propiedad, para ello cambiaremos el propietario a `nobody` y el grupo a `nogroup`, donde `nobody` es un usuario que generalmente tiene permisos mínimos y se utiliza para ejecutar servicios o procesos que no deben tener acceso a recursos del sistema y `nogroup` es un grupo que también se utiliza para limitar el acceso a recursos y archivos.
   
 ```sh
 sudo chown nobody:nogroup /home/testuser/ftp
 ```
-
 - Elimina los permisos de escritura en la carpeta.
 ```sh
 sudo chmod a-w /home/testuser/ftp
@@ -131,11 +145,12 @@ sudo chmod a-w /home/testuser/ftp
 sudo ls -al /home/testuser/ftp
 ```
 
-- Ahora vamos a crear el directorio de escritura real para los archivos.
+- Ahora vamos a crear el directorio de escritura real para los archivos, donde se puedan subir los archivos. Le vamos a dar la propiedad al usuario creado `testuser` y le damos todos los permisos
 
 ```sh
 sudo mkdir /home/testuser/ftp/upload
 sudo chown testuser:testuser /home/testuser/ftp/upload
+sudo chmod -R 777 /home/testuser/ftp/upload
 ```
 Comprueba los permisos.
 
