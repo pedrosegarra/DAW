@@ -85,12 +85,27 @@ write_enable=YES
 ```
 ---------------------
 **3. Cárcel de Chroot para los usuarios locales** ?¿
-FTP funciona mejor cuando un usuario está restringido a un directorio determinado. Vsftpd logra eso usando chroot jails. Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, descomente la siguiente línea.
+FTP funciona mejor cuando un usuario está restringido a un directorio determinado. Vsftpd logra eso usando chroot jails. 
+Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, cambiamos la configuración con las propiedades siguientes: .
 
 ```linuxconfig
 chroot_local_user=YES
+```
+Para evitar cualquier vulnerabilidad de seguridad, chroot cuando está habilitado no funcionará siempre que el directorio al que los usuarios estén restringidos sea escribible.
+
+Para sortear esta limitación, tenemos dos métodos para permitir la carga de archivos cuando chroot está habilitado.
+
+Método 1 – Este método funciona mediante el uso de un directorio diferente para cargas FTP. Para este tutorial, crearemos un directorio ftp dentro de la casa del usuario para que sirva como chroot y una segunda carga de directorio grabable para cargar los archivos. Para lograr esto, agregue las siguientes líneas al final del archivo.
+
+```linuxconfig
+user_sub_token=$USER
+local_root=/home/$USER/ftp
+```
+Método 2 – El segundo método es simplemente otorgar acceso de escritura al directorio de inicio como un todo. Agregue la siguiente línea para lograr esto.
+```linuxconfig
 allow_writeable_chroot=YES
 ```
+
 ---------------------
 **4. Restricción de usuarios**
 Para permitir que solo ciertos usuarios inicien sesión en el servidor FTP, agreguamos las siguientes líneas en la parte inferior. Con esta opción habilitada, debemos especificar qué usuarios deberían poder usar FTP y agregar sus nombres de usuario en el archivo /etc/vsftpd.userlist.
