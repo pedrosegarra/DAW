@@ -2,7 +2,7 @@
 
 # Práctica 4.2 - Instalar y Configurar el servidor vsftpd 
 
-En esta práctica, aprenderemos cómo  instalar y configurar un servidor FTP usando vsftpd en un servidor basado en Debian. En esta primera práctica configuraremos el servidor como FTP básico, sin cifrado también llamado plano (es un manera de configuración insegura)
+En esta práctica, aprenderemos cómo  instalar y configurar un servidor FTP usando vsftpd en un servidor basado en Debian. En esta primera práctica configuraremos el servidor como FTP básico, sin cifrado también llamado cifrado plano (es un manera de configuración insegura)
 
 **Información básica sobre el servidor vsftpd (Very Secure FTP Daemon):**
 
