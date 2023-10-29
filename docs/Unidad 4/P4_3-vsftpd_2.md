@@ -1,7 +1,7 @@
 # Práctica 4.3- Configuración de del servidor con Cifrado
 
 En esta práctica, aprenderemos cómo asegurar la conexión usando el protocolo SSL/TLS.
-Para ello ampliamos la seguridad de nuestra conexión en la instalación de la práctica anterior creada en la instancia AWS P4-vsftpd.
+Para ello utilizaremos la instalación de la práctica anterior creada en la instancia AWS P4-vsftpd.
 
 **Proteger el Vsftpd con SSL/TLS.**
 Digamos que quieres transferir datos encriptados a través de FTP, para ello necesitas crear un certificado SSL y necesitas habilitar la conexión SSL/TLS.
