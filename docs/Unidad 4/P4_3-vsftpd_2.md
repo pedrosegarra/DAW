@@ -52,7 +52,7 @@ sudo ls -l /etc/ssl/private
 Una vez que tengamos el certificado SSL y la clave privada, tendremos que modificar el archivo /etc/vsftpd.conf. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
 
 ```sh
-sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
+sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup2
 ```
 Pasamos a modificar el archivo de configuración utilizando un editor.
 
