@@ -5,11 +5,11 @@ COMUNIDAD : https://help.ubuntu.com/community/vsftpd
 
 En esta práctica, aprenderemos cómo  instalar y configurar un servidor FTP usando vsftpd en un servidor basado en Ubuntu. También aprenderemos cómo crear grupos de usuarios.
 
-## Información básica sobre el servidor vsftpd (Very Secure FTP Daemon):
+**Información básica sobre el servidor vsftpd (Very Secure FTP Daemon):**
 
 Hoy en día existe una amplia gama de servidores FTP de código abierto, como FTPD, VSFTPD, PROFTPD y pureftpd. Entre todos ellos, VSFTPD es un protocolo muy seguro, rápido y el más utilizado para transferir archivos entre dos sistemas. VSFTPD también se conoce como «Demonio de Protocolo de Transferencia de Archivos Muy Seguro» con soporte de SSL, IPv6, FTPS explícito e implícito.
 
-**Archivos y directorios que se crean en el sistema:**
+Archivos y directorios que se crean en el sistema:
 
 - El archivo `/etc/init.d/vsftpd` es el script de inicio en sistemas basados en Linux que permite administrar el servicio vsftpd, a través de  tareas como iniciar, detener, reiniciar y administrar el servicio de FTP. Por ejemplo un comando para iniciar el servicio en Ubuntu sería este: `systemctl start vsftpd` , entre otros (stop, restart, reload, status).
 - El archivo `/usr/sbin/vsftpd` este archivo es el binario principal que se utiliza para iniciar y ejecutar el servidor FTP vsftpd. Es responsable de escuchar en el puerto FTP (por lo general, el puerto 21) y gestionar las conexiones de los clientes FTP. Este archivo lee la configuración del archivo `/etc/vsftpd.conf` al iniciarse para personalizar el comportamiento del servidor FTP. 
@@ -20,11 +20,11 @@ Hoy en día existe una amplia gama de servidores FTP de código abierto, como FT
 - El archivo `/etc/vsftpd.chroot_list` tiene como propósito principal controlar qué usuarios pueden ser "encarcelados" en sus respectivos directorios de inicio (chroot) cuando se conectan al servidor FTP.
 - El archivo `/var/log/vsftpd.log` es un archivo de registro útil para el monitoreo, la solución de problemas y la auditoría de actividades en el servidor FTP.
 
-Vamos a empezar a trabajar ;
-
-Crea una instancia en AWS son el sistema Debian, como has realizado hasta el momento, que llamarás **P4-vsftpd**
+Vamos a empezar a trabajar. 
 
 ## PASO 1. Instalación del servidor vsftpd
+
+Vamos a instalar el servidor vsftpd en una VM Debian en AWS. Crear una instancia nueva que llamarás **P4-vsftpd**
 
 En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsftpd** :
 
