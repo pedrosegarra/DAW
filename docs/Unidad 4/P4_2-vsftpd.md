@@ -216,10 +216,4 @@ Cierra la conexión.
 ```
 ftp> bye
 ```
-```
-ftp> put pruebaftp.txt pruebaftp2.txt
-200 PORT command successful. Consider using PASV.
-150 Ok to send data.
-226 Transfer complete.
-ftp: 30 bytes enviados en 0.20segundos 0.15a KB/s.
-```
+
