@@ -59,7 +59,7 @@ Pasamos a modificar el archivo de configuración utilizando un editor.
 ```sh
 sudo nano /etc/vsftpd.conf
 ```
-En primer lugar, buscaremos las siguientes líneas del archivo y las **eliminaremos por completo**:
+En primer lugar, buscaremos las siguientes líneas del archivo y las **eliminaremos o comentaremos con #**:
 
 ```linuxconfig
 rsa_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
