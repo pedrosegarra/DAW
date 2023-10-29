@@ -1,13 +1,12 @@
 # Práctica 4.3- Configuración de del servidor con Cifrado
 
 En esta práctica, aprenderemos cómo asegurar la conexión usando el protocolo SSL/TLS.
+Para ello ampliamos la seguridad de nuestra conexión en la instalación de la práctica anterior creada en la instancia AWS P4-vsftpd.
 
-
-### 3. Proteger el Vsftpd con SSL/TLS. 
-
-**Generar un certificado autofirmado con OpenSSL**
-
+**Proteger el Vsftpd con SSL/TLS.**
 Digamos que quieres transferir datos encriptados a través de FTP, para ello necesitas crear un certificado SSL y necesitas habilitar la conexión SSL/TLS.
+
+## Paso 1. Generar un certificado autofirmado con OpenSSL 
 
 Puedes crear un certificado utilizando OpenSSL con el siguiente comando:
 
@@ -27,30 +26,19 @@ Este comando genera un certificado SSL autofirmado válido por 365 días y guard
 
 Tenemos que tener en cuenta que nos pedirá que ingresemos cierta información, como el país, el estado/provincia y el nombre común. Puede ingresar los valores que desee o dejarlos en blanco.
 
-**Habilitar el cifrado SSL**
+## Paso 2. Habilitar el cifrado SSL
 
-Una vez que tengamos el certificado SSL y la clave privada, tendremos que modificar el archivo /etc/vsftpd.conf y actualizar las siguientes directivas.
-
-- rsa_cert_file: indicaremos la ruta del archivo del certificado.
-- rsa_private_key_file: indicaremos la ruta del archivo de clave privada.
-- ssl_enable: indicaremos el valor en YES para habilitar el cifrado SSL.
-
-Lo vamos a realizar en el siguiente apartado junto con otros parámetros.
-
-## 4. Configuración del servidor vsftpd
-
-Y una vez realizados estos pasos, procedemos a realizar la configuración de *vsftpd* propiamente dicha. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
+Una vez que tengamos el certificado SSL y la clave privada, tendremos que modificar el archivo /etc/vsftpd.conf. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
 
 ```sh
 sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
 ```
-
-Pasamos a modificar el archivo de configuración de este **servicio vsftpd.conf** utilizando un editor como puede ser *nano* o *vim* :
+Pasamos a modificar el archivo de configuración utilizando un editor.
 
 ```sh
 sudo nano /etc/vsftpd.conf
 ```
-En primer lugar, buscaremos las siguientes líneas del archivo y las **eliminaremos por completo o comentaremos estas líneas**:
+En primer lugar, buscaremos las siguientes líneas del archivo y las **eliminaremos por completo**:
 
 ```linuxconfig
 rsa_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
@@ -71,19 +59,17 @@ ssl_sslv2=NO
 ssl_sslv3=NO
 require_ssl_reuse=NO
 ssl_ciphers=HIGH
-
-local_root=/home/nombre_usuario/ftp
 ```
 
-## 4. Reinicia el servicio 
+## Paso 3. Reinicia el servicio
 
-Finalmente **reiniciamos el servicio** para que coja la nueva configuración realizada en todos estos pasos.
+Finalmente reiniciamos el servicio vsftpd para que coja la nueva configuración realizada en todos estos pasos.
 
 ```sh
 sudo systemctl restart --now vsftpd
 ```
 
-## 5. Comprobar la Conexión FTP al servidor vsftpd
+## Paso 4. Comprobar la Conexión FTP al servidor vsftpd
 
 DESCARGAR EL ARCHIVO DE CONFIGURACION DE BACKUP 
 
