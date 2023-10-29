@@ -1,25 +1,25 @@
 
 
-# Práctica 4.2 - Instalar y Configurar el servidor vsftpd 
+# Práctica 4.2 - Instalar y Configurar el servidor vsFTPd 
 
-En esta práctica, aprenderemos cómo  instalar y configurar un servidor FTP usando vsftpd en un servidor basado en Debian. En esta primera práctica configuraremos el servidor como FTP básico, sin cifrado también llamado cifrado plano (es un manera de configuración insegura)
+En esta práctica, aprenderemos cómo  instalar y configurar un servidor FTP usando vsFTPd en un servidor basado en Debian. En esta primera práctica configuraremos el servidor como FTP básico, sin cifrado también llamado cifrado plano (es un manera de configuración insegura)
 
-**Información básica sobre el servidor vsftpd (Very Secure FTP Daemon):**
+**Información básica sobre el servidor vsFTPd (Very Secure FTP Daemon):**
 
-Hoy en día existe una amplia gama de servidores FTP de código abierto, como FTPD, VSFTPD, PROFTPD y pureftpd. Entre todos ellos, VSFTPD es un protocolo muy seguro, rápido y el más utilizado para transferir archivos entre dos sistemas. VSFTPD también se conoce como «Demonio de Protocolo de Transferencia de Archivos Muy Seguro» con soporte de SSL, IPv6, FTPS explícito e implícito.
+Hoy en día existe una amplia gama de servidores FTP de código abierto, como FTPD, vsFTPd, PROFTPD y pureftpd. Entre todos ellos, vsFTPd es un protocolo muy seguro, rápido y el más utilizado para transferir archivos entre dos sistemas. vsFTPd también se conoce como «Demonio de Protocolo de Transferencia de Archivos Muy Seguro» con soporte de SSL, IPv6, FTPS explícito e implícito.
 
 Archivos y directorios que se crean en el sistema:
 
 - El archivo `/etc/init.d/vsftpd` es el script de inicio en sistemas basados en Linux que permite administrar el servicio vsftpd, a través de  tareas como iniciar, detener, reiniciar y administrar el servicio de FTP. Por ejemplo un comando para iniciar el servicio en Ubuntu sería este: `systemctl start vsftpd` , entre otros (stop, restart, reload, status).
-- El archivo `/usr/sbin/vsftpd` este archivo es el binario principal que se utiliza para iniciar y ejecutar el servidor FTP vsftpd. Es responsable de escuchar en el puerto FTP (por lo general, el puerto 21) y gestionar las conexiones de los clientes FTP. Este archivo lee la configuración del archivo `/etc/vsftpd.conf` al iniciarse para personalizar el comportamiento del servidor FTP. 
-- El archivo `/etc/vsftpd.conf` es el archivo de configuración principal del servidor vsftpd donde se especifican numerosos parámetros de configuración que controlan el comportamiento y la seguridad del servidor FTP.
+- El archivo `/usr/sbin/vsftpd` este archivo es el binario principal que se utiliza para iniciar y ejecutar el servidor vsFTPd. Es responsable de escuchar en el puerto FTP (por lo general, el puerto 21) y gestionar las conexiones de los clientes FTP. Este archivo lee la configuración del archivo `/etc/vsftpd.conf` al iniciarse para personalizar el comportamiento del servidor FTP. 
+- El archivo `/etc/vsftpd.conf` es el archivo de configuración principal del servidor vsFTPd donde se especifican numerosos parámetros de configuración que controlan el comportamiento y la seguridad del servidor FTP.
 - El directorio `/srv/ftp` este directorio raíz por defecto del servidor FTP, que se utiliza para organizar y administrar los archivos y directorios que están disponibles para los usuarios que se conectan al servidor FTP. Es donde se alojarán los archivos para usuarios anónimos (accesos anónimos) sino se indica lo contrario en la configuración.
 - El archivo `/etc/ftpusers` tiene como función denegar el acceso a ciertos usuarios, evitando que puedan autenticarse y utilizar los servicios de FTP.
 - El archivo `/etc/vsftpd.user_list` se utiliza para controlar el acceso permitido a un grupo específico de usuarios. Este archivo no se instala, por lo cual hay que crearlo antes de comenzar a trabajar con la configuración.
 - El archivo `/etc/vsftpd.chroot_list` tiene como propósito principal controlar qué usuarios pueden ser "encarcelados" en sus respectivos directorios de inicio (chroot) cuando se conectan al servidor FTP.
 - El archivo `/var/log/vsftpd.log` es un archivo de registro útil para el monitoreo, la solución de problemas y la auditoría de actividades en el servidor FTP.
 
-  Para más información puedes consultar la comunidad vsftpd : https://help.ubuntu.com/community/vsftpd
+  Para más información puedes consultar la comunidad vsFTPd : https://help.ubuntu.com/community/vsftpd
 
 
 Vamos a empezar a trabajar. 
@@ -31,7 +31,7 @@ https://howtoforge.es/como-instalar-el-servidor-ftp-vsftpd-y-asegurarlo-con-tls-
 
 ## Creamos una instancia AWS
 
-Vamos a instalar el servidor vsftpd en una VM Debian en AWS. Crear una instancia nueva que llamarás **P4-vsftpd**
+Vamos a instalar el servidor vsFTPd en una VM Debian en AWS. Crear una instancia nueva que llamarás **P4-vsFTPd**
 
 **Añade una Regla de Entrada:**
 En la pestaña "Reglas de entrada", debes añadir una regla para permitir el tráfico en el puerto FTP que necesitas. 
@@ -41,9 +41,9 @@ En la pestaña "Reglas de entrada", debes añadir una regla para permitir el tr�
 
 Asegúrate de especificar la fuente del tráfico, lo que puede ser tu propia dirección IP si deseas acceder al servidor FTP desde tu ubicación actual o cualquier otra fuente si deseas permitir el acceso desde cualquier lugar (ten en cuenta que esto puede ser menos seguro).
 
-## PASO 1. Instalación del servidor vsftpd 
+## PASO 1. Instalación del servidor vsFTPd 
 
-En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsftpd** :
+En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsFTPd** :
 
 ```
 sudo apt-get update
@@ -62,7 +62,7 @@ Para comprobar que el servidor se ha iniciado buscamos el proceso:
 ```sh
 ps -ef | grep vsftpd
 ```
-Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsftpd **/usr/sbin/vsftpd** 
+Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsFTPd **/usr/sbin/vsftpd** 
 
 
 ### Paso 2: Configuración del directorio de usuarios
@@ -119,9 +119,9 @@ Finalmente, agregamos un archivo pruebaftp.txt para usar en las pruebas.
 echo "esto es una prueba con vsftpd" | sudo tee /home/userftp/ftp/upload/pruebaftp.txt
 ```
 
-## PASO 3. Configuración del servidor vsftpd
+## PASO 3. Configuración del servidor vsFTPd
 
-Ahora repasaremos algunas configuraciones importantes para que vsftpd funcione. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
+Ahora repasaremos algunas configuraciones importantes para que vsFTPd funcione. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
 
 ```sh
 sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
@@ -150,7 +150,7 @@ write_enable=YES
 ```
 ---------------------
 **3. Cárcel de Chroot para los usuarios locales** ?¿
-FTP funciona mejor cuando un usuario está restringido a un directorio determinado. Vsftpd logra eso usando chroot jails. 
+FTP funciona mejor cuando un usuario está restringido a un directorio determinado. vsFTPd logra eso usando chroot jails. 
 Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, cambiamos la configuración con las propiedades siguientes: .
 
 ```linuxconfig
