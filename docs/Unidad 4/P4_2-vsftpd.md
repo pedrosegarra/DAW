@@ -59,13 +59,13 @@ Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.co
 1. Ahora, vamos a crear una nueva cuenta de usuario para transacciones FTP, utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante. Estableceremos como contraseña la misma que el usuario.
 
 ```sh
-sudo adduser testuser
+sudo adduser userftp
 ```
 
-2. Agregamos el nuevo usuario `testuser` a la lista de usuarios de FTP permitidos.
+2. Agregamos el nuevo usuario `userftp` a la lista de usuarios de FTP permitidos.
 
 ```sh
-echo "testuser" | sudo tee -a /etc/vsftpd.userlist
+echo "userftp" | sudo tee -a /etc/vsftpd.userlist
 ```
 3. Crearemos un directorio FTP y de archivos de datos para este nuevo usuario.
 
@@ -73,39 +73,39 @@ Este paso lo realizamos cuando se desea un directorio diferente como raíz FTP (
 
 Creamos la carpeta FTP. 
 ```sh
-sudo mkdir /home/testuser/ftp
+sudo mkdir /home/userftp/ftp
 ```
 Establecer su propiedad, para ello cambiaremos el propietario a `nobody` y el grupo a `nogroup`, donde `nobody` es un usuario que generalmente tiene permisos mínimos y se utiliza para ejecutar servicios o procesos que no deben tener acceso a recursos del sistema y `nogroup` es un grupo que también se utiliza para limitar el acceso a recursos y archivos.
   
 ```sh
-sudo chown nobody:nogroup /home/testuser/ftp
+sudo chown nobody:nogroup /home/userftp/ftp
 ```
 Elimina los permisos de escritura en la carpeta.
 ```sh
-sudo chmod a-w /home/testuser/ftp
+sudo chmod a-w /home/userftp/ftp
 ```
 
 Verificamos los permisos antes de continuar.
 ```sh
-sudo ls -al /home/testuser/ftp
+sudo ls -al /home/userftp/ftp
 ```
 
-Ahora vamos a crear el directorio de escritura real para los archivos, donde se puedan subir los archivos. Le vamos a dar la propiedad al usuario creado `testuser` y le damos todos los permisos
+Ahora vamos a crear el directorio de escritura real para los archivos, donde se puedan subir los archivos. Le vamos a dar la propiedad al usuario creado `userftp` y le damos todos los permisos
 
 ```sh
-sudo mkdir /home/testuser/ftp/upload
-sudo chown testuser:testuser /home/testuser/ftp/upload
-sudo chmod -R 777 /home/testuser/ftp/upload
+sudo mkdir /home/userftp/ftp/upload
+sudo chown userftp:userftp /home/userftp/ftp/upload
+sudo chmod -R 777 /home/userftp/ftp/upload
 ```
 Comprueba los permisos.
 
 ```sh
-sudo ls -al /home/testuser/ftp
+sudo ls -al /home/userftp/ftp
 ```
 Finalmente, agregamos un archivo test.txt para usar en las pruebas.
 
 ```sh
-echo "esto es una prueba con vsftpd" | sudo tee /home/testuser/ftp/upload/test.txt
+echo "esto es una prueba con vsftpd" | sudo tee /home/userftp/ftp/upload/test.txt
 ```
 
 ## PASO 3. Configuración del servidor vsftpd
