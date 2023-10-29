@@ -66,7 +66,7 @@ Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.co
 
 -------------------------------------------------------------------------
 
-### PASO 2: Configuración del directorio de usuarios
+## PASO 2: Configuración del directorio de usuarios
 
 1. Ahora, vamos a crear una nueva cuenta de usuario para transacciones FTP, utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante. Estableceremos como contraseña la misma que el usuario.
 
