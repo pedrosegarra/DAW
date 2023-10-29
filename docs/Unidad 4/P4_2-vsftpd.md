@@ -197,19 +197,19 @@ Nuestro servidor FTP es completamente funcional en este momento. Podemos hacer u
 
 Intentemos iniciar sesión como un usuario anónimo. Vemos que funciona según lo previsto, es decir, no se permiten usuarios anónimos.
 
-![P4_2:acceso al servidor como anonymous](P4_2/P4_2_1.png)
+![imagenP4_2:acceso al servidor como anonymous](P4_2/P4_2_1.png)
 
 Ahora vamos a conectarnos como usuario de prueba `userftp` que creamos para acceder al servidor FTP. 
 
-![P4_2:acceso al servidor como userftp](P4_2/P4_2_2.png)
+![imagenP4_2:acceso al servidor como userftp](P4_2/P4_2_2.png)
 
 Cambiemos al directorio de carga y usemos el comando get para transferir el archivo de prueba a nuestra máquina local.
 
-![P4_2:descarga del archivo](P4_2/P4_2_3.png)
+![imagenP4_2:descarga del archivo](P4_2/P4_2_3.png)
 
 A continuación, subamos el archivo con un nuevo nombre usando el comando put para probar los permisos de escritura del archivo.
 
-![P4_2:modificación del archivo](P4_2/P4_2_4.png)
+![imagenP4_2:modificación del archivo](P4_2/P4_2_4.png)
 
 Cierra la conexión.
 ```
