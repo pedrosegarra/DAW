@@ -19,10 +19,15 @@ Ya hemos visto que el servidor vsftpd admite FTPS (FTP sobre SSL/TLS), es decir 
 ```sh
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem
 ```
-
-Este comando genera un certificado SSL autofirmado válido por 365 días y guarda la clave privada en `/etc/ssl/private/vsftpd-key.pem` y el certificado en `/etc/ssl/certs/vsftpd-cert.pem`
-
 Tenemos que tener en cuenta que nos pedirá que ingresemos cierta información, como el país, el estado/provincia y el nombre común. Puede ingresar los valores que desee o dejarlos en blanco.
+
+Este comando genera un certificado SSL autofirmado válido por 365 días y guarda la clave privada y el certificado en `/etc/ssl/private/vsftpd-cert.pem`
+
+Podemos comprobarlo con el comando 
+```sh
+sudo ls -l /etc/ssl/private
+```
+
 
 ## Paso 3. Habilitar el cifrado SSL
 
@@ -49,6 +54,7 @@ Tras ello, **añadiremos** estas líneas en su lugar;
 rsa_cert_file=/etc/ssl/private/vsftpd.pem
 rsa_private_key_file=/etc/ssl/private/vsftpd.pem
 ssl_enable=YES
+
 allow_anon_ssl=NO
 force_local_data_ssl=YES
 force_local_logins_ssl=YES
@@ -74,8 +80,8 @@ DESCARGAR EL ARCHIVO DE CONFIGURACION DE BACKUP
 ¿CON QUE USUARIO CONSIGO ACCEDER AL SERVIDOR FTP DESDE MI PC PARA PODER SUBIR O BAJAR ARCHIVOS ??
 
 - EL USUARIO admin ? profe ? DEBEN ESTAR DENTRO DEL etc/group y dentro de etc/ftp 
-
------- ESTO ES DE RAUL PRIETO QUE NO ENTIENDO ------
+-----------------------------
+  ------ ESTO ES DE RAUL PRIETO QUE NO ENTIENDO ------
 
 > Para poner realizar una conexión FTP al servidor FTP, debemos tener en cuenta si el modo de acceso es
 >> - *Mediante el puerto por defecto del protocolo <u>inseguro</u> FTP*, el **puerto 21**, pero utilizando certificados que cifran el intercambio de datos convirtiéndolo así en <u>seguro</u>
