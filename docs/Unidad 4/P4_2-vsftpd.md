@@ -66,7 +66,7 @@ Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.co
 
 -------------------------------------------------------------------------
 
-### Paso 2: Configuración del directorio de usuarios
+### PASO 2: Configuración del directorio de usuarios
 
 1. Ahora, vamos a crear una nueva cuenta de usuario para transacciones FTP, utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante. Estableceremos como contraseña la misma que el usuario.
 
@@ -152,8 +152,7 @@ El propósito singular más importante de FTP aquí es poder escribir en el serv
 ```linuxconfig
 write_enable=YES
 ```
----------------------
-**3. Cárcel de Chroot para los usuarios locales** ?¿
+**3. Cárcel de Chroot para los usuarios locales**
 FTP funciona mejor cuando un usuario está restringido a un directorio determinado. vsFTPd logra eso usando chroot jails. 
 Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, cambiamos la configuración con las propiedades siguientes: .
 
@@ -173,7 +172,6 @@ local_root=/home/userftp/ftp
 allow_writeable_chroot=YES
 ```
 
----------------------
 **4. Restricción de usuarios**
 Para permitir que solo ciertos usuarios inicien sesión en el servidor FTP, agreguamos las siguientes líneas en la parte inferior. Con esta opción habilitada, debemos especificar qué usuarios deberían poder usar FTP y agregar sus nombres de usuario en el archivo /etc/vsftpd.userlist.
 
@@ -197,7 +195,7 @@ Recuerda para volver al prompt , debes pulsar q
 
 -------------------------------------------------------------------------
 
-## Paso 5 – Comprobación del acceso FTP
+## PASO 4 – Comprobación del acceso FTP
 Nuestro servidor FTP es completamente funcional en este momento. Podemos hacer una pequeña prueba antes de continuar.
 
 Intentemos iniciar sesión como un usuario anónimo. Vemos que funciona según lo previsto, es decir, no se permiten usuarios anónimos.
@@ -222,7 +220,7 @@ ftp> bye
 ```
 -------------------------------------------------------------------------
 
-## Paso 6 - Comprobación de la descarga
+## PASO 5 - Comprobación de la descarga
 
 Comprobamos que el archivo se ha descargado correctamente en nuestra máquina local.
 La descarga la dejará en la misma carpeta donde se haya producido la conexión ftp. En nuestro caso, la misma carpeta que nos encontremos al salir con el quit.
