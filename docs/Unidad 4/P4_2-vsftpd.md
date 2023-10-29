@@ -48,14 +48,6 @@ ps -ef | grep vsftpd
 ```
 Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsftpd **/usr/sbin/vsftpd** 
 
-| Column 1 | Column 2 | Column 3 |
-|----------|----------|----------|
-| anonymous_enable=NO 
-local_enable=YES| Acceso FTP a usuarios locales   | Cell 3   |
-| write_enable=YES| Habilitar la carga de archivos   | Cell 6   |
-| Row 3    | Cell 8   | Cell 9   |
-
-
 ## PASO 2. Configuración del servidor vsftpd
 
 Ahora repasaremos algunas configuraciones importantes para que vsftpd funcione. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
