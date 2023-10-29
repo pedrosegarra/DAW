@@ -1,5 +1,4 @@
 
-COMUNIDAD : https://help.ubuntu.com/community/vsftpd
 
 # Práctica 4.2 - Instalar y Configurar el servidor vsftpd 
 
@@ -19,6 +18,9 @@ Archivos y directorios que se crean en el sistema:
 - El archivo `/etc/vsftpd.user_list` se utiliza para controlar el acceso permitido a un grupo específico de usuarios. Este archivo no se instala, por lo cual hay que crearlo antes de comenzar a trabajar con la configuración.
 - El archivo `/etc/vsftpd.chroot_list` tiene como propósito principal controlar qué usuarios pueden ser "encarcelados" en sus respectivos directorios de inicio (chroot) cuando se conectan al servidor FTP.
 - El archivo `/var/log/vsftpd.log` es un archivo de registro útil para el monitoreo, la solución de problemas y la auditoría de actividades en el servidor FTP.
+
+  Para más información puedes consultar la comunidad vsftpd : https://help.ubuntu.com/community/vsftpd
+
 
 Vamos a empezar a trabajar. 
 --------------------------------------
