@@ -160,8 +160,8 @@ Para evitar cualquier vulnerabilidad de seguridad, chroot cuando está habilitad
 En nuestro caso, hemos decidio crear un directorio `ftp` dentro del home del usuario para que sirva como chroot y un segundo directorio para la carga de archivos que hemos llamamos `upload`. Para lograr esto, agregamos las siguientes líneas al final del archivo.
 
 ```linuxconfig
-user_sub_token=$USER
-local_root=/home/$USER/ftp
+user_sub_token=userftp
+local_root=/home/userftp/ftp
 ```
 - Método 2 – El segundo método es simplemente otorgar acceso de escritura al directorio de inicio como un todo. 
 Agregamos la siguiente línea para lograr esto.
