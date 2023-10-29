@@ -4,6 +4,7 @@
 
 En esta práctica, aprenderemos cómo  instalar y configurar un servidor FTP usando vsFTPd en un servidor basado en Debian. En esta primera práctica configuraremos el servidor como FTP no cifrado (es un manera de configuración insegura)
 
+-------------------------------------------------------------------------
 **Información básica sobre el servidor vsFTPd (Very Secure FTP Daemon):**
 
 Hoy en día existe una amplia gama de servidores FTP de código abierto, como FTPD, vsFTPd, PROFTPD y pureftpd. Entre todos ellos, vsFTPd es un protocolo muy seguro, rápido y el más utilizado para transferir archivos entre dos sistemas. vsFTPd también se conoce como «Demonio de Protocolo de Transferencia de Archivos Muy Seguro» con soporte de SSL, IPv6, FTPS explícito e implícito.
@@ -21,7 +22,7 @@ Archivos y directorios que se crean en el sistema:
 
   Para más información puedes consultar la comunidad vsFTPd : https://help.ubuntu.com/community/vsftpd
 
-
+-------------------------------------------------------------------------
 Vamos a empezar a trabajar. 
 
 ## Creamos una instancia AWS
@@ -38,6 +39,7 @@ Asegúrate de especificar la fuente del tráfico, lo que puede ser tu propia dir
 
 ![imagenP4_2:grupo de seguridad AWS](P4_2/P4_2_0.png)
 
+-------------------------------------------------------------------------
 
 ## PASO 1. Instalación del servidor vsFTPd 
 
@@ -62,6 +64,7 @@ ps -ef | grep vsftpd
 ```
 Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsFTPd **/usr/sbin/vsftpd** 
 
+-------------------------------------------------------------------------
 
 ### Paso 2: Configuración del directorio de usuarios
 
@@ -118,6 +121,7 @@ Finalmente, agregamos un archivo `pruebaftp.txt` para usar en las pruebas.
 ```sh
 echo "esto es una prueba con vsftpd" | sudo tee /home/userftp/ftp/upload/pruebaftp.txt
 ```
+-------------------------------------------------------------------------
 
 ## PASO 3. Configuración del servidor vsFTPd
 
@@ -191,6 +195,7 @@ sudo systemctl status vsftpd
 ```
 Recuerda para volver al prompt , debes pulsar q  
 
+-------------------------------------------------------------------------
 
 ## Paso 5 – Comprobación del acceso FTP
 Nuestro servidor FTP es completamente funcional en este momento. Podemos hacer una pequeña prueba antes de continuar.
@@ -215,12 +220,14 @@ Cierra la conexión.
 ```
 ftp> bye
 ```
+-------------------------------------------------------------------------
 
 ## Paso 6 - Comprobación de la descarga
 
 Comprobamos que el archivo se ha descargado correctamente en nuestra máquina local.
 La descarga la dejará en la misma carpeta donde se haya producido la conexión ftp. En nuestro caso, la misma carpeta que nos encontremos al salir con el quit.
 
+![imagenP4_2:Comprobación de la descarga](P4_2/P4_2_5.png)
 
 
 
