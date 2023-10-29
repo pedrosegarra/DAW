@@ -21,8 +21,11 @@ Archivos y directorios que se crean en el sistema:
 - El archivo `/var/log/vsftpd.log` es un archivo de registro útil para el monitoreo, la solución de problemas y la auditoría de actividades en el servidor FTP.
 
 Vamos a empezar a trabajar. 
-
-IMPORTANTE: he seguido https://linuxpasion.com/como-instalar-y-configurar-un-servidor-ftp-vsftpd-con-ssl-tls-en-ubuntu-20-04
+--------------------------------------
+IMPORTANTE: he seguido 
+https://linuxpasion.com/como-instalar-y-configurar-un-servidor-ftp-vsftpd-con-ssl-tls-en-ubuntu-20-04
+https://howtoforge.es/como-instalar-el-servidor-ftp-vsftpd-y-asegurarlo-con-tls-en-debian-11/
+--------------------------------------
 
 
 ## PASO 1. Instalación del servidor vsftpd
@@ -81,7 +84,7 @@ El propósito singular más importante de FTP aquí es poder escribir en el serv
 write_enable=YES
 ```
 ---------------------
-**3. Cárcel de Chroot para los usuarios locales**
+**3. Cárcel de Chroot para los usuarios locales** ?¿
 FTP funciona mejor cuando un usuario está restringido a un directorio determinado. Vsftpd logra eso usando chroot jails. Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, descomente la siguiente línea.
 
 ```linuxconfig
@@ -108,6 +111,7 @@ A continuación, asegúrate de que el servicio vsftpd está en su estado de ejec
 ```sh
 sudo systemctl status vsftpd
 ```
+Recuerda para volver al prompt , debes pulsar q  
 
 ### Paso 3: Configuración del directorio de usuarios
 
@@ -164,5 +168,8 @@ echo "vsftpd test file" | sudo tee /home/testuser/ftp/upload/test.txt
 ```
 
 ## Paso 4 – Comprobación del acceso FTP
+
+
+
 
 
