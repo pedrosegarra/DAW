@@ -84,22 +84,24 @@ Creamos la carpeta FTP.
 ```sh
 sudo mkdir /home/userftp/ftp
 ```
-Establecer su propiedad, para ello cambiaremos el propietario a `nobody` y el grupo a `nogroup`, donde `nobody` es un usuario que generalmente tiene permisos mínimos y se utiliza para ejecutar servicios o procesos que no deben tener acceso a recursos del sistema y `nogroup` es un grupo que también se utiliza para limitar el acceso a recursos y archivos.
+Establecemos la propiedad de esta carpeta de la siguiente forma;
   
 ```sh
 sudo chown nobody:nogroup /home/userftp/ftp
 ```
-Elimina los permisos de escritura en la carpeta.
+Donde `nobody` es un usuario que generalmente tiene permisos mínimos y se utiliza para ejecutar servicios o procesos que no deben tener acceso a recursos del sistema y `nogroup` es un grupo que también se utiliza para limitar el acceso a recursos y archivos.
+
+También debemos eliminar los permisos de escritura en la carpeta.
 ```sh
 sudo chmod a-w /home/userftp/ftp
 ```
 
-Verificamos los permisos antes de continuar.
+Antes de continuar, vamos a verificar los permisos.
 ```sh
 sudo ls -al /home/userftp/ftp
 ```
 
-Ahora vamos a crear el directorio de escritura real para los archivos, donde se puedan subir los archivos. Le vamos a dar la propiedad al usuario creado `userftp` y le damos todos los permisos
+Ahora vamos a crear el **directorio de escritura real para los archivos**, donde se puedan subir los archivos. Le vamos a dar la propiedad al usuario creado `userftp` y le damos todos los permisos
 
 ```sh
 sudo mkdir /home/userftp/ftp/upload
@@ -111,7 +113,7 @@ Comprueba los permisos.
 ```sh
 sudo ls -al /home/userftp/ftp
 ```
-Finalmente, agregamos un archivo pruebaftp.txt para usar en las pruebas.
+Finalmente, agregamos un archivo `pruebaftp.txt` para usar en las pruebas.
 
 ```sh
 echo "esto es una prueba con vsftpd" | sudo tee /home/userftp/ftp/upload/pruebaftp.txt
@@ -154,17 +156,15 @@ Cuando chroot está habilitado para usuarios locales, están restringidos a sus 
 ```linuxconfig
 chroot_local_user=YES
 ```
-Para evitar cualquier vulnerabilidad de seguridad, chroot cuando está habilitado, no funcionará siempre que el directorio al que los usuarios estén restringidos sea escribible. Para sortear esta limitación, tenemos dos métodos para **permitir la carga de archivos cuando chroot está habilitado.**
+Para evitar cualquier vulnerabilidad de seguridad, **cuando chroot está habilitado**, no funcionará si el directorio al que los usuarios estén restringidos es escribible. Para sortear esta limitación, tenemos dos opciones de configuración:
 
-- Método 1 – Este método funciona mediante el uso de un directorio diferente para cargas FTP. 
-En nuestro caso, hemos decidio crear un directorio `ftp` dentro del home del usuario para que sirva como chroot y un segundo directorio para la carga de archivos que hemos llamamos `upload`. Para lograr esto, agregamos las siguientes líneas al final del archivo.
+- Opción 1 – Se debe utilizar un directorio diferente para cargas FTP. ES NUESTRO CASO, nuestro directorio creado es `ftp` dentro del home del usuario que servirá como chroot y hemos creado un segundo directorio para la carga de archivos que hemos llamamos `upload` dentro de `ftp`. Para configurar esta opción de chroot, agregamos las siguientes líneas al final del archivo.
 
 ```linuxconfig
 user_sub_token=userftp
 local_root=/home/userftp/ftp
 ```
-- Método 2 – El segundo método es simplemente otorgar acceso de escritura al directorio de inicio como un todo. 
-Agregamos la siguiente línea para lograr esto.
+- Opción 2 – El segundo método es simplemente otorgar acceso de escritura al directorio de inicio como un todo. En ese caso agregamos la siguiente línea(PERO NO ES NUESTRO CASO):
 ```linuxconfig
 allow_writeable_chroot=YES
 ```
