@@ -1,5 +1,8 @@
 # Práctica 4.3- Configuración de del servidor con Cifrado
 
+En esta práctica, aprenderemos cómo asegurar la conexión usando el protocolo SSL/TLS.
+
+
 ### 3. Proteger el Vsftpd con SSL/TLS. 
 
 **Generar un certificado autofirmado con OpenSSL**
