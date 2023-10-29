@@ -41,7 +41,7 @@ Asegúrate de especificar la fuente del tráfico, lo que puede ser tu propia dir
 
 -------------------------------------------------------------------------
 
-## PASO 1. Instalación del servidor vsFTPd 
+## Paso 1. Instalación del servidor vsFTPd 
 
 En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsFTPd** :
 
@@ -66,7 +66,7 @@ Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.co
 
 -------------------------------------------------------------------------
 
-## PASO 2: Configuración del directorio de usuarios
+## Paso 2: Configuración del directorio de usuarios
 
 1. Ahora, vamos a crear una nueva cuenta de usuario para transacciones FTP, utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante. Estableceremos como contraseña la misma que el usuario.
 
@@ -123,7 +123,7 @@ echo "esto es una prueba con vsftpd" | sudo tee /home/userftp/ftp/upload/pruebaf
 ```
 -------------------------------------------------------------------------
 
-## PASO 3. Configuración del servidor vsFTPd
+## Paso 3. Configuración del servidor vsFTPd
 
 Ahora repasaremos algunas configuraciones importantes para que vsFTPd funcione. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
 
@@ -181,7 +181,11 @@ userlist_file=/etc/vsftpd.userlist
 userlist_deny=NO
 ```
 
-Guarda y cierra el archivo. Reiniciamos el servicio vsftpd para habilitar la configuración realizada.
+Guarda y cierra el archivo. 
+
+## Paso 4. Reiniciamos del servidor vsFTPd
+
+Reiniciamos el servicio vsftpd para habilitar la configuración realizada.
 
 ```sh
 sudo systemctl restart vsftpd
@@ -195,7 +199,7 @@ Recuerda para volver al prompt , debes pulsar q
 
 -------------------------------------------------------------------------
 
-## PASO 4 – Comprobación del acceso FTP
+## Paso 5 – Comprobación del acceso FTP
 Nuestro servidor FTP es completamente funcional en este momento. Podemos hacer una pequeña prueba antes de continuar.
 
 Intentemos iniciar sesión como un usuario anónimo. Vemos que funciona según lo previsto, es decir, no se permiten usuarios anónimos.
@@ -218,9 +222,8 @@ Cierra la conexión.
 ```
 ftp> bye
 ```
--------------------------------------------------------------------------
 
-## PASO 5 - Comprobación de la descarga
+Finalmente comprobación que la descarga se ha producido.
 
 Comprobamos que el archivo se ha descargado correctamente en nuestra máquina local.
 La descarga la dejará en la misma carpeta donde se haya producido la conexión ftp. En nuestro caso, la misma carpeta que nos encontremos al salir con el quit.
