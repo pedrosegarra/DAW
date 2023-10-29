@@ -23,11 +23,6 @@ Archivos y directorios que se crean en el sistema:
 
 
 Vamos a empezar a trabajar. 
---------------------------------------
-IMPORTANTE: he seguido 
-https://linuxpasion.com/como-instalar-y-configurar-un-servidor-ftp-vsftpd-con-ssl-tls-en-ubuntu-20-04
-https://howtoforge.es/como-instalar-el-servidor-ftp-vsftpd-y-asegurarlo-con-tls-en-debian-11/
---------------------------------------
 
 ## Creamos una instancia AWS
 
@@ -40,6 +35,9 @@ En la pestaña "Reglas de entrada", debes añadir una regla para permitir el tr�
 - Para FTPS o SFTP con cifrado (puerto 22), también crea una regla con el protocolo TCP y el puerto 22.
 
 Asegúrate de especificar la fuente del tráfico, lo que puede ser tu propia dirección IP si deseas acceder al servidor FTP desde tu ubicación actual o cualquier otra fuente si deseas permitir el acceso desde cualquier lugar (ten en cuenta que esto puede ser menos seguro).
+
+![imagenP4_2:grupo de seguridad AWS](P4_2/P4_2_0.png)
+
 
 ## PASO 1. Instalación del servidor vsFTPd 
 
