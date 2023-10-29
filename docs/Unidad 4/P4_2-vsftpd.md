@@ -46,10 +46,6 @@ Para comprobar que el servidor se ha iniciado buscamos el proceso:
 ```sh
 ps -ef | grep vsftpd
 ```
-También podemos utilizar el comando para consultar el estado del servicio:
-```sh
-systemctl status vsftpd
-```
 Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsftpd **/usr/sbin/vsftpd** 
 
 
@@ -60,8 +56,9 @@ Ahora repasaremos algunas configuraciones importantes para que vsftpd funcione. 
 ```sh
 sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
 ```
+Estas son las modificaciones que vamos a realizar dentro del archivo de configuración:
 
-**1. Acceso FTP**
+**1. Acceso FTP a usuarios locales**
 
 En este tutorial, permitiremos el acceso FTP solo a los usuarios locales y deshabilitaremos cualquier acceso anónimo. Para hacer esto, asegúrese de que las siguientes líneas existan y sean las siguientes.
 
@@ -77,7 +74,7 @@ El propósito singular más importante de FTP aquí es poder escribir en el serv
 write_enable=YES
 ```
 
-**3. Cárcel de Chroot**
+**3. Cárcel de Chroot para los usuarios locales**
 FTP funciona mejor cuando un usuario está restringido a un directorio determinado. Vsftpd logra eso usando chroot jails. Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, descomente la siguiente línea.
 
 ```linuxconfig
@@ -85,8 +82,8 @@ chroot_local_user=YES
 allow_writeable_chroot=YES
 ```
 
-**5. Restricción de usuarios**
-Para permitir que solo ciertos usuarios inicien sesión en el servidor FTP, agregue las siguientes líneas en la parte inferior.
+**4. Restricción de usuarios**
+Para permitir que solo ciertos usuarios inicien sesión en el servidor FTP, agreguamos las siguientes líneas en la parte inferior. Con esta opción habilitada, debemos especificar qué usuarios deberían poder usar FTP y agregar sus nombres de usuario en el archivo /etc/vsftpd.userlist.
 
 ```linuxconfig
 userlist_enable=YES
@@ -94,19 +91,20 @@ userlist_file=/etc/vsftpd.userlist
 userlist_deny=NO
 ```
 
-Con esta opción habilitada, debemos especificar qué usuarios deberían poder usar FTP y agregar sus nombres de usuario en el archivo /etc/vsftpd.userlist.
+Reiniciamos vsftpd para habilitar la configuración realizada.
 
-Reinicie vsftpd para habilitar la configuración.
+```sh
+sudo systemctl restart vsftpd
+```
 
-$ sudo systemctl restart vsftpd
 ### Paso 4: configuración del directorio de usuarios
 
-Ahora, vamos a crear una nueva cuenta de usuario para transacciones FTP., utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante.
+Ahora, vamos a crear una nueva cuenta de usuario para transacciones FTP, utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante.
 
 ```sh
 sudo adduser testuser
 ```
-
+-----------------------------
 Ahora vamos a crear una carpeta en nuestro `home` en Debian que llamaremos `ftp`. Recuerda que debes cambiar nombre_usuario por admin (en Debian).
 
 ```sh
@@ -114,6 +112,10 @@ mkdir /home/nombre_usuario/ftp
 ```
 
 Posteriormente en el archivo de configuración de **vsftpd.conf** indicaremos que este será el directorio al cual vsftpd se cambia después de conectarse el usuario e incluiremos la línea siguiente: `local_root=/home/admin/ftp`
+
+
+## Comprobar la Conexión FTP al servidor vsftpd SIN CIFRADO
+
 
 ### 3. Proteger el Vsftpd con SSL/TLS. 
 
@@ -127,8 +129,8 @@ Ya hemos visto que el servidor vsftpd admite FTPS (FTP sobre SSL/TLS), es decir 
 
 ```sh
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem
-
-
+```
+```sh
 sudo openssl req \ 
 -x509 -nodes -days 365 \ 
 -newkey rsa:2048 \ 
