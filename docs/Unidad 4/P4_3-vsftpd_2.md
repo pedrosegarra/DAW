@@ -19,13 +19,7 @@ Ya hemos visto que el servidor vsftpd admite FTPS (FTP sobre SSL/TLS), es decir 
 ```sh
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem
 ```
-```sh
-sudo openssl req \ 
--x509 -nodes -days 365 \ 
--newkey rsa:2048 \ 
--keyout /etc/ssl/private/vsftpd-key.pem \ 
--out /etc/ssl/certs/vsftpd-cert.pem
-```
+
 Este comando genera un certificado SSL autofirmado válido por 365 días y guarda la clave privada y el certificado en /etc/ssl/private/vsftpd-key.pem y /etc/ssl/certs/vsftpd-cert.pem.
 
 Tenemos que tener en cuenta que nos pedirá que ingresemos cierta información, como el país, el estado/provincia y el nombre común. Puede ingresar los valores que desee o dejarlos en blanco.
