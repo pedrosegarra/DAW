@@ -4,9 +4,13 @@ En esta práctica, aprenderemos cómo asegurar la conexión usando el protocolo 
 Para ello necesitaremos primero crear un certificado SSL y segundo tendremos que habilitar la conexión SSL/TLS dentro del archivo de configuración del servidor vsftpd. 
 Vemos estos pasos;
 
-Primero abriremos la instancia AWS P4-vsftpd creada en la práctica anterior, donde ya teníamos instalado el servidor vsftpd y usuarios con permisos a FTP.
+## Paso 1. Servidor vsftpd 
 
-## Paso 1. Generar un certificado autofirmado con OpenSSL 
+Primero abriremos la instancia AWS P4-vsftpd creada en la práctica anterior, donde ya teníamos instalado el servidor vsftpd y usuarios con permisos a FTP.
+Comprobamos que está funcionando.
+
+
+## Paso 2. Generar un certificado autofirmado con OpenSSL 
 
 Puedes crear un certificado utilizando OpenSSL con el siguiente comando:
 
@@ -26,7 +30,7 @@ Este comando genera un certificado SSL autofirmado válido por 365 días y guard
 
 Tenemos que tener en cuenta que nos pedirá que ingresemos cierta información, como el país, el estado/provincia y el nombre común. Puede ingresar los valores que desee o dejarlos en blanco.
 
-## Paso 2. Habilitar el cifrado SSL
+## Paso 3. Habilitar el cifrado SSL
 
 Una vez que tengamos el certificado SSL y la clave privada, tendremos que modificar el archivo /etc/vsftpd.conf. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
 
@@ -61,7 +65,7 @@ require_ssl_reuse=NO
 ssl_ciphers=HIGH
 ```
 
-## Paso 3. Reinicia el servicio
+## Paso 4. Reinicia el servicio
 
 Finalmente reiniciamos el servicio vsftpd para que coja la nueva configuración realizada en todos estos pasos.
 
@@ -69,7 +73,7 @@ Finalmente reiniciamos el servicio vsftpd para que coja la nueva configuración 
 sudo systemctl restart --now vsftpd
 ```
 
-## Paso 4. Comprobar la Conexión FTP al servidor vsftpd
+## Paso 5. Comprobar la Conexión FTP al servidor vsftpd
 
 DESCARGAR EL ARCHIVO DE CONFIGURACION DE BACKUP 
 
