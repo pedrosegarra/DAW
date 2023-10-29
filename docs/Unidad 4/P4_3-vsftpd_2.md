@@ -1,4 +1,4 @@
-# Práctica 4.3- Configuración de del servidor con Cifrado
+# Práctica 4.3- Configuración de servidor FTP con Cifrado
 
 En esta práctica, aprenderemos cómo asegurar la conexión usando el protocolo SSL/TLS, de esta forma se podrán transferir datos encriptados a través de FTP.
 Para ello necesitaremos primero crear un certificado SSL y segundo tendremos que habilitar la conexión SSL/TLS dentro del archivo de configuración del servidor vsftpd. 
