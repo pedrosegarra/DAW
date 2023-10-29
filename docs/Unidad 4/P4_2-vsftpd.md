@@ -54,81 +54,7 @@ ps -ef | grep vsftpd
 Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsftpd **/usr/sbin/vsftpd** 
 
 
-## PASO 2. Configuración del servidor vsftpd
-
-Ahora repasaremos algunas configuraciones importantes para que vsftpd funcione. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
-
-```sh
-sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
-```
-Estas son las modificaciones que vamos a realizar dentro del archivo de configuración:
-
-Comienza abriendo el archivo de configuración.
-
-```sh
-sudo nano /etc/vsftpd.conf
-```
-
-**1. Acceso FTP a usuarios locales**
-En este tutorial, permitiremos el acceso FTP solo a los usuarios locales y deshabilitaremos cualquier acceso anónimo. Para hacer esto, asegúrese de que las siguientes líneas existan y sean las siguientes.
-
-```linuxconfig
-anonymous_enable=NO
-local_enable=YES
-```
-
-**2. Habilitar la carga de archivos**
-El propósito singular más importante de FTP aquí es poder escribir en el servidor. Descomenta la siguiente línea para habilitar la carga de archivos eliminando # delante de ella.
-
-```linuxconfig
-write_enable=YES
-```
----------------------
-**3. Cárcel de Chroot para los usuarios locales** ?¿
-FTP funciona mejor cuando un usuario está restringido a un directorio determinado. Vsftpd logra eso usando chroot jails. 
-Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, cambiamos la configuración con las propiedades siguientes: .
-
-```linuxconfig
-chroot_local_user=YES
-```
-Para evitar cualquier vulnerabilidad de seguridad, chroot cuando está habilitado, no funcionará siempre que el directorio al que los usuarios estén restringidos sea escribible. Para sortear esta limitación, tenemos dos métodos para **permitir la carga de archivos cuando chroot está habilitado.**
-
-- Método 1 – Este método funciona mediante el uso de un directorio diferente para cargas FTP. 
-En nuestro caso, hemos decidio crear un directorio ftp dentro de cada home del usuario para que sirva como chroot y un segundo directorio para la carga de archivos que llamamos *upload*. Para lograr esto, agregamos las siguientes líneas al final del archivo.
-
-```linuxconfig
-user_sub_token=$USER
-local_root=/home/$USER/ftp
-```
-- Método 2 – El segundo método es simplemente otorgar acceso de escritura al directorio de inicio como un todo. 
-Agregamos la siguiente línea para lograr esto.
-```linuxconfig
-allow_writeable_chroot=YES
-```
-
----------------------
-**4. Restricción de usuarios**
-Para permitir que solo ciertos usuarios inicien sesión en el servidor FTP, agreguamos las siguientes líneas en la parte inferior. Con esta opción habilitada, debemos especificar qué usuarios deberían poder usar FTP y agregar sus nombres de usuario en el archivo /etc/vsftpd.userlist.
-
-```linuxconfig
-userlist_enable=YES
-userlist_file=/etc/vsftpd.userlist
-userlist_deny=NO
-```
-
-Guarda y cierra el archivo. Reiniciamos el servicio vsftpd para habilitar la configuración realizada.
-
-```sh
-sudo systemctl restart vsftpd
-```
-A continuación, asegúrate de que el servicio vsftpd está en su estado de ejecución ejecutando el siguiente comando en el Terminal:
-
-```sh
-sudo systemctl status vsftpd
-```
-Recuerda para volver al prompt , debes pulsar q  
-
-### Paso 3: Configuración del directorio de usuarios
+### Paso 2: Configuración del directorio de usuarios
 
 1. Ahora, vamos a crear una nueva cuenta de usuario para transacciones FTP, utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante. Estableceremos como contraseña la misma que el usuario.
 
@@ -181,8 +107,82 @@ Finalmente, agreguemos un archivo test.txt para usar en las pruebas.
 ```sh
 echo "vsftpd test file" | sudo tee /home/testuser/ftp/upload/test.txt
 ```
+## PASO 3. Configuración del servidor vsftpd
 
-## Paso 4 – Comprobación del acceso FTP
+Ahora repasaremos algunas configuraciones importantes para que vsftpd funcione. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
+
+```sh
+sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
+```
+Estas son las modificaciones que vamos a realizar dentro del archivo de configuración:
+
+Comienza abriendo el archivo de configuración.
+
+```sh
+sudo nano /etc/vsftpd.conf
+```
+
+**1. Acceso FTP a usuarios locales**
+En este tutorial, permitiremos el acceso FTP solo a los usuarios locales y deshabilitaremos cualquier acceso anónimo. Para hacer esto, asegúrese de que las siguientes líneas existan y sean las siguientes.
+
+```linuxconfig
+anonymous_enable=NO
+local_enable=YES
+```
+
+**2. Habilitar la carga de archivos**
+El propósito singular más importante de FTP aquí es poder escribir en el servidor. Descomenta la siguiente línea para habilitar la carga de archivos eliminando # delante de ella.
+
+```linuxconfig
+write_enable=YES
+```
+---------------------
+**3. Cárcel de Chroot para los usuarios locales** ?¿
+FTP funciona mejor cuando un usuario está restringido a un directorio determinado. Vsftpd logra eso usando chroot jails. 
+Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, cambiamos la configuración con las propiedades siguientes: .
+
+```linuxconfig
+chroot_local_user=YES
+```
+Para evitar cualquier vulnerabilidad de seguridad, chroot cuando está habilitado, no funcionará siempre que el directorio al que los usuarios estén restringidos sea escribible. Para sortear esta limitación, tenemos dos métodos para **permitir la carga de archivos cuando chroot está habilitado.**
+
+- Método 1 – Este método funciona mediante el uso de un directorio diferente para cargas FTP. 
+En nuestro caso, hemos decidio crear un directorio `ftp` dentro del home del usuario para que sirva como chroot y un segundo directorio para la carga de archivos que hemos llamamos `upload`. Para lograr esto, agregamos las siguientes líneas al final del archivo.
+
+```linuxconfig
+user_sub_token=$USER
+local_root=/home/$USER/ftp
+```
+- Método 2 – El segundo método es simplemente otorgar acceso de escritura al directorio de inicio como un todo. 
+Agregamos la siguiente línea para lograr esto.
+```linuxconfig
+allow_writeable_chroot=YES
+```
+
+---------------------
+**4. Restricción de usuarios**
+Para permitir que solo ciertos usuarios inicien sesión en el servidor FTP, agreguamos las siguientes líneas en la parte inferior. Con esta opción habilitada, debemos especificar qué usuarios deberían poder usar FTP y agregar sus nombres de usuario en el archivo /etc/vsftpd.userlist.
+
+```linuxconfig
+userlist_enable=YES
+userlist_file=/etc/vsftpd.userlist
+userlist_deny=NO
+```
+
+Guarda y cierra el archivo. Reiniciamos el servicio vsftpd para habilitar la configuración realizada.
+
+```sh
+sudo systemctl restart vsftpd
+```
+A continuación, asegúrate de que el servicio vsftpd está en su estado de ejecución ejecutando el siguiente comando en el Terminal:
+
+```sh
+sudo systemctl status vsftpd
+```
+Recuerda para volver al prompt , debes pulsar q  
+
+
+## Paso 5 – Comprobación del acceso FTP
 
 
 
