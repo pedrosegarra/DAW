@@ -57,7 +57,6 @@ sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
 Estas son las modificaciones que vamos a realizar dentro del archivo de configuración:
 
 **1. Acceso FTP a usuarios locales**
-
 En este tutorial, permitiremos el acceso FTP solo a los usuarios locales y deshabilitaremos cualquier acceso anónimo. Para hacer esto, asegúrese de que las siguientes líneas existan y sean las siguientes.
 
 ```linuxconfig
