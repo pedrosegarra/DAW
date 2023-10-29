@@ -9,12 +9,23 @@ Vemos estos pasos;
 Primero abriremos la instancia AWS P4-vsftpd creada en la práctica anterior, donde ya teníamos instalado el servidor vsftpd y usuarios con permisos a FTP.
 
 Añade una Regla de Entrada: En la pestaña "Reglas de entrada", debes añadir una regla para permitir el tráfico en el puerto FTP que necesitas. En este caso vamos a añadir 
-**Para FTPS o SFTP con cifrado (puerto 22), también crea una regla con el protocolo TCP y el puerto 22.**
+**Para FTPS o SFTP con cifrado (puerto 22), crea una regla con el protocolo TCP y el puerto 22.**
 
 
 ## Paso 1. Servidor vsftpd 
 
-Comprobamos que está funcionando.
+Comprobamos el estado del servicio y en caso de que no esté habilita el servicio al inicio.
+
+```sh
+sudo systemctl status vsftpd
+```
+
+En caso de que no esté iniciado el servicio, realizar estos pasos;
+
+```sh
+sudo systemctl start vsftpd
+sudo systemctl enable vsftpd.service
+```
 
 
 ## Paso 2. Generar un certificado autofirmado con OpenSSL 
