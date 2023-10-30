@@ -1,3 +1,7 @@
+---
+title: 'Práctica 4.1 - Acceso a un servidor FTP público ftp.rediris.es'
+---
+
 # Práctica 4.1 - Acceso a un servidor FTP público ftp.rediris.es ##
 
 ### Objetivo: 
