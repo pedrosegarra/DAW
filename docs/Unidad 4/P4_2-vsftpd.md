@@ -183,7 +183,7 @@ userlist_deny=NO
 
 Guarda y cierra el archivo. 
 
-## Paso 4. Reiniciamos del servidor vsFTPd
+## Paso 4. Reiniciar el servidor vsFTPd
 
 Reiniciamos el servicio vsftpd para habilitar la configuración realizada.
 
