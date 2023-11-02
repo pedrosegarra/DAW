@@ -83,7 +83,7 @@ Si a este parámetro `n`, le damos un valor muy alto, nos permitirá simular ope
     4. Crea el archivo del programa, que podemos llamar `pruebacluster.js`. Pega dentro el contenido de la aplicación que vimos anteriormente.
     5. Tras esto, DENTRO del directorio, ya podéis iniciar la aplicación con: `node pruebacluster.js`
 
-Para comprobarlo, podéis acceder a `http://IP-maq-virtual:3000` o a `http://IP-maq-virtual:api/50` donde `IP-maq-virtual` es la IP de vuestro servidor Debian en AWS.
+Para comprobarlo, podéis acceder a `http://IP-maq-virtual:3000` o a `http://IP-maq-virtual:3000/api/50` donde `IP-maq-virtual` es la IP de vuestro servidor Debian en AWS.
 
 Vamos ver el tiempo que tardan en procesarse los programas en función del `n`. Usaremos Mozilla Firefox, aunque otros navegadores tienen herramientas similares. Antes de lanzar la aplicación abre las devoloper tools en Firefox. Ve al "menú hamburguesa" (las tres rayitas horizontales arriba a la derecha) - Más herramientas - Herramientas para desarrolladores. En la parte inferior del navegador se abrirán las herramientas y selecciona "Red". Ya podemos lanzar la aplicación.
 
