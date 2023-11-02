@@ -1,12 +1,12 @@
 ---
-title: 'Práctica 4.2 - Instalar y Configurar el servidor vsFTPd NO CIFRADO'
+title: 'Práctica 4.2 - Instalar y Configurar el servidor vsFTPd sin cifrado'
 ---
 
-# Práctica 4.2 - Instalar y Configurar el servidor vsFTPd NO CIFRADO
+# Práctica 4.2 - Instalar y Configurar el servidor vsFTPd sin cifrado.
 
-En esta práctica, aprenderemos cómo instalar y configurar un servidor FTP usando vsFTPd en un servidor basado en Debian. En esta primera práctica configuraremos el servidor como FTP no cifrado (es un manera de configuración insegura)
+En esta práctica, aprenderemos cómo instalar y configurar un servidor FTP usando vsFTPd en un servidor basado en Debian. En esta primera práctica configuraremos el servidor como FTP sin cifrado. Es una manera de configuración insegura que usaremos solo desde un punto de vista didáctico.
 
--------------------------------------------------------------------------
+
 **Información básica sobre el servidor vsFTPd (Very Secure FTP Daemon):**
 
 Hoy en día existe una amplia gama de servidores FTP de código abierto, como FTPD, vsFTPd, PROFTPD y pureftpd. Entre todos ellos, vsFTPd es un protocolo muy seguro, rápido y el más utilizado para transferir archivos entre dos sistemas. vsFTPd también se conoce como «Demonio de Protocolo de Transferencia de Archivos Muy Seguro» con soporte de SSL, IPv6, FTPS explícito e implícito.
@@ -24,7 +24,6 @@ Archivos y directorios que se crean en el sistema:
 
   Para más información puedes consultar la comunidad vsFTPd : https://help.ubuntu.com/community/vsftpd
 
--------------------------------------------------------------------------
 Vamos a empezar a trabajar. 
 
 ## Creamos una instancia AWS
@@ -41,14 +40,13 @@ Asegúrate de especificar la fuente del tráfico, lo que puede ser tu propia dir
 
 ![imagenP4_2:grupo de seguridad AWS](P4_2/P4_2_0.png)
 
--------------------------------------------------------------------------
 
 ## Paso 1. Instalación del servidor vsFTPd 
 
 En primer lugar, actualizaremos los repositorios de Ububtu y a continuación instalaremos el **servidor vsFTPd** :
 
-```
-sudo apt-get update
+```sh
+sudo apt-get update && sudo apt-get upgrade
 sudo apt-get install vsftpd
 ```
 
