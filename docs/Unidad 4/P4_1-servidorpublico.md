@@ -12,16 +12,15 @@ Conectarse a un servidor público utilizando los comandos básicos de ftp y desc
 
 Vamos a conectarnos a un servidor FTP público desde una ventana de comando de tu sistema operativo.
 
-- Abre un terminal cmd en Linu
+- Abre un terminal cmd en Linux
 - PowerShell en Windows
 - Terminal en Mac OS X
 
-<!--
-!!!note
-    Si en Mac OSX no tienes FTP disponible puedes instalarlo con `brew install lftp` y usar el comando `lftp`.
---->
 
 Utiliza el comando ftp, esto hará que entres dentro del servidor ftp de tu ordenador y visualiza los comandos ftp disponibles en tu máquina con el comando help.
+
+!!!note
+    Si en Mac OSX no tienes el comando `ftp`` disponible puedes instalarlo con `brew install lftp` y usar el comando `lftp` en su lugar.
 
 ```sh
 ftp
