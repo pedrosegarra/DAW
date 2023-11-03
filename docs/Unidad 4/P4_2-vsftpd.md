@@ -22,7 +22,7 @@ Archivos y directorios que se crean en el sistema:
 - El archivo `/etc/vsftpd.chroot_list` tiene como propósito principal controlar qué usuarios pueden ser "encarcelados" en sus respectivos directorios de inicio (chroot) cuando se conectan al servidor FTP.
 - El archivo `/var/log/vsftpd.log` es un archivo de registro útil para el monitoreo, la solución de problemas y la auditoría de actividades en el servidor FTP.
 
-  Para más información puedes consultar la comunidad vsFTPd : https://help.ubuntu.com/community/vsftpd
+  Para más información puedes consultar la comunidad vsFTPd : [https://help.ubuntu.com/community/vsftpd](https://help.ubuntu.com/community/vsftpd)
 
 Vamos a empezar a trabajar. 
 
@@ -40,6 +40,7 @@ Asegúrate de especificar la fuente del tráfico, lo que puede ser tu propia dir
 
 ![imagenP4_2:grupo de seguridad AWS](P4_2/P4_2_0.png)
 
+Ahora vamos a instalar y configurar vsFTPd para el acceso de usuarios locales (es decir, usuarios que existen en el sistema operativo donde está instalado el servidor FTP), que solo podrán acceder a su carpeta de usuarios (chroot). Además les permitiremos subir ficheros.
 
 ## Paso 1. Instalación del servidor vsFTPd 
 
@@ -57,23 +58,36 @@ cat /etc/passwd
 cat /etc/group
 ```
 
-Para comprobar que el servidor se ha iniciado buscamos el proceso:
+Para comprobar que el servidor se ha iniciado comprobamos que el servicio está en marcha:
+
+```sh
+systemctl status vsftpd
+```
+
+También podríamos comprobar que el proceso vsftpd está funcionando.
 
 ```sh
 ps -ef | grep vsftpd
 ```
 Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsFTPd **/usr/sbin/vsftpd** 
 
--------------------------------------------------------------------------
+## Configuramos usuario de pruebas.
 
-## Paso 2: Configuración del directorio de usuarios
+Recordamos de la teoría que el servidor FTP puede configurarse para que lo usen 3 tipos distintos de usuarios:
 
-1. Ahora, vamos a crear una nueva cuenta de usuario para transacciones FTP, utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante. Estableceremos como contraseña la misma que el usuario.
+1. Usuario anónimo
+2. Usuarios locales (del sistema)
+3. Usuarios virtuales (independientes de los del sistema y creados por el administrador)
+
+En este módulo de Despliegue de aplicaciones nos interesa usar FTP para subir nuestros ficheros al servidor donde está alojado nuestro servidor web o servidor de aplicaciones, así que no nos interesa mucho configurar el usuario anónimo. Nos centraremos en trabajar con usuarios locales, que nos ofrece la funcionalidad que necesitamos.
+
+Empezaremos por crear un usuario que llamaremos `userftp` y que utilizaremos el resto de la práctica para transacciones FTP. Utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante. Estableceremos como contraseña "ieselcaminas".
 
 ```sh
 sudo adduser userftp
 ```
 
+<!---
 2. Agregamos el nuevo usuario `userftp` a la lista de usuarios de FTP permitidos.
 
 ```sh
@@ -122,6 +136,7 @@ Finalmente, agregamos un archivo `pruebaftp.txt` para usar en las pruebas.
 echo "esto es una prueba con vsftpd" | sudo tee /home/userftp/ftp/upload/pruebaftp.txt
 ```
 -------------------------------------------------------------------------
+--->
 
 ## Paso 3. Configuración del servidor vsFTPd
 
@@ -130,29 +145,74 @@ Ahora repasaremos algunas configuraciones importantes para que vsFTPd funcione. 
 ```sh
 sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.backup
 ```
-Estas son las modificaciones que vamos a realizar dentro del archivo de configuración:
-
 Comienza abriendo el archivo de configuración.
 
 ```sh
 sudo nano /etc/vsftpd.conf
 ```
 
-**1. Acceso FTP a usuarios locales**
-En este tutorial, permitiremos el acceso FTP solo a los usuarios locales y deshabilitaremos cualquier acceso anónimo. Para hacer esto, asegúrese de que las siguientes líneas existan y sean las siguientes.
+Ahora vamos a ir probando distintas configuraciones y veremos cómo afectan a la funcionalidad.
 
-```linuxconfig
-anonymous_enable=NO
-local_enable=YES
+**1. Acceso FTP a usuarios locales**
+En este tutorial, permitiremos el acceso FTP solo a los usuarios locales y deshabilitaremos cualquier acceso anónimo. Esta es la configuración por defecto cuando instalamos vsftpd. Comprueba estas 2 líneas en el fichero `/etc/vsftpd.conf`
+
+```yaml
+  anonymous_enable=NO #(1)
+  local_enable=YES #(2)
 ```
+
+1. No permitimos el acceso anónimo
+2. Permitimos el acceso de los usuarios del sistema
+
+Guarda el fichero, reinicia el servidor y prueba a conectarte con el usuario `userftp`. Si tienes problemas con la conexión recuerda que FTP tiene 2 modos, activo y pasivo y que en función de la configuración del firewall de servidor y cliente puede ser más adecuado uno que otro.
+
+Una vez conectado al servidor prueba a moverte por los distintos directorios del equipo. ¿Tienes alguna restricción? ¿Puedes acceder a cualquier directorio? ¿Has probado a acceder a /root? ¿Te puedes descargar /etc/vsftpd.conf? ¿Puedes subir un archivo de tu equipo a /home/userftp en el servidor?
 
 **2. Habilitar la carga de archivos**
-El propósito singular más importante de FTP aquí es poder escribir en el servidor. Descomenta la siguiente línea para habilitar la carga de archivos eliminando # delante de ella.
+Lo más probable es que la respuesta a la última pregunta fuera no. Por defecto la carga de ficheros al servidor está deshabilitada. El propósito singular más importante de FTP aquí es poder escribir en el servidor. Descomenta la siguiente línea para habilitar la carga de archivos eliminando # delante de ella.
 
 ```linuxconfig
-write_enable=YES
+  write_enable=YES
 ```
-**3. Cárcel de Chroot para los usuarios locales**
+
+Reinicia nuevamente el servidor. Prueba a carar en  /home/userftp el archivo vsftpd.conf que te descargaste antes. ¿Ahora puedes? ¿Con qué permisos ser carga el fichero?
+
+Prueba a cargarlo en /etc. ¿Puedes? ¿Por qué no?
+
+**3. Permisos de los archivos subidos**
+
+Al subir el fichero vsftpd.conf a /home/userftp los permisos son estos, ¿verdad?
+
+`-rw-------` o dicho en octal `600`.
+
+Si buscas en el fichero de configuración verás que habla de "umask" y dice esto
+
+```yaml
+# Default umask for local users is 077. You may wish to change this to 022,
+# if your users expect that (022 is used by most other ftpd's)
+#local_umask=022
+```
+
+Nos dice que umask es 077, pero los permisos del fichero que hemos subido son 600. ¿Qué pasa aquí? Los permisos por defecto al subir un fichero son 666 (rw-rw-rw- o 110110110) y a esos permisos se les hace un ADN con la máscara definida con umask ¡pero negada! . Si la umask es 077 (---rwxrwx o 000111111) y la negamos obtenemos 700=111000000. Si hacemos el AND obtenemos:
+
+```
+110110110 = 666
+111000000 = 700
+---------
+110000000 = 600
+```
+
+Y aquí tenemos el 600 que nos había salido antes. 
+
+En los servidores FTP lo habitual es que la umask sea 022. ¿Qué permisos tendrá un fichero al subirlo con esa máscara?
+
+Prueba de descomentar esta línea, reinicia el servicio, sube un fichero a `/home/userftp` y compruébalo. Esto será importante para cuando subas una página web al servidor web usando FTP. Recuerda que los ficheros necesitaban unos permisos concretos para que pudieran visualizarse.
+
+
+**4. Cárcel de Chroot para los usuarios locales**
+
+SEGUIR AQUÍ
+
 FTP funciona mejor cuando un usuario está restringido a un directorio determinado. vsFTPd logra eso usando chroot jails. 
 Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, cambiamos la configuración con las propiedades siguientes: .
 
