@@ -83,7 +83,11 @@ Ahora **comprueba que tienes acceso al servidor** escribiendo en un navegador en
 
 ![](P3_1/03.png)
 
-Para **gestionar Tomcat de forma gráfica**, tenemos un interfaz gráfico al que se accede mediante `http://IP_SERVIDOR:8080/manager`. Si intentas acceder verás que te pide un usuario y una contraseña y no podrás acceder. Hemos de crear un usuario de Tomcat con esos permisos.
+#### Gestionar de forma gráfica Tomcat y creación de usuario de Tomcat.
+
+Para gestionar Tomcat de forma gráfica, tenemos un interfaz gráfico al que se accede mediante **`http://IP_SERVIDOR:8080/manager`**. 
+
+Si intentas acceder verás que te pide un usuario y una contraseña y no podrás acceder. Hemos de crear un usuario de Tomcat con esos permisos. 
 
 Vamos a crearlo modificando el archivo `/etc/tomcat10/tomcat-users.xml` (con el
 editor que quieras).
@@ -93,8 +97,9 @@ Para poder tener acceso al :
 - **"Gestor de Aplicaciones Web de Tomcat"** deberemos activar el rol **"manager-gui"**.
 - **"Gestor de Máquina Virtual de Tomcat"** necesitaremos activar el rol **"admin-gui"**.
 
-Así pues, crearemos un usuario llamado "admin" con password "ieselcaminas" al que le asignaremos esos roles. 
-
+```sh
+sudo vi /etc/tomcat10/tomcat-users.xml
+```
 Añade las siguientes líneas antes del cierre </tomcat users>.
 
 ```sh
@@ -102,6 +107,7 @@ Añade las siguientes líneas antes del cierre </tomcat users>.
   <role rolename="admin-gui"/>
   <user username="admin" password="ieselcaminas" roles="admin-gui,manager-gui"/>
 ```
+Así pues, crearemos un usuario llamado "**admin**" con password "**ieselcaminas**" al que le asignaremos esos dos roles, **admin-gui** y **manager-gui**. 
 
 Reinicia tomcat: `sudo systemctl restart tomcat10`
 
