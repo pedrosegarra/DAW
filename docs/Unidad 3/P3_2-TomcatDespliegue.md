@@ -60,10 +60,10 @@ Observa un par de cosas.
    * La aplicación "sample" que desplegamos anteriormente tiene el fichero `sample.war` que subimos y una carpeta `sample` que corresponde a la aplicación ya desplegada
 
 Recordamos pues que la estructura de un Archivo WAR es la siguiente:
-- `/` `*.html` `*.jsp` `*.css` : Este directorio base contiene los elementos que comúnmente son utilizados en un sitio, Documentos en HTML , JSP's , CSS("Cascading Style Sheets") y otros elementos.
-- `/WEB-INF/web.xml` : Contiene elementos de seguridad de la aplicación así como detalles sobre los Servlets que serán utilizados dentro de la misma.
-- `/WEB-INF/classes/` : Contiene las clases Java adicionales a las del JDK que serán empleadas en los JSP's y Servlets
-- `/WEB-INF/lib/` : Contiene los JAR's que serán utilizados por su aplicación.
+- **/**  : Este directorio base contiene los elementos que comúnmente son utilizados en un sitio, Documentos en HTML , JSP's , CSS("Cascading Style Sheets") y otros elementos. Es decir archivos .html .jsp y .css
+- **/WEB-INF/web.xml** : Contiene elementos de seguridad de la aplicación así como detalles sobre los Servlets que serán utilizados dentro de la misma.
+- **/WEB-INF/classes/** : Contiene las clases Java adicionales a las del JDK que serán empleadas en los JSP's y Servlets
+- **/WEB-INF/lib/** : Contiene los JAR's que serán utilizados por su aplicación.
 
   Y comprobamos que nuestra aplicación sample cumple con esa estructura:
 ```sh
