@@ -79,20 +79,19 @@ Y comproblamos que está correctamente instalado.
 
 Presionaremos la tecla q para volver al prompt.
 
-Ahora comprueba que tienes acceso al servidor escribiendo en un navegador en tu equipo local `http://IP_SERVIDOR:8080` debe aparecer la siguiente pantalla. Fíjate que estamos accediendo por http (no https) y por el puerto 8080. Si no modificaste el Grupo de Seguridad en AWS para permitir el acceso a este puerto, hazlo ahora.
+Ahora **comprueba que tienes acceso al servidor** escribiendo en un navegador en tu equipo local `http://IP_SERVIDOR:8080` debe aparecer la siguiente pantalla. Fíjate que estamos accediendo por http (no https) y por el puerto 8080. Si no modificaste el Grupo de Seguridad en AWS para permitir el acceso a este puerto, hazlo ahora.
 
 ![](P3_1/03.png)
 
-Para gestionar Tomcat de forma gráfica, tenemos un interfaz gráfico al que se accede mediante `http://IP_SERVIDOR:8080/manager`. Si intentas acceder verás que te pide un usuario y una contraseña y no podrás acceder. Hemos de crear un usuario de Tomcat con esos permisos.
+Para **gestionar Tomcat de forma gráfica**, tenemos un interfaz gráfico al que se accede mediante `http://IP_SERVIDOR:8080/manager`. Si intentas acceder verás que te pide un usuario y una contraseña y no podrás acceder. Hemos de crear un usuario de Tomcat con esos permisos.
 
 Vamos a crearlo modificando el archivo `/etc/tomcat10/tomcat-users.xml` (con el
 editor que quieras).
 
 Merece la pena dedicarle un tiempo a leer ese fichero. Verás que Tomcat tiene una serie de roles administrativos predefinidos. Hemos de activar aquellos que queramos y luego asignarlos a los usuarios que deseemos. 
-
-Para poder tener acceso al "Gestor de Aplicaciones Web de Tomcat" deberemos activar el rol "manager-gui". 
-
-Y para acceder al "Gestor de Máquina Virtual de Tomcat" necesitaremos activar el rol "admin-gui".
+Para poder tener acceso al :
+- **"Gestor de Aplicaciones Web de Tomcat"** deberemos activar el rol **"manager-gui"**.
+- **"Gestor de Máquina Virtual de Tomcat"** necesitaremos activar el rol **"admin-gui"**.
 
 Así pues, crearemos un usuario llamado "admin" con password "ieselcaminas" al que le asignaremos esos roles. 
 
