@@ -4,7 +4,7 @@ title: 'Práctica 3.2: Despliegue de aplicaciones con Tomcat.'
 
 # Práctica 3.2: Despliegue de aplicaciones con Tomcat.
 
-### Despliegue manual mediante Gestor de Aplicaciones Web de Tomcat
+## Despliegue manual mediante Gestor de Aplicaciones Web de Tomcat
 
 Realizaremos el despliegue manual de una aplicación ya previamente empaquetada en formato WAR. Para ello accedemos al "Gestor de Aplicaciones Web de Tomcat" como vimos en la práctica anterior.
 
@@ -39,7 +39,7 @@ Realizaremos el despliegue manual de una aplicación ya previamente empaquetada 
 
     No se está ejecutando el Servlet y si ves los mensajes ha encontrado un problema. Recuerda que al principio hablamos de los problemas de versiones de java y que a partir de la versión 11 de Java se renombraron las librerías java a jakarka. Este .war se compliló en una versión anterior y ahora no podemos desplegarlo. Aquí el problema de las versiones.
 
-## Crear una aplicación nueva
+## Crear una aplicación nueva paso a paso
 
 En el apartado anterior hemos desplegado una aplicación de la que disponíamos del fichero .war. Ahora vamos a crear una aplicación nueva. Esto asemejaría un entorno en el que al departamento de despliegue le facilitan directamente el código fuente de la aplicación en lugar de la aplicación ya compilada.
 
@@ -134,7 +134,7 @@ public void service(HttpServletRequest req, HttpServletResponse res)
 }
 ```
 
-Desde el directorio prueba ejecuta: 
+Desde el directorio prueba ejecuta el comando para compilar la aplicación java: 
 
 ```sh
 javac -classpath /usr/share/tomcat10/lib/servlet-api.jar hola1.java
@@ -145,15 +145,18 @@ javac -classpath /usr/share/tomcat10/lib/servlet-api.jar hola1.java
 !!!Atención
     Recuerda que comentamos que a partir de Java 11 las rutas de paquetes javax.* pasaron a jakarta.*. Prueba a cambiar las rutas en `hola1.java` y vuelve a complilar. ¿Se ha compilado bien ahora? Nuevamente, comprueba la importancia de usar las mismas versiones en desarrollo y despliegue.
 
-Si no hay ningún problema el fichero hola1.java se compilará y aparecerá un fichero
+Si no hay ningún problema el fichero `hola1.java` se compilará y aparecerá un fichero
 `hola1.class`.
 
 #### Configura el servlet
+La principal diferencia de un servlet Java respecto a una aplicación Java normal, es que una aplicación (una vez compilada) ya la podríamos ejecutar, *mientras que el servlet lo tendremos que añadir al contenedor de servlets*.  Para ello mueve `hola1.class` a la carpeta `webapps/prueba/WEB-INF/classes`.
 
-La principal diferencia de un servlet Java respecto a una aplicación Java normal, es que una aplicación (una vez compilada) ya la podríamos ejecutar, mientras que el servlet lo tendremos que añadir al contenedor de servlets, para ello mueve `hola1.class` a la carpeta `webapps/prueba/WEB-INF/classes`.
+```sh
+  mv hola1.class ./WEB-INF/classes
+``` 
 
 ### Configura el servidor de aplicaciones
-Ahora hay que configurar el servidor de aplicaciones (hay que decir dónde está el nuevo servlet). Para ello crea el fichero `web.xml` en el directorio WEB-INF (en él se indica donde está el servlet y como mapearlo en una llamada) con el siguiente código:
+Ahora hay que configurar el servidor de aplicaciones (hay que decir dónde está el nuevo servlet). Para ello crea el fichero `web.xml` en el directorio **WEB-INF** (en él se indica donde está el servlet y como mapearlo en una llamada) con el siguiente código:
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
