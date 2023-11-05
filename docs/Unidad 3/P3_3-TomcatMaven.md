@@ -55,16 +55,16 @@ Para poder realizar despliegues en nuestro Tomcat previamente instalado, necesit
 
 En primer lugar necesitamos asegurarnos de que en el apartado anterior de la práctica hemos añadido todos los usuarios necesarios, así como sus respectivos roles. Ahora debemos añadir el rol de `manager-script` para permitir que Maven se autentique contra Tomcat y pueda realizar el despliegue.
  
-    Los roles utilizados por Tomcat vienen detallados en [su documentación](https://tomcat.apache.org/tomcat-9.0-doc/manager-howto.html){:target="_blank"}, que merece ser consultada:
+Los roles utilizados por Tomcat vienen detallados en [su documentación](https://tomcat.apache.org/tomcat-9.0-doc/manager-howto.html){:target="_blank"}, que merece ser consultada:
 
     ![](P3_3/01.png)
 
-    En dicha documentación se nos indica que, por temas de seguridad, es recomendable no otorgar los roles de **manager-script** o **manager-jmx** al mismo usuario que tenga el rol de **manager-gui**. 
+En dicha documentación se nos indica que, por temas de seguridad, es recomendable no otorgar los roles de **manager-script** o **manager-jmx** al mismo usuario que tenga el rol de **manager-gui**. 
 
-    !!!info 
+!!!info 
         Tendremos dos usuarios, uno para la GUI y otro exclusivamente para hacer los deploys de Maven.
 
-    Así las cosas, modificamos el archivo `/etc/tomcat10/tomcat-users.xml` acorde a nuestras necesidades. Añadiremos un usuario "despliegues" con password "ieselcaminas":
+ Así las cosas, modificamos el archivo `/etc/tomcat10/tomcat-users.xml` acorde a nuestras necesidades. Añadiremos un usuario "despliegues" con password "ieselcaminas":
 
     ```xml
         <role rolename="admin-gui"/>
@@ -73,8 +73,8 @@ En primer lugar necesitamos asegurarnos de que en el apartado anterior de la pr�
         <user username="admin" password="ieselcaminas" roles="admin-gui,manager-gui"/>
         <user username="despliegues" password="ieselcaminas" roles="manager-script"/>
     ```
-    
-    Como hemos hecho cambios en la configuración de Tomcat deberemos reiniciarlo
+  
+  Como hemos hecho cambios en la configuración de Tomcat deberemos reiniciarlo
 
    ```sh
    sudo systemctl restart tomcat10.service
