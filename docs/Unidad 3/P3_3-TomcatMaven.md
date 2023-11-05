@@ -52,6 +52,7 @@ Pero antes de pasar a integrar Tomcat con Maven hemos de tener algunos conocimie
 Para poder realizar despliegues en nuestro Tomcat previamente instalado, necesitamos realizar la configuración adecuada para Maven. Ya sabemos que esto en Linux significa editar los archivos de configuración adecuados. Vamos a ello.
 
 **1.Creación de usuario para Maven**
+
 En primer lugar necesitamos asegurarnos de que en el apartado anterior de la práctica hemos añadido todos los usuarios necesarios, así como sus respectivos roles. Ahora debemos añadir el rol de `manager-script` para permitir que Maven se autentique contra Tomcat y pueda realizar el despliegue.
  
     Los roles utilizados por Tomcat vienen detallados en [su documentación](https://tomcat.apache.org/tomcat-9.0-doc/manager-howto.html){:target="_blank"}, que merece ser consultada:
@@ -80,6 +81,7 @@ En primer lugar necesitamos asegurarnos de que en el apartado anterior de la pr�
    ```
 
 **2.Indicar a Maven sobre el servidor que vamos a desplegar (en nuestro caso TOMCAT)**
+
 Editar el archivo `/etc/maven/settings.xml`  para indicarle a Maven un identificador para el servidor sobre el que vamos a desplegar. No es más que un nombre, le pondremos DesplieguesTomcat, pero podría ser cualquier cosa. El usuario y password serán los que definimos antes en `tomcat-users.xml`. Todo esto se hará dentro del bloque *servers* del XML:
 
 ```xml
