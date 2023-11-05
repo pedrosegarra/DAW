@@ -54,7 +54,7 @@ drwxr-xr-x 3 root   root   4096 Sep 10 09:24 ROOT
 drwxr-x--- 5 tomcat tomcat 4096 Sep 10 10:00 sample
 -rw-r----- 1 tomcat tomcat 4606 Sep 10 10:00 sample.war
 ```
-
+ 
 Observa un par de cosas. 
 
    * Las aplicaciones desplegadas pertenecen al usuario `tomcat`.
@@ -94,7 +94,13 @@ su tomcat
 
 ### 2. Estructura de carpetas
 
-Ahora ya podemos empezar a desplegar nuestra aplicación a la que llamaremos "prueba". Crearemos la siguiente estructura de carpetas dentro de `/var/lib/tomcat10/webapps`.
+Ahora ya podemos empezar a desplegar nuestra aplicación a la que llamaremos "prueba". Recordamos que la estructura de un Archivo WAR es la siguiente:
+- / *.html *.jsp *.css : Este directorio base contiene los elementos que comúnmente son utilizados en un sitio, Documentos en HTML , JSP's , CSS("Cascading Style Sheets") y otros elementos.
+- /WEB-INF/web.xml : Contiene elementos de seguridad de la aplicación así como detalles sobre los Servlets que serán utilizados dentro de la misma.
+- /WEB-INF/classes/ : Contiene las clases Java adicionales a las del JDK que serán empleadas en los JSP's y Servlets
+- /WEB-INF/lib/ : Contiene los JAR's que serán utilizados por su aplicación.
+
+Crearemos la siguiente estructura de carpetas dentro de `/var/lib/tomcat10/webapps`.
 
 ![](P3_2/06.png)
 
