@@ -82,7 +82,7 @@ En primer lugar necesitamos asegurarnos de que en el apartado anterior de la pr�
 
 **2.Indicar a Maven sobre el servidor que vamos a desplegar (en nuestro caso TOMCAT)**
 
-Editar el archivo `/etc/maven/settings.xml`  para indicarle a Maven un identificador para el servidor sobre el que vamos a desplegar. No es más que un nombre, le pondremos DesplieguesTomcat, pero podría ser cualquier cosa. El usuario y password serán los que definimos antes en `tomcat-users.xml`. Todo esto se hará dentro del bloque *servers* del XML:
+Editar el archivo `/etc/maven/settings.xml`  para indicarle a Maven un identificador para el servidor sobre el que vamos a desplegar. No es más que un nombre, le pondremos **DesplieguesTomcat**, pero podría ser cualquier cosa. El usuario y password serán los que definimos antes en `tomcat-users.xml`. Todo esto se hará dentro del bloque *servers* del XML:
 
 ```xml
     <server>
