@@ -51,16 +51,18 @@ total 24
 drwxrwxr-x 4 tomcat tomcat 4096 Sep 10 10:00 .
 drwxr-xr-x 5 root   root   4096 Sep 10 15:24 ..
 drwxr-xr-x 3 root   root   4096 Sep 10 09:24 ROOT
-drwxr-x--- 5 tomcat tomcat 4096 Sep 10 10:00 sample
--rw-r----- 1 tomcat tomcat 4606 Sep 10 10:00 sample.war
+drwxr-x--- 5 **tomcat** tomcat 4096 Sep 10 10:00 **sample**
+-rw-r----- 1 **tomcat** tomcat 4606 Sep 10 10:00 **sample.war**
 ```
 
 Observa un par de cosas. 
 
-   * Las aplicaciones desplegadas pertenecen al usuario `tomcat`.
-   * La aplicación "sample" que desplegamos anteriormente tiene el fichero `sample.war` que subimos y una carpeta "sample" que corresponde a la aplicación ya desplegada
+   * Las aplicaciones desplegadas pertenecen al usuario `**tomcat**`.
+   * La aplicación "sample" que desplegamos anteriormente tiene el fichero `**sample.war**` que subimos y una carpeta `**sample**` que corresponde a la aplicación ya desplegada
 
-Por tanto, para desplegar nuevas aplicaciones manualmente deberemos logarnos primero como usuario `tomcat` y luego generar una estructura de carpetas para la aplicación a desplegar similar a la de "sample", que es la estructura que necesita Tomcat.
+Por tanto, para desplegar nuevas aplicaciones manualmente deberemos :
+1. Logarnos primero como usuario `tomcat`
+2. y luego generar una estructura de carpetas para la aplicación a desplegar similar a la de "sample", que es la estructura que necesita Tomcat.
 
 Para entrar como usuario `tomcat` veamos primero cómo está creado en el fichero `/etc/passwd`:
 
