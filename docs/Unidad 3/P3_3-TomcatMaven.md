@@ -74,9 +74,11 @@ Para poder realizar despliegues en nuestro Tomcat previamente instalado, necesit
     
     Como hemos hecho cambios en la configuración de Tomcat deberemos reiniciarlo
 
-    `sudo systemctl restart tomcat10.service`
+   ```sh
+   sudo systemctl restart tomcat10.service
+   ```
 
-2. Editar el archivo `/etc/maven/settings.xml`  para indicarle a Maven un identificador para el servidor sobre el que vamos a desplegar. No es más que un nombre, le pondremos DesplieguesTomcat, pero podría ser cualquier cosa. El usuario y password serán los que definimos antes en `tomcat-users.xml`. Todo esto se hará dentro del bloque *servers* del XML:
+3. Editar el archivo `/etc/maven/settings.xml`  para indicarle a Maven un identificador para el servidor sobre el que vamos a desplegar. No es más que un nombre, le pondremos DesplieguesTomcat, pero podría ser cualquier cosa. El usuario y password serán los que definimos antes en `tomcat-users.xml`. Todo esto se hará dentro del bloque *servers* del XML:
 
 ```xml
     <server>
