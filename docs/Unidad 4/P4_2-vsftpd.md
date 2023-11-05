@@ -71,7 +71,7 @@ ps -ef | grep vsftpd
 ```
 Vemos que aparecen el proceso con el archivo de configuración  **/etc/vsftpd.conf** y el archivo ejecutable principal del servidor FTP vsFTPd **/usr/sbin/vsftpd** 
 
-## Configuramos usuario de pruebas.
+## Paso 2. Configuramos usuario de pruebas.
 
 Recordamos de la teoría que el servidor FTP puede configurarse para que lo usen 3 tipos distintos de usuarios:
 
@@ -154,6 +154,7 @@ sudo nano /etc/vsftpd.conf
 Ahora vamos a ir probando distintas configuraciones y veremos cómo afectan a la funcionalidad.
 
 **1. Acceso FTP a usuarios locales**
+
 En este tutorial, permitiremos el acceso FTP solo a los usuarios locales y deshabilitaremos cualquier acceso anónimo. Esta es la configuración por defecto cuando instalamos vsftpd. Comprueba estas 2 líneas en el fichero `/etc/vsftpd.conf`
 
 ```yaml
@@ -164,18 +165,35 @@ En este tutorial, permitiremos el acceso FTP solo a los usuarios locales y desha
 1. No permitimos el acceso anónimo
 2. Permitimos el acceso de los usuarios del sistema
 
-Guarda el fichero, reinicia el servidor y prueba a conectarte con el usuario `userftp`. Si tienes problemas con la conexión recuerda que FTP tiene 2 modos, activo y pasivo y que en función de la configuración del firewall de servidor y cliente puede ser más adecuado uno que otro.
+Guarda el fichero, y reinicia el servicio vsftpd para habilitar la configuración realizada.
 
-Una vez conectado al servidor prueba a moverte por los distintos directorios del equipo. ¿Tienes alguna restricción? ¿Puedes acceder a cualquier directorio? ¿Has probado a acceder a /root? ¿Te puedes descargar /etc/vsftpd.conf? ¿Puedes subir un archivo de tu equipo a /home/userftp en el servidor?
+```sh
+sudo systemctl restart vsftpd
+```
+A continuación, asegúrate de que el servicio vsftpd está en su estado de ejecución ejecutando el siguiente comando en el Terminal:
+
+```sh
+sudo systemctl status vsftpd
+```
+
+Recuerda para volver al prompt , debes pulsar q  
+
+Prueba a conectarte con el usuario `userftp` con tu cliente FTP. 
+
+!!!Atención
+    Si tienes problemas con la conexión recuerda que FTP tiene 2 modos, activo y pasivo y que en función de la configuración del firewall de servidor y cliente puede ser más adecuado uno que otro.
+
+Una vez conectado al servidor prueba a moverte por los distintos directorios del equipo. ¿Tienes alguna restricción? ¿Puedes acceder a cualquier directorio? ¿Has probado a acceder a /root? ¿Te puedes descargar /etc/vsftpd.conf? ¿Puedes subir un archivo de tu equipo local a /home/userftp en el servidor?
 
 **2. Habilitar la carga de archivos**
+
 Lo más probable es que la respuesta a la última pregunta fuera no. Por defecto la carga de ficheros al servidor está deshabilitada. El propósito singular más importante de FTP aquí es poder escribir en el servidor. Descomenta la siguiente línea para habilitar la carga de archivos eliminando # delante de ella.
 
 ```linuxconfig
   write_enable=YES
 ```
 
-Reinicia nuevamente el servidor. Prueba a carar en  /home/userftp el archivo vsftpd.conf que te descargaste antes. ¿Ahora puedes? ¿Con qué permisos ser carga el fichero?
+Reinicia nuevamente el servidor. Prueba a cargar en /home/userftp el archivo vsftpd.conf que te descargaste antes. ¿Ahora puedes? ¿Con qué permisos ser carga el fichero?
 
 Prueba a cargarlo en /etc. ¿Puedes? ¿Por qué no?
 
@@ -193,7 +211,7 @@ Si buscas en el fichero de configuración verás que habla de "umask" y dice est
 #local_umask=022
 ```
 
-Nos dice que umask es 077, pero los permisos del fichero que hemos subido son 600. ¿Qué pasa aquí? Los permisos por defecto al subir un fichero son 666 (rw-rw-rw- o 110110110) y a esos permisos se les hace un ADN con la máscara definida con umask ¡pero negada! . Si la umask es 077 (---rwxrwx o 000111111) y la negamos obtenemos 700=111000000. Si hacemos el AND obtenemos:
+Nos dice que umask es 077, pero los permisos del fichero que hemos subido son 600. ¿Qué pasa aquí? Los permisos por defecto al subir un fichero son 666 (rw-rw-rw- o 110110110) y a esos permisos se les hace un AND con la máscara definida con umask ¡pero negada! Si la umask es 077 (---rwxrwx o 000111111) y la negamos obtenemos 700=111000000. Si hacemos el AND obtenemos:
 
 ```
 110110110 = 666
@@ -202,64 +220,108 @@ Nos dice que umask es 077, pero los permisos del fichero que hemos subido son 60
 110000000 = 600
 ```
 
-Y aquí tenemos el 600 que nos había salido antes. 
+Y aquí tenemos el 600 o rw------- que nos había salido antes. 
 
 En los servidores FTP lo habitual es que la umask sea 022. ¿Qué permisos tendrá un fichero al subirlo con esa máscara?
 
-Prueba de descomentar esta línea, reinicia el servicio, sube un fichero a `/home/userftp` y compruébalo. Esto será importante para cuando subas una página web al servidor web usando FTP. Recuerda que los ficheros necesitaban unos permisos concretos para que pudieran visualizarse.
+Prueba a descomentar esta línea, reinicia el servicio, sube un fichero a `/home/userftp` y compruéba sus permisos. Esto será importante para cuando subas una página web al servidor web usando FTP. Recuerda que los ficheros necesitaban unos permisos concretos para que pudieran visualizarse.
 
 
 **4. Cárcel de Chroot para los usuarios locales**
 
-SEGUIR AQUÍ
-
-FTP funciona mejor cuando un usuario está restringido a un directorio determinado. vsFTPd logra eso usando chroot jails. 
-Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, cambiamos la configuración con las propiedades siguientes: .
+Como vimos antes el usuario, al conectarse por FTP podía navegar por todo el sistema de archivos. Esto no es muy recomendado y podemos hacer que está restringido a un directorio determinado. vsFTPd logra eso usando chroot jails. 
+Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, cambiamos la configuración con las propiedades siguientes:
 
 ```linuxconfig
 chroot_local_user=YES
 ```
-Para evitar cualquier vulnerabilidad de seguridad, **cuando chroot está habilitado**, no funcionará si el directorio al que los usuarios estén restringidos es escribible. Para sortear esta limitación, tenemos dos opciones de configuración:
+Para evitar cualquier vulnerabilidad de seguridad, **cuando chroot está habilitado**, no funcionará si el directorio raiz al que se conectan los usuarios es escribible. Por tanto, si no hacemos nada más e intentamos conectarnos veremos que no nos deja, ya que `userftp` si puede escribir en su directorio home: `/home/userftp`. Para sortear esta limitación, tenemos varias opciones de configuración:
 
-- Opción 1 – Se debe utilizar un directorio diferente para cargas FTP. ES NUESTRO CASO, nuestro directorio creado es `ftp` dentro del home del usuario que servirá como chroot y hemos creado un segundo directorio para la carga de archivos que hemos llamamos `upload` dentro de `ftp`. Para configurar esta opción de chroot, agregamos las siguientes líneas al final del archivo.
+- Opción 1 – Simplemente permitir que el directorio raiz al que nos conectamos si pueda ser escribible. En ese caso agregamos la siguiente línea. Haz la prueba, reinicia vsftpd e intenta conectarte. Después deshabilita esta opción, ya que no es la que usaremos.
+
+```linuxconfig
+allow_writeable_chroot=YES
+```
+
+- Opción 2 – Definir un directorio de acceso por FTP distinto al home del usuario y sin permisos de escritura. Se debe utilizar un directorio diferente para cargas FTP. Crearemos un directorio `/home/userftp/ftp` al que quitaremos los permisos de escritura para todo el mundo que servirá como chroot. Pero antes de quitarle los permisos de escritura crearemos un segundo directorio `/home/userftp/ftp/upload` para la carga de archivos, este si con permisos de escritura. Para configurar esta opción de chroot, agregamos las siguientes líneas al fichero de configuración.
 
 ```linuxconfig
 user_sub_token=userftp
 local_root=/home/userftp/ftp
 ```
-- Opción 2 – El segundo método es simplemente otorgar acceso de escritura al directorio de inicio como un todo. En ese caso agregamos la siguiente línea(PERO NO ES NUESTRO CASO):
+Prueba a conectarte por ftp con el usuario `userftp` y comprueba que su directorio raiz ahora es `/home/userftp/ftp` y que ahí no puedes subir ningún fichero. Prueba a subir a `upload` y comprueba que ahí si puedes.
+
+En el caso anterior servirá solo para el usuario `userftp`. Si lo queremos hacer para todos los usuarios del sistema usaremos esto en su lugar:
+
 ```linuxconfig
-allow_writeable_chroot=YES
+user_sub_token=$USER
+local_root=/home/$USER/ftp
+```
+
+Ahora crea un segundo usuario, por ejemplo `user2`. Crea los directorios `/home/user2/ftp` sin permiso de escritura y `/home/user2/ftp/upload` con permiso de escritura. Conéctate con `user2` y comprueba lo dicho anteriormente.
+
+Elimina las directivas `user_sub_token` y `local_root` para probar la opción 3.
+
+- Opción 3 – Enjaular al usuario en otra carpeta distinta, por ejemplo /var/www
+
+Suele ser normal querer que el usuario pueda ver un directorio distinto al de su home, como por ejemplo la carpeta www o la de un servidor virtual concreto de apache, para ello, la solución más rápida es cambiar el directorio home del usuario de la siguiente forma. Para hacer esta prueba, antes instala APACHE si no estaba instado.
+
+```linuxconfig
+sudo usermod --home /var/www userftp
+```
+
+Comprobamos con:
+
+```linuxconfig
+su userftp
+cd
+pwd
+```
+
+Vuelve al usuario admin con `exit`.
+
+Con esto habremos cambiado el directorio home del usuario y cada vez que se conecte tanto por FTP como por SSH entrará al directorio /var/www. Compruébalo. Si quisieramos subir archivos a la web sólo nos quedaría, para este caso, añadir al usuario al grupo de apache o www-data dependiendo del sistema operativo o el usuario apache configurado.
+
+```linuxconfig
+sudo adduser userftp www-data
 ```
 
 **4. Restricción de usuarios**
-Para permitir que solo ciertos usuarios inicien sesión en el servidor FTP, agreguamos las siguientes líneas en la parte inferior. Con esta opción habilitada, debemos especificar qué usuarios deberían poder usar FTP y agregar sus nombres de usuario en el archivo /etc/vsftpd.userlist.
 
-```linuxconfig
-userlist_enable=YES
-userlist_file=/etc/vsftpd.userlist
-userlist_deny=NO
+Para permitir que solo ciertos usuarios inicien sesión en el servidor FTP, agregamos las siguientes líneas en la parte inferior. Con esta opción habilitada, debemos especificar qué usuarios deberían poder usar FTP y agregar sus nombres de usuario en el archivo /etc/vsftpd.userlist.
+
+```yaml
+userlist_enable=YES #(1)
+userlist_file=/etc/vsftpd.userlist #(2)
+userlist_deny=NO #(3)
 ```
 
-Guarda y cierra el archivo. 
+1. Hace que solo puedan conectarse o impide que se puedan conectar los usuarios de la lista
+2. Lista donde se definen qué usuarios pueden conectarse o no conectarse
+3. Si el valor es YES a los usuarios de la lista se les deniega el acceso. Si es NO se les permite
 
-## Paso 4. Reiniciar el servidor vsFTPd
-
-Reiniciamos el servicio vsftpd para habilitar la configuración realizada.
+Agregamos el nuevo usuario `userftp` a la lista de usuarios de FTP permitidos, con este comando o con nano.
 
 ```sh
-sudo systemctl restart vsftpd
+echo "userftp" | sudo tee -a /etc/vsftpd.userlist
 ```
-A continuación, asegúrate de que el servicio vsftpd está en su estado de ejecución ejecutando el siguiente comando en el Terminal:
 
-```sh
-sudo systemctl status vsftpd
-```
-Recuerda para volver al prompt , debes pulsar q  
+Guarda y cierra el archivo. Reinicia el servidor e intenta conectarte con `userftp`. Comprueba que funciona. Intenta conectarte ahora con `user2`. ¿Te lo permite?
 
--------------------------------------------------------------------------
+Después de todas estas pruebas vamos a dejarlo de la siguiente manera para las comprobaciones finales:
 
-## Paso 5: Comprobación del acceso FTP
+1. Deja que solo puedan conectarse los usuarios locales
+2. Habilita la carga de archivos
+3. Haz que los archivos se suban con umask 022
+4. Habilita chroot con la opción 2, es decir, que cada usuario del sistema se conecte a /home/$USER/ftp
+5. Restringe para que solo `userftp` pueda conectarse por FTP
+6. Agrega un archivo `pruebaftp.txt` en `/home/userftp/ftp/upload/` para usar en las pruebas.
+  ```sh
+  echo "esto es una prueba con vsftpd" | sudo tee /home/userftp/ftp/upload/pruebaftp.txt
+  ```
+
+## Paso 4: Comprobación del acceso FTP
+
 Nuestro servidor FTP es completamente funcional en este momento. Podemos hacer una pequeña prueba antes de continuar.
 
 Intentemos iniciar sesión como un usuario anónimo. Vemos que funciona según lo previsto, es decir, no se permiten usuarios anónimos.
@@ -289,3 +351,9 @@ Comprobamos que el archivo se ha descargado correctamente en nuestra máquina lo
 La descarga la dejará en la misma carpeta donde se haya producido la conexión ftp. En nuestro caso, la misma carpeta que nos encontremos al salir con el quit.
 
 ![imagenP4_2:Comprobación de la descarga](P4_2/P4_2_5.png)
+
+## Referencias
+
+* [vsftpd - Ubuntu documentation](https://help.ubuntu.com/community/vsftpd)
+* [VSFTPD: Instalación y chroot a una carpeta de usuario.](https://kimerikal.com/vsftpd-instalacion-y-chroot-a-una-carpeta-de-usuario/)
+* [How To Set Up vsftpd for a User's Directory on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-vsftpd-for-a-user-s-directory-on-ubuntu-16-04)

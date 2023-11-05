@@ -1,18 +1,26 @@
+---
+title: 'Práctica 4.3- Configuración de servidor FTP con Cifrado'
+---
+
 # Práctica 4.3- Configuración de servidor FTP con Cifrado
 
 En esta práctica, aprenderemos cómo asegurar la conexión usando el protocolo SSL/TLS, de esta forma se podrán transferir datos encriptados a través de FTP.
-Para ello necesitaremos primero crear un certificado SSL y segundo tendremos que habilitar la conexión SSL/TLS dentro del archivo de configuración del servidor vsftpd. 
-Vemos estos pasos;
+
+Recuerda de la teoría que hay 2 modos de conexión cifrada de FTP, FTPS y SFTP y que no tienen nada que ver en cuanto a configuración y funcionamiento.
+
+* FTPS (File Transfer Protocol Secure) - Es a FTP lo que HTTPS a HTTP. Es el servidor FTP quien define sus claves pública y privada. Comparte su clave pública con el cliente que quiere conectarse a él para establecer el canal privado. Por tanto requiere de la generación de dichas claves en el servidor y la configuración en vsftpd.conf. Además tiene 2 formas de conexión
+    * FTPS Explícito (FTPES): En este modo, la seguridad SSL/TLS se inicia después de que el cliente se conecta al servidor y emite un comando específico (por ejemplo, AUTH TLS o AUTH SSL) para solicitar una conexión segura. Por tanto la primera conexión del cliente al servidor es por el puerto habitual de comandos de FTP, el 21.
+    * FTPS Implícito (FTPIS): En este modo, la seguridad SSL/TLS se establece automáticamente cuando el cliente se conecta al servidor en un puerto específico (generalmente el puerto 990 para FTPS implícito).
+* SFTP (SSH File Transfer Protocol) - Aquí primero se establece un canal SSH entre cliente y servidor SSH (no vsftpd) a través del puerto habitula ssh, el 22.. Una vez establecido el canal el cliente ftp y vsftpd intercambian mensajes cifrados dentro de ese canal. Por tanto, vsftpd no necesita ninguna configuración especial
+
+En esta práctica veremos las 2 formas de funcionamiento y conexión.
 
 ## Instancia en AWS 
 
 Primero abriremos la instancia AWS P4-vsftpd creada en la práctica anterior, donde ya teníamos instalado el servidor vsftpd y usuarios con permisos a FTP.
 
-Añade una Regla de Entrada: En la pestaña "Reglas de entrada", debes añadir una regla para permitir el tráfico en el puerto FTP que necesitas. En este caso vamos a añadir 
-**Para FTPS o SFTP con cifrado (puerto 22), crea una regla con el protocolo TCP y el puerto 22.**
 
-
-## Paso 1. Servidor vsftpd 
+## Servidor vsftpd 
 
 Comprobamos el estado del servicio y en caso de que no esté habilita el servicio al inicio.
 
@@ -27,10 +35,11 @@ sudo systemctl start vsftpd
 sudo systemctl enable vsftpd.service
 ```
 
+## FTPS (File Transfer Protocol Secure)
 
-## Paso 2. Generar un certificado autofirmado con OpenSSL 
+Veamos primero la configuración y conexión a través de FTPS.
 
-Puedes crear un certificado utilizando OpenSSL con el siguiente comando:
+### Generar un certificado autofirmado con OpenSSL 
 
 Ya hemos visto que el servidor vsftpd admite FTPS (FTP sobre SSL/TLS), es decir que cifra las comunicaciones entre el cliente y el servidor. Así que para poder transferir datos encriptados a través de FTP, necesitaremos crear un certificado SSL y habilitar la conexión SSL/TLS. Por ello vamos a utilizar OpenSSL con el siguiente comando;
 
@@ -47,7 +56,7 @@ sudo ls -l /etc/ssl/private
 ```
 
 
-## Paso 3. Habilitar el cifrado SSL
+### Habilitar el cifrado SSL
 
 Una vez que tengamos el certificado SSL y la clave privada, tendremos que modificar el archivo /etc/vsftpd.conf. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
 
@@ -83,7 +92,22 @@ require_ssl_reuse=NO
 ssl_ciphers=HIGH
 ```
 
-## Paso 4. Reinicia el servicio
+Al conectarnos utilizando FTPS el servidor forzará al cliente a realizar una conexión pasiva por segurida, como vimos en la teoría. Si no hacemos nada más, tras el primer intercambio de órdenes a través del puerto 21, la conexión no podrá establecerse por el puerto de datos y obtendremos un mensaje similar a este "El servidor envió una respuesta pasiva con una dirección no enrutable. Usando en su lugar la dirección del servidor."
+
+Para evitar que esto ocurra, definiremos los puertos que puede abrir el servidor para el canal de datos en la conexión pasiva en el fichero /etc/vsftpd.conf con las siguientes órdenes:
+
+```linuxconfig
+pasv_enable=YES
+pasv_min_port=1027  # Puerto mínimo de conexión pasiva (reemplaza XXXX con un número)
+pasv_max_port=1030  # Puerto máximo de conexión pasiva (reemplaza XXXX con un número)
+pasv_address=X.X.X.X  # Dirección IP pública o accesible desde el cliente (reemplaza X.X.X.X con la dirección IP)
+```
+En este caso hemos elegido los puertos 1027 a 1030, pero puedes elegir otros que estén libres. Ten en cuenta que deberás abrir esos puertos en el firewall de AWS para permitir conexiones a esos puertos.
+
+La última línea pasv_address=X.X.X.X es opcional y si la pones debes poner la IP pública de tu servidor. Si no la pones, cuando te conectes con el cliente recibirás un mensaje similar a "*El servidor envió una respuesta pasiva con una dirección no enrutable. Usando en su lugar la dirección del servidor.*", pero funcionará igual. Si la pones ten en cuenta que cada vez que cambie la IP pública de tu servidor deberás cambiar esta línea en la configuración.
+
+
+### Reinicia el servicio
 
 Finalmente reiniciamos el servicio vsftpd para que coja la nueva configuración realizada en todos estos pasos.
 
@@ -91,37 +115,15 @@ Finalmente reiniciamos el servicio vsftpd para que coja la nueva configuración 
 sudo systemctl restart --now vsftpd
 ```
 
-## Paso 5. Comprobar la Conexión FTP al servidor vsftpd
+### Comprobar la Conexión FTP al servidor vsftpd
 
-DESCARGAR EL ARCHIVO DE CONFIGURACION DE BACKUP 
-
-¿CON QUE USUARIO CONSIGO ACCEDER AL SERVIDOR FTP DESDE MI PC PARA PODER SUBIR O BAJAR ARCHIVOS ??
-
-- EL USUARIO admin ? profe ? DEBEN ESTAR DENTRO DEL etc/group y dentro de etc/ftp 
------------------------------
-  ------ ESTO ES DE RAUL PRIETO QUE NO ENTIENDO ------
-
-> Para poner realizar una conexión FTP al servidor FTP, debemos tener en cuenta si el modo de acceso es
->> - *Mediante el puerto por defecto del protocolo <u>inseguro</u> FTP*, el **puerto 21**, pero utilizando certificados que cifran el intercambio de datos convirtiéndolo así en <u>seguro</u>
->> - o *haciendo uso del protocolo SFTP*, que es un protocolo dedicado al intercambio de datos mediante una conexión similar a SSH, utilizando de hecho el **puerto 22**.
-
-!!!task "Tarea"
-    Configura un nuevo dominio (nombre web) para el .zip con el nuevo sitio web que os proporcionado. 
-    **En este caso debéis transferir los archivos a vuestra Debian mediante SFTP.**
-
-Tras acabar esta configuración, ya podremos acceder a nuestro servidor mediante un cliente FTP (como FileZilla, WinSCP o la línea de comandos) para conectarte al servidor FTP utilizando la dirección IP del servidor y las credenciales del usuario FTP que creaste.
-
-La que vamos a intentar es realizar una transferencia de archivos entre nuestro servidor FTP en Debian y el cliente FTP (nuestro ordenador). 
-Tras acabar esta configuración, ya podremos acceder a nuestro servidor mediante un **cliente FTP** adecuado, como por ejemplo 
-
-    
 #### Acceso con Cliente FTP de consola
 
-1.Abre una terminal en tu sistema. 
+1. Abre una terminal en tu sistema. 
 - Desde Linux/Mac, abre el terminal del sistema
 - Desde Windows, abre el "Símbolo del sistema" o "PowerShell". Puedes hacerlo buscando "cmd" o "PowerShell" en el menú de inicio o escribiendo "cmd" en la barra de búsqueda.
 
-2.En la terminal, escribe el siguiente comando para iniciar una sesión FTP. Debes reemplazar *nombre_de_host_ftp* con la dirección IP PÚBLICA o el nombre de dominio del servidor FTP al que deseas conectarte:
+2. En la terminal, escribe el siguiente comando para iniciar una sesión FTP. Debes reemplazar *nombre_de_host_ftp* con la dirección IP PÚBLICA o el nombre de dominio del servidor FTP al que deseas conectarte:
 
 ```
 ftp nombre_de_host_ftp
@@ -135,7 +137,7 @@ Connected to nombre_de_host_ftp.
 Name (nombre_de_host_ftp:tu_nombre_de_usuario_ftp):
 ```
 
-4. A continuación, el cliente FTP te pedirá que ingreses un usuario (en nuestro caso recuerda que era **usuftp**)  y presiona "Enter". Luego, se te pedirá que ingreses la contraseña (recuerda que era **usuftp**). Si las credenciales son correctas, deberías obtener acceso al servidor FTP. Verifica que el prompt a cambiado a ftp> (quiere decir que has conectado correctamente).
+4. A continuación, el cliente FTP te pedirá que ingreses un usuario (en nuestro caso recuerda que era **userftp**)  y presiona "Enter". Luego, se te pedirá que ingreses la contraseña (recuerda que era **ieselcaminas**). Si las credenciales son correctas, deberías obtener acceso al servidor FTP. Verifica que el prompt a cambiado a ftp> (quiere decir que has conectado correctamente). Es posible que si el cliente ftp no conoce el certificado del servidor no te permita la conexión. Si esto ocurre no te preocupes e intenta la conexión con el cliente gráfico, que suele solucionar ese inconveniente.
 
 #### Acceso con Cliente FTP gráfico 
 
@@ -152,35 +154,58 @@ Tras darle al botón de *Conexión rápida*, nos saltará un aviso a propósito 
 
 ![](../img/ftp2.png)
 
-Nos conectaremos directamente a la carpeta que le habíamos indicado en el archivo de configuración `/home/raul/ftp`
+Nos conectaremos directamente a la carpeta que le habíamos indicado en el archivo de configuración `/home/userftp/ftp`
 
-Una vez conectados, buscamos la carpeta de nuestro ordenador donde hemos descargado el *.zip* (en la parte izquierda de la pantalla) y en la parte derecha de la pantalla, buscamos la carpeta donde queremos subirla. Con un doble click o utilizando *botón derecho > subir*, la subimos al servidor.
+Si en lugar de usar la conexión gráfica queremos crear una conexión para usarla más adelante lo haremos siguiendo los pasos de la práctica 4.1 Acceso a un servidor FTP público con los siguientes datos:
 
-![](../img/ftp3.png)
+![](P4_2/P4_2_7.png)
 
-Si lo que quisiéramos es conectarnos por **SFTP**, exactamente igual de válido, haríamos:
+Fíjate que usamos FTP y no SFTP, que usamos FTPS Explícito y que el puerto está vacío, porque usará el 21, que es el puerto por defecto. Puedes ponerlo y verás que funciona igual.
 
-![](../img/ftp5.png)
+## SFTP (SSH File Transfer Protocol)
 
-Fijáos que al utilizar las claves de SSH que ya estamos utilizando desde la Práctica 1, no se debe introducir la contraseña, únicamente el nombre de usuario.
+Ahora vamos a probar la conexión por SFTP. Recuerda que para esta no necesitamos configurar vsftp de ninguna forma especial, así que vamos a recuperar el fichero de configuración antes de configurar FTPS. Antes guardaremos el fichero de configuración con ftps activado por si queremos usarlo después.
+
+```sh
+sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.ftps
+sudo cp /etc/vsftpd.conf.backup2 /etc/vsftpd.conf
+```
+
+Ahora recuerda que aquí primero se establece una conexión ssh entre el usuario y el servidor ssh usando las claves pública y privada del usuario. Vamos a usar en este caso el usuario `user2`. Puedes crear un par de claves pública y privada para este usuario como hicimos en la práctica 1.3 y configurar el servidor ssh en la máquina virtual en AWS para que user2 pueda conectarse con ssh usando su clave privada. 
+
+
+Cuando lo tengas, lo primero es probar que funciona antes de intentar la conexión SFTP.
+
+```sh
+ssh -i clave user2@ipserver
+```
+
+Recuerda cambiar clave por el nombre y ruta del fichero de clave privada generado y ipserver por la ip pública de tu servidor en AWS. 
+
+Una vez comprobado que funciona ya podemo intentar conectar por sftp.
+
+### Conexión en modo comando
+
+Probamos a conectarnos en modo comando.
+
+![](P4_2/P4_2_8.png)
+
+Si todo va bien se establecerá la conexión sin pedirnos usuario ni contraseña.
+
+### Conexion en modo gráfico.
+
+Si lo que quisiéramos es conectarnos con Filezilla mediante la conexión rápida, bastará con seleccionar el puerto 22, que recordemos es el de ssh. Para que esto funcione el archivo de clave privada deberá estar en la ubicación donde el sistema espera encontrarlo, en caso contrario no lo encontrará y nos dará error.
+
+![](P4_2/P4_2_9.png)
+
+Si tenemos nuestro fichero con la clave privada de `user2` en otro sitio podemos crear una conexión nueva así:
+
+![](P4_2/P4_2_10.png)
+
+Fijáos que al utilizar las claves de SSH no se debe introducir la contraseña, únicamente el nombre de usuario.
 
 Puesto que nos estamos conectando usando las claves FTP, nos sale el mismo aviso que nos salía al conectarnos por primera vez por SSH a nuestra Debian, que aceptamos porque sabemos que no entraña ningún peligro en este caso:
 
-![](../img/ftp6.png)
+![](P4_2/P4_2_11.png)
 
-![](../img/ftp7.png)
-
-Y vemos que al ser una especie de conexión SSH, nos conecta al `home` del usuario, en lugar de a la carpeta `ftp`. A partir de aquí ya procederíamos igual que en el otro caso.
-
-Recordemos que debemos tener nuestro sitio web en la carpeta `/var/www` y darle los permisos adecuados, de forma similiar a cómo hemos hecho con el otro sitio web. 
-
-El comando que nos permite descomprimir un *.zip* en un directorio concreto es:
-
-```sh
-unzip archivo.zip -d /nombre/directorio
-```
-
-Si no tuvieráis unzip instalado, lo instaláis:
-
-```sh
-sudo apt-get update && sudo apt-get install unzip
+Y vemos que al ser una conexión SSH, nos conecta al `home` del usuario, en lugar de a la carpeta `ftp`. A partir de aquí ya procederíamos igual que en el otro caso.
