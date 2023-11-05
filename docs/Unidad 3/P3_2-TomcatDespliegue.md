@@ -64,7 +64,7 @@ Por tanto, para desplegar nuevas aplicaciones manualmente deberemos :
 1. Primero logearnos como usuario `tomcat` 
 2. segundo generar una estructura de carpetas para la aplicación a desplegar similar a la de "sample", que es la estructura que necesita Tomcat.
 
-### 1.Usuario Tomcat
+### 1. Usuario Tomcat
 
 Para entrar como usuario `tomcat` veamos primero cómo está creado en el fichero `/etc/passwd`:
 
@@ -92,7 +92,7 @@ Ahora entraremos en el sistema como usuario `tomcat`
 su tomcat
 ```
 
-### 2.Estructura de carpetas
+### 2. Estructura de carpetas
 
 Ahora ya podemos empezar a desplegar nuestra aplicación a la que llamaremos "prueba". Crearemos la siguiente estructura de carpetas dentro de `/var/lib/tomcat10/webapps`.
 
