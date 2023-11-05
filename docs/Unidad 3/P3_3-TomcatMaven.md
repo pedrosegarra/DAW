@@ -57,7 +57,7 @@ En primer lugar necesitamos asegurarnos de que en el apartado anterior de la pr�
  
 Los roles utilizados por Tomcat vienen detallados en [su documentación](https://tomcat.apache.org/tomcat-9.0-doc/manager-howto.html){:target="_blank"}, que merece ser consultada:
 
-    ![](P3_3/01.png)
+![](P3_3/01.png)
 
 En dicha documentación se nos indica que, por temas de seguridad, es recomendable no otorgar los roles de **manager-script** o **manager-jmx** al mismo usuario que tenga el rol de **manager-gui**. 
 
