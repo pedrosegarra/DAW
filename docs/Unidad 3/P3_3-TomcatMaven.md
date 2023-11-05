@@ -66,19 +66,19 @@ En dicha documentación se nos indica que, por temas de seguridad, es recomendab
 
  Así las cosas, modificamos el archivo `/etc/tomcat10/tomcat-users.xml` acorde a nuestras necesidades. Añadiremos un usuario "despliegues" con password "ieselcaminas":
 
-    ```xml
+ ```xml
         <role rolename="admin-gui"/>
         <role rolename="manager-gui"/>
         <role rolename="manager-script"/>
         <user username="admin" password="ieselcaminas" roles="admin-gui,manager-gui"/>
         <user username="despliegues" password="ieselcaminas" roles="manager-script"/>
-    ```
+```
   
-  Como hemos hecho cambios en la configuración de Tomcat deberemos reiniciarlo
+Como hemos hecho cambios en la configuración de Tomcat deberemos reiniciarlo
 
-   ```sh
-   sudo systemctl restart tomcat10.service
-   ```
+```sh
+     sudo systemctl restart tomcat10.service
+```
 
 **2.Indicar a Maven sobre el servidor que vamos a desplegar (en nuestro caso TOMCAT)**
 
