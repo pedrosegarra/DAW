@@ -51,18 +51,20 @@ total 24
 drwxrwxr-x 4 tomcat tomcat 4096 Sep 10 10:00 .
 drwxr-xr-x 5 root   root   4096 Sep 10 15:24 ..
 drwxr-xr-x 3 root   root   4096 Sep 10 09:24 ROOT
-drwxr-x--- 5 **tomcat** tomcat 4096 Sep 10 10:00 **sample**
--rw-r----- 1 **tomcat** tomcat 4606 Sep 10 10:00 **sample.war**
+drwxr-x--- 5 tomcat tomcat 4096 Sep 10 10:00 sample
+-rw-r----- 1 tomcat tomcat 4606 Sep 10 10:00 sample.war
 ```
 
 Observa un par de cosas. 
 
-   * Las aplicaciones desplegadas pertenecen al usuario `**tomcat**`.
-   * La aplicación "sample" que desplegamos anteriormente tiene el fichero `**sample.war**` que subimos y una carpeta `**sample**` que corresponde a la aplicación ya desplegada
+   * Las aplicaciones desplegadas pertenecen al usuario `tomcat`.
+   * La aplicación "sample" que desplegamos anteriormente tiene el fichero `sample.war` que subimos y una carpeta `sample` que corresponde a la aplicación ya desplegada
 
 Por tanto, para desplegar nuevas aplicaciones manualmente deberemos :
-1. Logarnos primero como usuario `tomcat`
-2. y luego generar una estructura de carpetas para la aplicación a desplegar similar a la de "sample", que es la estructura que necesita Tomcat.
+1. Primero logearnos como usuario `tomcat` 
+2. segundo generar una estructura de carpetas para la aplicación a desplegar similar a la de "sample", que es la estructura que necesita Tomcat.
+
+### 1.Usuario Tomcat
 
 Para entrar como usuario `tomcat` veamos primero cómo está creado en el fichero `/etc/passwd`:
 
@@ -90,6 +92,7 @@ Ahora entraremos en el sistema como usuario `tomcat`
 su tomcat
 ```
 
+### 2.Estructura de carpetas
 
 Ahora ya podemos empezar a desplegar nuestra aplicación a la que llamaremos "prueba". Crearemos la siguiente estructura de carpetas dentro de `/var/lib/tomcat10/webapps`.
 
@@ -104,7 +107,7 @@ Si comprobamos en nuestro Gestor de Aplicaciones Web de Tomcat veremos que apare
 
 ![](P3_2/07.png)
 
-### Creamos los archivos .java y .class
+#### Creamos los archivos .java y .class
 
 Dentro de la carpeta `prueba` crea el archivo `hola1.java` con el código siguiente:
 
@@ -145,7 +148,7 @@ javac -classpath /usr/share/tomcat10/lib/servlet-api.jar hola1.java
 Si no hay ningún problema el fichero hola1.java se compilará y aparecerá un fichero
 `hola1.class`.
 
-### Configura el servlet
+#### Configura el servlet
 
 La principal diferencia de un servlet Java respecto a una aplicación Java normal, es que una aplicación (una vez compilada) ya la podríamos ejecutar, mientras que el servlet lo tendremos que añadir al contenedor de servlets, para ello mueve `hola1.class` a la carpeta `webapps/prueba/WEB-INF/classes`.
 
