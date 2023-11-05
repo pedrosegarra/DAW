@@ -61,7 +61,7 @@ Los roles utilizados por Tomcat vienen detallados en [su documentación](https:/
 
 En dicha documentación se nos indica que, por temas de seguridad, es recomendable no otorgar los roles de **manager-script** o **manager-jmx** al mismo usuario que tenga el rol de **manager-gui**. 
 
-!!!info 
+!!!info
         Tendremos dos usuarios, uno para la GUI y otro exclusivamente para hacer los deploys de Maven.
 
  Así las cosas, modificamos el archivo `/etc/tomcat10/tomcat-users.xml` acorde a nuestras necesidades. Añadiremos un usuario "despliegues" con password "ieselcaminas":
@@ -108,7 +108,7 @@ Como ya vimos en el taller de Git, estamos clonando un proyecto de GitHub y colo
 
 Ahora debemos modificar el `POM` del proyecto para que haga referencia a que el despliegue se realice con el plugin de Maven para Tomcat. 
 
-!!!info 
+!!!info
         No existen plugins **oficiales** para Tomcat más allá de la versión 7 del servidor. No obstante, el plugin para  Tomcat 7 sigue funcionando correctamente con Tomcat 9. 
         
 Otra opción sería utilizar el plugin [Cargo](https://codehaus-cargo.github.io/cargo/Home.html)
