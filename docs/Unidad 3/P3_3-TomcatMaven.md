@@ -109,7 +109,7 @@ Como ya vimos en el taller de Git, estamos clonando un proyecto de GitHub y colo
 Ahora debemos modificar el `POM` del proyecto para que haga referencia a que el despliegue se realice con el plugin de Maven para Tomcat. 
 
 !!!info 
-        No existen plugins **oficiales** para Tomcat más allá de la versión 7 del servidor. No obstante, el plugin para Tomcat 7 sigue funcionando correctamente con Tomcat 9. 
+        No existen plugins **oficiales** para Tomcat más allá de la versión 7 del servidor. No obstante, el plugin para  Tomcat 7 sigue funcionando correctamente con Tomcat 9. 
         
 Otra opción sería utilizar el plugin [Cargo](https://codehaus-cargo.github.io/cargo/Home.html)
 
