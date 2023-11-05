@@ -83,8 +83,8 @@ drwxr-x--- 2 tomcat tomcat 4096 Nov  5 18:07 lib
 ```
 
 Por tanto, para desplegar nuevas aplicaciones manualmente deberemos :
-1. logearnos como usuario `tomcat` 
-2. y generar una estructura de carpetas para la aplicación a desplegar similar a la de "sample", que es la estructura que necesita Tomcat.
+1. Primero logearnos como usuario `tomcat` 
+2. Segundo generar una estructura de carpetas para la aplicación a desplegar similar a la de "sample", que es la estructura que necesita Tomcat.
 
 ### 1. Usuario Tomcat
 
