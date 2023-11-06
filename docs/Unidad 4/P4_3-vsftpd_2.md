@@ -149,11 +149,9 @@ Fíjate que usamos FTP y no SFTP, que usamos FTPS Explícito y que el puerto est
 
 Tras darle al botón de *Conectar*, nos saltará un aviso a propósito del certificado, le damos a aceptar puesto que no entraña peligro ya que lo hemos generado nosotros mismos:
 
-![](../img/ftp2.png)
+![](P4_2/P4_2_12.png)
 
 Nos conectaremos directamente a la carpeta que le habíamos indicado en el archivo de configuración `/home/userftp/ftp`
-
-
 
 ## SFTP (SSH File Transfer Protocol)
 
