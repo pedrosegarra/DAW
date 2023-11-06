@@ -51,32 +51,38 @@ Pero antes de pasar a integrar Tomcat con Maven hemos de tener algunos conocimie
 
 Para poder realizar despliegues en nuestro Tomcat previamente instalado, necesitamos realizar la configuración adecuada para Maven. Ya sabemos que esto en Linux significa editar los archivos de configuración adecuados. Vamos a ello.
 
-1. En primer lugar necesitamos asegurarnos de que en el apartado anterior de la práctica hemos añadido todos los usuarios necesarios, así como sus respectivos roles. Ahora debemos añadir el rol de `manager-script` para permitir que Maven se autentique contra Tomcat y pueda realizar el despliegue.
+**1.Creación de usuario para Maven**
+
+En primer lugar necesitamos asegurarnos de que en el apartado anterior de la práctica hemos añadido todos los usuarios necesarios, así como sus respectivos roles. Ahora debemos añadir el rol de `manager-script` para permitir que Maven se autentique contra Tomcat y pueda realizar el despliegue.
  
-    Los roles utilizados por Tomcat vienen detallados en [su documentación](https://tomcat.apache.org/tomcat-9.0-doc/manager-howto.html){:target="_blank"}, que merece ser consultada:
+Los roles utilizados por Tomcat vienen detallados en [su documentación](https://tomcat.apache.org/tomcat-9.0-doc/manager-howto.html){:target="_blank"}, que merece ser consultada:
 
-    ![](P3_3/01.png)
+![](P3_3/01.png)
 
-    En dicha documentación se nos indica que, por temas de seguridad, es recomendable no otorgar los roles de **manager-script** o **manager-jmx** al mismo usuario que tenga el rol de **manager-gui**. 
+En dicha documentación se nos indica que, por temas de seguridad, es recomendable no otorgar los roles de **manager-script** o **manager-jmx** al mismo usuario que tenga el rol de **manager-gui**. 
 
-    !!!info 
+!!!info
         Tendremos dos usuarios, uno para la GUI y otro exclusivamente para hacer los deploys de Maven.
 
-    Así las cosas, modificamos el archivo `/etc/tomcat10/tomcat-users.xml` acorde a nuestras necesidades. Añadiremos un usuario "despliegues" con password "ieselcaminas":
+ Así las cosas, modificamos el archivo `/etc/tomcat10/tomcat-users.xml` acorde a nuestras necesidades. Añadiremos un usuario "despliegues" con password "ieselcaminas":
 
-    ```xml
+ ```xml
         <role rolename="admin-gui"/>
         <role rolename="manager-gui"/>
         <role rolename="manager-script"/>
         <user username="admin" password="ieselcaminas" roles="admin-gui,manager-gui"/>
         <user username="despliegues" password="ieselcaminas" roles="manager-script"/>
-    ```
-    
-    Como hemos hecho cambios en la configuración de Tomcat deberemos reiniciarlo
+```
+  
+Como hemos hecho cambios en la configuración de Tomcat deberemos reiniciarlo
 
-    `sudo systemctl restart tomcat10.service`
+```sh
+     sudo systemctl restart tomcat10.service
+```
 
-2. Editar el archivo `/etc/maven/settings.xml`  para indicarle a Maven un identificador para el servidor sobre el que vamos a desplegar. No es más que un nombre, le pondremos DesplieguesTomcat, pero podría ser cualquier cosa. El usuario y password serán los que definimos antes en `tomcat-users.xml`. Todo esto se hará dentro del bloque *servers* del XML:
+**2.Indicar a Maven sobre el servidor que vamos a desplegar (en nuestro caso TOMCAT)**
+
+Editar el archivo `/etc/maven/settings.xml`  para indicarle a Maven un identificador para el servidor sobre el que vamos a desplegar. No es más que un nombre, le pondremos **DesplieguesTomcat**, pero podría ser cualquier cosa. El usuario y password serán los que definimos antes en `tomcat-users.xml`. Todo esto se hará dentro del bloque *servers* del XML:
 
 ```xml
     <server>
@@ -102,10 +108,10 @@ Como ya vimos en el taller de Git, estamos clonando un proyecto de GitHub y colo
 
 Ahora debemos modificar el `POM` del proyecto para que haga referencia a que el despliegue se realice con el plugin de Maven para Tomcat. 
 
-    !!!info
-        No existen plugins **oficiales** para Tomcat más allá de la versión 7 del servidor. No obstante, el plugin para Tomcat 7 sigue funcionando correctamente con Tomcat 9. 
+!!!info
+No existen plugins **oficiales** para Tomcat más allá de la versión 7 del servidor. No obstante, el plugin para  Tomcat 7 sigue funcionando correctamente con Tomcat 9. 
         
-        Otra opción sería utilizar el plugin [Cargo](https://codehaus-cargo.github.io/cargo/Home.html)
+Otra opción sería utilizar el plugin [Cargo](https://codehaus-cargo.github.io/cargo/Home.html)
 
     
 Donde lo que añadimos es el bloque `<plugin>` dentro del bloque `<plugins>`.
