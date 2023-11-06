@@ -141,26 +141,19 @@ Name (nombre_de_host_ftp:tu_nombre_de_usuario_ftp):
 
 #### Acceso con Cliente FTP gráfico 
 
-Vamos a utilizar como **cliente FTP** con entorno gráfico a [Filezilla](https://filezilla-project.org/), que dispone de versiones para GNU/Linux, Mac OS X y Windows. Tras descargar <U>**el cliente FTP**</u> en nuestro ordenador, introducimos los datos necesarios para conectarnos a nuestro servidor FTP en Debian:
+Vamos a utilizar como **cliente FTP** con entorno gráfico a [Filezilla](https://filezilla-project.org/), que dispone de versiones para GNU/Linux, Mac OS X y Windows. Tras descargar <U>**el cliente FTP**</u> en nuestro ordenador vamos a crear una conexión para usarla más adelante. Lo haremos siguiendo los pasos de la práctica 4.1 Acceso a un servidor FTP público con los siguientes datos:
 
-![](../img/ftp1.png)
+![](P4_2/P4_2_7.png)
 
-+ La IP de Debian (recuadro rojo)
-+ El nombre de usuario de Debian (recuadro verde)
-+ La contraseña de ese usuario (recuadro fucsia)
-+ El puerto de conexión, que será el 21 para conectarnos utilizando los certificados generados previamente (recuadro marrón)
+Fíjate que usamos FTP y no SFTP, que usamos FTPS Explícito y que el puerto está vacío, porque usará el 21, que es el puerto por defecto. Puedes ponerlo y verás que funciona igual.
 
-Tras darle al botón de *Conexión rápida*, nos saltará un aviso a propósito del certificado, le damos a aceptar puesto que no entraña peligro ya que lo hemos genrado nosotros mismos:
+Tras darle al botón de *Conectar*, nos saltará un aviso a propósito del certificado, le damos a aceptar puesto que no entraña peligro ya que lo hemos generado nosotros mismos:
 
 ![](../img/ftp2.png)
 
 Nos conectaremos directamente a la carpeta que le habíamos indicado en el archivo de configuración `/home/userftp/ftp`
 
-Si en lugar de usar la conexión gráfica queremos crear una conexión para usarla más adelante lo haremos siguiendo los pasos de la práctica 4.1 Acceso a un servidor FTP público con los siguientes datos:
 
-![](P4_2/P4_2_7.png)
-
-Fíjate que usamos FTP y no SFTP, que usamos FTPS Explícito y que el puerto está vacío, porque usará el 21, que es el puerto por defecto. Puedes ponerlo y verás que funciona igual.
 
 ## SFTP (SSH File Transfer Protocol)
 
