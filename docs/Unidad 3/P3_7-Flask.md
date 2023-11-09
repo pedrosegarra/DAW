@@ -216,7 +216,7 @@ Vamos a ello.
     sudo systemctl status nginx
     ```
 
-18. Ya fuera de nuestro entorno virtual, crearemos un archivo para que [systemd](https://es.wikipedia.org/wiki/Systemd) corra Gunicorn como un servicio del sistema más. En el ejemplo al servicio le vamos a llamar `flask_app.service`:
+18. Ya fuera de nuestro entorno virtual, crearemos un archivo para que [systemd](https://es.wikipedia.org/wiki/Systemd) corra Gunicorn como un servicio del sistema más. En el ejemplo al servicio le vamos a llamar `flask_app.service`. Crea el archivo /etc/systemd/system/flaskapp.service con este contenido (deberás hacerlo como sudo):
 
     ```bash
     [Unit]
