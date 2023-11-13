@@ -67,11 +67,11 @@ En dicha documentación se nos indica que, por temas de seguridad, es recomendab
  Así las cosas, modificamos el archivo `/etc/tomcat10/tomcat-users.xml` acorde a nuestras necesidades. Añadiremos un usuario "despliegues" con password "ieselcaminas":
 
  ```xml
-        <role rolename="admin-gui"/>
-        <role rolename="manager-gui"/>
-        <role rolename="manager-script"/>
-        <user username="admin" password="ieselcaminas" roles="admin-gui,manager-gui"/>
-        <user username="despliegues" password="ieselcaminas" roles="manager-script"/>
+  <role rolename="admin-gui"/>
+  <role rolename="manager-gui"/>
+  <role rolename="manager-script"/>
+  <user username="admin" password="ieselcaminas" roles="admin-gui,manager-gui"/>
+  <user username="despliegues" password="ieselcaminas" roles="manager-script"/>
 ```
   
 Como hemos hecho cambios en la configuración de Tomcat deberemos reiniciarlo
