@@ -72,12 +72,7 @@ nav:
   - ... | Unidad 3/*.md
   - ... | Unidad 4/*.md
 #  - ... | Unidad 5/*.md
-#  - Unidad 5:
-#      - Teoría: 
-#        - dns.md
-#      - Prácticas:
-#        - ... | P4.*.md
-#  - Unidad 5:
+#  - Unidad 6:
 #      - Teoría: 
 #        - index_git.md
 #       - cvs.md

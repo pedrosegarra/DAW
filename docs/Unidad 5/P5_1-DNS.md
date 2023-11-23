@@ -7,19 +7,31 @@ title: 'Práctica 5.1 - Configuración de un servidor DNS'
 !!!note "Nota importante"
     Es muy importante que antes de empezar esta práctica eliminéis las entradas que habéis ido introduciendo hasta ahora en vuestro archivo ```/etc/hosts``` para asegurarnos que realmente la resolución de nombres va a nuestro servidor DNS. Si no hacéis esto, resolverá los nombres, pensaréis que está bien pero en realidad estará mal.
 
+## Creación de la máquina virtual
+
+Para empezar, entra en AWS Academy y crea un nuevo EC2 Debian con estas características. 
+
+* Llámale P5ServidorDNS.
+* Dale los recursos que te ofrece por defecto.
+* Crea un Grupo de seguridad con el nombre P5ServidorDNS y abre los puertos necesarios para que una máquina externa pueda consultarlo.
+* Arranca la máquina y actualízala para que cuente con las últimas versiones de todos los paquetes.
+  
+
 ## Instalación de servidor DNS
 
 Bind es el estándar de facto para servidores DNS. Es una herramienta de software libre y se distribuye con la mayoría de plataformas Unix y Linux, donde también se le conoce con el sobrenombre de named (name daemon). Bind9 es la versión recomendada para usarse y es la que emplearemos.
 
-Para instalar el servidor DNS en Ubuntu Server, usaremos los repositorios oficiales. Por ello, podremos instalarlo como cualquier paquete en Ubuntu:
+Para instalar el servidor DNS en un servidor Debian, usaremos los repositorios oficiales. Por ello, podremos instalarlo como cualquier paquete en Ubuntu:
 
 ```sh
 sudo apt-get install bind9 bind9utils bind9-doc 
 ```
 
+Comprueba si el servicio bind 9 ya está funcionando.
+
 ## Configuración del servidor
 
-Puesto que en clase sólo vamos a utilizar IPv4, vamos a decírselo a Bind, en su archivo general de configuración. Este archivo `named` se encuentra en el directorio:
+Puesto que sólo vamos a utilizar IPv4, vamos a decírselo a Bind, en su archivo general de configuración. Este archivo `named` se encuentra en el directorio:
 
 ```linuxconf
 /etc/default
@@ -54,17 +66,19 @@ sudo cp /etc/bind/named.conf.options /etc/bind/named.conf.options.backup
 
 Ahora editaremos el archivo `named.conf.options` e incluiremos los siguientes contenidos:
 
- + Por motivos de seguridad, vamos a incluir una lista de acceso para que sólo puedan hacer consultas recursivas al servidor aquellos hosts que nosotros decidamos.
+ + Si, por motivos de seguridad, quisiéramos que solo los equipos de nuestra red local o empresarial pudieran hacer consultas recursivas al servidor, incluiríamos una lista de acceso.
 
-    En nuestro caso, los hosts confiables serán los de la red 192.168.X.0/24 (donde la X depende de vuestra red de casa). Así pues, justo antes del bloque ```options {…}```, al principio del archivo, añadiremos algo así:
+    Imagina que los hosts confiables fueran los de la red 192.168.X.0/24 (donde la X depende de vuestra red de casa). Así pues, justo antes del bloque ```options {…}```, al principio del archivo, añadiríamos algo así:
 
     ![](P5_1/3.1.bind_2.png)
 
-Si nos fijamos el servidor por defecto ya viene configurado para ser un DNS caché. El directorio donde se cachearán o guardarán las zonas es `/var/cache/bind`.
+    En el caso que nuestro servidor se encuentre en AWS no podemos saber, a priori, con qué IP pública llegarán al servidor bind9 nuestras peticiones, así que no incluiremos esta directiva.
 
-```linuxconf
-/var/cache/bind
-```
++ Si nos fijamos el servidor por defecto ya viene configurado para ser un DNS caché. El directorio donde se cachearán o guardarán las zonas es `/var/cache/bind`.
+
+    ```linuxconf
+    /var/cache/bind
+    ```
 
 
 + Que sólo se permitan las consultas recursivas a los hosts que hemos decidido en la lista de acceso anterior
