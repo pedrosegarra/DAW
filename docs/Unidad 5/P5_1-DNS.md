@@ -29,12 +29,75 @@ sudo apt-get install bind9 bind9utils bind9-doc
 
 Comprueba si el servicio bind 9 ya está funcionando.
 
+Una vez instalado el servicio ya funcionará con las opciones básicas. 
+
+## Pruebas de resolución de nombres.
+
+Vamos a hacer pruebas usando el comando nslookup y dig. Si no están instalado en nuestra Debian podemos instalarlo con: 
+
+```sh
+sudo apt-get install dnsutils 
+```
+
+Comprobemos primero cuál es el servidor de nombres que tenemos configurado en nuestra EC2. Podemos saberlo con: 
+
+```sh
+cat /etc/resolv.conf
+```
+
+Toma nota de la IP del "nameserver", es decir, la IP del equipo al que nuestra máquina enviará las consultas de resolución de nombres.
+
+Ahora vamos a pedir que nos resuelva un dominio:
+
+```yaml
+$ nslookup cisco.com 
+Server:		172.31.0.2 #(1)
+Address:	172.31.0.2#53 #(2)
+
+Non-authoritative answer: #(3)
+Name:	cisco.com
+Address: 72.163.4.185 #(4)
+Name:	cisco.com
+Address: 2001:420:1101:1::185 #(5)
+```
+1. Servidor DNS que nos está dando la respuesta
+
+2. IP y puerto del servidor DNS que nos da la respuesta
+
+3. El servidor DNS que nos contesta no tiene autoridad sobre la zona 
+
+4. La IP de cisco.com en IPv4
+
+5. La IP de cisco. com en IPv6
+
+Fíjate que en tu caso la IP de Server y Address pueden ser distintas si tu máquina virtual pregunta a un servidor DNS diferente. Prueba a ejecutar nslookup desde tu ordenador anfitrión (el de casa o el aula). ¿Coinciden los campos de Server y Address? ¿Y la IP de Cisco.com?
+
+En la prueba anterior hemos probado a preguntar al servidor DNS que tenemos configurado, pero lo que nos interesa es preguntarle al que acabamos de instalar. Desde nuestro servidor Debian vamos a preguntarle al servidor bind9.
+
+```yaml
+$ nslookup cisco.com 127.0.0.1 #(1)
+Server:		127.0.0.1
+Address:	127.0.0.1#53
+
+Non-authoritative answer:
+Name:	cisco.com
+Address: 72.163.4.185
+Name:	cisco.com
+Address: 2001:420:1101:1::185
+```
+
+1. Incluímos al final la IP del servidor al que queremos preguntar. Vemos como en Server y Address nos está contestando 127.0.0.1 que no es más que localhost, nuestra propia máquina. Comprobamos cómo nuestro servidor DNS y es capaz de darnos respuesta.
+
+Prueba ahora a consultar a nuestro servidor DNS desde tu máquina anfitrión. Para ello deberás consultar a su IP pública. ¿Obtienes respuesta? ¿Por qué crees que obtienes esa respuesta? Lo veremos más adelante.
+
+
 ## Configuración del servidor
 
-Puesto que sólo vamos a utilizar IPv4, vamos a decírselo a Bind, en su archivo general de configuración. Este archivo `named` se encuentra en el directorio:
+<!-- 
+Puesto que sólo vamos a utilizar IPv4, vamos a decírselo a Bind, en su archivo general de configuración, que es el siguiente:
 
 ```linuxconf
-/etc/default
+/etc/default/named
 ```
 
 Y para indicarle que sólo use IPv4, debemos modificar la línea siguiente con el texto resaltado:
@@ -42,28 +105,72 @@ Y para indicarle que sólo use IPv4, debemos modificar la línea siguiente con e
 ```linuxconf
 OPTIONS = "-u bind -4"
 ```
+-->
 
-El archivo de configuración principal `named.conf` de Bind está en el directorio:
+En primer lugar vamos a repasar el fichero de configuración de bind ```/etc/default/named```:
+
+```sh
+$ cat /etc/default/named 
+#
+# run resolvconf?
+RESOLVCONF=no
+
+# startup options for the server
+OPTIONS="-u bind"
+```
+
+La variable RESOLVCONF indica si BIND9 debe interactuar con resolvconf. Si está configurado en yes, BIND9 utilizará resolvconf para gestionar los archivos de configuración de resolución de DNS. Es decir, que lo que bind9 no sepa resolver se lo preguntará al servicio reslovconf igual que le pregunta cualquier otro programa, como el navegador web. Por eso, sin necesidad de configurar nada más, bind sabrá respondernos a cualquier pregunta de resolución. Aquellas que no sepa, las consultará a resolvconf.
+
+El archivo de configuración principal de Bind es:
 
 ```linuxconf
-/etc/bind
+/etc/bind/named.conf
 ```
 
 Si lo consultamos veremos lo siguiente:
 
-![](P5_1/3.1.bind_1.png)
+```
+$ cat /etc/bind/named.conf
+// This is the primary configuration file for the BIND DNS server named.
+//
+// Please read /usr/share/doc/bind9/README.Debian for information on the
+// structure of BIND configuration files in Debian, *BEFORE* you customize
+// this configuration file.
+//
+// If you are just adding zones, please do that in /etc/bind/named.conf.local
 
+include "/etc/bind/named.conf.options";
+include "/etc/bind/named.conf.local";
+include "/etc/bind/named.conf.default-zones";
+```
 
 Este archivo sirve simplemente para aglutinar o agrupar a los archivos de configuración que usaremos. Estos 3 includes hacen referencia a los 3 diferentes archivos donde deberemos realizar la verdadera configuración, ubicados en el mismo directorio.
 
 ### configuración *named.conf.options*
 
-Es  una  buena  práctica  que  hagáis  siempre  una  copia  de  seguridad  de  un  archivo  de configuración cada vez que vayáis a realizar algún cambio:
+Es una buena práctica que hagáis siempre una copia de seguridad de un archivo de configuración cada vez que vayáis a realizar algún cambio:
 
 ```sh
 sudo cp /etc/bind/named.conf.options /etc/bind/named.conf.options.backup
 ```
 
+Recuerda que si preguntabas antes con nslookup desde el propio servidor obteníamos respuesta pero si le hacemos la consulta desde nuestra máquina local nos daba "REFUSED". Esto es porque BIND9 solo permite consultas locales por defecto. Para permitir todas las solicitudes añadiríamos la directiva:
+
+```sh
+allow-query { any; };
+```
+
+Puedes comprobar que el archivo de configuración es correcto con:
+
+```sh
+sudo named-checkconf
+```
+
+Si no aparecen errores, entonces todo está en orden. Reinicia el servicio y prueba a consultar nuevamente desde tu máquina anfitrión. ¿Recibe ahora la respuesta esperada?
+
+Con esta configuración básica ya hemos comprobado que nuestro servidor DNS está funcionando y respondiendo a peticiones de la propia máquina y de otras externas. Podríamos configurar muchas otras cosas, pero para nuestros objetivos actuales es suficiente.
+
+<!-- 
 Ahora editaremos el archivo `named.conf.options` e incluiremos los siguientes contenidos:
 
  + Si, por motivos de seguridad, quisiéramos que solo los equipos de nuestra red local o empresarial pudieran hacer consultas recursivas al servidor, incluiríamos una lista de acceso.
@@ -94,6 +201,8 @@ Ahora editaremos el archivo `named.conf.options` e incluiremos los siguientes co
     ![](P5_1/3.1.bind_3.png)
 
 
+
+Vayamos paso por paso. En p
 Podemos comprobar si nuestra configuración es correcta con el comando:
 
 ![](P5_1/3.1.bind_4.png)
@@ -103,72 +212,208 @@ Si hay algún error, nos lo hará saber. En caso contrario, nos devuelve a la l�
 Reiniciamos el servidor y comprobamos su estado:
 
 ![](P5_1/3.1.bind_5.png)
-
+-->
 
 ### Configuración *named.conf.local*
 
 En este archivo configuraremos aspectos relativos a nuestras zonas. Vamos a declarar la zona “deaw.es”. Por ahora simplemente indicaremos que el servidor DNS es maestro para esta zona y donde estará ubicado el archivo de zona que crearemos más adelante:
 
-![](P5_1/3.1.bind_6.png)
+```sh
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+zone "deaw.es" {
+        type master;
+        file "/etc/bind/db.deaw.es";  //Ruta donde ubicamos nuestro archivo de zona
+};
+```
 
 
 ### Creación del archivo de zona
 
 Vamos a crear el archivo de zona de resolución directa justo en el directorio que hemos indicado antes y con el mismo nombre que hemos indicado antes.
 
-El contenido será algo así (procurad respetar el formato):
+El contenido de `/etc/bind/db.deaw.es` será algo así (procurad respetar el formato):
 
-![](P5_1/3.1.bind_7.png)
+```sh
+$TTL 1d
+$ORIGIN deaw.es. ; base domain-name
+@   IN  SOA     ns1.deaw.es. admin.deaw.es. (
+                  2023112301  ; Serial
+                  8H          ; Refresh
+                  2H          ; Retry
+                  4W          ; Expire
+                  1D )        ; Minimum TTL
+; Name Servers
+    IN  NS      ns1.deaw.es.
+; A records
+ns1 IN  A       3.85.104.173
+www IN  A       3.85.104.173
+```
 
-Recordad de teoría que los registros SOA son para detallar aspectos de la zona autoritativa, los NS para indicar los servidores DNS de la zona y los A las IPs respectivas.
+Ojo, las últimas IP son la IP que tiene tu servidor Debian. Cámbiala por la que proceda.
 
-Donde aparecen las X debéis poner vuestras IPs privadas correspondientes, tanto de vuestro servidor como de vuestro cliente..
+Explicación de las partes del archivo:
+
+* $TTL: Tiempo de vida predeterminado para los registros de la zona. En este caso, se establece en 1 día.
+
+* SOA (Start of Authority): Indica información sobre la zona, como el nombre del servidor primario, el contacto del administrador y detalles de tiempo.
+
+    * Recuerda también incrementar el número de serie cada vez que realices cambios para que las actualizaciones se propaguen correctamente.
+  
+* NS: Registra los servidores de nombres autoritativos para la zona.
+
+* A: Registra la dirección IP asociada con un nombre de host específico.
+
+Guarda el archivo. Comprueba que no hay errores con `named-checkconf` de una forma más avanzada. En este caso necesitará 2 parámetros: el nombre de zona y el archivo de zona:
+
+```sh
+$ sudo named-checkzone deaw.es /etc/bind/db.deaw.es
+zone deaw.es/IN: loaded serial 2023112301
+OK
+```
+
+Vemos cómo si va todo bien nos dirá el número de serie y Ok. Si hubiera algún error nos diría algo como 
+
+```sh
+zone deaw.es/IN: NS 'ns1.deaw.es' has no address records (A or AAAA)
+zone deaw.es/IN: not loaded due to errors.
+```
+
+Si va todo bien reinicia el servicio.
+
+Prueba a preguntar por www.deaw.es o ns1.deaw.es a tu servidor.
+
+```sh
+nslookup www.deaw.es 127.0.0.1 //desde el propio servidor
+nslookup www.deaw.es IP_SERVER //desde tu equipo local
+```
 
 ### Creación del archivo de zona para la resolución inversa
 
 Recordad que deben existir ambos archivos de zona, uno para la resolución directa y otro para la inversa. Vamos pues a crear el archivo de zona inversa.
 
 En primer lugar, debemos añadir las líneas correspondientes a esta zona inversa en el archivo
-**`named.conf.local`**, igual que hemos hecho antes con la zona de resolución directa:
+**`/etc/bind/named.conf.local`**, igual que hemos hecho antes con la zona de resolución directa:
 
-![](P5_1/3.1.bind_8.png)
-
-Donde la X es el tercer byte de vuestra red.
-
+```sh
+zone "104.85.3.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.3.85.104";  # Ruta al archivo de zona inversa
+};
+```
 Y la configuración de la zona de resolución inversa:
 
-![](P5_1/3.1.bind_9.png)
+```sh
+$TTL 1d
+$ORIGIN 104.85.3.IN-ADDR.ARPA.
+@   IN  SOA     ns1.deaw.es. admin.deaw.es. (
+                  2023112301  ; Serial
+                  8H          ; Refresh
+                  2H          ; Retry
+                  4W          ; Expire
+                  1D )        ; Minimum TTL
 
-Podemos comprobar que la configuración de las zonas es correcta con el comando adecuado.
+; Name Servers
+    IN  NS      ns1.deaw.es.
 
-### Comprobación de las configuraciones
+; PTR record
+173 IN  PTR     ns1.deaw.es. ; fully qualified domain name (FQDN)
+```
 
-Para comprobar la configuración de la zona de resolución directa:
+Vuelve a omprobar que la configuración es correcta:
 
-![](P5_1/3.1.bind_10.png)m
+```sh
+sudo named-checkzone 104.85.3.in-addr.arpa /etc/bind/db.3.85.104 
+```
 
-Y para comprobar la configuración de la zona de resolución inversa:
+Reinicia el servicio y ejecuta los comandos de comprobación.
 
-![](P5_1/3.1.bind_11.png)
+```sh
+nslookup 3.85.104.173 127.0.0.1 //desde el propio servidor
+nslookup 3.85.104.173 IP_SERVER //desde tu equipo local
+```
 
-Si todo está bien, devolverá OK. En caso de haber algún error, nos informará de ello.
 
-Reiniciamos el servicio y comprobamos el estado:
+### Comprobación de las resoluciones y de las consultas
 
-![](P5_1/3.1.bind_12.png)
+Hasta ahora hemos hecho todas las pruebas con nslookup y diciéndole a qué servidor DNS tenía que preguntar.
 
 !!!warning "Atención"
     Es muy importante que el cliente esté configurado para usar como servidor DNS el que acabamos de instalar y configurar. Ya sea Windows, ya sea Linux, debéis cambiar vuestra configuración de red para que la máquina con la que hagáis las pruebas utilice este servidor DNS como el principal.
 
-### Comprobación de las resoluciones y de las consultas
+En nuestro Debian, vamos a cambiar el DNS al que consulta nuestro servidor en ```/etc/resolv.conf```. Comenta el `nameserver` existente y añade la propia máquina.
 
-Podemos comprobar desde los clientes, con dig o nslookup las resoluciones directas e inversas:
 
-=== "Comprobación usando *dig*"
-    ![](P5_1/3.1.bind_13.png)
+```sh
+#nameserver 172.31.0.2
+nameserver 127.0.0.1
+search .
+```
 
-=== "Comprobación usando *nslookup*"
-    ![](P5_1/3.1.bind_14.png)
+Prueba a preguntar con `dig` por el dominio deaw.es:
+
+```sh
+$ dig deaw.es
+
+; <<>> DiG 9.18.19-1~deb12u1-Debian <<>> deaw.es
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 31053
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 535eb708a167a587010000006560f94758cba602eeb2f207 (good)
+;; QUESTION SECTION:
+;deaw.es.			IN	A
+
+;; AUTHORITY SECTION:
+deaw.es.		86400	IN	SOA	ns1.deaw.es. admin.deaw.es. 2023112301 28800 7200 2419200 86400
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)
+;; WHEN: Fri Nov 24 19:28:07 UTC 2023
+;; MSG SIZE  rcvd: 110
+```
+
+Observa los datos que te devuelve y compáralos con el fichero de configuración de la zona. 
+
+!!!task
+    Haz un dig de otros dominios conocidos como cisco.com o google.com y analiza el resultado
+
+Comprueba con `dig -x` la resolución inversa:
+
+```sh
+$ dig -x 3.85.104.173
+
+; <<>> DiG 9.18.19-1~deb12u1-Debian <<>> -x 3.85.104.173
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 44375
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 727f64c781f9f648010000006560f9ee4cbddffde4f5df09 (good)
+;; QUESTION SECTION:
+;173.104.85.3.in-addr.arpa.	IN	PTR
+
+;; ANSWER SECTION:
+173.104.85.3.IN-ADDR.ARPA. 86400 IN	PTR	ns1.deaw.es.
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)
+;; WHEN: Fri Nov 24 19:30:54 UTC 2023
+;; MSG SIZE  rcvd: 132
+```
+
+Antes de finalizar, recuerda dejar `/etc/resolv.conf` como estaba.
 
 ## Tarea a realizar
 
