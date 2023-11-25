@@ -16,24 +16,23 @@ Para empezar, entra en AWS Academy y crea un nuevo EC2 Debian con estas caracter
 * Crea un Grupo de seguridad con el nombre P5ServidorDNS y abre los puertos necesarios para que una máquina externa pueda consultarlo.
 * Arranca la máquina y actualízala para que cuente con las últimas versiones de todos los paquetes.
   
+## Herramientas de diagnóstico de resolución de nombres.
 
-## Instalación de servidor DNS
+Los programas `dig`, `host` y `nslookup` son herramientas de línea de comandos para realizar consultas a servidores de nombres. 
 
-Bind es el estándar de facto para servidores DNS. Es una herramienta de software libre y se distribuye con la mayoría de plataformas Unix y Linux, donde también se le conoce con el sobrenombre de named (name daemon). Bind9 es la versión recomendada para usarse y es la que emplearemos.
+* `dig`
 
-Para instalar el servidor DNS en un servidor Debian, usaremos los repositorios oficiales. Por ello, podremos instalarlo como cualquier paquete en Ubuntu:
+    `dig` es la herramienta más versátil y completa de estas utilidades de consulta. Tiene dos modos: un modo interactivo simple para una sola consulta y un modo por lotes que ejecuta una consulta para cada línea en una lista de varias líneas de consulta.
 
-```sh
-sudo apt-get install bind9 bind9utils bind9-doc 
-```
+* `host`
 
-Comprueba si el servicio bind 9 ya está funcionando.
+    La utilidad `host` enfatiza la simplicidad y facilidad de uso. Por defecto, convierte entre nombres de host y direcciones de Internet-
 
-Una vez instalado el servicio ya funcionará con las opciones básicas. 
+* `nslookup`
 
-## Pruebas de resolución de nombres.
+    `nslookup` tiene dos modos: interactivo y no interactivo. El modo interactivo permite al usuario consultar servidores de nombres para obtener información sobre varios hosts y dominios, o imprimir una lista de hosts en un dominio. El modo no interactivo se utiliza para imprimir solo el nombre y la información solicitada para un host o dominio.
 
-Vamos a hacer pruebas usando el comando nslookup y dig. Si no están instalado en nuestra Debian podemos instalarlo con: 
+Para instalar estas herramientas en nuestra Debian usaremos: 
 
 ```sh
 sudo apt-get install dnsutils 
@@ -42,14 +41,58 @@ sudo apt-get install dnsutils
 Comprobemos primero cuál es el servidor de nombres que tenemos configurado en nuestra EC2. Podemos saberlo con: 
 
 ```sh
-cat /etc/resolv.conf
+$ cat /etc/resolv.conf 
+...
+
+nameserver 172.31.0.2
+search .
 ```
 
-Toma nota de la IP del "nameserver", es decir, la IP del equipo al que nuestra máquina enviará las consultas de resolución de nombres.
+Toma nota de la IP del "nameserver", es decir, la IP del equipo al que nuestra máquina enviará las consultas de resolución de nombres. En este caso nuestro DNS es 172.31.0.2.
 
-Ahora vamos a pedir que nos resuelva un dominio:
+Vamos a probar con `host`.
 
-```yaml
+```sh
+$ host cisco.com
+cisco.com has address 72.163.4.185
+cisco.com has IPv6 address 2001:420:1101:1::185
+cisco.com mail is handled by 30 aer-mx-01.cisco.com.
+cisco.com mail is handled by 10 alln-mx-01.cisco.com.
+cisco.com mail is handled by 20 rcdn-mx-01.cisco.com.
+```
+
+La salida es simple. Nos responde con los registros. En muchos casos esta información es más que suficiente. Aunque no sabemos qué servidor DNS nos está dando la respuesta, si es autoritativa o no. Para nuestras pruebas se queda un poco corto.
+
+Probemos ahora con `dig`.
+
+```yaml hl_lines="15 18"
+$ dig cisco.com
+
+; <<>> DiG 9.18.19-1~deb12u1-Debian <<>> cisco.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 57177
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;cisco.com.			IN	A
+
+;; ANSWER SECTION:
+cisco.com.		111	IN	A	72.163.4.185
+
+;; Query time: 3 msec
+;; SERVER: 172.31.0.2#53(172.31.0.2) (UDP)
+;; WHEN: Sat Nov 25 08:30:24 UTC 2023
+;; MSG SIZE  rcvd: 54
+```
+
+Vemos que obtenemos más información. No sólo nos devuelve la respuesta de la IP sino que además nos dice qué servidor DNS nos la está proporcionando.
+
+Y finalmente vamos a probar con nslookup:
+
+```yaml  hl_lines="3 7 8"
 $ nslookup cisco.com 
 Server:		172.31.0.2 #(1)
 Address:	172.31.0.2#53 #(2)
@@ -60,6 +103,7 @@ Address: 72.163.4.185 #(4)
 Name:	cisco.com
 Address: 2001:420:1101:1::185 #(5)
 ```
+
 1. Servidor DNS que nos está dando la respuesta
 
 2. IP y puerto del servidor DNS que nos da la respuesta
@@ -70,9 +114,38 @@ Address: 2001:420:1101:1::185 #(5)
 
 5. La IP de cisco. com en IPv6
 
-Fíjate que en tu caso la IP de Server y Address pueden ser distintas si tu máquina virtual pregunta a un servidor DNS diferente. Prueba a ejecutar nslookup desde tu ordenador anfitrión (el de casa o el aula). ¿Coinciden los campos de Server y Address? ¿Y la IP de Cisco.com?
 
-En la prueba anterior hemos probado a preguntar al servidor DNS que tenemos configurado, pero lo que nos interesa es preguntarle al que acabamos de instalar. Desde nuestro servidor Debian vamos a preguntarle al servidor bind9.
+Fíjate que en tu caso la IP de Server y Address pueden ser distintas si tu máquina virtual pregunta a un servidor DNS diferente. Prueba a ejecutar el mismo comando desde tu ordenador anfitrión (el de casa o el aula). ¿Coinciden los campos de Server y Address? ¿Y la IP de Cisco.com?
+
+nslookup nos da una funcionalidad adicional. Podemos decirle cuál es el servidor DNS al que queremos consultar. Prueba a realizar la consulta anterior a un DNS de Google y observa la diferencia en la respuesta. Esto nos será muy útil para consultar a nuestro servidor DNS desde cualquier máquina que no lo tenga configurado como servidor DNS principal.
+
+```yaml
+$ nslookup cisco.com 8.8.8.8
+Server:		8.8.8.8
+Address:	8.8.8.8#53
+
+Non-authoritative answer:
+Name:	cisco.com
+Address: 72.163.4.185
+Name:	cisco.com
+Address: 2001:420:1101:1::185
+```
+
+## Instalación de servidor DNS
+
+Bind es el estándar de facto para servidores DNS. Es una herramienta de software libre y se distribuye con la mayoría de plataformas Unix y Linux, donde también se le conoce con el sobrenombre de named (name daemon). Bind9 es la versión recomendada para usarse y es la que emplearemos.
+
+Para instalar el servidor DNS en un servidor Debian, usaremos los repositorios oficiales. Por ello, podremos instalarlo como cualquier paquete en Debian:
+
+```sh
+sudo apt-get install bind9 bind9utils bind9-doc 
+```
+
+Comprueba si el servicio bind 9 ya está funcionando.
+
+Una vez instalado el servicio ya funcionará con las opciones básicas. 
+
+En una prueba anterior hemos probado a preguntar al servidor DNS que tenemos configurado, pero lo que nos interesa ahora es preguntarle al que acabamos de instalar. Desde nuestro servidor Debian vamos a preguntarle al servidor bind9.
 
 ```yaml
 $ nslookup cisco.com 127.0.0.1 #(1)
@@ -90,6 +163,18 @@ Address: 2001:420:1101:1::185
 
 Prueba ahora a consultar a nuestro servidor DNS desde tu máquina anfitrión. Para ello deberás consultar a su IP pública. ¿Obtienes respuesta? ¿Por qué crees que obtienes esa respuesta? Lo veremos más adelante.
 
+Una vez comprobado que nuestro servidor DNS está funcionando correctamente vamos a cambiar el DNS al que consulta nuestro servidor Debian en ```/etc/resolv.conf```. Comenta el `nameserver` existente y añade la propia máquina.
+
+```sh
+#nameserver 172.31.0.2
+nameserver 127.0.0.1
+search .
+```
+
+Prueba ahora a consultar la IP de cisco.com con `dig` y `nslookup` y comprueba que servidor te responde.
+
+Es importante recordar aquí que no tenemos configurada en ninguna parte la IP de ningún servidor DNS externo. Por tanto, ¿cómo es capaz nuestro servidor de contestarnos cuando le preguntamos por la IP de cisco.com? Por defecto bind9 realizará una resolución iterativa, preguntando primero a ls servidores raiz de internet, si estos no tienen a los servidores TLD, después a los serfidores autoritativos de dominio.
+
 
 ## Configuración del servidor
 
@@ -105,7 +190,7 @@ Y para indicarle que sólo use IPv4, debemos modificar la línea siguiente con e
 ```linuxconf
 OPTIONS = "-u bind -4"
 ```
--->
+
 
 En primer lugar vamos a repasar el fichero de configuración de bind ```/etc/default/named```:
 
@@ -120,6 +205,7 @@ OPTIONS="-u bind"
 ```
 
 La variable RESOLVCONF indica si BIND9 debe interactuar con resolvconf. Si está configurado en yes, BIND9 utilizará resolvconf para gestionar los archivos de configuración de resolución de DNS. Es decir, que lo que bind9 no sepa resolver se lo preguntará al servicio reslovconf igual que le pregunta cualquier otro programa, como el navegador web. Por eso, sin necesidad de configurar nada más, bind sabrá respondernos a cualquier pregunta de resolución. Aquellas que no sepa, las consultará a resolvconf.
+-->
 
 El archivo de configuración principal de Bind es:
 
@@ -168,7 +254,30 @@ sudo named-checkconf
 
 Si no aparecen errores, entonces todo está en orden. Reinicia el servicio y prueba a consultar nuevamente desde tu máquina anfitrión. ¿Recibe ahora la respuesta esperada?
 
-Con esta configuración básica ya hemos comprobado que nuestro servidor DNS está funcionando y respondiendo a peticiones de la propia máquina y de otras externas. Podríamos configurar muchas otras cosas, pero para nuestros objetivos actuales es suficiente.
+Con esta configuración básica ya hemos comprobado que nuestro servidor DNS está funcionando y respondiendo a peticiones de la propia máquina y de otras externas. 
+
+#### Configuración como forwarder
+
+Hemos visto que por defecto nuestro servidor hará consultas iterativas. Para que realice consultas recursivas preguntando a un servidor DNS configurado por nosotros, todo lo que se requiere es simplemente agregar los números de IP de los servidores DNS deseados.
+
+Simplemente descomenta y edita lo siguiente en /etc/bind/named.conf.options:
+
+```yaml
+    forwarders {
+            8.8.8.8;
+            8.8.4.4;
+    };
+```
+
+Aquí hemos configurado los DNS de google.
+
+#### Comprobación del funcionamiento de la chaché
+
+Por defecto bind9 tiene la caché habilitada. Podemos probar su funcionamiento de una forma rápida y sencilla.
+
+Haz un dig a un dominio que no hayas consultado nunca antes y fíjate en el "Query time". Inmediatamente vuelve a realizar la misma consulta y comprubeba el "Query time" ahora. Debería haber habido un descenso drástico debido al uso de la caché. ¿Es así?
+
+Podríamos configurar muchas otras cosas, pero para nuestros objetivos actuales es suficiente.
 
 <!-- 
 Ahora editaremos el archivo `named.conf.options` e incluiremos los siguientes contenidos:
@@ -233,7 +342,6 @@ zone "deaw.es" {
 };
 ```
 
-
 ### Creación del archivo de zona
 
 Vamos a crear el archivo de zona de resolución directa justo en el directorio que hemos indicado antes y con el mismo nombre que hemos indicado antes.
@@ -290,9 +398,40 @@ Si va todo bien reinicia el servicio.
 Prueba a preguntar por www.deaw.es o ns1.deaw.es a tu servidor.
 
 ```sh
-nslookup www.deaw.es 127.0.0.1 //desde el propio servidor
-nslookup www.deaw.es IP_SERVER //desde tu equipo local
+nslookup www.deaw.es            //desde el propio servidor
+nslookup www.deaw.es IP_SERVER  //desde tu equipo local
 ```
+
+Prueba a preguntar con `dig` por el dominio deaw.es:
+
+```sh
+$ dig deaw.es
+
+; <<>> DiG 9.18.19-1~deb12u1-Debian <<>> deaw.es
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 31053
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 535eb708a167a587010000006560f94758cba602eeb2f207 (good)
+;; QUESTION SECTION:
+;deaw.es.			IN	A
+
+;; AUTHORITY SECTION:
+deaw.es.		86400	IN	SOA	ns1.deaw.es. admin.deaw.es. 2023112301 28800 7200 2419200 86400
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)
+;; WHEN: Fri Nov 24 19:28:07 UTC 2023
+;; MSG SIZE  rcvd: 110
+```
+
+Observa los datos que te devuelve y compáralos con el fichero de configuración de la zona. 
+
+!!!task
+    Haz un dig de otros dominios conocidos como cisco.com o google.com y analiza el resultado
 
 ### Creación del archivo de zona para la resolución inversa
 
@@ -335,57 +474,9 @@ sudo named-checkzone 104.85.3.in-addr.arpa /etc/bind/db.3.85.104
 Reinicia el servicio y ejecuta los comandos de comprobación.
 
 ```sh
-nslookup 3.85.104.173 127.0.0.1 //desde el propio servidor
+nslookup 3.85.104.173           //desde el propio servidor
 nslookup 3.85.104.173 IP_SERVER //desde tu equipo local
 ```
-
-
-### Comprobación de las resoluciones y de las consultas
-
-Hasta ahora hemos hecho todas las pruebas con nslookup y diciéndole a qué servidor DNS tenía que preguntar.
-
-!!!warning "Atención"
-    Es muy importante que el cliente esté configurado para usar como servidor DNS el que acabamos de instalar y configurar. Ya sea Windows, ya sea Linux, debéis cambiar vuestra configuración de red para que la máquina con la que hagáis las pruebas utilice este servidor DNS como el principal.
-
-En nuestro Debian, vamos a cambiar el DNS al que consulta nuestro servidor en ```/etc/resolv.conf```. Comenta el `nameserver` existente y añade la propia máquina.
-
-
-```sh
-#nameserver 172.31.0.2
-nameserver 127.0.0.1
-search .
-```
-
-Prueba a preguntar con `dig` por el dominio deaw.es:
-
-```sh
-$ dig deaw.es
-
-; <<>> DiG 9.18.19-1~deb12u1-Debian <<>> deaw.es
-;; global options: +cmd
-;; Got answer:
-;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 31053
-;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
-
-;; OPT PSEUDOSECTION:
-; EDNS: version: 0, flags:; udp: 1232
-; COOKIE: 535eb708a167a587010000006560f94758cba602eeb2f207 (good)
-;; QUESTION SECTION:
-;deaw.es.			IN	A
-
-;; AUTHORITY SECTION:
-deaw.es.		86400	IN	SOA	ns1.deaw.es. admin.deaw.es. 2023112301 28800 7200 2419200 86400
-
-;; Query time: 0 msec
-;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)
-;; WHEN: Fri Nov 24 19:28:07 UTC 2023
-;; MSG SIZE  rcvd: 110
-```
-
-Observa los datos que te devuelve y compáralos con el fichero de configuración de la zona. 
-
-!!!task
-    Haz un dig de otros dominios conocidos como cisco.com o google.com y analiza el resultado
 
 Comprueba con `dig -x` la resolución inversa:
 
@@ -467,7 +558,9 @@ Recuerda que con nuestra configuración actual, para acceder a los sitios web ne
 | Cuestiones finales | **2.5 puntos puntos**|
 | Se ha prestado especial atención al formato del documento, utilizando la plantilla actualizada y haciendo un correcto uso del lenguaje técnico  |**1 punto**  |
 
+## Referencias
 
+[Ubuntu documentation - BIND9ServerHowto](https://help.ubuntu.com/community/BIND9ServerHowto)
 
 
 
