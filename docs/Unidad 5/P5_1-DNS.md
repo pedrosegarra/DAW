@@ -15,6 +15,31 @@ Para empezar, entra en AWS Academy y crea un nuevo EC2 Debian con estas caracter
 * Dale los recursos que te ofrece por defecto.
 * Crea un Grupo de seguridad con el nombre P5ServidorDNS y abre los puertos necesarios para que una máquina externa pueda consultarlo.
 * Arranca la máquina y actualízala para que cuente con las últimas versiones de todos los paquetes.
+
+Para esta práctica es interesante que nuestro servidor DNS tenga una IP fija y no cambie cada vez que arranquemos nuestro servidor. 
+
+En Amazon Web Services (AWS), las direcciones IP elásticas se utilizan para proporcionar direcciones IP fijas a instancias de Amazon EC2 u otros recursos de AWS. Aquí hay una guía básica para asignar una dirección IP elástica a una instancia de EC2 en AWS:
+
+1. Inicia sesión en la Consola de AWS.
+  
+2. Ve al panel de EC2.
+
+3. En el panel de navegación izquierdo, haz clic en "Direcciones IP elásticas" bajo "Redes y Seguridad".
+
+4. Asigna una nueva dirección IP elástica:
+
+    1. Haz clic en "Asignar la dirección IP elástica".
+        Simplemente haz clic en "Asignar" para obtener una nueva.
+
+5. Asocia la dirección IP elástica a una instancia:
+
+    1. Selecciona la dirección IP elástica recién creada.
+    
+    2. Haz clic en "Acciones" y selecciona "Asociar la dirección IP elástica".
+    
+    3. Selecciona la instancia a la que deseas asignar la dirección IP elástica y haz clic en "Associate". Asígnala a la instancia, no a la IP privada.
+     
+Después de estos pasos, la instancia de EC2 tendrá una dirección IP elástica asociada, proporcionándote una IP fija para esa instancia. Ten en cuenta que las direcciones IP elásticas no son gratuitas cuando no están asociadas a una instancia en ejecución, por lo que es una buena práctica desasociarlas y liberarlas cuando no las estás utilizando.
   
 ## Herramientas de diagnóstico de resolución de nombres.
 
@@ -163,13 +188,22 @@ Address: 2001:420:1101:1::185
 
 Prueba ahora a consultar a nuestro servidor DNS desde tu máquina anfitrión. Para ello deberás consultar a su IP pública. ¿Obtienes respuesta? ¿Por qué crees que obtienes esa respuesta? Lo veremos más adelante.
 
-Una vez comprobado que nuestro servidor DNS está funcionando correctamente vamos a cambiar el DNS al que consulta nuestro servidor Debian en ```/etc/resolv.conf```. Comenta el `nameserver` existente y añade la propia máquina.
+Una vez comprobado que nuestro servidor DNS está funcionando correctamente vamos a cambiar el DNS al que consulta nuestro servidor Debian en ```/etc/resolv.conf```. Sin embargo, este archivo puede ser gestionado automáticamente y sobrescrito por herramientas como `systemd-resolved` o `dhclient`. Para hacer cambios permanentes en los servidores DNS, es recomendable modificar la configuración en el lugar correspondiente.
+
+Nuestro sistema usa `systemd-resolved`. Para cambiar la configuración DNS de forma permanente, edita el archivo de configuración `/etc/systemd/resolved.conf`. Dentro del archivo, busca la sección [Resolve] y agrega o modifica la línea DNS= con tus servidores DNS preferidos, separados por espacios. En nuestro caso usaremos la propia máquina 127.0.0.1.
 
 ```sh
-#nameserver 172.31.0.2
-nameserver 127.0.0.1
-search .
+[Resolve]
+DNS=127.0.0.1
 ```
+
+Reinicia systemd-resolved para aplicar la nueva configuración:
+
+```bash
+sudo systemctl restart systemd-resolved
+```
+
+Comprueba ahora que en `/etc/resolv.conf` tienes `nameserver=127.0.0.1` como primera opcion.
 
 Prueba ahora a consultar la IP de cisco.com con `dig` y `nslookup` y comprueba que servidor te responde.
 
