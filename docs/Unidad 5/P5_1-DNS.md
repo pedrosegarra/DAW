@@ -504,8 +504,6 @@ $ dig -x 3.85.104.173
 ;; MSG SIZE  rcvd: 132
 ```
 
-Antes de finalizar, recuerda dejar `/etc/resolv.conf` como estaba.
-
 ## Tarea a realizar
 
 Configura el DNS para que resuelva el nombre de vuestro sitio web de la práctica 3.5 y de la 3.2.
@@ -561,6 +559,7 @@ Recuerda que con nuestra configuración actual, para acceder a los sitios web ne
 ## Referencias
 
 [Ubuntu documentation - BIND9ServerHowto](https://help.ubuntu.com/community/BIND9ServerHowto)
+[BIND 9 Administrator Reference Manual](https://bind9.readthedocs.io/en/v9_18_4/index.html)
 
 
 
