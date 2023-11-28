@@ -183,7 +183,7 @@ Prueba a conectarte con el usuario `userftp` con tu cliente FTP.
 !!!Atención
     Si tienes problemas con la conexión recuerda que FTP tiene 2 modos, activo y pasivo y que en función de la configuración del firewall de servidor y cliente puede ser más adecuado uno que otro.
 
-**Habilitar modo pasivo**
+**2. Habilitar modo pasivo**
 VSFTPD usa el modo activo de FTP de manera predeterminada, lo que puede causar problemas de conexión cuando los clientes de FTP usan el modo pasivo en su lugar. Para habilitar el modo pasivo de FTP, agregue las siguientes directivas en el fichero `/etc/vsftpd.conf`.
 
 ```yaml
@@ -195,9 +195,11 @@ pasv_max_port=2500 #(6)
 5: Especifica el número de puerto aleatorio más bajo para conexiones pasivas de FTP.
 6: Especifica el número de puerto aleatorio más alto para conexiones pasivas de FTP.
 
+Reinicia nuevamente el servidor. Prueba a conterate de nuevo con el usuario userftp ¿Ahora puedes? 
+
 Una vez ya te has conectado al servidor prueba a moverte por los distintos directorios del equipo  _¿Tienes alguna restricción? ¿Puedes acceder a cualquier directorio? ¿Has probado a acceder a /root? ¿Te puedes descargar /etc/vsftpd.conf? ¿Puedes subir un archivo de tu equipo local a /home/userftp en el servidor?_
 
-**2. Habilitar la carga de archivos**
+**3. Habilitar la carga de archivos**
 
 Lo más probable es que la respuesta a la última pregunta fuera no. Por defecto la carga de ficheros al servidor está deshabilitada. El propósito singular más importante de FTP aquí es poder escribir en el servidor. Descomenta la siguiente línea para habilitar la carga de archivos eliminando # delante de ella.
 
@@ -209,7 +211,7 @@ Reinicia nuevamente el servidor. Prueba a cargar en /home/userftp el archivo vsf
 
 Prueba a cargarlo en /etc. ¿Puedes? ¿Por qué no?
 
-**3. Permisos de los archivos subidos**
+**4. Permisos de los archivos subidos**
 
 Al subir el fichero vsftpd.conf a /home/userftp los permisos son estos, ¿verdad?
 
@@ -239,7 +241,7 @@ En los servidores FTP lo habitual es que la umask sea 022. ¿Qué permisos tendr
 Prueba a descomentar esta línea, reinicia el servicio, sube un fichero a `/home/userftp` y compruéba sus permisos. Esto será importante para cuando subas una página web al servidor web usando FTP. Recuerda que los ficheros necesitaban unos permisos concretos para que pudieran visualizarse.
 
 
-**4. Cárcel de Chroot para los usuarios locales**
+**5. Cárcel de Chroot para los usuarios locales**
 
 Como vimos antes el usuario, al conectarse por FTP podía navegar por todo el sistema de archivos. Esto no es muy recomendado y podemos hacer que está restringido a un directorio determinado. vsFTPd logra eso usando chroot jails. 
 Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, cambiamos la configuración con las propiedades siguientes:
@@ -298,7 +300,7 @@ Con esto habremos cambiado el directorio home del usuario y cada vez que se cone
 sudo adduser userftp www-data
 ```
 
-**4. Restricción de usuarios**
+**6. Restricción de usuarios**
 
 Para permitir que solo ciertos usuarios inicien sesión en el servidor FTP, agregamos las siguientes líneas en la parte inferior. Con esta opción habilitada, debemos especificar qué usuarios deberían poder usar FTP y agregar sus nombres de usuario en el archivo /etc/vsftpd.userlist.
 
