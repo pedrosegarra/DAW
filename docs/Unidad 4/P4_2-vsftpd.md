@@ -183,20 +183,9 @@ Prueba a conectarte con el usuario `userftp` con tu cliente FTP.
 !!!Atención
     Si tienes problemas con la conexión recuerda que FTP tiene 2 modos, activo y pasivo y que en función de la configuración del firewall de servidor y cliente puede ser más adecuado uno que otro.
 
-**2. Habilitar modo pasivo** 
+**2. Habilitar modo de conexión activa/pasiva** 
 
-VSFTPD usa el modo activo de FTP de manera predeterminada, lo que puede causar problemas de conexión cuando los clientes de FTP usan el modo pasivo en su lugar. Para habilitar el modo pasivo de FTP, agregue las siguientes directivas en el fichero `/etc/vsftpd.conf`.
-
-```yaml
-pasv_enable=YES #(1)
-pasv_min_port=2000 #(2)
-pasv_max_port=2500 #(3)
-```
-1. Esta configuración especifica que el modo pasivo está habilitado. Para habilitar el modo pasivo de FTP, agrega esta directiva con el valor en SÍ.
-2. Especifica el número de puerto aleatorio más bajo para conexiones pasivas de FTP.
-3. Especifica el número de puerto aleatorio más alto para conexiones pasivas de FTP.
-
-Reinicia nuevamente el servidor. Prueba a conterate de nuevo con tu cliente FTP con el usuario `userftp` ¿Ahora puedes?.
+VSFTPD usa el modo activo de FTP de manera predeterminada, lo que puede causar problemas de conexión cuando los clientes de FTP usan el modo pasivo en su lugar. Lo que podemos hacer es habilitar en el Cliente FTP la opción de conexión activa o habilitar en nuestro servidor vsftpd el modo pasivo, con se realiza realizará en la práctica siguiente.
 
 Una vez ya te has conectado al servidor prueba a moverte por los distintos directorios del equipo  _¿Tienes alguna restricción? ¿Puedes acceder a cualquier directorio? ¿Has probado a acceder a /root? ¿Te puedes descargar /etc/vsftpd.conf? ¿Puedes subir un archivo de tu equipo local a /home/userftp en el servidor?_
 
