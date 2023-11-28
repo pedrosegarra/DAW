@@ -81,7 +81,7 @@ Recordamos de la teoría que el servidor FTP puede configurarse para que lo usen
 
 En este módulo de Despliegue de aplicaciones nos interesa usar FTP para subir nuestros ficheros al servidor donde está alojado nuestro servidor web o servidor de aplicaciones, así que no nos interesa mucho configurar el usuario anónimo. Nos centraremos en trabajar con usuarios locales, que nos ofrece la funcionalidad que necesitamos.
 
-Empezaremos por crear un usuario que llamaremos `userftp` y que utilizaremos el resto de la práctica para transacciones FTP. Utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante. Estableceremos como contraseña "ieselcaminas".
+Empezaremos por crear un usuario que llamaremos `userftp` y que utilizaremos el resto de la práctica para transacciones FTP. Utilizando este usuario iniciaremos la sesión en el servidor FTP más adelante. Estableceremos como contraseña "_ieselcaminas_".
 
 ```sh
 sudo adduser userftp
@@ -183,7 +183,7 @@ Prueba a conectarte con el usuario `userftp` con tu cliente FTP.
 !!!Atención
     Si tienes problemas con la conexión recuerda que FTP tiene 2 modos, activo y pasivo y que en función de la configuración del firewall de servidor y cliente puede ser más adecuado uno que otro.
 
-**2. Habilitar modo pasivo**
+**2. Habilitar modo pasivo** 
 
 VSFTPD usa el modo activo de FTP de manera predeterminada, lo que puede causar problemas de conexión cuando los clientes de FTP usan el modo pasivo en su lugar. Para habilitar el modo pasivo de FTP, agregue las siguientes directivas en el fichero `/etc/vsftpd.conf`.
 
@@ -196,7 +196,7 @@ pasv_max_port=2500 #(3)
 2. Especifica el número de puerto aleatorio más bajo para conexiones pasivas de FTP.
 3. Especifica el número de puerto aleatorio más alto para conexiones pasivas de FTP.
 
-Reinicia nuevamente el servidor. Prueba a conterate de nuevo con el usuario userftp ¿Ahora puedes? 
+Reinicia nuevamente el servidor. Prueba a conterate de nuevo con tu cliente FTP con el usuario `userftp` ¿Ahora puedes?.
 
 Una vez ya te has conectado al servidor prueba a moverte por los distintos directorios del equipo  _¿Tienes alguna restricción? ¿Puedes acceder a cualquier directorio? ¿Has probado a acceder a /root? ¿Te puedes descargar /etc/vsftpd.conf? ¿Puedes subir un archivo de tu equipo local a /home/userftp en el servidor?_
 
