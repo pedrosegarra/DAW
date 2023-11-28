@@ -55,7 +55,9 @@ Podemos comprobarlo con el comando
 sudo ls -l /etc/ssl/private
 ```
 
-### Habilitar el cifrado SSL
+### Configurar el servidor vsftpd
+
+**1. Habilitar el cifrado SSL**
 
 Una vez que tengamos el certificado SSL y la clave privada, tendremos que modificar el archivo /etc/vsftpd.conf. Para ello buscamos el archivo de configuración y guardamos una copia de él por si acaso: 
 
@@ -93,7 +95,7 @@ ssl_ciphers=HIGH
 
 Al conectarnos utilizando FTPS el servidor forzará al cliente a realizar una conexión pasiva por segurida, como vimos en la teoría. Si no hacemos nada más, tras el primer intercambio de órdenes a través del puerto 21, la conexión no podrá establecerse por el puerto de datos y obtendremos un mensaje similar a este "El servidor envió una respuesta pasiva con una dirección no enrutable. Usando en su lugar la dirección del servidor."
 
-### Habilitar el modo pasivo
+**2. Habilitar el modo pasivo**
 
 Para evitar que esto ocurra, definiremos los puertos que puede abrir el servidor para el canal de datos en la conexión pasiva en el fichero /etc/vsftpd.conf con las siguientes órdenes:
 
