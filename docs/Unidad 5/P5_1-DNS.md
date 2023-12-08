@@ -538,15 +538,6 @@ $ dig -x 3.85.104.173
 ;; MSG SIZE  rcvd: 132
 ```
 
-## Tarea a realizar
-
-Configura el DNS para que resuelva el nombre de vuestro sitio web de la práctica 3.5 y de la 3.2.
-
-Recuerda que con nuestra configuración actual, para acceder a los sitios web necesitaremos añadir el dominio `deaw.es` en el nombre.
-
-!!!caution "Atención para el informe"
-    Documenta toda la práctica con	las	capturas de	pantalla correspondientes de cada configuración y comprobación..
-
 ## Cuestiones finales
 
 !!!Task "Cuestión 1"
@@ -556,7 +547,7 @@ Recuerda que con nuestra configuración actual, para acceder a los sitios web ne
     ¿Por qué tenemos que permitir las consultas recursivas en la configuración?
     
 !!!Task "Cuestión 3"
-    El servidor DNS que acabáis de montar, ¿es autoritativo?¿Por qué?
+    El servidor DNS que acabáis de montar, ¿es autoritativo? ¿Por qué?
 
 !!!Task "Cuestión 4"
     ¿Dónde podemos encontrar la directiva $ORIGIN y para qué sirve?
@@ -575,28 +566,3 @@ Recuerda que con nuestra configuración actual, para acceder a los sitios web ne
 
 !!!Task "Cuestión 9"
     ¿Qué es una consulta iterativa de referencia?
-
-!!!Task "Cuestión 10"
-    En una resolución inversa, ¿a qué nombre se mapearía la dirección IP 172.16.34.56?
-
-## Evaluación
-
-| Criterio      | Puntuación                         |
-| :--------- | :----------------------------------: |
-| Configuración correcta del servidor y zona DNS      |**3 puntos**  |
-| Evidencias de las comprobaciones del correcto funcionamento | **2 puntos**|
-| Se ha utilizado SSH      |**0.5 puntos**  |
-| Introducción de IPs de ejercicios anteriores para la resolución DNS      |**1**  |
-| Cuestiones finales | **2.5 puntos puntos**|
-| Se ha prestado especial atención al formato del documento, utilizando la plantilla actualizada y haciendo un correcto uso del lenguaje técnico  |**1 punto**  |
-
-## Referencias
-
-[Ubuntu documentation - BIND9ServerHowto](https://help.ubuntu.com/community/BIND9ServerHowto)
-[BIND 9 Administrator Reference Manual](https://bind9.readthedocs.io/en/v9_18_4/index.html)
-
-
-
-
-
-
