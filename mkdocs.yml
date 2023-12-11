@@ -72,6 +72,9 @@ nav:
   - ... | Unidad 3/*.md
   - ... | Unidad 4/*.md
   - ... | Unidad 5/*.md
+  - ... | Unidad 6/*.md
+  - ... | Unidad 7/*.md
+  - ... | Unidad 8/*.md
 #  - Unidad 6:
 #      - Teoría: 
 #        - index_git.md
@@ -89,8 +92,8 @@ nav:
 #        - gitflow.md
 #        - referencias.md
 #      - Prácticas:
-#       - ... | P5.*.md      
-#  - Unidad 6:
+#       - ... | P6.*.md      
+#  - Unidad 7:
 #      - Teoría: 
 #        - index_docker.md
 #        - introduction.md
@@ -103,9 +106,9 @@ nav:
 #        - dockerfile.md
 #        - tips.md
 #      - Prácticas:
-#        - ... | P6.*.md
-#  - Unidad 7:
+#        - ... | P7.*.md
+#  - Unidad 8:
 #      - Teoría: 
 #        - cicd.md
 #      - Prácticas:
-#        - ... | P7.*.md    
+#        - ... | P8.*.md    
