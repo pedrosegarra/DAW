@@ -5,11 +5,11 @@ title: '6.1 Control de versiones'
 # Inicio
 
 !!!info "Atención"
-    Los contenidos del **Tema 5 - Control de versiones** están basados integramente en el curso que se menciona a continuación.
+    Los contenidos del **Tema 6 - Control de versiones** están basados integramente en el curso que se menciona a continuación.
 
     Su licencia original permite la reutilización y difusión del mismo.
 
-![Aula Software Libre de la UCO](img/logo-cuadrado-invertido.svg)
+![Aula Software Libre de la UCO](../img/logo-cuadrado-invertido.svg)
 
 Este taller forma parte de las actividades del [Aula de Software Libre de la
 Universidad de Córdoba](https://www.uco.es/aulasoftwarelibre).
