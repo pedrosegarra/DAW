@@ -72,9 +72,9 @@ nav:
   - ... | Unidad 3/*.md
   - ... | Unidad 4/*.md
   - ... | Unidad 5/*.md
-  - ... | Unidad 6/*.md
-  - ... | Unidad 7/*.md
-  - ... | Unidad 8/*.md
+#  - ... | Unidad 6/*.md
+#  - ... | Unidad 7/*.md
+#  - ... | Unidad 8/*.md
 #  - Unidad 6:
 #      - Teoría: 
 #        - index_git.md
