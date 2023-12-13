@@ -87,7 +87,7 @@ Vamos a abrir la siguiente página web en nuestro navegador:
 
 La cual nos mostrará el asistente de instalación de _WordPress_, el cual no vamos a instalar porque necesitamos una base de datos que aún no tenemos.
 
-![Instalación de _WordPress_](./img/install-wordpress.png)
+![Instalación de _WordPress_](Ud7_img/install-wordpress.png)
 
 En su lugar vamos a la consola e interrumpimos la ejecución del contenedor con `Control+C`:
 

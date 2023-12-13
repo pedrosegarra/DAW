@@ -9,13 +9,13 @@ title: '6.1 Control de versiones'
 
     Su licencia original permite la reutilización y difusión del mismo.
 
-![Aula Software Libre de la UCO](../img/logo-cuadrado-invertido.svg)
+![Aula Software Libre de la UCO](Ud6_img/logo-cuadrado-invertido.svg)
 
 Este taller forma parte de las actividades del [Aula de Software Libre de la
 Universidad de Córdoba](https://www.uco.es/aulasoftwarelibre).
 
 El contenido del mismo es en parte de producción propia, en parte de otros
-manuales libres que pueden encontrarse en la sección de [Referencias](referencias.md).
+manuales libres que pueden encontrarse en la sección de [Referencias](Ud6_14_referencias.md).
 
 ## Contenido
 

@@ -10,7 +10,7 @@ Esta sección trata de cómo colaborar con proyectos de terceros.
 
 Nos vamos a la web del proyecto en el que queremos colaborar. En este caso el proyecto se encuentra en [https://github.com/sgomez/miniblog](https://github.com/sgomez/miniblog). Pulsamos en el botón de fork y eso creará una copia en nuestro perfil.
 
-![Barra de información de proyecto](img/github-proyect.png)
+![Barra de información de proyecto](Ud6_img//github-proyect.png)
 
 Una vez se termine de clonar el repositorio, nos encontraremos con el espacio de trabajo del mismo:
 
@@ -19,7 +19,7 @@ Una vez se termine de clonar el repositorio, nos encontraremos con el espacio de
 - En la parte derecha un selector para cambiar de contexto entre: explorador de código, peticiones de colaboración (pull request), wiki, configuración, etc.
 - Justo abajo a la derecha información sobre como clonar localmente o descargar un proyecto.
 
-![Espacio de trabajo](img/github-main.png)
+![Espacio de trabajo](Ud6_img//github-main.png)
 
 Github nos permite clonar localmente un proyecto por tres vías: HTTPS, SSH y Subversion. Seleccionamos SSH y copiamos el texto que después añadiremos a la orden `git clone` como en la primera línea del siguiente grupo de órdenes:
 
@@ -105,15 +105,15 @@ En principio habría que probar que todo funciona bien y entonces integraremos e
 
 Si volvemos a Github, veremos que nos avisa de que hemos subido una nueva rama y si queremos crear un pull request.
 
-![Aviso de nueva rama](img/github-pushed.png)
+![Aviso de nueva rama](Ud6_img//github-pushed.png)
 
 Pulsamos y entramos en la petición de _Pull Request_. Este es el momento para revisar cualquier error antes de enviar al dueño del repositorio. Como vemos hemos cometido uno, nombrando el fichero, si lo correguimos debemos hacer otro push para ir actualizando la rama. Cuando esté lista volvemos aquí y continuamos. Hay que dejar una descripción del cambio que vamos a hacer.
 
-![Creando un Pull Request](img/github-mergerequest.png)
+![Creando un Pull Request](Ud6_img//github-mergerequest.png)
 
 Una vez hemos terminado y nos aseguramos que todo está correcto, pulsamos _Send pull request_ y le llegará nuestra petición al dueño del proyecto.
 
-![Gestión de un _Pull Request_](img/github-pullrequest.png)
+![Gestión de un _Pull Request_](Ud6_img//github-pullrequest.png)
 
 Sin embargo, para esta prueba, no vamos a cambiar el nombre del archivo y dejaremos el error como está. Así de esta manera al administrador del proyecto le llegará el _Pull Request_ y la lista de cambios. Ahora en principio, cabría esperar que el administrador aprobara los cambios, pero podría pasar que nos indicara que cambiemos algo. En ese caso solo habría que modificar la rama y volverla a enviar.
 
@@ -123,7 +123,7 @@ Sin embargo, para esta prueba, no vamos a cambiar el nombre del archivo y dejare
 
 Ahora sí, el administrador puede aprobar la fusión y borrar la rama del repositorio. El panel de Github permite aceptar los cambios directamente o informa de como hacer una copia de la rama ofrecida por el usuario para hacer cambios, como puede verse en la siguiente imagen.
 
-![Conversación en un _Pull Request_](img/github-pullconversation.png)
+![Conversación en un _Pull Request_](Ud6_img//github-pullconversation.png)
 
 Una vez que se han aceptado los cambios, podemos borrar la rama y actualizar nuestro repositorio con los datos del remoto como hicimos antes. ¿Por qué actualizar desde el remoto y no desde nuetra rama _add-license_? Pues porque usualmente el administrador puede haber modificado los cambios que le hemos propuesto, o incluso una tercera persona. Recordemos el cariz colaborativo que tiene Github.
 

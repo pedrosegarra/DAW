@@ -12,7 +12,7 @@ Pero el repositorio en sí también tiene su esquema de organización.
 
 En los ejemplos hemos visto que usabamos una rama máster y creábamos ramas para añadir funcionalidades que luego integrábamos. Es un forma de trabajar de las muchas que hay propuestas, posiblemente la más simple, pero tiene el inconveniente de dejar la rama máster a expensas de una mala actualización y quedarnos sin una rama estable. Por eso, hay otras propuestas mejores que permiten separar el trabajo de desarrollo con el mantenimiento de las versiones estables. Una de las más conocidas es la propuesta por [Vincent Driessen](http://nvie.com/posts/a-successful-git-branching-model/) y que podemos ver en la figura siguiente.
 
-![Git flow](img/gitlab-organizacion.png)
+![Git flow](Ud6_img//gitlab-organizacion.png)
 
 ### Las ramas principales
 

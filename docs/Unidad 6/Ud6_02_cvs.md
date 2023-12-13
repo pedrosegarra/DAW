@@ -58,19 +58,19 @@ Podemos clasificar los sistemas de control de versiones atendiendo a la arquitec
 
 Los cambios son guardados localmente y no se comparten con nadie. Esta arquitectura es la antecesora de las dos siguientes.
 
-![Sistema de control de versiones local](img/git-local.png)
+![Sistema de control de versiones local](Ud6_img/git-local.png)
 
 ### Centralizados
 
 Existe un repositorio centralizado de todo el código, del cual es responsable un único usuario (o conjunto de ellos). Se facilitan las tareas administrativas a cambio de reducir flexibilidad, pues todas las decisiones fuertes (como crear una nueva rama) necesitan la aprobación del responsable. Algunos ejemplos son CVS y Subversion.
 
-![Sistema de control de versiones centralizado](img/git-central.png)
+![Sistema de control de versiones centralizado](Ud6_img/git-central.png)
 
 ### Distribuidos
 
 Cada usuario tiene su propio repositorio. Los distintos repositorios pueden intercambiar y mezclar revisiones entre ellos. Es frecuente el uso de un repositorio, que está normalmente disponible, que sirve de punto de sincronización de los distintos repositorios locales. Ejemplos: Git y Mercurial.
 
-![Sistema de control de versiones distribuido](img/git-distrib.png)
+![Sistema de control de versiones distribuido](Ud6_img/git-distrib.png)
 
 #### Ventajas de sistemas distribuidos
 

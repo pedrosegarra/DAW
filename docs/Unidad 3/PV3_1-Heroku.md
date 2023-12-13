@@ -40,7 +40,7 @@ Heroku es una solución de Plataforma como Servicio (PaaS) basada en la nube par
 
 Para proporcionar este servicio se dispone de unos contenedores virtuales que son los encargados de mantener y ejecutar las aplicaciones. Estos contenedores virtuales son totalmente escalables bajo demanda. Tanto en número como en capacidades.
 
-![](../img/heroku-logo.png){: style="height:250px;width:600px"}
+![](PV3_1/heroku-logo.png){: style="height:250px;width:600px"}
 
 Una ventaja de elegir Heroku es su capacidad de soportar múltiples lenguajes de programación. Los principales a utilizar son: Node.js, Ruby, Python, Java, PHP, Go, Scala y Clojure. Aunque esta cantidad de lenguajes puede aumentar en el caso de utilizar Heroku Buildpacks, que permiten compilar las aplicaciones en multitud de ellos más.
 
@@ -252,17 +252,17 @@ Ahora, dentro del directorio que habíamos creado previamente para nuestra aplic
 
     Y lo iniciamos: `git init`
 
-    ![](../img/git1.png)
+    ![](PV3_1/git1.png)
 
 2. Ahora añadimos todos los archivos presentes en el directorio (`.`) para ser enviados al repositorio: `git add .`
     
     Y los preparamos para que sean envidos al repositorio: `git commit -m "Comentario explicativo del commit"`
     
-    ![](../img/git2.png)
+    ![](PV3_1/git2.png)
 
 3. Creamos nuestra aplicación en Heroku: `heroku create`
 
-    ![](../img/git3.png)
+    ![](PV3_1/git3.png)
 
     Esto creará un git remoto que conectará con nuestro repositorio git local
 
@@ -271,25 +271,25 @@ Ahora, dentro del directorio que habíamos creado previamente para nuestra aplic
 
     Y comprobamos que la instancia está corriendo: `heroku ps:scale web=1`
 
-    ![](../img/git4.png)
+    ![](PV3_1/git4.png)
 
-    ![](../img/git5.png)
+    ![](PV3_1/git5.png)
 
 5. El comando `heroku open` abriría nuestra aplicación en el navegador. Sin embargo, por el problema explicado antes de estar conectados por SSH, esto no ocurrirá. No obstante, podemos acceder a nuestra aplicación de otra forma rápida y sencilla desde nuestro dashboard de Heroku:
 
     + Localizamos nuestra aplicación:
 
-        ![](../img/heroku_dashboard_app_1.png)
+        ![](PV3_1/heroku_dashboard_app_1.png)
 
     + Y tras hacer click en ella, localizamos el botón que nos permite abrirla y volvemos a hacer click:
   
-         ![](../img/heroku_dashboard_app_2.png)
+         ![](PV3_1/heroku_dashboard_app_2.png)
 
     + Comprobando que nuestra aplicación, efectivametne se ha desplegado en Heroku y funciona a la perfección:
   
-         ![](../img/heroku_dashboard_app_3.png)
+         ![](PV3_1/heroku_dashboard_app_3.png)
 
-         ![](../img/heroku_dashboard_app_4.png)
+         ![](PV3_1/heroku_dashboard_app_4.png)
 
 
 ## Referencias

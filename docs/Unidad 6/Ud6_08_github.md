@@ -33,11 +33,11 @@ Para crear una nueva clave usamos la siguiente orden:
 
 Vamos a aprovechar para añadir la clave RSA que generamos antes, para poder acceder desde git a los repositorios. Para ellos nos vamos al menú de configuración de usuario (_Settings_)
 
-![Barra principal de menú](img/github-topbar.png)
+![Barra principal de menú](Ud6_img//github-topbar.png)
 
 Nos vamos al menú 'SSH and GPG Keys' y añadimos una nueva clave. En _Title_ indicamos una descripción que nos ayude a saber de dónde procede la clave y en key volcamos el contenido del archivo `~/.ssh/id_rsa.pub`. Y guardamos la clave.
 
-![Clave SSH](img/github-sshkeys.png)
+![Clave SSH](Ud6_img//github-sshkeys.png)
 
 Con esto ya tendriamos todo nuestro entorno para poder empezar a trabajar desde nuestro equipo.
 
@@ -59,7 +59,7 @@ Vamos a crear un repositorio donde guardar nuestro proyecto. Para ello pulsamos 
 
 Ahora tenemos que designar un nombre para nuestro repositorio, por ejemplo: '_taller-de-git_'.
 
-![Nuevo repositorio](img/github-newrepo.png)
+![Nuevo repositorio](Ud6_img//github-newrepo.png)
 
 Nada más crear el repositorio nos saldrá una pantalla con instrucciones precisas de como proceder a continuación.
 
@@ -69,7 +69,7 @@ Básicamente podemos partir de tres situaciones:
 1. Ya tenemos un repositorio creado y queremos sincronizarlo con Github.
 1. Queremos importar un repositorio de otro sistema de control de versiones distinto.
 
-![Quick setup](img/github-quicksetup.png)
+![Quick setup](Ud6_img//github-quicksetup.png)
 
 Nuestra situación es la segunda, así que nos aseguramos de que hemos elegido SSH como protocolo. A continuación pulsamos el icono del portapapeles y ejecutamos las dos ordenes que nos indica la web en nuestro terminal.
 
@@ -87,7 +87,7 @@ Nuestra situación es la segunda, así que nos aseguramos de que hemos elegido S
 
 Si recargamos la página veremos que ya aparece nuestro proyecto.
 
-![Github: código](img/github-code.png)
+![Github: código](Ud6_img//github-code.png)
 
 ## Clonar un repositorio
 
@@ -248,7 +248,7 @@ Para la prueba, Github nos permite editar archivos directamente desde la web. Pu
 el archivo `README.md`. En la vista del archivo, veremos que aparece el icono de un lápiz.
 Esto nos permite editar el archivo.
 
-![Editar archivo](img/github-edit.png)
+![Editar archivo](Ud6_img//github-edit.png)
 
 !!! info
 
@@ -267,7 +267,7 @@ Este proyecto contiene el curso de introducción a GIT
 Desarrollado por Sergio Gómez.
 ```
 
-![Confirmar cambios](img/github-changes.png)
+![Confirmar cambios](Ud6_img//github-changes.png)
 
 El cambio quedará incorporado al repositorio de Github, pero no al nuestro. Necesitamos
 traer la información desde el servidor remoto. La orden asociada es `git fetch`:
@@ -296,7 +296,7 @@ Ahora vemos el caso contrario, tenemos que `origin/master` está por delante que
 que la rama `master` local.
 
 Ahora necesitamos incorporar los cambios de la rama remota en la local. La forma de hacerlo
-lo vimos en el [capítulo anterior](/ramas/#mezclar-ramas) usando `git merge` o `git rebase`.
+lo vimos en el [capítulo anterior](Ud6_07_ramas.md/#mezclar-ramas) usando `git merge` o `git rebase`.
 
 Habitualmente se usa `git merge`:
 

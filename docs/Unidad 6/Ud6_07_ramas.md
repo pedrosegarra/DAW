@@ -412,4 +412,4 @@ Vemos que estamos como en el final de la sección anterior, así que ahora mezcl
 
 En la siguiente imagen se puede ver la diferencia:
 
-![Diferencias entre tipos de fusión](img/gitlab-merge-ff.png)
+![Diferencias entre tipos de fusión](Ud6_img/gitlab-merge-ff.png)

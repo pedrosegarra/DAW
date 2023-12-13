@@ -8,7 +8,7 @@ title: '6.10 Flujo de trabajo en GitHub'
 
 Habitualmente el trabajo puede partir a raíz de una reporte por parte de un miembro del equipo o de una persona externa. Para eso tenemos la sección _Issues_.
 
-![Listado de Issues](img/github-issues-list.png)
+![Listado de Issues](Ud6_img//github-issues-list.png)
 
 Una issue cuando se crea se compone de un título y una descripción en
 Markdown. Si la persona es miembro del equipo, opcionalmente puede
@@ -16,7 +16,7 @@ asignarle una serie de metadatos: etiquetas (labels), hitos
 (milestone), proyecto al que pertenece o responsables encargados
 de cerrar la incidencia.
 
-![Nueva Issue](img/github-issues-new.png)
+![Nueva Issue](Ud6_img//github-issues-new.png)
 
 Una vez creado, al mismo se le asignará un número.ç
 
@@ -92,7 +92,7 @@ Como la rama es nueva, git no sabe _dónde_ debe hacer push. Le indicamos que de
 
 Ahora la rama ya se ha subido y nos informa, además, de que podemos crear un _Pull Request_ (PR). Si vamos al enlace que nos aparece veremos lo siguiente:
 
-![Nuevo Pull Request](img/github-flow-pr.png)
+![Nuevo Pull Request](Ud6_img//github-flow-pr.png)
 
 Aquí podemos informar de en qué consiste la rama que estamos enviando. Si ya tenemos una _issue_ abierta, no es necesario repetir la misma información. Podemos hacer referencia con el siguiente texto:
 
@@ -102,7 +102,7 @@ Esto lo que le indica a GitHub que esta PR cierra el _issues_ número 1. Cuando 
 
 Lo hacemos y le damos a crear.
 
-![Nuevo Pull Request](img/github-flow-pr-created.png)
+![Nuevo Pull Request](Ud6_img//github-flow-pr-created.png)
 
 ## Paso 2. Crear commits
 
@@ -130,7 +130,7 @@ GitHub permite que entre los desarrolladores se pueda abrir una discusión sobre
 
 Una vez que hemos terminado de crear la función de la rama ya podemos incorporar los cambios a _master_. Este trabajo ya no es necesario hacerlo en local y GitHub nos proporciona 3 maneras de hacerlo:
 
-![Cómo cerrar un Pull Request](img/github-flow-merge.png)
+![Cómo cerrar un Pull Request](Ud6_img//github-flow-merge.png)
 
 ### Crear un merge commit
 
@@ -168,7 +168,7 @@ Esta opción es algo especial. En vez de aplicar cada uno de los commits en la r
 
 Vamos a seleccionar este último (squash and merge) y le damos al botón para activarlo. Nos saldrá una caja para que podamos crear una descripción del commit y le damos a confirmar.
 
-![Pull Request cerrado](img/github-flow-merge.png)
+![Pull Request cerrado](Ud6_img//github-flow-merge.png)
 
 Ya hemos terminado y nos aparecerá una opción para borrar la rama, lo más recomendado para no tener ramas obsoletas.
 
