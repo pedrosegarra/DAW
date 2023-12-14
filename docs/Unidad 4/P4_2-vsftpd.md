@@ -87,7 +87,7 @@ Empezaremos por crear un usuario que llamaremos `userftp` y que utilizaremos el 
 sudo adduser userftp
 ```
 
-<!---
+<!---COMENTAMOS ESTA PARTE
 2. Agregamos el nuevo usuario `userftp` a la lista de usuarios de FTP permitidos.
 
 ```sh
@@ -197,7 +197,7 @@ Lo más probable es que la respuesta a la última pregunta fuera no. Por defecto
   write_enable=YES
 ```
 
-Reinicia nuevamente el servidor. Prueba a cargar en /home/userftp el archivo vsftpd.conf que te descargaste antes. ¿Ahora puedes? ¿Con qué permisos ser carga el fichero?
+Reinicia nuevamente el servidor. Prueba a cargar en /home/userftp el archivo `constitution.txt` que te descargaste antes. ¿Ahora puedes? ¿Con qué permisos se carga el fichero?
 
 Prueba a cargarlo en /etc. ¿Puedes? ¿Por qué no?
 
