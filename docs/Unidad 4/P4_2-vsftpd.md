@@ -233,29 +233,33 @@ Prueba a descomentar esta línea, reinicia el servicio, sube un fichero a `/home
 
 **5. Cárcel de Chroot para los usuarios locales**
 
-Como vimos antes el usuario, al conectarse por FTP podía navegar por todo el sistema de archivos. Esto no es muy recomendado y podemos hacer que está restringido a un directorio determinado. vsFTPd logra eso usando chroot jails. 
-Cuando chroot está habilitado para usuarios locales, están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, cambiamos la configuración con las propiedades siguientes:
+Como vimos antes el usuario, al conectarse por FTP podía navegar por todo el sistema de archivos. Esto no es muy recomendado y podemos hacer el usuario que está restringido a un directorio determinado. 
+El servidor vsFTPd logra eso usando chroot jails, de manera que cuando chroot está habilitado para usuarios locales, estos usuarios están restringidos a sus directorios de inicio de forma predeterminada. Para lograr esto, cambiamos la configuración con las propiedades siguientes:
 
 ```linuxconfig
 chroot_local_user=YES
 ```
-Para evitar cualquier vulnerabilidad de seguridad, **cuando chroot está habilitado**, no funcionará si el directorio raiz al que se conectan los usuarios es escribible. Por tanto, si no hacemos nada más e intentamos conectarnos veremos que no nos deja, ya que `userftp` si puede escribir en su directorio home: `/home/userftp`. Para sortear esta limitación, tenemos varias opciones de configuración:
+Para evitar cualquier vulnerabilidad de seguridad, **cuando chroot está habilitado**, no funcionará si el directorio raíz al que se conectan los usuarios es escribible. Por tanto, si no hacemos nada más e intentamos conectarnos veremos que no nos deja, ya que `userftp` si puede escribir en su directorio home: `/home/userftp`. Para sortear esta limitación, tenemos varias opciones de configuración:
 
-- Opción 1 – Simplemente permitir que el directorio raiz al que nos conectamos si pueda ser escribible. En ese caso agregamos la siguiente línea. Haz la prueba, reinicia vsftpd e intenta conectarte. Después deshabilita esta opción, ya que no es la que usaremos.
+- Opción 1 – Simplemente permitir que el directorio raíz al que nos conectamos sí pueda ser escribible.
+
+  En ese caso, agregamos la siguiente línea. Haz la prueba, reinicia vsftpd e intenta conectarte. Después deshabilita esta opción, ya que no es la que usaremos.
 
 ```linuxconfig
 allow_writeable_chroot=YES
 ```
 
-- Opción 2 – Definir un directorio de acceso por FTP distinto al home del usuario y sin permisos de escritura. Se debe utilizar un directorio diferente para cargas FTP. Crearemos un directorio `/home/userftp/ftp` al que quitaremos los permisos de escritura para todo el mundo que servirá como chroot. Pero antes de quitarle los permisos de escritura crearemos un segundo directorio `/home/userftp/ftp/upload` para la carga de archivos, este si con permisos de escritura. Para configurar esta opción de chroot, agregamos las siguientes líneas al fichero de configuración.
+- Opción 2 – Definir un directorio de acceso por FTP distinto al home del usuario y sin permisos de escritura.
+
+Se debe utilizar un directorio diferente para cargas FTP. Crearemos un directorio `/home/userftp/ftp` al que quitaremos los permisos de escritura para todo el mundo que servirá como chroot. Pero antes de quitarle los permisos de escritura, crearemos un segundo directorio `/home/userftp/ftp/upload` para la carga de archivos, este sí tendrá permisos de escritura. Para configurar esta opción de chroot, agregamos las siguientes líneas al fichero de configuración.
 
 ```linuxconfig
 user_sub_token=userftp
 local_root=/home/userftp/ftp
 ```
-Prueba a conectarte por ftp con el usuario `userftp` y comprueba que su directorio raiz ahora es `/home/userftp/ftp` y que ahí no puedes subir ningún fichero. Prueba a subir a `upload` y comprueba que ahí si puedes.
+Prueba a conectarte por ftp con el usuario `userftp` y comprueba que su directorio raíz ahora es `/home/userftp/ftp` y que ahí no puedes subir ningún fichero. Prueba a subir a `upload` y comprueba que en este directorio sí puedes.
 
-En el caso anterior servirá solo para el usuario `userftp`. Si lo queremos hacer para todos los usuarios del sistema usaremos esto en su lugar:
+En el caso anterior servirá solo para el usuario `userftp`. Si lo queremos hacer para todos los usuarios del sistema usaremos estas directivas en su lugar :
 
 ```linuxconfig
 user_sub_token=$USER
@@ -278,13 +282,12 @@ Comprobamos con:
 
 ```linuxconfig
 su userftp
-cd
-pwd
+cd pwd
 ```
 
 Vuelve al usuario admin con `exit`.
 
-Con esto habremos cambiado el directorio home del usuario y cada vez que se conecte tanto por FTP como por SSH entrará al directorio /var/www. Compruébalo. Si quisieramos subir archivos a la web sólo nos quedaría, para este caso, añadir al usuario al grupo de apache o www-data dependiendo del sistema operativo o el usuario apache configurado.
+Con esto habremos cambiado el directorio home del usuario y cada vez que se conecte tanto por FTP como por SSH entrará al directorio /var/www. Compruébalo. Si quisieramos subir archivos a la web sólo nos quedaría, para este caso, añadir el usuario al grupo de apache o www-data dependiendo del sistema operativo o el usuario apache configurado.
 
 ```linuxconfig
 sudo adduser userftp www-data
@@ -292,7 +295,7 @@ sudo adduser userftp www-data
 
 **6. Restricción de usuarios**
 
-Para permitir que solo ciertos usuarios inicien sesión en el servidor FTP, agregamos las siguientes líneas en la parte inferior. Con esta opción habilitada, debemos especificar qué usuarios deberían poder usar FTP y agregar sus nombres de usuario en el archivo /etc/vsftpd.userlist.
+Para permitir que sólo ciertos usuarios inicien sesión en el servidor FTP, agregamos las siguientes líneas en la parte inferior. Con esta opción habilitada, debemos especificar qué usuarios deberían poder usar FTP y agregar sus nombres de usuario en el archivo `/etc/vsftpd.userlist`.
 
 ```yaml
 userlist_enable=YES #(1)
@@ -314,12 +317,13 @@ Guarda y cierra el archivo. Reinicia el servidor e intenta conectarte con `userf
 
 Después de todas estas pruebas vamos a dejarlo de la siguiente manera para las comprobaciones finales:
 
-1. Deja que solo puedan conectarse los usuarios locales
-2. Habilita la carga de archivos
-3. Haz que los archivos se suban con umask 022
-4. Habilita chroot con la opción 2, es decir, que cada usuario del sistema se conecte a /home/$USER/ftp
+1. Deja que sólo puedan conectarse los usuarios locales.
+2. Habilita la carga de archivos.
+3. Haz que los archivos se suban con umask 022.
+4. Habilita chroot con la opción 2, es decir, que cada usuario del sistema se conecte a `/home/$USER/ftp`
 5. Restringe para que solo `userftp` pueda conectarse por FTP
 6. Agrega un archivo `pruebaftp.txt` en `/home/userftp/ftp/upload/` para usar en las pruebas.
+   
   ```sh
   echo "esto es una prueba con vsftpd" | sudo tee /home/userftp/ftp/upload/pruebaftp.txt
   ```
