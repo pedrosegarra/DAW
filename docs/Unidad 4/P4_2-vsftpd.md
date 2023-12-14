@@ -197,7 +197,7 @@ Lo más probable es que la respuesta a la última pregunta fuera no. Por defecto
   write_enable=YES
 ```
 
-Reinicia nuevamente el servidor. Prueba a cargar en /home/userftp el archivo `constitution.txt` que te descargaste antes. ¿Ahora puedes? ¿Con qué permisos se carga el fichero?
+Reinicia nuevamente el servidor. Prueba a cargar en /home/userftp el archivo /etc/vsftpd.conf que intentaste descargaste antes. ¿Ahora puedes? ¿Y con qué permisos se carga el fichero en la carpeta?
 
 Prueba a cargarlo en /etc. ¿Puedes? ¿Por qué no?
 
