@@ -282,7 +282,8 @@ Comprobamos con:
 
 ```linuxconfig
 su userftp
-cd pwd
+cd
+pwd
 ```
 
 Vuelve al usuario admin con `exit`.
