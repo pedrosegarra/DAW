@@ -190,13 +190,17 @@ heroku login
 Esto en teoría nos abre una pestaña del navegador para loguearnos en nuestra cuenta. Puesto que estamos conectados por SSH a nuestra Debian, no sucederá esto ya que estamos en un terminal sin capacidades gráficas. Lo que haremos será crear un proxy inverso a través de SSH que nos permitirá que las peticiones de páginas web de nuestra máquina local se dirijan al servidor remoto a través del tunel SSH y salgan de nuestro servidor Debian con su IP, como si fuera él quien las hiciera. Para ello haremos lo siguiente.
 
 1. Cierra la conexión SSH en tu terminal local y lanza una nueva con este comando:
+
    ```bash
    sudo ssh -i "daw.pem" -D 443 admin@ec2-xx-xx-xx-xx.compute-1.amazonaws.com
    ```
 
    La opción -D establece un servidor SOCKS en el puerto local 443. Como nos vamos a conectar por https usaremos ese puerto.
+   
 2. Configura tu navegador web local para usar el servidor SOCKS como proxy. Dependiendo del navegador que estés utilizando, los pasos pueden variar:
+
    1. Firefox:
+      
       + Abre Firefox.
       + Ve a "Opciones" o "Preferencias" (dependiendo de tu sistema operativo).
       + En la barra de búsqueda, escribe "Proxy".
@@ -205,9 +209,13 @@ Esto en teoría nos abre una pestaña del navegador para loguearnos en nuestra c
       + En "SOCKS Host", ingresa localhost y en "Puerto", ingresa 443.
       + Marca la opción "SOCKS v5".
       + Haz clic en "Aceptar".
-   2. Chrome:
+
+   3. Chrome:
+
       1. Chrome no admite la configuración directa de un proxy SOCKS desde su interfaz de usuario. Puedes usar una extensión como "Proxy SwitchyOmega" para configurar un proxy SOCKS en Chrome.   
+
 3. Con la configuración del proxy establecida en tu navegador, cualquier solicitud de página web que hagas desde tu navegador pasará a través del servidor remoto como si el servidor remoto estuviera haciendo las solicitudes. Esto oculta tu dirección IP local y utiliza la del servidor remoto.
+
 4. Ahora puedes abrir tu navegador y navegar a cualquier página web como lo harías normalmente. El tráfico pasará a través del servidor remoto antes de llegar a su destino.
    Recuerda que esta configuración solo afectará las solicitudes hechas desde el navegador configurado. Otros programas o aplicaciones en tu equipo local no usarán automáticamente este proxy a menos que se configuren para hacerlo. Para desactivar el proxy, simplemente revierte la configuración en tu navegador web.
 
