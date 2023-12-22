@@ -155,6 +155,7 @@ Address: 72.163.4.185
 Name:	cisco.com
 Address: 2001:420:1101:1::185
 ```
+Esta consulta lo que está haciendo es buscar la información de DNS para el dominio "cisco.com" utilizando el servidor DNS público de Google, que tiene la dirección IP 8.8.8.8.
 
 ## Instalación de servidor DNS
 
