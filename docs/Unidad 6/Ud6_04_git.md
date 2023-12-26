@@ -18,9 +18,9 @@ O si estás en una distribución basada en Debian como Ubuntu, prueba con apt-ge
 
 ### Instalando en Windows
 
-Instalar Git en Windows es muy fácil. El proyecto msysGit tiene uno de los procesos de instalación más sencillos. Simplemente descarga el archivo exe del instalador desde la página de GitHub, y ejecútalo:
+Instalar Git en Windows es muy fácil. El proyecto "Gti for Windows" (antes msysGit) tiene uno de los procesos de instalación más sencillos. Simplemente descarga el archivo exe del instalador desde la página de GitHub, y ejecútalo:
 
-[http://msysgit.github.com/](http://msysgit.github.com/)
+[https://gitforwindows.org//](https://gitforwindows.org//)
 
 Una vez instalado, tendrás tanto la versión de línea de comandos (incluido un cliente SSH que nos será útil más adelante) como la interfaz gráfica de usuario estándar. Se recomienda no modificar las opciones que trae por defecto el instalador.
 

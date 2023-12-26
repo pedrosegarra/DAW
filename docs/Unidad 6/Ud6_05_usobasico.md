@@ -27,15 +27,55 @@ Para crear un nuevo repositorio se usa la orden `git init`
     $ git init
     Initialized empty Git repository in /home/cc0gobas/git/curso-de-git/.git/
 
+Al inicializar nuestro proyecto, el archivo `hola.php` estará en el Workspace o Working Directory.
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                | 
+   hola.php             |                | 
+       |                |                | 
+       +                +                +
+```     
+
 ### Añadir la aplicación
 
 Vamos a almacenar el archivo que hemos creado en el repositorio para poder trabajar, después explicaremos para qué sirve cada orden.
 
     $ git add hola.php
+
+Al ejecutra el git add, el archivo pasará a la "Staging area" o área de preparación.
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                | 
+       |             hola.php            |
+       |                |                | 
+       +                +                +
+```    
+
     $ git commit -m "Creación del proyecto"
     [master (root-commit) e19f2c1] Creación del proyecto
      1 file changed, 2 insertions(+)
      create mode 100644 hola.php
+
+El archivo pasará al "Local Ropository" y se le asignará un hash o código de inserción.
+
+```
++-------------+  +-------------+  +-------------+  
+|  Workspace  |  |   Staging   |  |    Local    | 
+|             |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                | 
+       |                |             hola.php (e19f2c1)
+       |                |                | 
+       +                +                +
+```     
 
 ### Comprobar el estado del repositorio
 
@@ -64,6 +104,21 @@ Y volvemos a comprobar el estado del repositorio:
     #
     no changes added to commit (use "git add" and/or "git commit -a")
 
+Nos indica que `hola.php` vuelve a estar en el working directory, porque lo hemos modificado. Y nos dice que pondemos usar `git add hola.php` para volverlo a pasar a la "Staging Area" o bien `git checkout -- hola.php` para descartar los cambios en el Working Directory y recuperar la version anterior en "Local Repository".
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+       |                |             hola.php (e19f2c1)       
+   hola.php             |                | 
+       |                |                | 
+       +                +                +
+```     
+
+
 ### Añadir cambios
 
 Con la orden `git add` indicamos a git que prepare los cambios para que sean almacenados.
@@ -77,6 +132,21 @@ Con la orden `git add` indicamos a git que prepare los cambios para que sean alm
     #   modified:   hola.php
     #
 
+Hemos vuelto a pasar `hola.php` a la "Staging area"
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+       |                |             hola.php (e19f2c1)         
+       |             hola.php            |
+       |                |                | 
+       +                +                +
+``` 
+
+
 ### Confirmar los cambios
 
 Con la orden `git commit` confirmamos los cambios definitivamente, lo que hace que se guarden permanentemente en nuestro repositorio.
@@ -87,6 +157,21 @@ Con la orden `git commit` confirmamos los cambios definitivamente, lo que hace q
     $ git status
     # On branch master
     nothing to commit (working directory clean)
+
+El archivo pasará al "Local Ropository" con un nuevo hash.
+
+```
++-------------+  +-------------+  +-------------+  
+|  Workspace  |  |   Staging   |  |    Local    | 
+|             |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+       |                |             hola.php (e19f2c1)          
+       |                |             hola.php (efc252e)
+       |                |                | 
+       +                +                +
+```     
+
 
 ### Diferencias entre _workdir_ y _staging_.
 
@@ -127,9 +212,23 @@ Y vemos el estado en el que está el repositorio
     #   modified:   hola.php
     #
 
-Podemos ver como aparecen el archivo _hola.php_ dos veces. El primero está preparado
-para ser confirmado y está almacenado en la zona de _staging_. El segundo indica
-que el directorio hola.php está modificado otra vez en la zona de trabajo (_workdir_).
+Podemos ver como aparecen el archivo `hola.php` dos veces. El primero está preparado
+para ser confirmado y está almacenado en la "Staging Area". El segundo indica
+que el archivo `hola.php` está modificado otra vez en la zona de trabajo "Working Directory". Como vemos en el gráfico, el mismo archivo está en 2 zonas distintas en este momento.
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+       |                |             hola.php (e19f2c1)          
+       |                |             hola.php (efc252e)        
+     hola.php        hola.php            |
+       |                |                | 
+       +                +                +
+``` 
+
 
 !!! warning
 
@@ -150,6 +249,24 @@ Almacenamos los cambios por separado:
     #   modified:   hola.php
     #
     no changes added to commit (use "git add" and/or "git commit -a")
+
+Con el commit hemos pasado el hola.php que estaba en Staging Area al Local Repository quedando en el "Working Directory" el último que habíamos editado.
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+       |                |             hola.php (e19f2c1)          
+       |                |             hola.php (efc252e)
+       |                |             hola.php (3283e0d)               
+     hola.php           |                |
+       |                |                | 
+       +                +                +
+``` 
+
+
     $ git add .
     $ git status
     # On branch master
@@ -158,9 +275,38 @@ Almacenamos los cambios por separado:
     #
     #   modified:   hola.php
     #
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+       |                |             hola.php (e19f2c1)          
+       |                |             hola.php (efc252e)
+       |                |             hola.php (3283e0d)               
+       |             hola.php            |
+       |                |                | 
+       +                +                +
+``` 
+
     $ git commit -m "Se añade un comentario al cambio del valor por defecto"
     [master fd4da94] Se añade un comentario al cambio del valor por defecto
      1 file changed, 1 insertion(+)
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+       |                |             hola.php (e19f2c1)          
+       |                |             hola.php (efc252e)
+       |                |             hola.php (3283e0d)               
+       |                |             hola.php (fd4da94) 
+       |                |                | 
+       +                +                +
+```
 
 !!! info
 
@@ -254,7 +400,7 @@ Thumbs.db
 
 ### Observando los cambios
 
-Con la orden `git log` podemos ver todos los cambios que hemos hecho:
+Con la orden `git log` podemos ver todos los cambios que hemos hecho. Antes de nada vuelve al directorio `curso-de-git` en el que estábamos trabajando:
 
     $ git log
     commit fd4da946326fbe8b24e89282ad25a71721bf40f6
@@ -281,6 +427,24 @@ Con la orden `git log` podemos ver todos los cambios que hemos hecho:
 
         Creación del proyecto
 
+Para salir presiona `q`.
+
+Recuerda los distintos hash que se habían generado cada vez que hacíamo un commit. Fíjate que antes vimos sólo los primeros caracteres hexadecimales del hash. En nuestro esquema los fuimos poniendo en orden cronológico (el más antiguo primero) y el comando nos los muestra en orden cronológico inverso (el más reciente primero).
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+       |                |             hola.php (e19f2c1)          
+       |                |             hola.php (efc252e)
+       |                |             hola.php (3283e0d)               
+       |                |             hola.php (fd4da94) 
+       |                |                | 
+       +                +                +
+```
+
 También es posible ver versiones abreviadas o limitadas, dependiendo de los parámetros:
 
     $ git log --oneline
@@ -288,10 +452,13 @@ También es posible ver versiones abreviadas o limitadas, dependiendo de los par
     3283e0d Se añade un parámetro por defecto
     efc252e Parametrización del programa
     e19f2c1 Creación del proyecto
+
+Prueba estas otras opciones y comprobarás lo que hace cada una.
+
     git log --oneline --max-count=2
     git log --oneline --since='5 minutes ago'
     git log --oneline --until='5 minutes ago'
-    git log --oneline --author=sergio
+    git log --oneline --author=sergio   # Cambia sergio por tu nombre de usuario
     git log --oneline --all
 
 Una versión muy útil de `git log` es la siguiente, pues nos permite ver en que lugares está master y HEAD, entre otras cosas:
@@ -308,6 +475,10 @@ Como estas órdenes son demasiado largas, Git nos permite crear alias para crear
 
     git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"
 
+Ahora basta con ejecutar:
+
+    git hist
+
 !!! example
 
     Puedes configurar incluso alias para abreviar comandos. Algunos ejemplos de alias útiles:
@@ -320,7 +491,7 @@ Como estas órdenes son demasiado largas, Git nos permite crear alias para crear
 
 ### Recuperando versiones anteriores
 
-Cada cambio es etiquetado por un hash, para poder regresar a ese momento del estado del proyecto se usa la orden `git checkout`.
+Cada cambio es etiquetado por un hash, para poder regresar a ese momento del estado del proyecto se usa la orden `git checkout`. Prueba con el hash de tu primer commit.
 
     $ git checkout e19f2c1
     Note: checking out 'e19f2c1'.
@@ -339,6 +510,19 @@ Cada cambio es etiquetado por un hash, para poder regresar a ese momento del est
     <?php
     echo "Hello, World\n";
 
+Hemos vuelto a aquí:
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+       |                |             hola.php (e19f2c1)          
+       |                |                | 
+       +                +                +
+```
+
 El aviso que nos sale nos indica que estamos en un estado donde no trabajamos en ninguna rama concreta. Eso significa que los cambios que hagamos podrían "perderse" porque si no son guardados en una nueva rama, en principio no podríamos volver a recuperarlos. Hay que pensar que Git es como un árbol donde un nodo tiene información de su nodo padre, no de sus nodos hijos, con lo que siempre necesitaríamos información de dónde se encuentran los nodos finales o de otra manera no podríamos acceder a ellos.
 
 ### Volver a la última versión de la rama master.
@@ -347,6 +531,8 @@ Usamos `git checkout` indicando el nombre de la rama:
 
     $ git checkout master
     Previous HEAD position was e19f2c1... Creación del proyecto
+
+Comprueba en qué posición estás con alguno de los comandos que aprendiste anteriormente.
 
 ### Etiquetando versiones
 
@@ -358,6 +544,9 @@ Ahora vamos a etiquetar la versión inmediatamente anterior como v1-beta. Para e
 
     $ git checkout v1^
     $ git checkout v1~1
+
+Asignamos ahora el tag v1-beta a la versión anterior.
+
     $ git tag v1-beta
 
 Si ejecutamos la orden sin parámetros nos mostrará todas las etiquetas existentes.
@@ -373,6 +562,23 @@ Y para verlas en el historial:
     * 3283e0d 2013-06-16 | Se añade un parámetro por defecto (HEAD, tag: v1-beta) [Sergio Gómez]
     * efc252e 2013-06-16 | Parametrización del programa [Sergio Gómez]
     * e19f2c1 2013-06-16 | Creación del proyecto [Sergio Gómez]
+
+En nuestro esquema:
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+       |                |             hola.php (e19f2c1)          
+       |                |             hola.php (efc252e)
+       |                |             hola.php (3283e0d) tag: v1-beta              
+       |                |             hola.php (fd4da94) tag: v1
+       |                |                | 
+       +                +                +
+```
+
 
 ### Borrar etiquetas
 
@@ -394,3 +600,25 @@ Para ver los cambios que se han realizado en el código usamos la orden `git dif
     +// El nombre por defecto es Mundo
      $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
      @print "Hola, {$nombre}\n";
+
+La salida del comando git diff v1-beta v1 muestra las diferencias entre dos puntos en la historia del repositorio de Git, específicamente entre las versiones "v1-beta" y "v1". Aquí está el desglose de la salida:
+
+* diff --git a/hola.php b/hola.php: Esto indica que se está comparando el archivo hola.php entre las dos versiones. La letra "a/" indica la versión original (en este caso, la versión de "v1-beta"), y la letra "b/" indica la versión modificada (en este caso, la versión de "v1").
+
+* index a31e01f..25a35c0 100644: Los valores del índice (hash) para las dos versiones que están siendo comparadas. En este caso, el commit original (v1-beta) tiene el hash a31e01f y el commit modificado (v1) tiene el hash 25a35c0. El número 100644 es el modo de archivo.
+
+* --- a/hola.php: Indica que el archivo original (hola.php en la versión de "v1-beta") tiene el contenido que sigue.
+
+* +++ b/hola.php: Indica que el archivo modificado (hola.php en la versión de "v1") tiene el contenido que sigue.
+
+* @@ -1,3 +1,4 @@: Muestra la sección modificada del archivo. En este caso, indica que desde la línea 1 hasta la línea 3 en la versión original y desde la línea 1 hasta la línea 4 en la versión modificada hay diferencias.
+
+* <?php: Este es el contenido original de la línea 1.
+  
+* +// El nombre por defecto es Mundo: Esta línea fue agregada en la versión modificada.
+
+* \$nombre = isset($argv[1]) ? $argv[1] : "Mundo";: Esta línea está presente tanto en la versión original como en la versión modificada, por lo que no hay cambios aquí.
+
+* @print "Hola, {$nombre}\n";: Esta línea está presente tanto en la versión original como en la versión modificada.
+
+En resumen, la salida indica que se ha agregado un comentario en la línea 2 de la versión "v1", y la diferencia en el contenido de la línea 3 se debe a la adición del comentario en la versión "v1".

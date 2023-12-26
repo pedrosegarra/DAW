@@ -33,7 +33,7 @@ manuales libres que pueden encontrarse en la sección de [Referencias](Ud6_14_re
 
 ## Agradecimientos
 
-Este curso ha sido impartido por las siguientes personas:
+La versión inicial de este curso fue impartida por las siguientes personas:
 
 - [Adrián López](https://github.com/AdrianLopezGue)
 - [Héctor Romero](https://github.com/cyberh99)
