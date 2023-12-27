@@ -104,7 +104,7 @@ Y volvemos a comprobar el estado del repositorio:
     #
     no changes added to commit (use "git add" and/or "git commit -a")
 
-Nos indica que `hola.php` vuelve a estar en el working directory, porque lo hemos modificado. Y nos dice que pondemos usar `git add hola.php` para volverlo a pasar a la "Staging Area" o bien `git checkout -- hola.php` para descartar los cambios en el Working Directory y recuperar la version anterior en "Local Repository".
+Nos indica que `hola.php` vuelve a estar en el working directory, porque lo hemos modificado. Y nos dice que podemos usar `git add hola.php` para volverlo a pasar a la "Staging Area" o bien `git checkout -- hola.php` para descartar los cambios en el Working Directory y recuperar la version anterior en "Local Repository". En nuestro esquema veremos más arriba las versiones más antiguas y más abajo las más recientes.
 
 ```
 +-------------+  +-------------+  +-------------+  
@@ -162,8 +162,8 @@ El archivo pasará al "Local Ropository" con un nuevo hash.
 
 ```
 +-------------+  +-------------+  +-------------+  
-|  Workspace  |  |   Staging   |  |    Local    | 
-|             |  |     Area    |  |  Repository | 
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
 +------+------+  +------+------+  +------+------+ 
        |                |                |
        |                |             hola.php (e19f2c1)          
@@ -183,9 +183,40 @@ $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 @print "Hola, {$nombre}\n";
 ```
 
+Al modificarlo volvemos a tenerlo en "Working Directory"
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+  
+       |                |                |
+       |                |             hola.php (e19f2c1)          
+       |                |             hola.php (efc252e)
+     hola.php           |                |   
+       |                |                | 
+       +                +                +
+```  
+
 Este vez añadimos los cambios a la fase de _staging_ pero sin confirmarlos (_commit_).
 
     git add hola.php
+
+
+Al hacer el add volvemos a tenerlo en "Staging Area"
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+  
+       |                |                |
+       |                |             hola.php (e19f2c1)          
+       |                |             hola.php (efc252e)
+       |             hola.php            |   
+       |                |                | 
+       +                +                +
+```       
 
 Volvemos a modificar el programa para indicar con un comentario lo que hemos hecho.
 
@@ -213,8 +244,8 @@ Y vemos el estado en el que está el repositorio
     #
 
 Podemos ver como aparecen el archivo `hola.php` dos veces. El primero está preparado
-para ser confirmado y está almacenado en la "Staging Area". El segundo indica
-que el archivo `hola.php` está modificado otra vez en la zona de trabajo "Working Directory". Como vemos en el gráfico, el mismo archivo está en 2 zonas distintas en este momento.
+para ser confirmado y está almacenado en la "Staging Area" y es el que hicimos el add en primer lugar. El segundo indica
+que el archivo `hola.php` está modificado otra vez en la zona de trabajo "Working Directory". Como vemos en el gráfico, el mismo archivo está en 2 zonas distintas en este momento, además de las 2 versiones anteriores que hicimos commit.
 
 ```
 +-------------+  +-------------+  +-------------+  
@@ -266,6 +297,7 @@ Con el commit hemos pasado el hola.php que estaba en Staging Area al Local Repos
        +                +                +
 ``` 
 
+Si ahora hacemos un git add:
 
     $ git add .
     $ git status
@@ -275,6 +307,8 @@ Con el commit hemos pasado el hola.php que estaba en Staging Area al Local Repos
     #
     #   modified:   hola.php
     #
+
+El archivo en Working Directory pasa a Staging Area.
 
 ```
 +-------------+  +-------------+  +-------------+  
@@ -289,6 +323,8 @@ Con el commit hemos pasado el hola.php que estaba en Staging Area al Local Repos
        |                |                | 
        +                +                +
 ``` 
+
+Y si ahora hacemos un commit.
 
     $ git commit -m "Se añade un comentario al cambio del valor por defecto"
     [master fd4da94] Se añade un comentario al cambio del valor por defecto
