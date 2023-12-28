@@ -82,7 +82,7 @@ El archivo pasará al "Local Ropository" y se le asignará un hash o código de 
 Con la orden `git status` podemos ver en qué estado se encuentran los archivos de nuestro repositorio.
 
     $ git status
-    # On branch master
+    On branch master
     nothing to commit (working directory clean)
 
 Si modificamos el archivo `hola.php`:
@@ -95,16 +95,16 @@ Si modificamos el archivo `hola.php`:
 Y volvemos a comprobar el estado del repositorio:
 
     $ git status
-    # On branch master
-    # Changes not staged for commit:
-    #   (use "git add <file>..." to update what will be committed)
-    #   (use "git checkout -- <file>..." to discard changes in working directory)
-    #
-    #   modified:   hola.php
-    #
+    On branch master
+    Changes not staged for commit:
+      (use "git add <file>..." to update what will be committed)
+      (use "git restore <file>..." to discard changes in working directory)
+    
+       modified:   hola.php
+
     no changes added to commit (use "git add" and/or "git commit -a")
 
-Nos indica que `hola.php` vuelve a estar en el working directory, porque lo hemos modificado. Y nos dice que podemos usar `git add hola.php` para volverlo a pasar a la "Staging Area" o bien `git checkout -- hola.php` para descartar los cambios en el Working Directory y recuperar la version anterior en "Local Repository". En nuestro esquema veremos más arriba las versiones más antiguas y más abajo las más recientes.
+Nos indica que `hola.php` vuelve a estar en el working directory, porque lo hemos modificado. Y nos dice que podemos usar `git add hola.php` para volverlo a pasar a la "Staging Area" o bien `git restore hola.php` para descartar los cambios en el Working Directory y recuperar la version anterior en "Local Repository". En nuestro esquema veremos más arriba las versiones más recientes y más abajo las más antiguas, que es como nos lo mostrarán los comandos git para ver históricos. Es como una pila en la que la nueva versión queda sobre las anteriores.
 
 ```
 +-------------+  +-------------+  +-------------+  
@@ -112,8 +112,8 @@ Nos indica que `hola.php` vuelve a estar en el working directory, porque lo hemo
 |  Directory  |  |     Area    |  |  Repository | 
 +------+------+  +------+------+  +------+------+ 
        |                |                |
-       |                |             hola.php (e19f2c1)       
    hola.php             |                | 
+       |                |             hola.php (e19f2c1)       
        |                |                | 
        +                +                +
 ```     
@@ -125,13 +125,12 @@ Con la orden `git add` indicamos a git que prepare los cambios para que sean alm
 
     $ git add hola.php
     $ git status
-    # On branch master
-    # Changes to be committed:
-    #   (use "git reset HEAD <file>..." to unstage)
-    #
-    #   modified:   hola.php
-    #
-
+    On branch master
+    Changes to be committed:
+      (use "git restore --staged <file>..." to unstage)
+    
+      modified:   hola.php
+    
 Hemos vuelto a pasar `hola.php` a la "Staging area"
 
 ```
@@ -140,8 +139,8 @@ Hemos vuelto a pasar `hola.php` a la "Staging area"
 |  Directory  |  |     Area    |  |  Repository | 
 +------+------+  +------+------+  +------+------+ 
        |                |                |
-       |                |             hola.php (e19f2c1)         
        |             hola.php            |
+       |                |             hola.php (e19f2c1)         
        |                |                | 
        +                +                +
 ``` 
@@ -155,7 +154,7 @@ Con la orden `git commit` confirmamos los cambios definitivamente, lo que hace q
     [master efc252e] Parametrización del programa
      1 file changed, 1 insertion(+), 1 deletion(-)
     $ git status
-    # On branch master
+    On branch master
     nothing to commit (working directory clean)
 
 El archivo pasará al "Local Ropository" con un nuevo hash.
@@ -166,8 +165,8 @@ El archivo pasará al "Local Ropository" con un nuevo hash.
 |  Directory  |  |     Area    |  |  Repository | 
 +------+------+  +------+------+  +------+------+ 
        |                |                |
-       |                |             hola.php (e19f2c1)          
        |                |             hola.php (efc252e)
+       |                |             hola.php (e19f2c1)          
        |                |                | 
        +                +                +
 ```     
@@ -191,9 +190,9 @@ Al modificarlo volvemos a tenerlo en "Working Directory"
 |  Directory  |  |     Area    |  |  Repository | 
 +------+------+  +------+------+  +------+------+  
        |                |                |
-       |                |             hola.php (e19f2c1)          
+     hola.php           |                |  
        |                |             hola.php (efc252e)
-     hola.php           |                |   
+       |                |             hola.php (e19f2c1)          
        |                |                | 
        +                +                +
 ```  
@@ -211,9 +210,9 @@ Al hacer el add volvemos a tenerlo en "Staging Area"
 |  Directory  |  |     Area    |  |  Repository | 
 +------+------+  +------+------+  +------+------+  
        |                |                |
-       |                |             hola.php (e19f2c1)          
+       |             hola.php            |
        |                |             hola.php (efc252e)
-       |             hola.php            |   
+       |                |             hola.php (e19f2c1) 
        |                |                | 
        +                +                +
 ```       
@@ -230,19 +229,18 @@ $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 Y vemos el estado en el que está el repositorio
 
     $ git status
-    # On branch master
-    # Changes to be committed:
-    #   (use "git reset HEAD <file>..." to unstage)
-    #
-    #   modified:   hola.php
-    #
-    # Changes not staged for commit:
-    #   (use "git add <file>..." to update what will be committed)
-    #   (use "git checkout -- <file>..." to discard changes in working directory)
-    #
-    #   modified:   hola.php
-    #
-
+    On branch master
+    Changes to be committed:
+      (use "git restore --staged <file>..." to unstage)
+    
+      modified:   hola.php
+    
+    Changes not staged for commit:
+      (use "git add <file>..." to update what will be committed)
+      (use "git restore <file>..." to discard changes in working directory)
+    
+      modified:   hola.php
+    
 Podemos ver como aparecen el archivo `hola.php` dos veces. El primero está preparado
 para ser confirmado y está almacenado en la "Staging Area" y es el que hicimos el add en primer lugar. El segundo indica
 que el archivo `hola.php` está modificado otra vez en la zona de trabajo "Working Directory". Como vemos en el gráfico, el mismo archivo está en 2 zonas distintas en este momento, además de las 2 versiones anteriores que hicimos commit.
@@ -252,10 +250,10 @@ que el archivo `hola.php` está modificado otra vez en la zona de trabajo "Worki
 |  Working    |  |   Staging   |  |    Local    | 
 |  Directory  |  |     Area    |  |  Repository | 
 +------+------+  +------+------+  +------+------+ 
-       |                |                |
-       |                |             hola.php (e19f2c1)          
-       |                |             hola.php (efc252e)        
+       |                |                |    
      hola.php        hola.php            |
+       |                |             hola.php (efc252e)
+       |                |             hola.php (e19f2c1)
        |                |                | 
        +                +                +
 ``` 
@@ -272,13 +270,13 @@ Almacenamos los cambios por separado:
     [master 3283e0d] Se añade un parámetro por defecto
      1 file changed, 2 insertions(+), 1 deletion(-)
     $ git status
-    # On branch master
-    # Changes not staged for commit:
-    #   (use "git add <file>..." to update what will be committed)
-    #   (use "git checkout -- <file>..." to discard changes in working directory)
-    #
-    #   modified:   hola.php
-    #
+    On branch master
+    Changes not staged for commit:
+      (use "git add <file>..." to update what will be committed)
+      (use "git restore <file>..." to discard changes in working directory)
+    
+       modified:   hola.php
+    
     no changes added to commit (use "git add" and/or "git commit -a")
 
 Con el commit hemos pasado el hola.php que estaba en Staging Area al Local Repository quedando en el "Working Directory" el último que habíamos editado.
@@ -288,11 +286,11 @@ Con el commit hemos pasado el hola.php que estaba en Staging Area al Local Repos
 |  Working    |  |   Staging   |  |    Local    | 
 |  Directory  |  |     Area    |  |  Repository | 
 +------+------+  +------+------+  +------+------+ 
-       |                |                |
-       |                |             hola.php (e19f2c1)          
-       |                |             hola.php (efc252e)
-       |                |             hola.php (3283e0d)               
+       |                |                |           
      hola.php           |                |
+       |                |             hola.php (3283e0d) 
+       |                |             hola.php (efc252e)
+       |                |             hola.php (e19f2c1)
        |                |                | 
        +                +                +
 ``` 
@@ -301,12 +299,12 @@ Si ahora hacemos un git add:
 
     $ git add .
     $ git status
-    # On branch master
-    # Changes to be committed:
-    #   (use "git reset HEAD <file>..." to unstage)
-    #
-    #   modified:   hola.php
-    #
+    On branch master
+    Changes to be committed:
+      (use "git restore --staged <file>..." to unstage)
+    
+      modified:   hola.php
+    
 
 El archivo en Working Directory pasa a Staging Area.
 
@@ -316,10 +314,10 @@ El archivo en Working Directory pasa a Staging Area.
 |  Directory  |  |     Area    |  |  Repository | 
 +------+------+  +------+------+  +------+------+ 
        |                |                |
-       |                |             hola.php (e19f2c1)          
-       |                |             hola.php (efc252e)
-       |                |             hola.php (3283e0d)               
        |             hola.php            |
+       |                |             hola.php (3283e0d) 
+       |                |             hola.php (efc252e)
+       |                |             hola.php (e19f2c1)               
        |                |                | 
        +                +                +
 ``` 
@@ -335,11 +333,11 @@ Y si ahora hacemos un commit.
 |  Working    |  |   Staging   |  |    Local    | 
 |  Directory  |  |     Area    |  |  Repository | 
 +------+------+  +------+------+  +------+------+ 
-       |                |                |
-       |                |             hola.php (e19f2c1)          
-       |                |             hola.php (efc252e)
-       |                |             hola.php (3283e0d)               
+       |                |                |             
        |                |             hola.php (fd4da94) 
+       |                |             hola.php (3283e0d) 
+       |                |             hola.php (efc252e)
+       |                |             hola.php (e19f2c1) 
        |                |                | 
        +                +                +
 ```
@@ -465,7 +463,7 @@ Con la orden `git log` podemos ver todos los cambios que hemos hecho. Antes de n
 
 Para salir presiona `q`.
 
-Recuerda los distintos hash que se habían generado cada vez que hacíamo un commit. Fíjate que antes vimos sólo los primeros caracteres hexadecimales del hash. En nuestro esquema los fuimos poniendo en orden cronológico (el más antiguo primero) y el comando nos los muestra en orden cronológico inverso (el más reciente primero).
+Recuerda los distintos hash que se habían generado cada vez que hacíamo un commit. Fíjate que antes vimos sólo los primeros caracteres hexadecimales del hash.
 
 ```
 +-------------+  +-------------+  +-------------+  
@@ -473,10 +471,10 @@ Recuerda los distintos hash que se habían generado cada vez que hacíamo un com
 |  Directory  |  |     Area    |  |  Repository | 
 +------+------+  +------+------+  +------+------+ 
        |                |                |
-       |                |             hola.php (e19f2c1)          
-       |                |             hola.php (efc252e)
-       |                |             hola.php (3283e0d)               
        |                |             hola.php (fd4da94) 
+       |                |             hola.php (3283e0d) 
+       |                |             hola.php (efc252e)
+       |                |             hola.php (e19f2c1) 
        |                |                | 
        +                +                +
 ```
@@ -537,9 +535,9 @@ Cada cambio es etiquetado por un hash, para poder regresar a ese momento del est
     state without impacting any branches by performing another checkout.
 
     If you want to create a new branch to retain commits you create, you may
-    do so (now or later) by using -b with the checkout command again. Example:
+    do so (now or later) by using -c with the checkout command again. Example:
 
-      git checkout -b new_branch_name
+      git checkout -c new_branch_name
 
     HEAD is now at e19f2c1... Creación del proyecto
     $ cat hola.php
@@ -607,10 +605,10 @@ En nuestro esquema:
 |  Directory  |  |     Area    |  |  Repository | 
 +------+------+  +------+------+  +------+------+ 
        |                |                |
-       |                |             hola.php (e19f2c1)          
+       |                |             hola.php (fd4da94) tag: v1 
+       |                |             hola.php (3283e0d) tag: v1-beta  
        |                |             hola.php (efc252e)
-       |                |             hola.php (3283e0d) tag: v1-beta              
-       |                |             hola.php (fd4da94) tag: v1
+       |                |             hola.php (e19f2c1) 
        |                |                | 
        +                +                +
 ```
