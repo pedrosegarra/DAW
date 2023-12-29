@@ -306,7 +306,7 @@ Simplemente descomenta y edita lo siguiente en /etc/bind/named.conf.options:
 
 Aquí hemos configurado los DNS de google.
 
-#### Comprobación del funcionamiento de la chaché
+#### Comprobación del funcionamiento de la caché
 
 Por defecto bind9 tiene la caché habilitada. Podemos probar su funcionamiento de una forma rápida y sencilla.
 
