@@ -481,7 +481,7 @@ zone "104.85.3.in-addr.arpa" {
     file "/etc/bind/db.3.85.104";  # Ruta al archivo de zona inversa
 };
 ```
-Y la configuración de la zona de resolución inversa:
+Y la configuración de la zona de resolución inversa la realizaremos en el fichero descrito  "/etc/bind/db.3.85.104" :
 
 ```sh
 $TTL 1d
@@ -500,7 +500,7 @@ $ORIGIN 104.85.3.IN-ADDR.ARPA.
 173 IN  PTR     ns1.deaw.es. ; fully qualified domain name (FQDN)
 ```
 
-Vuelve a omprobar que la configuración es correcta:
+Vuelve a comprobar que la configuración es correcta:
 
 ```sh
 sudo named-checkzone 104.85.3.in-addr.arpa /etc/bind/db.3.85.104 
