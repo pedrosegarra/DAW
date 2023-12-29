@@ -295,7 +295,7 @@ Con esta configuración básica ya hemos comprobado que nuestro servidor DNS est
 
 Hemos visto que por defecto nuestro servidor hará consultas iterativas. Para que realice consultas recursivas preguntando a un servidor DNS configurado por nosotros, todo lo que se requiere es simplemente agregar los números de IP de los servidores DNS deseados.
 
-Simplemente descomenta y edita lo siguiente en /etc/bind/named.conf.options:
+Simplemente descomenta y edita lo siguiente en `/etc/bind/named.conf.options`:
 
 ```yaml
     forwarders {
