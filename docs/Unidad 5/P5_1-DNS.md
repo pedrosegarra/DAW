@@ -208,7 +208,7 @@ Comprueba ahora que en `/etc/resolv.conf` tienes `nameserver=127.0.0.1` como pri
 
 Prueba ahora a consultar la IP de cisco.com con `dig` y `nslookup` y comprueba que servidor te responde.
 
-Es importante recordar aquí que no tenemos configurada en ninguna parte la IP de ningún servidor DNS externo. Por tanto, ¿cómo es capaz nuestro servidor de contestarnos cuando le preguntamos por la IP de cisco.com? Por defecto bind9 realizará una resolución iterativa, preguntando primero a ls servidores raiz de internet, si estos no tienen a los servidores TLD, después a los serfidores autoritativos de dominio.
+Es importante recordar aquí que no tenemos configurada en ninguna parte la IP de ningún servidor DNS externo. Por tanto, ¿cómo es capaz nuestro servidor de contestarnos cuando le preguntamos por la IP de cisco.com? Por defecto bind9 realizará una resolución iterativa, preguntando primero a los servidores raíz de internet, si estos no tienen, preguntará a los servidores TLD y después a los servidores autoritativos de dominio.
 
 
 ## Configuración del servidor
@@ -267,7 +267,7 @@ include "/etc/bind/named.conf.default-zones";
 
 Este archivo sirve simplemente para aglutinar o agrupar a los archivos de configuración que usaremos. Estos 3 includes hacen referencia a los 3 diferentes archivos donde deberemos realizar la verdadera configuración, ubicados en el mismo directorio.
 
-### configuración *named.conf.options*
+### Configuración *named.conf.options*
 
 Es una buena práctica que hagáis siempre una copia de seguridad de un archivo de configuración cada vez que vayáis a realizar algún cambio:
 
