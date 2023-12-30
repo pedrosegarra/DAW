@@ -26,20 +26,20 @@ $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 Y comprobamos:
 
     $ git status
-    # On branch master
-    # Changes not staged for commit:
-    #   (use "git add <file>..." to update what will be committed)
-    #   (use "git checkout -- <file>..." to discard changes in working directory)
-    #
-    #   modified:   hola.php
-    #
+    On branch master
+    Changes not staged for commit:
+      (use "git add <file>..." to update what will be committed)
+      (use "git restore <file>..." to discard changes in working directory)
+    
+       modified:   hola.php
+    
     no changes added to commit (use "git add" and/or "git commit -a")
 
 El mismo Git nos indica que debemos hacer para añadir los cambios o para deshacerlos:
 
-    $ git checkout hola.php
+    $ git restore hola.php
     $ git status
-    # On branch master
+    On branch master
     nothing to commit, working directory clean
     $ cat hola.php
     <?php
@@ -63,31 +63,29 @@ Y lo añadimos al _staging_
 
     $ git add hola.php
     $ git status
-    # On branch master
-    # Changes to be committed:
-    #   (use "git reset HEAD <file>..." to unstage)
-    #
-    #   modified:   hola.php
-    #
+    On branch master
+    Changes to be committed:
+      (use "git restore --staged <file>..." to unstage)
+    
+       modified:   hola.php
+    
 
 De nuevo, Git nos indica qué debemos hacer para deshacer el cambio:
 
-    $ git reset HEAD hola.php
-    Unstaged changes after reset:
-    M   hola.php
+    $ git restore --staged hola.php
     $ git status
-    # On branch master
-    # Changes not staged for commit:
-    #   (use "git add <file>..." to update what will be committed)
-    #   (use "git checkout -- <file>..." to discard changes in working directory)
-    #
-    #   modified:   hola.php
-    #
+    On branch master
+    Changes not staged for commit:
+      (use "git add <file>..." to update what will be committed)
+      (use "git restore <file>..." to discard changes in working directory)
+    
+       modified:   hola.php
+    
     no changes added to commit (use "git add" and/or "git commit -a")
-    $ git checkout hola.php
+    $ git restore hola.php
 
 Y ya tenemos nuestro repositorio limpio otra vez. Como vemos hay que hacerlo en dos pasos:
-uno para borrar los datos del _staging_ y otro para restaurar la copia de trabajo.
+uno para pasar el fichero de Staging Area a Working Directory y limpiar así la Staging Area; y otro para descartar los cambios en Working Directory.
 
 ### Deshaciendo commits no deseados.
 
@@ -203,12 +201,12 @@ Para mover archivos usaremos la orden `git mv`:
     $ mkdir lib
     $ git mv hola.php lib
     $ git status
-    # On branch master
-    # Changes to be committed:
-    #   (use "git reset HEAD <file>..." to unstage)
-    #
-    #   renamed:    hola.php -> lib/hola.php
-    #
+    On branch master
+    Changes to be committed:
+      (use "git reset HEAD <file>..." to unstage)
+    
+      renamed:    hola.php -> lib/hola.php
+    
 
 ### Mover y borrar archivos.
 

@@ -180,20 +180,8 @@ Y guardamos los cambios:
     [master 9c85275] Programa interactivo
      1 file changed, 2 insertions(+), 2 deletions(-)
     $ git hist --all
-    *   9c6ac06 2013-06-16 | Merge commit 'c3e65d0' into hola (hola) [Sergio Gómez]
-    |\
-    * | 9862f33 2013-06-16 | hola usa la clase HolaMundo [Sergio Gómez]
-    * | 6932156 2013-06-16 | Añadida la clase HolaMundo [Sergio Gómez]
-    | | * 9c85275 2013-06-16 | Programa interactivo (HEAD, master) [Sergio Gómez]
-    | |/
-    | * c3e65d0 2013-06-16 | Añadido README.md [Sergio Gómez]
-    |/
-    * 81c6e93 2013-06-16 | Movido hola.php a lib [Sergio Gómez]
-    * 96a39df 2013-06-16 | Añadido el autor del programa y su email [Sergio Gómez]
-    * fd4da94 2013-06-16 | Se añade un comentario al cambio del valor por defecto (tag: v1) [Sergio Gómez]
-    * 3283e0d 2013-06-16 | Se añade un parámetro por defecto (tag: v1-beta) [Sergio Gómez]
-    * efc252e 2013-06-16 | Parametrización del programa [Sergio Gómez]
-    * e19f2c1 2013-06-16 | Creación del proyecto [Sergio Gómez]
+
+Comprueba el resultado
 
 Volvemos a la rama hola y fusionamos:
 
@@ -222,7 +210,7 @@ $nombre = trim(fgets(STDIN));
 >>>>>>> master
 ```
 
-La primera parte marca el código que estaba en la rama donde trabajábamos (HEAD) y la parte final el código de donde fusionábamos. Resolvemos el conflicto, dejando el archivo como sigue:
+La primera parte marca el código que estaba en la rama donde trabajábamos (HEAD), que era la rama `hola` y la parte final el código de donde fusionábamos, que era `master`. Resolvemos el conflicto, dejando el archivo como sigue:
 
 ```php
 <?php
