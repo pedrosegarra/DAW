@@ -69,12 +69,15 @@ Básicamente podemos partir de tres situaciones:
 1. Ya tenemos un repositorio creado y queremos sincronizarlo con Github.
 1. Queremos importar un repositorio de otro sistema de control de versiones distinto.
 
+Veremos una pantalla similar a esta. Los comandos pueden variar ligeramente si existe una nueva versión de git. Fíjate en los comandos que a ti te aparecen.
+
 ![Quick setup](Ud6_img//github-quicksetup.png)
 
 Nuestra situación es la segunda, así que nos aseguramos de que hemos elegido SSH como protocolo. A continuación pulsamos el icono del portapapeles y ejecutamos las dos ordenes que nos indica la web en nuestro terminal.
 
     $ git remote add origin git@github.com:sgomez/taller-de-git.git
-    $ git push -u origin master
+    $ git branch -M main
+    $ git push -u origin main
     Counting objects: 33, done.
     Delta compression using up to 4 threads.
     Compressing objects: 100% (24/24), done.
@@ -82,8 +85,11 @@ Nuestra situación es la segunda, así que nos aseguramos de que hemos elegido S
     Total 33 (delta 2), reused 0 (delta 0)
     remote: Resolving deltas: 100% (2/2), done.
     To github.com:sgomez/taller-de-git.git
-     * [new branch]      master -> master
-    Branch master set up to track remote branch master from origin by rebasing.
+     * [new branch]      main -> main
+    rama 'main' configurada para rastrear 'origin/main'.
+
+!!!Atención
+    En la versión de git utilizada al realizar estos apuntes a la rama principal le llama "master". En la versión actual le denomina "main". Cambiaré los comandos y salidas para evitar errores, aunque podrían diferir ligeramente de lo que obtengas.
 
 Si recargamos la página veremos que ya aparece nuestro proyecto.
 
@@ -114,7 +120,7 @@ Si ahora vemos el estado de nuestro proyecto veremos algo similar a esto:
 
 ```
 $ git hist --all
-* 2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola (HEAD -> master, origin/master) [Sergio Gomez]
+* 2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola (HEAD -> master, origin/main) [Sergio Gomez]
 *\
 | * 9862f33 2013-06-16 | hola usa la clase HolaMundo (hola) [Sergio Gómez]
 | * 6932156 2013-06-16 | Añadida la clase HolaMundo [Sergio Gómez]
@@ -129,7 +135,7 @@ $ git hist --all
 * e19f2c1 2013-06-16 | Creación del proyecto [Sergio Gómez]
 ```
 
-Aparece que hay una nueva rama llamada `origin/master`. Esta rama indica el estado de sincronización
+Aparece que hay una nueva rama llamada `origin/main`. Esta rama indica el estado de sincronización
 de nuestro repositorio con un repositorio remoto llamado _origin_. En este caso el de _Github_.
 
 !!! info
@@ -145,9 +151,9 @@ Podemos ver la configuración de este repositorio remoto con la orden `git remot
       Push  URL: git@github.com:sgomez/taller-de-git.git
       HEAD branch: master
       Remote branch:
-        master tracked
+        main tracked
       Local ref configured for 'git push':
-        master pushes to master (up to date)
+        main pushes to main (up to date)
 
 De la respuesta tenemos que fijarnos en las líneas que indican _fetch_ y _push_
 puesto que son las acciones de sincronización de nuestro repositorio con el remoto.
@@ -191,8 +197,8 @@ $ git commit -m "Añadida licencia"
  1 file changed, 21 insertions(+)
  create mode 100644 LICENSE
 $ git hist --all
-* 3f5cb1c 2013-06-16 | Añadida licencia (HEAD -> master) [Sergio Gómez]
-* 2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola (origin/master) [Sergio Gomez]
+* 3f5cb1c 2013-06-16 | Añadida licencia (HEAD -> main) [Sergio Gómez]
+* 2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola (origin/main) [Sergio Gomez]
 *\
 | * 9862f33 2013-06-16 | hola usa la clase HolaMundo (hola) [Sergio Gómez]
 | * 6932156 2013-06-16 | Añadida la clase HolaMundo [Sergio Gómez]
@@ -208,31 +214,31 @@ $ git hist --all
 ```
 
 Viendo la historia podemos ver como nuestro master no está en el mismo punto que
-`origin/master`. Si vamos a la web de _Github_ veremos que `LICENSE` no aparece aún.
+`origin/main`. Si vamos a la web de _Github_ veremos que `LICENSE` no aparece aún.
 Así que vamos a enviar los cambios con la primera de las acciones que vimos `git push`:
 
-    $ git push -u origin master
+    $ git push
     Counting objects: 3, done.
     Delta compression using up to 4 threads.
     Compressing objects: 100% (3/3), done.
     Writing objects: 100% (3/3), 941 bytes | 0 bytes/s, done.
     Total 3 (delta 0), reused 0 (delta 0)
     To git@github.com:sgomez/taller-de-git.git
-       2eab8ca..3f5cb1c  master -> master
-    Branch master set up to track remote branch master from origin.
+       2eab8ca..3f5cb1c  main -> main
+    Branch master set up to track remote branch main from origin.
 
 !!! info
 
     La orden `git push` necesita dos parámetros para funcionar: el repositorio
     y la rama destino. Así que realmente lo que teníamos que haber escrito es:
 
-        $ git push origin master
+        $ git push origin main
 
     Para ahorrar tiempo escribiendo _git_ nos deja vincular nuestra rama local
     con una rama remota, de tal manera que no tengamos que estar siempre indicándolo.
     Eso es posible con el parámetro `--set-upstream` o `-u` en forma abreviada.
 
-        $ git push -u origin master
+        $ git push -u origin main
 
     Si repasas las órdenes que te indicó Github que ejecutaras verás que el parámetro
     `-u` estaba presente y por eso no ha sido necesario indicar ningún parámetro
@@ -275,8 +281,8 @@ traer la información desde el servidor remoto. La orden asociada es `git fetch`
 ```
 $ git fetch
 $ git hist --all
-* cbaf831 2013-06-16 | Actualizado README.md (origin/master) [Sergio Gómez]
-* 3f5cb1c 2013-06-16 | Añadida licencia (HEAD -> master) [Sergio Gómez]
+* cbaf831 2013-06-16 | Actualizado README.md (origin/main) [Sergio Gómez]
+* 3f5cb1c 2013-06-16 | Añadida licencia (HEAD -> mainq) [Sergio Gómez]
 * 2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola [Sergio Gomez]
 *\
 | * 9862f33 2013-06-16 | hola usa la clase HolaMundo (hola) [Sergio Gómez]
@@ -301,13 +307,13 @@ lo vimos en el [capítulo anterior](Ud6_07_ramas.md/#mezclar-ramas) usando `git 
 Habitualmente se usa `git merge`:
 
 ```
-$ git merge origin/master
+$ git merge origin/main
 Updating 3f5cb1c..cbaf831
 Fast-forward
  README.md | 2 ++
  1 file changed, 2 insertions(+)
 $ git hist --all
-* cbaf831 2013-06-16 | Actualizado README.md (HEAD -> master, origin/master) [Sergio Gómez]
+* cbaf831 2013-06-16 | Actualizado README.md (HEAD -> main, origin/main) [Sergio Gómez]
 * 3f5cb1c 2013-06-16 | Añadida licencia [Sergio Gómez]
 * 2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola [Sergio Gomez]
 *\
@@ -353,7 +359,7 @@ From github.com:sgomez/taller-de-git
 First, rewinding head to replay your work on top of it...
 Fast-forwarded master to d8922e4ffa4f87553b03e77df6196b7e496bfec4.
 $ git hist --all
-* d8922e4 2013-06-16 | Indicado que se realiza en el ASL (HEAD -> master, origin/master) [Sergio Gómez]
+* d8922e4 2013-06-16 | Indicado que se realiza en el ASL (HEAD -> main, origin/main) [Sergio Gómez]
 * cbaf831 2013-06-16 | Actualizado README.md [Sergio Gómez]
 * 3f5cb1c 2013-06-16 | Añadida licencia [Sergio Gómez]
 * 2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola [Sergio Gomez]

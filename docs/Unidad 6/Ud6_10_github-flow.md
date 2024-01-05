@@ -18,7 +18,7 @@ de cerrar la incidencia.
 
 ![Nueva Issue](Ud6_img//github-issues-new.png)
 
-Una vez creado, al mismo se le asignará un número.ç
+Una vez creado, al mismo se le asignará un número.
 
 !!! example
 
@@ -32,7 +32,7 @@ Crearemos una rama cada vez que queramos implementar una nueva característica a
 !!! tip
 
     Es una buena costumbre crear en Issues el listado de casos de uso,
-    requisitos, hostorias de usuario o tareas (como lo queramos llamar),
+    requisitos, historias de usuario o tareas (como lo queramos llamar),
     para tener un registro del trabajo que llevamos y el que nos queda.
 
 El nombre de la rama puede ser el que creamos conveniente, pero hay que
@@ -94,6 +94,10 @@ Ahora la rama ya se ha subido y nos informa, además, de que podemos crear un _P
 
 ![Nuevo Pull Request](Ud6_img//github-flow-pr.png)
 
+!!!Información
+    Un pull request (también conocido como "PR" en la jerga de desarrollo) es una función que facilita la colaboración en proyectos de Git, especialmente en plataformas como GitHub, GitLab o Bitbucket. Un pull request es una solicitud que un desarrollador hace para que los cambios que ha realizado en una rama de su repositorio se fusionen con otra rama, generalmente con la rama principal (como master o main).
+
+
 Aquí podemos informar de en qué consiste la rama que estamos enviando. Si ya tenemos una _issue_ abierta, no es necesario repetir la misma información. Podemos hacer referencia con el siguiente texto:
 
     Closes #1
@@ -143,7 +147,7 @@ Esta opción es el equivalente a hacer lo siguiente en nuestro repositorio:
 Es decir, el equivalente a hacer un merge entre nuestra rama y master.
 
 !!! info
-GitHub siempre desactiva el _fast forward_.
+    GitHub siempre desactiva el _fast forward_.
 
 ### Crear un rebase y merge
 
@@ -182,7 +186,7 @@ Las consecuencias de esta acción son las siguientes:
 
 Hemos cambiado el repositorio en GitHub, pero nuestra rama master no contiene los mismos cambios que el de origin. Así que nos toca sincronizar y borrar la rama obsoleta:
 
-    $ git checkout master
+    $ git checkout main
     $ git pull --rebase --autostash
     $ git branch -D sgomez/feature-1/create-changelog
 
