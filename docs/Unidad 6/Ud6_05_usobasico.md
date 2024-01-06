@@ -4,6 +4,57 @@ title: '6.5 Uso básico de Git'
 
 # Uso básico de Git
 
+Vamos primero a recordar algunas cuestiones básicas de git que ya vimos en el taller inicial de este curso.
+
+## Secciones principales de un repositorio `git`
+
+En un repositorio `git` podemos diferenciar las siguientes secciones:
+
+* *Workspace*
+* *Staging area (aparece en la imagen como Index)*
+* *Local repository*
+* *Remote repository*
+
+![](../Unidad%201/P1_4/01.png)
+
+Figura 1: Imagen de [Oliver Steele](http://osteele.com).
+
+## Estados de un archivo en `git`
+
+Un archivo puede estar en alguno de los siguientes estados:
+
+* Sin seguimiento (*untracked*)
+* Preparado (*staged*)
+* Modificado (*modified*)
+* Confirmado (*commited*)
+
+El siguiente diagrama muestra en qué sección se puede encontrar cada archivo en función de su estado.
+
+```
++-------------+  +-------------+  +-------------+  +-------------+
+|  Working    |  |   Staging   |  |    Local    |  |    Remote   |
+|  Directory  |  |     Area    |  |  Repository |  |  Repository |
++------+------+  +------+------+  +------+------+  +------+------+
+       |                |                |                |
+   Untracked            |                |                |
+       |                |                |                |
+   Modified          Staged          Commited             |
+       |                |                |                |
+       +                +                +                +
+```
+
+Para consultar el estado de los archivos usamos el comando:
+
+```
+git status
+```
+
+**Este comando es muy usado** ya que es fundamental conocer el estado de los archivos de nuestro repositorio.
+
+Utilizando distintos comandos podemos pasar los archivos de una sección a otra y cambiar su estado. A continuación veremos los comandos básicos que nos permitirán una utilización básica de git usando como repositorio remoto GitHub.
+
+Para ir recordando los distintos comandos que vayamos aprendiendo es muy recomendable utilizar un "cheatsheet" o ir creando el nuestro propio. [Aquí](https://education.github.com/git-cheat-sheet-education.pdf) tenéis uno que podéis utilizar. Podéis ir marcando con un subrayador los comandos que vais aprendiendo.
+
 ## Crear un proyecto
 
 ### Crear un programa "Hola Mundo"
@@ -46,7 +97,7 @@ Vamos a almacenar el archivo que hemos creado en el repositorio para poder traba
 
     $ git add hola.php
 
-Al ejecutra el git add, el archivo pasará a la "Staging area" o área de preparación.
+Al ejecutar el git add, el archivo pasará a la "Staging area" o área de preparación.
 
 ```
 +-------------+  +-------------+  +-------------+  
@@ -83,7 +134,7 @@ Con la orden `git status` podemos ver en qué estado se encuentran los archivos 
 
     $ git status
     On branch master
-    nothing to commit (working directory clean)
+    nothing to commit (working tree clean)
 
 Si modificamos el archivo `hola.php`:
 
@@ -155,7 +206,7 @@ Con la orden `git commit` confirmamos los cambios definitivamente, lo que hace q
      1 file changed, 1 insertion(+), 1 deletion(-)
     $ git status
     On branch master
-    nothing to commit (working directory clean)
+    nothing to commit, working tree clean
 
 El archivo pasará al "Local Ropository" con un nuevo hash.
 
@@ -437,7 +488,7 @@ Thumbs.db
 Con la orden `git log` podemos ver todos los cambios que hemos hecho. Antes de nada vuelve al directorio `curso-de-git` en el que estábamos trabajando:
 
     $ git log
-    commit fd4da946326fbe8b24e89282ad25a71721bf40f6
+    commit fd4da946326fbe8b24e89282ad25a71721bf40f6  (HEAD -> master)
     Author: Sergio Gómez <sergio@uco.es>
     Date:   Sun Jun 16 12:51:01 2013 +0200
 
@@ -461,9 +512,9 @@ Con la orden `git log` podemos ver todos los cambios que hemos hecho. Antes de n
 
         Creación del proyecto
 
-Para salir presiona `q`.
+Para salir escribe `q`.
 
-Recuerda los distintos hash que se habían generado cada vez que hacíamo un commit. Fíjate que antes vimos sólo los primeros caracteres hexadecimales del hash.
+Recuerda los distintos hash que se habían generado cada vez que hacíamos un commit. Fíjate que antes vimos solo los primeros caracteres hexadecimales del hash.
 
 ```
 +-------------+  +-------------+  +-------------+  
@@ -482,7 +533,7 @@ Recuerda los distintos hash que se habían generado cada vez que hacíamo un com
 También es posible ver versiones abreviadas o limitadas, dependiendo de los parámetros:
 
     $ git log --oneline
-    fd4da94 Se añade un comentario al cambio del valor por defecto
+    fd4da94 (HEAD -> master) Se añade un comentario al cambio del valor por defecto
     3283e0d Se añade un parámetro por defecto
     efc252e Parametrización del programa
     e19f2c1 Creación del proyecto
@@ -528,21 +579,25 @@ Ahora basta con ejecutar:
 Cada cambio es etiquetado por un hash, para poder regresar a ese momento del estado del proyecto se usa la orden `git checkout`. Prueba con el hash de tu primer commit.
 
     $ git checkout e19f2c1
-    Note: checking out 'e19f2c1'.
+    Note: switching to 'e19f2c1'.
 
     You are in 'detached HEAD' state. You can look around, make experimental
     changes and commit them, and you can discard any commits you make in this
-    state without impacting any branches by performing another checkout.
+    state without impacting any branches by switching back to a branch.
 
     If you want to create a new branch to retain commits you create, you may
-    do so (now or later) by using -c with the checkout command again. Example:
+    do so (now or later) by using -c with the switch command. Example:
 
-      git checkout -c new_branch_name
+    git switch -c <new-branch-name>
 
-    HEAD is now at e19f2c1... Creación del proyecto
-    $ cat hola.php
-    <?php
-    echo "Hello, World\n";
+    Or undo this operation with:
+
+    git switch -
+
+    urn off this advice by setting config variable advice.detachedHead to false
+
+    HEAD is now at e19f2c1 Parametrización del programa     
+    
 
 Hemos vuelto a aquí:
 
@@ -558,6 +613,12 @@ Hemos vuelto a aquí:
 ```
 
 El aviso que nos sale nos indica que estamos en un estado donde no trabajamos en ninguna rama concreta. Eso significa que los cambios que hagamos podrían "perderse" porque si no son guardados en una nueva rama, en principio no podríamos volver a recuperarlos. Hay que pensar que Git es como un árbol donde un nodo tiene información de su nodo padre, no de sus nodos hijos, con lo que siempre necesitaríamos información de dónde se encuentran los nodos finales o de otra manera no podríamos acceder a ellos.
+
+Antes de continuar desharemos con 
+
+```
+git switch -
+```
 
 ### Volver a la última versión de la rama master.
 
@@ -582,6 +643,10 @@ Ahora vamos a etiquetar la versión inmediatamente anterior como v1-beta. Para e
 Asignamos ahora el tag v1-beta a la versión anterior.
 
     $ git tag v1-beta
+
+Vuelve al estado final con 
+
+    $ git switch -
 
 Si ejecutamos la orden sin parámetros nos mostrará todas las etiquetas existentes.
 

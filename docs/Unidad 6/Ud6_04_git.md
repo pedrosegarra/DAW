@@ -30,6 +30,15 @@ En MacOS se recomienda tener instalada la herramienta [homebrew](https://brew.sh
 
     $ brew install git
 
+### Recomendación
+
+En este curso estamos acostumbrados a usar máquinas virtuales en AWS. Si vas a estar trabajando en casa y en el instituto, te recomiendo que crees una MV Debian con parámetros por defecto en AWS para ir siguiendo el curso. De esta forma tendrás lo mismo en ambos lugares.
+
+Si optas por esa opción recuerda realizar lo primero un `sudo apt-get update && upgrade` antes de instalar git para contar con la última versión disponible.
+
+!!!Información
+    Puedes comprobar la versión de git que estás usando con `git --version`. En el momento de escribir estas notas la versión es la 2.39.2
+
 ## Configuración
 
 ### Tu identidad

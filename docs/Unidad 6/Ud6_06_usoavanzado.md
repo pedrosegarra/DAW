@@ -14,6 +14,23 @@ Volvemos a la rama máster y vamos a modificar el comentario que pusimos:
     Previous HEAD position was 3283e0d... Se añade un parámetro por defecto
     Switched to branch 'master'
 
+Recordamos, la situación es la siguiente:
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+       |                |             hola.php (fd4da94) tag: v1 
+       |                |             hola.php (3283e0d) tag: v1-beta  
+       |                |             hola.php (efc252e)
+       |                |             hola.php (e19f2c1) 
+       |                |                | 
+       +                +                +
+```
+
+
 Modificamos _hola.php_ de la siguiente manera:
 
 ```php
@@ -34,6 +51,23 @@ Y comprobamos:
        modified:   hola.php
     
     no changes added to commit (use "git add" and/or "git commit -a")
+
+Tenemos hola.php en Working Directory y nada en Staging Area.
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+    hola.php            |                |
+       |                |             hola.php (fd4da94) tag: v1 
+       |                |             hola.php (3283e0d) tag: v1-beta  
+       |                |             hola.php (efc252e)
+       |                |             hola.php (e19f2c1) 
+       |                |                | 
+       +                +                +
+```
 
 El mismo Git nos indica que debemos hacer para añadir los cambios o para deshacerlos:
 
@@ -68,9 +102,26 @@ Y lo añadimos al _staging_
       (use "git restore --staged <file>..." to unstage)
     
        modified:   hola.php
-    
 
-De nuevo, Git nos indica qué debemos hacer para deshacer el cambio:
+Ahora tenemos una nueva versión de hola.php en Staging Area.
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+       |             hola.php            |
+       |                |             hola.php (fd4da94) tag: v1 
+       |                |             hola.php (3283e0d) tag: v1-beta  
+       |                |             hola.php (efc252e)
+       |                |             hola.php (e19f2c1) 
+       |                |                | 
+       +                +                +
+```
+
+
+De nuevo, Git nos indica qué debemos hacer para deshacer el cambio. Primero lo sacamos del Staging Area.
 
     $ git restore --staged hola.php
     $ git status
@@ -82,6 +133,26 @@ De nuevo, Git nos indica qué debemos hacer para deshacer el cambio:
        modified:   hola.php
     
     no changes added to commit (use "git add" and/or "git commit -a")
+
+Vuelve a estar en Working Directory.
+
+```
++-------------+  +-------------+  +-------------+  
+|  Working    |  |   Staging   |  |    Local    | 
+|  Directory  |  |     Area    |  |  Repository | 
++------+------+  +------+------+  +------+------+ 
+       |                |                |
+    hola.php            |                |
+       |                |             hola.php (fd4da94) tag: v1 
+       |                |             hola.php (3283e0d) tag: v1-beta  
+       |                |             hola.php (efc252e)
+       |                |             hola.php (e19f2c1) 
+       |                |                | 
+       +                +                +
+```
+
+Y ahora restaruramos la última versión en Local Repository, eliminando la versión en Working Directory.
+
     $ git restore hola.php
 
 Y ya tenemos nuestro repositorio limpio otra vez. Como vemos hay que hacerlo en dos pasos:
