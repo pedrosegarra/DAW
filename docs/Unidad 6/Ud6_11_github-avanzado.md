@@ -21,9 +21,12 @@ Una vez se termine de clonar el repositorio, nos encontraremos con el espacio de
 
 ![Espacio de trabajo](Ud6_img//github-main.png)
 
-Github nos permite clonar localmente un proyecto por tres vías: HTTPS, SSH y Subversion. Seleccionamos SSH y copiamos el texto que después añadiremos a la orden `git clone` como en la primera línea del siguiente grupo de órdenes:
+Github nos permite clonar localmente un proyecto por tres vías: HTTPS, SSH y Subversion. Seleccionamos SSH y copiamos el texto que después añadiremos a la orden `git clone` como en la orden siguiente:
 
     $ git clone git@github.com:miusuario/miniblog.git
+
+Si queremos probar el funcionamiento de este programa deberemos hacer lo siguiente, aunque no es necesario para seguir la práctica, ya que ahora nos interesa la forma de trabajar con los cambios, más que el funcionamiento del programa.
+
     $ cd miniblog
     $ composer.phar install
     $ php console create-schema
@@ -43,6 +46,8 @@ Podemos usar dos direcciones para probarla:
 
 - Frontend: `http://localhost:9999/index_dev.php`
 - Backend: `http://localhost:9999/index_dev.php/admin/` con usuario admin y contraseña 1234.
+
+Pero insisto, no es relevante que podamos hacer funcionar el programa descargado.
 
 ### Sincronizar con el repositorio original
 
@@ -98,8 +103,7 @@ En principio habría que probar que todo funciona bien y entonces integraremos e
 
     $ git checkout master
     $ git merge add-license --no-ff
-    $ git branch -d add-license
-    # Borramos la rama que ya no nos sirve para nada
+
     $ git push --set-upstream origin add-license
     # Enviamos la rama a nuestro repositorio origin
 
