@@ -69,6 +69,7 @@ Creamos un fichero `hola.php` que muestre Hola Mundo.
 ```php
 <?php
 echo "Hola Mundo\n";
+?>
 ```
 
 ### Crear el repositorio
@@ -141,6 +142,7 @@ Si modificamos el archivo `hola.php`:
 ```php
 <?php
 @print "Hola {$argv[1]}\n";
+?>
 ```
 
 Y volvemos a comprobar el estado del repositorio:
@@ -231,6 +233,7 @@ Modificamos nuestra aplicación para que soporte un parámetro por defecto y añ
 <?php
 $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 @print "Hola, {$nombre}\n";
+?>
 ```
 
 Al modificarlo volvemos a tenerlo en "Working Directory"
@@ -275,6 +278,7 @@ Volvemos a modificar el programa para indicar con un comentario lo que hemos hec
 // El nombre por defecto es Mundo
 $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 @print "Hola, {$nombre}\n";
+?>
 ```
 
 Y vemos el estado en el que está el repositorio
@@ -699,6 +703,7 @@ Para ver los cambios que se han realizado en el código usamos la orden `git dif
     +// El nombre por defecto es Mundo
      $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
      @print "Hola, {$nombre}\n";
+     ?>
 
 La salida del comando git diff v1-beta v1 muestra las diferencias entre dos puntos en la historia del repositorio de Git, específicamente entre las versiones "v1-beta" y "v1". Aquí está el desglose de la salida:
 

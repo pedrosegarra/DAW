@@ -38,6 +38,7 @@ Modificamos _hola.php_ de la siguiente manera:
 // Este comentario está mal y hay que borrarlo
 $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 @print "Hola, {$nombre}\n";
+?>
 ```
 
 Y comprobamos:
@@ -74,12 +75,13 @@ El mismo Git nos indica que debemos hacer para añadir los cambios o para deshac
     $ git restore hola.php
     $ git status
     On branch master
-    nothing to commit, working directory clean
+    nothing to commit, working tree clean
     $ cat hola.php
     <?php
     // El nombre por defecto es Mundo
     $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
     @print "Hola, {$nombre}\n";
+    ?>
 
 ### Deshaciendo cambios antes del commit
 
@@ -91,6 +93,7 @@ Así que volvemos a modificar _hola.php_ igual que la anterior ocasión:
 // Este comentario está mal y hay que borrarlo
 $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 @print "Hola, {$nombre}\n";
+?>
 ```
 
 Y lo añadimos al _staging_
@@ -168,6 +171,7 @@ Modificamos otra vez el archivo como antes:
 // Este comentario está mal y hay que borrarlo
 $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 @print "Hola, {$nombre}\n";
+?>
 ```
 
 Pero ahora sí hacemos commit:
@@ -183,7 +187,7 @@ Bien, una vez confirmado el cambio, vamos a deshacer el cambio con la orden `git
     [master 817407b] Revert "Ups... este commit está mal"
     1 file changed, 1 insertion(+), 1 deletion(-)
     $ git hist
-    * 817407b 2013-06-16 | Revert "Ups... este commit está mal" (HEAD, master) [Sergio Gómez]
+    * 817407b 2013-06-16 | Revert "Ups... este commit está mal" (HEAD -> master) [Sergio Gómez]
     * 5a5d067 2013-06-16 | Ups... este commit está mal [Sergio Gómez]
     * fd4da94 2013-06-16 | Se añade un comentario al cambio del valor por defecto (tag: v1) [Sergio Gómez]
     * 3283e0d 2013-06-16 | Se añade un parámetro por defecto (tag: v1-beta) [Sergio Gómez]
@@ -197,7 +201,7 @@ El anterior apartado revierte un commit, pero deja huella en el historial de cam
     $ git reset --hard v1
     HEAD is now at fd4da94 Se añade un comentario al cambio del valor por defecto
     $ git hist
-    * fd4da94 2013-06-16 | Se añade un comentario al cambio del valor por defecto (HEAD, tag: v1, master) [Sergio Góme
+    * fd4da94 2013-06-16 | Se añade un comentario al cambio del valor por defecto (HEAD -> master, tag: v1) [Sergio Góme
     * 3283e0d 2013-06-16 | Se añade un parámetro por defecto (tag: v1-beta) [Sergio Gómez]
     * efc252e 2013-06-16 | Parametrización del programa [Sergio Gómez]
     * e19f2c1 2013-06-16 | Creación del proyecto [Sergio Gómez]
@@ -221,6 +225,7 @@ nuestro archivo _hola.php_ de la siguiente manera:
 // El nombre por defecto es Mundo
 $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 @print "Hola, {$nombre}\n";
+?>
 ```
 
 Y lo confirmamos:
@@ -242,6 +247,7 @@ Ahora nos percatamos que se nos ha olvidado poner el correo electrónico. Así q
 // El nombre por defecto es Mundo
 $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 @print "Hola, {$nombre}\n";
+?>
 ```
 
 Y en esta ocasión usamos `commit --amend` que nos permite modificar el último estado confirmado, sustituyéndolo por el estado actual:
@@ -251,7 +257,7 @@ Y en esta ocasión usamos `commit --amend` que nos permite modificar el último 
     [master 96a39df] Añadido el autor del programa y su email
      1 file changed, 1 insertion(+)
     $ git hist
-    * 96a39df 2013-06-16 | Añadido el autor del programa y su email (HEAD, master) [Sergio Gómez]
+    * 96a39df 2013-06-16 | Añadido el autor del programa y su email (HEAD -> master) [Sergio Gómez]
     * fd4da94 2013-06-16 | Se añade un comentario al cambio del valor por defecto (tag: v1) [Sergio Gómez]
     * 3283e0d 2013-06-16 | Se añade un parámetro por defecto (tag: v1-beta) [Sergio Gómez]
     * efc252e 2013-06-16 | Parametrización del programa [Sergio Gómez]

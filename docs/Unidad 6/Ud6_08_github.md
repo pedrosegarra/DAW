@@ -120,7 +120,7 @@ Si ahora vemos el estado de nuestro proyecto veremos algo similar a esto:
 
 ```
 $ git hist --all
-* 2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola (HEAD -> master, origin/main) [Sergio Gomez]
+* 2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola (HEAD -> main, origin/main) [Sergio Gomez]
 *\
 | * 9862f33 2013-06-16 | hola usa la clase HolaMundo (hola) [Sergio Gómez]
 | * 6932156 2013-06-16 | Añadida la clase HolaMundo [Sergio Gómez]
@@ -149,7 +149,7 @@ Podemos ver la configuración de este repositorio remoto con la orden `git remot
     * remote origin
       Fetch URL: git@github.com:sgomez/taller-de-git.git
       Push  URL: git@github.com:sgomez/taller-de-git.git
-      HEAD branch: master
+      HEAD branch: main
       Remote branch:
         main tracked
       Local ref configured for 'git push':
@@ -198,7 +198,7 @@ $ git commit -m "Añadida licencia"
  create mode 100644 LICENSE
 $ git hist --all
 * 3f5cb1c 2013-06-16 | Añadida licencia (HEAD -> main) [Sergio Gómez]
-* 2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola (origin/main) [Sergio Gomez]
+*   2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola (origin/main) [Sergio Gomez]
 *\
 | * 9862f33 2013-06-16 | hola usa la clase HolaMundo (hola) [Sergio Gómez]
 | * 6932156 2013-06-16 | Añadida la clase HolaMundo [Sergio Gómez]
@@ -225,7 +225,6 @@ Así que vamos a enviar los cambios con la primera de las acciones que vimos `gi
     Total 3 (delta 0), reused 0 (delta 0)
     To git@github.com:sgomez/taller-de-git.git
        2eab8ca..3f5cb1c  main -> main
-    Branch master set up to track remote branch main from origin.
 
 !!! info
 
@@ -282,8 +281,8 @@ traer la información desde el servidor remoto. La orden asociada es `git fetch`
 $ git fetch
 $ git hist --all
 * cbaf831 2013-06-16 | Actualizado README.md (origin/main) [Sergio Gómez]
-* 3f5cb1c 2013-06-16 | Añadida licencia (HEAD -> mainq) [Sergio Gómez]
-* 2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola [Sergio Gomez]
+* 3f5cb1c 2013-06-16 | Añadida licencia (HEAD -> main) [Sergio Gómez]
+*   2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola [Sergio Gomez]
 *\
 | * 9862f33 2013-06-16 | hola usa la clase HolaMundo (hola) [Sergio Gómez]
 | * 6932156 2013-06-16 | Añadida la clase HolaMundo [Sergio Gómez]
@@ -299,7 +298,10 @@ $ git hist --all
 ```
 
 Ahora vemos el caso contrario, tenemos que `origin/master` está por delante que `HEAD` y
-que la rama `master` local.
+que la rama `main` local.
+
+!!!Atención
+    `git fetch` trae la información de los cambios realizados en GitHub, pero no importa directamente los cambios en local
 
 Ahora necesitamos incorporar los cambios de la rama remota en la local. La forma de hacerlo
 lo vimos en el [capítulo anterior](Ud6_07_ramas.md/#mezclar-ramas) usando `git merge` o `git rebase`.
@@ -334,7 +336,7 @@ Como las operaciones de traer cambios (`git fetch`) y de mezclar ramas (`git mer
 están muy asociadas, _git_ nos ofrece una posibilidad para ahorrar pasos que es la orden `git pull`
 que realiza las dos acciones simultáneamente.
 
-Para probar, vamos a editar de nuevo el archivo README.md y añadimos algo más:
+Para probar, vamos a editar de nuevo el archivo README.md en GitHub y añadimos algo más:
 
 ```
 # Curso de GIT
@@ -350,17 +352,20 @@ Y ahora probamos a actualizar con `git pull`:
 
 ```
 $ git pull
-remote: Counting objects: 3, done.
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
 remote: Compressing objects: 100% (3/3), done.
 remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
-Unpacking objects: 100% (3/3), done.
+Unpacking objects: 100% (3/3), 811 bytes | 811.00 KiB/s, done.
 From github.com:sgomez/taller-de-git
-   cbaf831..d8922e4  master     -> origin/master
-First, rewinding head to replay your work on top of it...
-Fast-forwarded master to d8922e4ffa4f87553b03e77df6196b7e496bfec4.
+   cbaf831..d8922e4  main     -> origin/main
+Updating 6e4cda3..bb3dc3e
+Fast-forward
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 $ git hist --all
-* d8922e4 2013-06-16 | Indicado que se realiza en el ASL (HEAD -> main, origin/main) [Sergio Gómez]
-* cbaf831 2013-06-16 | Actualizado README.md [Sergio Gómez]
+* d8922e4 2013-06-16 | Update README.md (HEAD -> main, origin/main) [Sergio Gómez]
+* cbaf831 2013-06-16 | Update README.md [Sergio Gómez]
 * 3f5cb1c 2013-06-16 | Añadida licencia [Sergio Gómez]
 * 2eab8ca 2013-06-16 | Aplicando los cambios de la rama hola [Sergio Gomez]
 *\
@@ -390,7 +395,7 @@ Al intentar subir cambios nos podemos encontrar un mensaje como este:
 $ git push
 git push
 To git@github.com:sgomez/taller-de-git.git
- ! [rejected]        master -> master (fetch first)
+ ! [rejected]        main -> main (fetch first)
 error: failed to push some refs to 'git@github.com:sgomez/taller-de-git.git'
 hint: Updates were rejected because the remote contains work that you do
 hint: not have locally. This is usually caused by another repository pushing

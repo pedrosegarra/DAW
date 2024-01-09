@@ -57,6 +57,7 @@ class HolaMundo
       return sprintf ("Hola, %s.\n", $this->nombre);
    }
 }
+?>
 ```
 
 Y modificamos `hola.php`:
@@ -69,6 +70,7 @@ require('HolaMundo.php');
 
 $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 print new HolaMundo($nombre);
+?>
 ```
 
 Podríamos confirmar los cambios todos de golpe, pero lo haremos de uno en uno, con su comentario.
@@ -76,7 +78,7 @@ Podríamos confirmar los cambios todos de golpe, pero lo haremos de uno en uno, 
     $ git add lib/HolaMundo.php
     $ git commit -m "Añadida la clase HolaMundo"
     [hola 6932156] Añadida la clase HolaMundo
-     1 file changed, 16 insertions(+)
+     1 file changed, 17 insertions(+)
      create mode 100644 lib/HolaMundo.php
     $ git add lib/hola.php
     $ git commit -m "hola usa la clase HolaMundo"
@@ -112,8 +114,11 @@ Y lo añadimos a nuestro repositorio en la rama en la que estamos:
     [master c3e65d0] Añadido README.md
      1 file changed, 3 insertions(+)
      create mode 100644 README.md
+
+Vamos a usar nuestro comando `git hist` con el modificador --all que nos mostrará los cambios en todas las ramas.
+
     $ git hist --all
-    * c3e65d0 2013-06-16 | Añadido README.md (HEAD, master) [Sergio Gómez]
+    * c3e65d0 2013-06-16 | Añadido README.md (HEAD -> master) [Sergio Gómez]
     | * 9862f33 2013-06-16 | hola usa la clase HolaMundo (hola) [Sergio Gómez]
     | * 6932156 2013-06-16 | Añadida la clase HolaMundo [Sergio Gómez]
     |/
@@ -124,28 +129,30 @@ Y lo añadimos a nuestro repositorio en la rama en la que estamos:
     * efc252e 2013-06-16 | Parametrización del programa [Sergio Gómez]
     * e19f2c1 2013-06-16 | Creación del proyecto [Sergio Gómez]
 
-Y vemos como `git hist` muestra la bifurcación en nuestro código.
+Y vemos como `git hist --all` muestra la bifurcación en nuestro código.
 
 ## Fusión de ramas y resolución de conflictos
 
 ### Mezclar ramas
 
-Podemos incorporar los cambios de una rama a otra con la orden `git merge`
+Podemos incorporar los cambios de una rama a otra con la orden `git merge`. Primero nos posicionamos en la rama en la que queremos incorporar los cambios. En nuestro caso "hola".
 
     $ git checkout hola
     Switched to branch 'hola'
+
+Y en esta rama ejecutamos el `git merge nombrerama` con el nombre de la rama cuyos cambios queremos incorporar a la actual.
+
     $ git merge master
-    Merge made by the 'recursive' strategy.
+    Merge made by the 'ort' strategy.
      README.md | 3 +++
      1 file changed, 3 insertions(+)
      create mode 100644 README.md
     $ git hist --all
-    *   9c6ac06 2013-06-16 | Merge commit 'c3e65d0' into hola (HEAD, hola) [Sergio Gómez]
+    *   9c6ac06 2013-06-16 | Merge branch 'master' into hola (HEAD -> hola) [Sergio Gómez]
     |\
+    | * c3e65d0 2013-06-16 | Añadido README.md [Sergio Gómez]
     * | 9862f33 2013-06-16 | hola usa la clase HolaMundo [Sergio Gómez]
     * | 6932156 2013-06-16 | Añadida la clase HolaMundo [Sergio Gómez]
-    | |
-    | * c3e65d0 2013-06-16 | Añadido README.md [Sergio Gómez]
     |/
     * 81c6e93 2013-06-16 | Movido hola.php a lib [Sergio Gómez]
     * 96a39df 2013-06-16 | Añadido el autor del programa y su email [Sergio Gómez]
@@ -171,6 +178,7 @@ Modificamos nuestro archivo _hola.php_ de nuevo:
 print "Introduce tu nombre:";
 $nombre = trim(fgets(STDIN));
 @print "Hola, {$nombre}\n";
+?>
 ```
 
 Y guardamos los cambios:
@@ -183,7 +191,25 @@ Y guardamos los cambios:
 
 Comprueba el resultado
 
-Volvemos a la rama hola y fusionamos:
+    $ git hist --all
+    * 8ca56f7 2013-06-16 | Programa interactivo (HEAD -> master) [Sergio Gómez]
+    | *   9c6ac06 2013-06-16 | Merge branch 'master' into hola (hola) [Sergio Gómez]
+    | |\  
+    | |/  
+    |/| 
+    * | c3e65d0 2013-06-16 | Añadido README.md [Sergio Gómez]
+    | * 9862f33 2013-06-16 | hola usa la clase HolaMundo [Sergio Gómez]
+    | * 6932156 2013-06-16 | Añadida la clase HolaMundo [Sergio Gómez]
+    |/
+    * 81c6e93 2013-06-16 | Movido hola.php a lib [Sergio Gómez]
+    * 96a39df 2013-06-16 | Añadido el autor del programa y su email [Sergio Gómez]
+    * fd4da94 2013-06-16 | Se añade un comentario al cambio del valor por defecto (tag: v1) [Sergio Gómez]
+    * 3283e0d 2013-06-16 | Se añade un parámetro por defecto (tag: v1-beta) [Sergio Gómez]
+    * efc252e 2013-06-16 | Parametrización del programa [Sergio Gómez]
+    * e19f2c1 2013-06-16 | Creación del proyecto [Sergio Gómez]
+
+
+Volvemos a la rama hola y fusionamos. Recuerda que hemos modificado hola.php en la rama `master` y ahora hay líneas distintas dentro de ese fichero en cada una de las ramas.
 
     $ git checkout hola
     Switched to branch 'hola'
@@ -208,9 +234,10 @@ print "Introduce tu nombre:";
 $nombre = trim(fgets(STDIN));
 @print "Hola, {$nombre}\n";
 >>>>>>> master
+?>
 ```
 
-La primera parte marca el código que estaba en la rama donde trabajábamos (HEAD), que era la rama `hola` y la parte final el código de donde fusionábamos, que era `master`. Resolvemos el conflicto, dejando el archivo como sigue:
+La primera parte marca el código que estaba en la rama donde trabajábamos (HEAD), que era la rama `hola` y la parte final el código desde donde fusionábamos, que era `master`. Resolvemos el conflicto, dejando el archivo como sigue:
 
 ```php
 <?php
@@ -220,6 +247,7 @@ require('HolaMundo.php');
 print "Introduce tu nombre:";
 $nombre = trim(fgets(STDIN));
 print new HolaMundo($nombre);
+?>
 ```
 
 Y resolvemos el conflicto confirmando los cambios:
@@ -237,12 +265,11 @@ Para ello podemos usar la orden `git reset` que nos permite mover HEAD donde que
     $ git checkout hola
     Switched to branch 'hola'
     $ git hist
-    *   a36af04 2013-06-16 | Solucionado el conflicto al fusionar con la rama master (HEAD, hola) [Sergio Gómez]
+    *   a36af04 2013-06-16 | Solucionado el conflicto al fusionar con la rama master (HEAD -> hola) [Sergio Gómez]
     |\
     | * 9c85275 2013-06-16 | Programa interactivo (master) [Sergio Gómez]
-    * |   9c6ac06 2013-06-16 | Merge commit 'c3e65d0' into hola [Sergio Gómez]
-    |\ \
-    | |/
+    * | 9c6ac06 2013-06-16 | Merge branch 'master' into hola [Sergio Gómez]
+    |\|
     | * c3e65d0 2013-06-16 | Añadido README.md [Sergio Gómez]
     * | 9862f33 2013-06-16 | hola usa la clase HolaMundo [Sergio Gómez]
     * | 6932156 2013-06-16 | Añadida la clase HolaMundo [Sergio Gómez]
@@ -274,21 +301,14 @@ Y nuestro estado será:
 Hemos desecho todos los _merge_ y nuestro árbol está _"limpio"_. Vamos a probar ahora a hacer un rebase. Continuamos en la rama `hola` y ejecutamos lo siguiente:
 
     $ git rebase master
-    First, rewinding head to replay your work on top of it...
-    Applying: Añadida la clase HolaMundo
-    Applying: hola usa la clase HolaMundo
-    Using index info to reconstruct a base tree...
-    M	lib/hola.php
-    Falling back to patching base and 3-way merge...
     Auto-merging lib/hola.php
     CONFLICT (content): Merge conflict in lib/hola.php
-    error: Failed to merge in the changes.
-    Patch failed at 0002 hola usa la clase HolaMundo
-    The copy of the patch that failed is found in: .git/rebase-apply/patch
-
-    When you have resolved this problem, run "git rebase --continue".
-    If you prefer to skip this patch, run "git rebase --skip" instead.
-    To check out the original branch and stop rebasing, run "git rebase --abort".
+    error: could not apply 9862f33... hola usa la clase HolaMundo
+    hint: Resolve all conflicts manually, mark them as resolved with
+    hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
+    hint: You can instead skip this commit: run "git rebase --skip".
+    hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
+    Could not apply 9862f33... hola usa la clase HolaMundo
 
 El conflicto, por supuesto, se sigue dando. Resolvemos guardando el archivo `hola.php` como en los casos anteriores:
 
@@ -300,22 +320,31 @@ require('HolaMundo.php');
 print "Introduce tu nombre:";
 $nombre = trim(fgets(STDIN));
 print new HolaMundo($nombre);
+?>
 ```
 
 Añadimos los cambios en _staging_ y en esta ocasión, y tal como nos indicaba en el mensaje anterior, no tenemos que hacer `git commit` sino continuar con el _rebase_:
 
     $ git add lib/hola.php
     $ git status
-    rebase in progress; onto 269eaca
-    You are currently rebasing branch 'hola' on '269eaca'.
-      (all conflicts fixed: run "git rebase --continue")
+    interactive rebase in progress; onto 269eaca
+    Last commands done (2 commands done):
+        pick 4e0f425 Añadida clase HolaMundo
+        pick 9862f33 hola usa la clase HolaMundo
+    No commands remaining.
+    You are currently rebasing branch 'hola' on '8ca56f7'.
+        (all conflicts fixed: run "git rebase --continue")
 
     Changes to be committed:
-      (use "git reset HEAD <file>..." to unstage)
+        (use "git restore --staged <file>..." to unstage)
+	        modified:   lib/hola.php    
 
-    	modified:   lib/hola.php
+
     $ git rebase --continue
-    Applying: hola usa la clase HolaMundo
+    [detached HEAD 9862f33] hola usa la clase HolaMundo
+    1 file changed, 3 insertions(+), 1 deletion(-)
+    Successfully rebased and updated refs/heads/hola.
+
 
 Y ahora vemos que nuestro árbol tiene un aspecto distinto, mucho más limpio:
 
@@ -363,9 +392,7 @@ Vemos que indica que el tipo de fusión es _fast-forward_. Este tipo de fusión 
 Vamos a volver a probar ahora sin hacer _fast-forward_. Reseteamos _master_ al estado _"Programa interactivo"_.
 
     $ git reset --hard 9c85275
-    $ git hist --all
-    * 9862f33 2013-06-16 | hola usa la clase HolaMundo (HEAD -> hola) [Sergio Gómez]
-    * 6932156 2013-06-16 | Añadida la clase HolaMundo [Sergio Gómez]
+    $ git hist
     * 9c85275 2013-06-16 | Programa interactivo (master) [Sergio Gómez]
     * c3e65d0 2013-06-16 | Añadido README.md [Sergio Gómez]
     * 81c6e93 2013-06-16 | Movido hola.php a lib [Sergio Gómez]

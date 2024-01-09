@@ -39,13 +39,13 @@ El nombre de la rama puede ser el que creamos conveniente, pero hay que
 intentar ser coherente y usar siempre el mismo método, sobre todo si
 trabajamos en equipo.
 
-Un método puede ser el siguiente:
+Un método puede ser el siguiente (¡No lo hagas, es solo un ejemplo!):
 
     $ # tipo-número/descripción
     $ git checkout -b feature-1/create-changelog
     $ git checkout -b hotfix-2/updated-database
 
-En entornos de trabajo multiusuario se puede usar el siguiente:
+En entornos de trabajo multiusuario se puede usar el siguiente (¡No lo hagas, es solo un ejemplo!):
 
     $ # usuario/tipo-número/descripción
     $ git checkout -b sgomez/feature-1/create-changelog
@@ -56,6 +56,9 @@ De esa manera, podemos seguir fácilmente quién abrió la rama, en qué consist
 Vamos a crear la rama y los commits correspondientes y subir la rama con push al servidor.
 
     $ git checkout -b sgomez/feature-1/create-changelog
+
+Ahora creamos el fichero AUTHORS.md
+
     $ git add AUTHORS.md
     $ git commit -m "Añadido fichero de autores"
 
@@ -140,7 +143,7 @@ Una vez que hemos terminado de crear la función de la rama ya podemos incorpora
 
 Esta opción es el equivalente a hacer lo siguiente en nuestro repositorio:
 
-    $ git checkout master
+    $ git checkout main
     $ git merge --no-ff sgomez/feature-1/create-changelog
     $ git push
 
@@ -153,22 +156,22 @@ Es decir, el equivalente a hacer un merge entre nuestra rama y master.
 
 Esta opción es el equivalente a hacer lo siguiente en nuestro repositorio
 
-    $ git rebase master
-    $ git checkout master
+    $ git rebase main
+    $ git checkout main
     $ git merge --no-ff sgomez/feature-1/create-changelog
     $ git push
 
-Es decir, nos aseguramos de que nuestra rama está al final de _master_ haciendo _rebase_, como vimos en el capítulo de ramas, y posteriormente se hace el merge.
+Es decir, nos aseguramos de que nuestra rama está al final de _main_ haciendo _rebase_, como vimos en el capítulo de ramas, y posteriormente se hace el merge.
 
 ### Crear un squash commit y un merge
 
 Esta opción es el equivalente a hacer lo siguiente en nuestro repositorio:
 
-    $ git checkout master
+    $ git checkout main
     $ git merge --squash sgomez/feature-1/create-changelog
     $ git push
 
-Esta opción es algo especial. En vez de aplicar cada uno de los commits en la rama master, ya sea directamente (_fast forward_) o no, lo que hace es crear un solo commit con los cambios de todos los commits de la rama. El efecto final es como si en la rama solo hubiera producido un solo commit.
+Esta opción es algo especial. En vez de aplicar cada uno de los commits en la rama main, ya sea directamente (_fast forward_) o no, lo que hace es crear un solo commit con los cambios de todos los commits de la rama. El efecto final es como si en la rama solo hubiera producido un solo commit.
 
 Vamos a seleccionar este último (squash and merge) y le damos al botón para activarlo. Nos saldrá una caja para que podamos crear una descripción del commit y le damos a confirmar.
 
