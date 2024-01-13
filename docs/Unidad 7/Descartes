@@ -1,6 +1,27 @@
 ---
-title: '7.2 Introducción'
+title: '7.1 Contenedores'
 ---
+
+# Reconocimiento
+
+!!!info "Aviso"
+    Los apuntes de esta unidad están basados íntegramente en el taller más abajo nombrado y es justo su reconocimiento.
+
+    Se reproduce prácticamente íntegro (salvo cuestiones ajenas al objetivo del módulo) porque su licencia así lo permite.
+
+![](Ud7_img/logoasl.png)
+
+Este taller forma parte de las actividades del [Aula de Software Libre de la
+Universidad de Córdoba](https://www.uco.es/aulasoftwarelibre).
+
+!!! info
+    Se recomienda acudir al evento con tu propio portátil y con una distribución _GNU/Linux_ compatible con _Docker_: _Ubuntu_, _Debian_, _Fedora_ o _CentOS_. Si no dispones de ordenador propio notifícalo a los organización en la web de la actividad.
+
+!!! warning
+    Para evitar demoras innecesarias en el inicio de la actividad es necesario traer ya de casa _Docker_ instalado. Para ello lee el capítulo de [Instalación](Ud7_03_installation.md).
+
+
+
 
 # Introducción
 
@@ -12,9 +33,9 @@ Esto es una descripción formal, pero para enterarte de qué es docker sigue ley
 
 ## ¿A quién le puede interesar usar docker?
 
-Docker es útil a administradores de sistemas, pero también a desarrolladores. Uno de los problemas que se presentan durante el desarrollo y despliegue de aplicaciones es encontrarnos con sistemas heterogéneos, no ya entre los desarrolladores, también entre los sistemas de pruebas, pre-producción y producción. Es decir, que los desarrolladores y los sistemas donde se ejecuta la aplicación tienen librerías y sistemas operativos diferentes. ¿Y por qué es un problema? Pues porque la aplicación puede funcionar bien en una distribución de GNU/Linux pero no bien en otra, o ejecutarse bien con la versión de un lenguaje pero no con otra. Para asegurar la calidad de desarrollo tenemos que asegurar que todo el mundo usa las mismas versiones de todas las aplicaciones y librerías necesarios.
+Docker es útil a administradores de sistemas, pero también a desarrolladores. Uno de los problemas que se presentan durante el desarrollo y despliegue de aplicaciones es encontrarnos con sistemas heterogéneos, no ya entre los desarrolladores, también entre los sistemas de pruebas, pre-producción y producción. Es decir, que los desarrolladores y los sistemas donde se ejecuta la aplicación tienen librerías y sistemas operativos diferentes. ¿Y por qué es un problema? Pues porque la aplicación puede funcionar bien en una distribución de GNU/Linux pero no bien en otra, o ejecutarse bien con la versión de un lenguaje pero no con otra. Para asegurar la calidad de desarrollo tenemos que asegurar que todo el mundo usa las mismas versiones de todas las aplicaciones y librerías necesarias.
 
-Esto es más complicado de lo que parece, porque hay desarrolladores que prefieron una distribución concreta, o incluso sistemas privativos. Incluso los sistemas de pruebas, pre-producción y producción suelen ser distintos. Los sistemas de producción suelen ser más nuevos y potentes y los antiguos se dejan para pruebas y pre-producción.
+Esto es más complicado de lo que parece, porque hay desarrolladores que prefieren una distribución concreta, o incluso sistemas privativos. Incluso los sistemas de pruebas, pre-producción y producción suelen ser distintos. Los sistemas de producción suelen ser más nuevos y potentes y los antiguos se dejan para pruebas y pre-producción.
 
 Otro problema es que un mismo desarrollador o un mismo sistema de despliegue tenga que trabajar en más de un proyecto que requiera versiones distintas de librerías, complicándolo aún más.
 
@@ -69,3 +90,20 @@ En este taller no aprenderemos:
 
 * A crear un cluster con Docker (Docker Swarm).
 * A administrar sistemas. Se darán ya las instrucciones necesarias para crear servicios pero explicarlos está más alla del ámbito de este taller. Se recomienda cursar la asignatura: "Programación y Administración de Sistemas" del Grado de Ingeniería Informática.
+
+
+INSTALACIÓN
+
+### Imágenes
+
+Es necesario traer ya instaladas ciertas imágenes de contenedores. Ejecuta los siguientes comandos en tu equipo (si te da error de permisos asegúrate que has hecho el apartado anterior y abierto y cerrado la sesión).
+
+!!! example
+    Instalar _WordPress_:
+
+        docker pull wordpress:latest
+
+!!! example
+    Instalar _MariaDB_:
+
+        docker pull mariadb:latest

@@ -1,12 +1,22 @@
 ---
-title: '7.3 Instalación'
+title: '7.2 Instalación'
 ---
 
 # Instalación
 
-Existe dos versiones de Docker, una libre y otra que no lo es. Nos ocuparemos exclusivamente de la primera: [Docker CE (Community Edition)](https://docs.docker.com/install/).
+En el curso que estamos utilizando tenemos un capítulo completo dedicado a la instalación de Docker tanto en Linux, Windows y MacOSX. Puedes consultarlo aquí:
+
+[Instalación de Docker](Ud7_img/Docker02_Instalacion.pdf)
+
+Vamos a aprender a usar Docker sobre una distribución Linux Debian como hemos hecho hasta ahora. Si cuentas con un sistema operativo Linux basado en Debian puedes seguir el curso directamente sobre tu S.O. Sino, te aconsejo crear una máquina virtual en AWS con un Debian con opciones por defecto y seguir allí el curso. Recuerda, lo primero actualizar paquetes para contar con las últimas versiones disponibles:
+
+    sudo apt-get update && sudo apt-get upgrade
+
+Puedes seguir las instrucciones de instalación del PDF anterior. No obstante, yo te aconsejo que sigas el presente manual que te llevará a las instrucciones oficiales, más actualizadas.
 
 ## Disponibilidad
+
+Existe dos versiones de Docker, una libre y otra que no lo es. En nuestro curso nos ocuparemos exclusivamente de la primera: [Docker CE (Community Edition)](https://docs.docker.com/install/).
 
 Docker CE está disponible para los siguientes sistemas GNU/Linux: CentOS, Debian, Fedora y Ubuntu. No todas están en múltiples arquitecturas, pero sí todas soportan _x86\_64/amd64_. Si tienes otra arquitectura u otro sistema es mejor que uses una máquina virtual para arrancar una distribución compatible.
 
@@ -21,7 +31,11 @@ Debido a que, dependiendo de la distribución, la forma de instalarlo difiere, e
 * CentOS: [https://docs.docker.com/install/linux/docker-ce/centos/](https://docs.docker.com/install/linux/docker-ce/centos/)
 * Fedora: [https://docs.docker.com/install/linux/docker-ce/fedora/](https://docs.docker.com/install/linux/docker-ce/fedora/)
 
-Si quieres instalar y probar Linux por primera vez, te recomendamos que uses una [versión LTS de Ubuntu](https://www.ubuntu.com/download/desktop), por ser fácil de instalar y tener un ciclo de mantenimiento de seguridad ampliado. Obviamente necesitas tener conexión a Internet para instalar y probar Docker.
+Como hemos quedado nosotros usaremos una Debian sobre AWS. Así pues, sigue las instrucciones anteriores para dicha distribución. No hará falta que hagas la parte de "Uninstall old versions" ya que es una máquina virtual recién instalada. Y utiliza la opcion "Install using the apt repository".
+
+Una vez finalizado el proceso comprueba que Docker engine CE se ha instalado correctamente con:
+
+    sudo docker version
 
 Para saber si tienes Docker bien instalado, los tutoriales oficiales siempre te indican inicies un contenedor de ejemplo. Esto es lo que sucede:
 
@@ -70,7 +84,11 @@ Si es la primera vez que hemos ejecutado esa imagen, nos aparecerá la línea 2,
 
 Tanto si se ha descargado la imagen o ya estaba descargada, el contenedor se ejecutará, obteniendo el texto de bienvenida que se ve en el cuadro anterior.
 
-## Configuración del usuario
+## Post instalación
+
+Para finalizar la instalación vamos a hacer un par de cosas que nos simplificarán la vida.
+
+### Permitir administrar Docker a un usuario sin privilegios
 
 Si estamos usando _Docker_ en nuestro ordenador personal, podemos configurar nuestro usuario para usar el cliente sin tener que poner _sudo_ delante. Para ello ejecuta lo siguiente:
 
@@ -81,23 +99,7 @@ Si estamos usando _Docker_ en nuestro ordenador personal, podemos configurar nue
 
 Para que los nuevos permisos surtan efecto, debes cerrar y volver a abrir la sesión. Para problemas relacionados con los permisos visitad [la página del manual oficial](https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user).
 
-## Requisitos del curso
-
-### Imágenes
-
-Es necesario traer ya instaladas ciertas imágenes de contenedores. Ejecuta los siguientes comandos en tu equipo (si te da error de permisos asegúrate que has hecho el apartado anterior y abierto y cerrado la sesión).
-
-!!! example
-    Instalar _WordPress_:
-
-        docker pull wordpress:latest
-
-!!! example
-    Instalar _MariaDB_:
-
-        docker pull mariadb:latest
-
-### Herramientas
+### Instalar Docker Compose
 
 También es necesario traer una herramienta llamada `Docker Compose`. Puedes instalarla con las instrucciones que hay en la página de [Instalación de Docker Compose](https://docs.docker.com/compose/install/).
 
@@ -107,3 +109,5 @@ Sin embargo, si usas _Ubuntu_ o _Debian_ puedes instalarlo de forma más fácil 
     Instalación de _Docker Compose_:
 
         sudo apt install docker-compose
+
+Llegados a este punto deberíamos tener todas las herramientas necesarias para seguir este curso.
