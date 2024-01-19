@@ -26,7 +26,14 @@ Una vez finalices la parte teórica prueba a realizar estas dos prácticas para 
 
 [Caso práctico 02 - Apache 2 con PHP desde Alpine](Ud7_img/Docker04_5CasoPractico03.pdf)
 
-En esta práctica, el en punto 3. Probando la imagen te propone lanzar la aplicación sobre el puerto 80 de nuestra máquina. Si ese puerto ya estuviera usado por otra aplicación te podría dar problemas. En ese caso puedes lanzarlo sobre el puerto 8080 con el comando:
+En esta práctica, en el punto 2 veréis que el Dockerfile contiene la línea "ADD ./start.sh /start.sh". Tenéis que crear en el mismo directorio donde está el Dockerfile un archivo `start.sh` con este contenido:
+
+    #/bin/sh
+    #Lanzamos servicio Apache2 en segundo plano
+    /usr/sbin/httpd -D FOREGROUND
+
+
+En el punto 3. Probando la imagen te propone lanzar la aplicación sobre el puerto 80 de nuestra máquina. Si ese puerto ya estuviera usado por otra aplicación te podría dar problemas. En ese caso puedes lanzarlo sobre el puerto 8080 con el comando:
 
     docker run -d -p 8080:80 alpineapache
 
