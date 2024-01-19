@@ -81,9 +81,8 @@ Para probar este comando mantén el contenedor `muchotexto funcionando`. En `ter
 
     docker logs -f --until=2s muchotexto
 
-Una vez finalices la parte teórica prueba a realizar estas dos prácticas para afianzar conocimientos:
+Una vez finalices la parte teórica prueba a realizar esta práctica para afianzar conocimientos:
 
 [Caso práctico 01- Práctica de comandos en contenedor Docker](Ud7_img/Docker03_3CasoPractico01.pdf)
 
-[Caso práctico 02 - Instalando LAMP + Wordpress en un contenedor](Ud7_img/Docker03_3CasoPractico02.pdf) 
 
