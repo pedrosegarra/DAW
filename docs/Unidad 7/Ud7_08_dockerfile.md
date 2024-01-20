@@ -4,7 +4,7 @@ title: '7.8 Aplicaciones en Docker'
 
 # Crear imágenes propias
 
-Ya hemos visto como usar imágenes de terceros para crear aplicaciones y servicios. Y en el capítulo 7.3 vimos cómo crear imágenes propias usando `docker build` y el fichero `Dockerfile`. Pero, ¿y si queremos hacer una imagen de nuestra aplicación para distribuirla?
+Ya hemos visto como usar imágenes de terceros para crear aplicaciones y servicios. Y en el capítulo 7.4 vimos cómo crear imágenes propias usando `docker build` y el fichero `Dockerfile`. Pero, ¿y si queremos hacer una imagen de nuestra aplicación para distribuirla?
 
 Vamos primero a recordar brevemente el proceso de creación de una imagen propia sobre la que desarrollaremos nuestra aplicación. Aunque podríamos hacerla partiendo de cero, es un esfuerzo que no tiene sentido. Existe ya imágenes base para crear las nuestras y es mucho más fácil crear una imagen basándose en otra que hacerlo todo nosotros.
 
@@ -110,11 +110,13 @@ def hello():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80)
+```
 
 Nuestra aplicación tiene una serie de dependencias (librerías de terceros) que guardaremos en el archivo _requirements.txt_:
 
-    Flask
-    Redis
+```
+Flask
+Redis
 ```
 
 Y por último definimos nuestro _Dockerfile_:
@@ -227,6 +229,28 @@ La principal diferencia con respecto al capítulo anterior, es que en un servici
 
 Esta es una manera de integrar las dos herramientas que nos proporciona _Docker_: la creación de imágenes y la composición de aplicaciones con servicios.
 
+Ahora ya podemos lanzarla con 
+
+```
+docker compose up
+```
+
+Accede ahora con el navegador a [http://localhost:8080/](http://localhost:8080/) y comprueba como tras cada nuevo acceso se va incrementando el contador.
+
+Recuerda parar los contenedores y borrarlos con   
+
+```
+docker compose stop
+docker compose down
+```
+
+Y en este caso se nos crea un directorio data sobre el que no tenemos permisos y deberemos borrar para el siguiente apartado:
+
+```
+sudo rm -R -f ~/Sites/friendlyhello/data
+```
+
+
 ### Balanceo de carga
 
 Vamos a modificar nuestro _docker-compose.yaml_:
@@ -255,7 +279,7 @@ En este caso, el servicio web no va a tener acceso al exterior (hemos eliminado 
 
 Vamos a arrancar esta nueva aplicación, pero esta vez añadiendo varios servicios web:
 
-    docker-composer up -d --scale web=5
+    docker-compose up -d --scale web=5
 
 Esperamos a que terminen de iniciar los servicios:
 
@@ -292,13 +316,21 @@ Si en esta ocasión vamos recargando la página, veremos como cambian los _hostn
 !!! info
     Esta no es la manera adecuada de hacer balanceo de carga, puesto que todos los contenedores están en la misma máquina, lo cual no tiene sentido. Solo es una demostración. Para hacer balanceo de carga real necesitaríamos tener o emular un clustes de máquinas y crear un enjambre (_swarm_).
 
+Recuerda parar los contenedores y borrarlos con   
+
+```
+docker compose stop
+docker compose down
+sudo rm -R -f ~/Sites/friendlyhello/data
+```
+
 ## Compartir imágenes
 
-Si tenemos una imagen que queramos compartir, necesitamos usar un registro. Existe incluso una imagen que nos permite crear uno propio, pero vamos a usar el repositorio público de _Docker_.
+Si tenemos una imagen que queramos compartir, necesitamos usar un registro. Existe incluso una imagen que nos permite crear uno propio, pero vamos a usar el repositorio público de _Docker_. Esto ya lo aprendimos en el capítulo 7.4 Imágenes, pero vamos a recordarlo.
 
 Los pasos son:
 
-1. Crear una cuenta de usuario en el [repositorio oficial de _Docker_](https://hub.docker.com).
+1. Crear una cuenta de usuario en el [repositorio oficial de _Docker_](https://hub.docker.com) si no la tenemos ya.
 1. Pulsar sobre el botón "_Create Repository +_".
 1. En el formulario hay que rellenar solo un dato obligatoriamente: el nombre. Usaremos el de la imagen: _friendlyhello_.
 
@@ -340,8 +372,5 @@ Los pasos son:
 
         $ docker push username/friendlyhello
 
-## Ejercicios
 
-1. Cambia el _docker-compose.yaml_ para usar tu imagen en vez de hacer _build_.
-1. Cambia el _docker-compose.yaml_ para usar la imagen de algún compañero. 
 

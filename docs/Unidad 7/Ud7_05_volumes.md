@@ -1,5 +1,5 @@
 ---
-title: '7.5 Persistiendo datos'
+title: '7.5 Volúmenes'
 ---
 
 # Persistiendo datos
@@ -20,7 +20,7 @@ La razón para esto último es que tanto nuestro entorno de desarrollo como el c
 
 ## Crear un volumen
 
-Como necesitamos crear una base de datos para nuestro blog con _WordPress_ vamos a crear un volumen donde guardar la información:
+Como en la siguiente sección necesitaremos crear una base de datos para instalar un blog con _WordPress_ vamos a crear un volumen donde guardar la información:
 
 ```console
 $ docker volume create wordpress-db
@@ -60,3 +60,16 @@ Como todos los objetos de _Docker_, los volúmenes también pueden ser borrados,
 
 Para borrar un contenedor usaremos `docker volume rm` y el nombre del contenedor.
 
+## Para saber más
+
+Se puede profundizar mucho más en el tema de volúmenes en Docker, pero para el propósito de nuestro curso es suficiente con lo visto hasta aquí. Si quieres profundizar más en el tema, así como aprender cómo trata Docker el "Networking" puedes consultar este documento.
+
+[Imágenes Docker](Ud7_img/Docker05_01RedesYVolumenes.pdf)
+
+En este cheatsheet tienes los principales comandos de volúmenes y networking:
+
+[Cheatsheet](Ud7_img/Docker05_02CheatSheet.pdf)
+
+Y aquí tienes esta práctica para afianzar conocimientos:
+
+[Caso práctico 02 - Balanceo de carga con HAProxy](Ud7_img/Docker05_04CasoPractico02.pdf)

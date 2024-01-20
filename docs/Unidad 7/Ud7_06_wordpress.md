@@ -4,7 +4,7 @@ title: '7.6 Levantar un WordPress con Docker'
 
 # Levantar un WordPress con Docker
 
-Para crear un _blog_ con _WordPress_ necesitamos tener una base de datos dónde almacenar las entradas. Así que empezaremos creándola y después crearemos el contenedor de nuestro _blog_.
+Ya tenemos suficientes conocimientos para montar un servicio completo usando Docker. En este caso vamos a montar un _blog_ con _WordPress_. Para poder hacerlo necesitamos tener una base de datos dónde almacenar las entradas. Así que empezaremos creándola en un contenedor y después crearemos el contenedor de nuestro _blog_. Veremos cómo enlazar ambos.
 
 ## Crear un contenedor con _MariaDB_.
 
@@ -60,7 +60,7 @@ El principal cambio en `docker run` con respecto a la última vez es que no hemo
 
 Lo primero que habremos notado es que el contenedor ya no se queda en primer plano. El parámetro `-d` indica que debe ejecutarse como un proceso en segundo plano. Así no podremos pararlo por accidente con `Control+C`.
 
-Lo segundo es que vemos que el contenedor usa un puerto, el `3306/tcp`, pero no está linkado a la máquina anfitrión. No tenemos forma de acceder a la base de datos directamente. Nuestra intención es que solo el contenedor de _WordPress_ pueda acceder.
+Lo segundo es que vemos que el contenedor usa un puerto, el `3306/tcp`, pero no está enlazado a ningún puerto de la máquina anfitrión, porque no hemos usado el parámetro `-p PUERTOANFITRION:PUERTOCONTENEDOR` como en otros casos. No tenemos forma de acceder a la base de datos directamente. Nuestra intención es que solo el contenedor de _WordPress_ (que crearemos a continuación) pueda acceder.
 
 Luego una serie de parámetros `-e` que nos permite configurar nuestra base de datos.
 
@@ -81,10 +81,10 @@ Por último, el parámetro `--mount` nos permite enlazar el volumen que creamos 
 
 ## Creando nuestro blog
 
-Vamos a crear otra vez nuestro contenedor de _WordPress_, pero esta vez vamos a conectarlo con nuestra base de datos. Además, queremos poder editar los ficheros de las plantillas, por si tenemos que modificar algo, así que necesitaremos montar el directorio del contenedor donde está instalado _WordPress_ con nuestra cuenta de usuario en la máquina anfitrión.
+Vamos ahora a crear nuestro contenedor de _WordPress_, y a conectarlo con nuestra base de datos. Además, queremos poder editar los ficheros de las plantillas, por si tenemos que modificar algo, así que necesitaremos montar el directorio del contenedor donde está instalado _WordPress_ con nuestra cuenta de usuario en la máquina anfitrión.
 
 !!! example
-    Vamos a crear el espacio de trabajo:
+    Vamos a crear el espacio de trabajo en la máquina donde estamos usando docker:
 
     ```sh
     mkdir -p ~/Sites/wordpress/target && cd ~/Sites/wordpress
@@ -101,14 +101,37 @@ Vamos a crear otra vez nuestro contenedor de _WordPress_, pero esta vez vamos a 
         -p 8080:80 \
         wordpress:4.9.8
     ```
-Cuando termine la ejecución, si accedemos a la dirección [http://localhost:8080/](http://localhost:8080/), ahora sí podremos acabar el proceso de instalación de nuestro WordPress. Si listamos el directorio target comprobaremos que tenemos todos los archivos de instalación accesibles desde el directorio anfitrión.
+
+Revisa bien los distintos parámetros, la mayoría ya los hemos visto antes:
+
+* `-d` para lanzar en 2º plano
+* --mount para enlazar un directorio en el contenedor con un directorio en la máquina anfitrión
+* -e para definir parámetros en el contenedor
+* -p 8080:80 para enlazar el puerto 8080 en el anfitrión con el 80 en el contenedor.
+
+Pero encontramos un parámetro nuevo:
+
+* --link wordpress-db:mysql: indica que este contenedor se vincula con otro llamado "wordpress-db", y permite que este contenedor lo referencie utilizando el alias "mysql".
+
+
+Cuando termine la ejecución, si accedemos a la dirección [http://localhost:8080/](http://localhost:8080/), ahora sí podremos acabar el proceso de instalación de nuestro WordPress. Recuerda que si accedes desde un navegador en un equipo distinto al que estás lanzando los contenedores deberás usar `http://IPSERVER:8080` sustituyendo IPSERVER por la IP de tu máquina anfitrión.
+
+Si listamos el directorio target comprobaremos que tenemos todos los archivos de instalación accesibles desde el directorio anfitrión.
 
 !!! note
     Ejercicios:
 
     1. Para los contenedores, tanto el de _WordPress_ como el _MariaDB_.
     2. Borra ambos.
-    3. Vuelve a crearlos y mira como ya no es necesario volver a instalar _WordPress_.
-    4. Vuelve a borrarlos y borra también el volumen.
-    5. Vuelve a crear el volumen y los contenedores y comprueba que ahora sí hay que volver a instalar _WordPress_.
+    3. Comprueba que sigue existiendo el volumen wordpress-db que contiene la base de datos.
+    4. Vuelve a crearlos y mira como ya no es necesario volver a instalar _WordPress_.
+    5. Vuelve a borrarlos y borra también el volumen.
+    6. Vuelve a crear el volumen y los contenedores y comprueba que ahora sí hay que volver a instalar _WordPress_.
 
+## Para saber más
+
+Para los efectos de este curso es suficiente con lo visto hasta aquí. Pero si quieres saber más y estudiaste el documento de "Para saber más" de la sección anterior donde profundizaba en volúmenes y redes docker, puedes hacer la práctica siguiente.
+
+En esta práctica hace lo mismo que hemos visto anteriormente pero no usa el parámetro --link para enlazar los contenedores. A partir de Docker 1.13, el uso de --link ha sido desaconsejado en favor de la creación de redes para conectar contenedores.
+
+[Caso práctico 01 - Wordpress + MySQL](Ud7_img/Docker05_03CasoPractico01.pdf)

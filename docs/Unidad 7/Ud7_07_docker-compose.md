@@ -4,7 +4,7 @@ title: '7.7 Levantar un WordPress con Docker Compose'
 
 # Levantar un WordPress con Docker Compose
 
-El cliente de _Docker_ es engorroso para crear contenedores, así como para crear el resto de objetos y vincularlos entre sí.
+En el capítulo anterior hemos usado el cliente de _Docker_ para crear contenedores, así como para crear el resto de objetos y vincularlos entre sí. Si recuerdas los comandos son complejos y extensos. Además hemos de ejecutar primero la creación del contenedor con la base de datos y luego el contenedor con Wordpress. Vemos que sería mucho más cómodo poder configurarlo todo en un solo archivo y lanzar todos los contenedores, convenientemente enlazados, con un solo comando. 
 
 Para automatizar la creación, inicio y parada de un contenedor o un conjunto de ellos, _Docker_ proporciona una herramiento llamada _Docker Compose_.
 
@@ -17,6 +17,7 @@ Para esta parte vamos a detener y borrar lo que hemos creado:
     docker container stop wordpress wordpress-db
     docker container rm wordpress wordpress-db
     docker volume rm wordpress-db
+    sudo rm -R -f target/*
     ```
 ## Docker Compose
 
