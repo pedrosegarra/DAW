@@ -19,16 +19,18 @@ Guardamos el siguiente fichero como _docker-compose.yaml_ en nuestro directorio:
 version: '2'
 
 services:
-    portainer:
+  portainer:
     image: portainer/portainer
     command: -H unix:///var/run/docker.sock
     volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
-        - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
     ports:
-        - 127.0.0.1:9000:9000
+      - 9000:9000
+
 volumes:
-    portainer_data:
+  portainer_data:
+
 ```
 
 Y ejecutamos el contenedor:
@@ -36,6 +38,9 @@ Y ejecutamos el contenedor:
 ```sh
 docker-compose up -d
 ```
+
+Ahora puedes acceder via web a http://IPSERVER:9000 y gestionar via web los contenedores e imagenes.
+
 ## Limpieza
 
 Para borrar objetos que no están en uso:

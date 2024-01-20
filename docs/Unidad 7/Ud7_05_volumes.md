@@ -64,7 +64,7 @@ Para borrar un contenedor usaremos `docker volume rm` y el nombre del contenedor
 
 Se puede profundizar mucho más en el tema de volúmenes en Docker, pero para el propósito de nuestro curso es suficiente con lo visto hasta aquí. Si quieres profundizar más en el tema, así como aprender cómo trata Docker el "Networking" puedes consultar este documento.
 
-[Imágenes Docker](Ud7_img/Docker05_01RedesYVolumenes.pdf)
+[Redes Y Volumenes](Ud7_img/Docker05_01RedesYVolumenes.pdf)
 
 En este cheatsheet tienes los principales comandos de volúmenes y networking:
 

@@ -269,3 +269,18 @@ La equivalencia de los parámetros es la siguiente:
 
     Otros valores son: `no` (por defecto), `always` y `on-failure`.
 
+## Para saber más
+
+Se puede profundizar mucho más en el tema de Docker compose, pero para el propósito de nuestro curso es suficiente con lo visto hasta aquí. Si quieres profundizar más en el tema puedes consultar este documento.
+
+[Docker Compose](Ud7_img/Docker06_01DockerCompose.pdf)
+
+En este cheatsheet tienes los principales comandos de Docker Compose:
+
+[Cheatsheet](Ud7_img/Docker06_02DockerCheatSheet.pdf)
+
+Y aquí tienes un par de prácticas para afianzar conocimientos:
+
+[Caso práctico 01 - Wordpress + MySQL](Ud7_img/Docker06_01DockerCompose.pdf) - Muy similar a lo hecho en el este capítulo
+
+[Caso práctico 03 - Proxy Nginx y balanceo escalado con Docker Compose](Ud7_img/Docker06_05CasoPractico03ProxyNginxDockerCompose.pdf)
