@@ -1,5 +1,5 @@
 ---
-title: '7.6 Persistiendo datos'
+title: '7.5 Persistiendo datos'
 ---
 
 # Persistiendo datos

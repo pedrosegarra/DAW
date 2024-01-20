@@ -1,5 +1,5 @@
 ---
-title: '7.10 Trucos'
+title: '7.09 Trucos'
 ---
 
 # Trucos

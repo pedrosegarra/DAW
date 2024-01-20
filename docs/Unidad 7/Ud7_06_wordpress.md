@@ -1,5 +1,5 @@
 ---
-title: '7.7 Levantar un WordPress con Docker'
+title: '7.6 Levantar un WordPress con Docker'
 ---
 
 # Levantar un WordPress con Docker

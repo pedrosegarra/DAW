@@ -1,18 +1,18 @@
 ---
-title: '7.9 Crear imágenes propias'
+title: '7.8 Aplicaciones en Docker'
 ---
 
 # Crear imágenes propias
 
-Ya hemos visto como usar imágenes de terceros para crear aplicaciones y servicios. Pero, ¿si no hay ninguna imagen que tenga lo que queremos? ¿O si queremos hacer una imagen de nuestra aplicación para distribuirla?
+Ya hemos visto como usar imágenes de terceros para crear aplicaciones y servicios. Y en el capítulo 7.3 vimos cómo crear imágenes propias usando `docker build` y el fichero `Dockerfile`. Pero, ¿y si queremos hacer una imagen de nuestra aplicación para distribuirla?
 
-Docker permite crear imagenes propias. Aunque podríamos hacerla partiendo de cero, es un esfuerzo que no tiene sentido. Existe ya imágenes base para crear las nuestras y es mucho más fácil crear una imagen basándose en otra que hacerlo todo nosotros.
+Vamos primero a recordar brevemente el proceso de creación de una imagen propia sobre la que desarrollaremos nuestra aplicación. Aunque podríamos hacerla partiendo de cero, es un esfuerzo que no tiene sentido. Existe ya imágenes base para crear las nuestras y es mucho más fácil crear una imagen basándose en otra que hacerlo todo nosotros.
 
 Podemos partir de una imagen base que parte de un lenguaje de programación (_python_, _php_) o de alguna distribución (_ubuntu_, _debian_).
 
-## Mi primer Dockerfile
+## Recordando el Dockerfile
 
-Los _Dockerfile_ son los archivos que contienen las instrucciones que crean las imagenes. Deben estar guardados dentro de un _build context_, es decir, un directorio. Este directorio es el que contiene todos los archivos necesarios para construir nuestra imagen, de ahí lo de _build context_.
+Los _Dockerfile_ son los archivos que contienen las instrucciones que crean las imágenes. Deben estar guardados dentro de un _build context_, es decir, un directorio. Este directorio es el que contiene todos los archivos necesarios para construir nuestra imagen, de ahí lo de _build context_.
 
 Creamos nuestro _build context_
 
