@@ -65,7 +65,7 @@ Lo segundo es que vemos que el contenedor usa un puerto, el `3306/tcp`, pero no 
 Luego una serie de parámetros `-e` que nos permite configurar nuestra base de datos.
 
 !!! info
-    Los contenedores se configuran a través de variables de ambiente, que podemos configurar con el parámetro `-e` que vemos en la orden anterior. Gracias a ellos hemos creado una base de datos, un usuario y configurado las contraseñas.
+    Los contenedores se configuran a través de variables de entorno, que podemos configurar con el parámetro `-e` que vemos en la orden anterior. Gracias a ellos hemos creado una base de datos, un usuario y configurado las contraseñas.
 
     Se recomienda buscar en el registro de _Docker_ la imagen oficial de [MariaDB](https://hub.docker.com/_/mariadb/) para entender el uso de los parámetros.
 
