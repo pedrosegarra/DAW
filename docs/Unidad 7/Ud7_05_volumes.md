@@ -10,9 +10,9 @@ Si queremos almacenar datos (una web, una base de datos, etc.) dentro de un cont
 
 Docker ofrece tres maneras:
 
-* A través de volúmenes, que son objetos de Docker como las imágenes y los contenedores.
-* Montando un directorio de la máquina anfitrión dentro del contenedor.
-* Almacenándolo en la memoria del sistema (aunque también se perderían al reiniciar el servidor).
+* A través de **volúmenes**, que son objetos de Docker como las imágenes y los contenedores.
+* Montando un **directorio** de la máquina anfitrión dentro del contenedor.
+* Almacenándolo en la **memoria del sistema** (aunque también se perderían al reiniciar el servidor).
 
 Lo normal es usar volúmenes, pero habrá ocasiones en que es preferible montar directamente un directorio de nuestro espacio de trabajo. Por ejemplo, para guardar los datos de una base de datos usaremos volúmenes, pero para guardar el código de una aplicación o de una página web montaremos el directorio.
 
