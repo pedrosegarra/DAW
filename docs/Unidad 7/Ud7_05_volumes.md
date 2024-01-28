@@ -29,7 +29,7 @@ wordpress-db
 
 ## Listar volúmenes
 
-Con `docker volume ls` podemos visualizar todos los volumenes disponibles.
+Con `docker volume ls` podemos visualizar todos los volúmenes disponibles.
 
 ```console
 $ docker volume ls
@@ -38,7 +38,7 @@ local               wordpress-db
 ```
 ## Visualizar volúmenes
 
-Los volumenes se crean en un directorio del sistema y no es recomendable acceder a él, no al menos mientras haya un contenedor usándolo. En cualquier caso, si queremos ver los metadatos de un volumen podemos usar `docker volume inspect`
+Los volúmenes se crean en un directorio del sistema y no es recomendable acceder a él, no al menos mientras haya un contenedor usándolo. En cualquier caso, si queremos ver los metadatos de un volumen podemos usar `docker volume inspect`
 
 ```console
 $ docker volume inspect wordpress-db 
@@ -54,7 +54,7 @@ $ docker volume inspect wordpress-db
     }
 ]
 ```
-## Borrar volumenes
+## Borrar volúmenes
 
 Como todos los objetos de _Docker_, los volúmenes también pueden ser borrados, pero solo si no están en uso. Mucha precaución al borrar los volúmenes, porque perderíamos todos los datos que contenga.
 
@@ -64,7 +64,7 @@ Para borrar un contenedor usaremos `docker volume rm` y el nombre del volumen.
 
 Se puede profundizar mucho más en el tema de volúmenes en Docker, pero para el propósito de nuestro curso es suficiente con lo visto hasta aquí. Si quieres profundizar más en el tema, así como aprender cómo trata Docker el "Networking" puedes consultar este documento.
 
-[Redes Y Volumenes](Ud7_img/Docker05_01RedesYVolumenes.pdf)
+[Redes Y volúmenes](Ud7_img/Docker05_01RedesYVolumenes.pdf)
 
 En este cheatsheet tienes los principales comandos de volúmenes y networking:
 
