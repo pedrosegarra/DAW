@@ -232,10 +232,10 @@ Esta es una manera de integrar las dos herramientas que nos proporciona _Docker_
 Ahora ya podemos lanzarla con 
 
 ```
-docker compose up
+docker-compose up
 ```
 
-Accede ahora con el navegador a [http://localhost:8080/](http://localhost:8080/) y comprueba como tras cada nuevo acceso se va incrementando el contador.
+Accede ahora con el navegador a [http://localhost:4000/](http://localhost:4000/) y comprueba como tras cada nuevo acceso se va incrementando el contador.
 
 Recuerda parar los contenedores y borrarlos con   
 
