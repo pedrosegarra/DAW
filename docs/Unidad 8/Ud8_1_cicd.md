@@ -1,5 +1,5 @@
 ---
-title: 'Tema 8 - CI/CD (Integración y despliegue continuo)'
+title: '8.1 - CI/CD (Integración y despliegue continuo)'
 ---
 
 # CI/CD (Integración y despliegue continuo) 
@@ -245,7 +245,7 @@ Entre las ventajas de esta técnica se encuentran:
   ha cambiado poco desde el commit anterior que integramos. No ha
   habido demasiado tiempo para que el proyecto diverja mucho.
 - La transparencia en los cambios hace que se detecten antes los
-  error
+  errores
 - El conocimiento del equipo evoluciona conjuntamente. Todo el mundo
   tiene información actualizada a diario de los cambios que se van
   introduciendo en el proyecto.
@@ -823,7 +823,7 @@ sistema, monitorización de servidores, etc. ) son contrapuestos.
 
 - **Dev**elopers:
     - Su trabajo es añadir nuevas características.
-    - Trabajan en entornos locales (“en mimáquina funciona”).
+    - Trabajan en entornos locales (“en mi máquina funciona”).
     - Utilizan herramientas y lenguajes que permiten abstraer y automatizar.
 - **Op**erations: 
     - Su trabajo es mantener el sitio web seguro, estable y rápido.
