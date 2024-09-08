@@ -1,8 +1,8 @@
 ---
-title: '6.4 Aspectos básicos de Git'
+title: '6.4 Instalación y configuración de Git'
 ---
 
-# Aspectos básicos de Git
+# Instalación y configuración de Git
 
 ## Instalación
 
@@ -20,7 +20,7 @@ O si estás en una distribución basada en Debian como Ubuntu, prueba con apt-ge
 
 Instalar Git en Windows es muy fácil. El proyecto "Gti for Windows" (antes msysGit) tiene uno de los procesos de instalación más sencillos. Simplemente descarga el archivo exe del instalador desde la página de GitHub, y ejecútalo:
 
-[https://gitforwindows.org//](https://gitforwindows.org//)
+[https://gitforwindows.org/](https://gitforwindows.org/)
 
 Una vez instalado, tendrás tanto la versión de línea de comandos (incluido un cliente SSH que nos será útil más adelante) como la interfaz gráfica de usuario estándar. Se recomienda no modificar las opciones que trae por defecto el instalador.
 
@@ -54,4 +54,4 @@ También se recomienda configurar el siguiente parámetro:
 
 ### Bash Completion
 
-_Bash completion_ es una utilidad que permite a bash completar órdenes y parámetros. Por defecto suele venir desactivada en Ubuntu y es necesario modificar el archivo `$HOME/.bashrc` para poder activarla. Simplemente hay que descomentar las líneas que lo activan,
+Si estás trabajando en linux _Bash completion_ es una utilidad que permite a bash completar órdenes y parámetros. Por defecto suele venir desactivada en Ubuntu y es necesario modificar el archivo `$HOME/.bashrc` para poder activarla. Simplemente hay que descomentar las líneas que lo activan.

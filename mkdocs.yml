@@ -66,49 +66,12 @@ extra:
       provider: google 
       property: G-3NX5MD5C8H
 
-nav:
-  - ... | Unidad 1/*.md
-  - ... | Unidad 2/*.md
-  - ... | Unidad 3/*.md
-  - ... | Unidad 4/*.md
-  - ... | Unidad 5/*.md
-  - ... | Unidad 6/*.md
-  - ... | Unidad 7/*.md
-  - ... | Unidad 8/*.md
-#  - Unidad 6:
-#      - Teoría: 
-#        - index_git.md
-#       - cvs.md
-#        - introduccion.md
-#        - git.md
-#        - usobasico.md
-#        - usoavanzado.md
-#        - ramas.md
-#        - github.md
-#        - github-zenodo.md
-#        - github-flow.md
-#        - github-avanzado.md
-#        - commands.md
-#        - gitflow.md
-#        - referencias.md
-#      - Prácticas:
-#       - ... | P6.*.md      
-#  - Unidad 7:
-#      - Teoría: 
-#        - index_docker.md
-#        - introduction.md
-#        - installation.md
-#        - images.md
-#        - containers.md
-#        - data.md
-#        - wordpress.md
-#        - docker-compose.md
-#        - dockerfile.md
-#        - tips.md
-#      - Prácticas:
-#        - ... | P7.*.md
-#  - Unidad 8:
-#      - Teoría: 
-#        - cicd.md
-#      - Prácticas:
-#        - ... | P8.*.md    
+#nav:
+#  - ... | Ud1 Introduccion/*.md
+#  - ... | Unidad 2/*.md
+#  - ... | Unidad 3/*.md
+#  - ... | Unidad 4/*.md
+#  - ... | Unidad 5/*.md
+# - ... | Unidad 6/*.md
+#  - ... | Unidad 7/*.md
+#  - ... | Unidad 8/*.md

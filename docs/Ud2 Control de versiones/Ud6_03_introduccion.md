@@ -4,7 +4,7 @@ title: '6.3 Introducción a git '
 
 # Introducción a git
 
-Git es un sistema de control de versiones distribuido que se diferencia del resto en el modo en que modela sus datos. La mayoría de los demás sistemas almacenan la información como una lista de cambios en los archivos, mientras que Git modela sus datos más como un conjunto de instantáneas de un mini sistema de archivos.
+[Git](https://git-scm.com/) es un sistema de control de versiones distribuido que se diferencia del resto en el modo en que modela sus datos. La mayoría de los demás sistemas almacenan la información como una lista de cambios en los archivos, mientras que Git modela sus datos más como un conjunto de instantáneas de un mini sistema de archivos.
 
 ![Modelo de datos de los sistemas distribuidos tradicionales](Ud6_img/distribuido-tradicional.png)
 
@@ -12,11 +12,13 @@ Git es un sistema de control de versiones distribuido que se diferencia del rest
 
 ## Los tres estados
 
-Git tiene tres estados principales en los que se pueden encontrar tus archivos: confirmado (committed), modificado (modified), y preparado (staged). Confirmado significa que los datos están almacenados de manera segura en tu base de datos local. Modificado significa que has modificado el archivo pero todavía no lo has confirmado a tu base de datos. Preparado significa que has marcado un archivo modificado en su versión actual para que vaya en tu próxima confirmación.
+Git tiene tres estados principales en los que se pueden encontrar tus archivos: **confirmado (committed)**, **modificado (modified)**, y **preparado (staged)**. Confirmado significa que los datos están almacenados de manera segura en tu repositorio local. Modificado significa que has modificado el archivo pero todavía no lo has confirmado a tu repositorio local. Preparado significa que has marcado un archivo modificado en su versión actual para que vaya en tu próxima confirmación.
 
 Esto nos lleva a las tres secciones principales de un proyecto de Git: el directorio de Git (Git directory), el directorio de trabajo (working directory), y el área de preparación (staging area).
 
 ![ Directorio de trabajo, área de preparación, y directorio de Git ](Ud6_img/git-estados.png)
+
+Esto es solo una introducción. Lo veremos en detalle más adelante.
 
 ## Flujos de trabajo distribuidos con git
 
@@ -42,3 +44,4 @@ Al permitir múltiples repositorios remotos, en Git es posible tener un flujo de
 Es una variante del flujo de trabajo con múltiples repositorios. Se utiliza generalmente en proyectos muy grandes, con cientos de colaboradores. Un ejemplo muy conocido es el del kernel de Linux. Unos gestores de integración se encargan de partes concretas del repositorio; y se denominan tenientes. Todos los tenientes rinden cuentas a un gestor de integración; conocido como el dictador benevolente. El repositorio del dictador benevolente es el repositorio de referencia, del que recuperan (pull) todos los colaboradores.
 
 ![ Flujo de trabajo con Dictador y Tenientes ](Ud6_img/flujo-dictador.png)
+

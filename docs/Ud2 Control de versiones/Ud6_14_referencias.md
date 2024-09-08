@@ -1,16 +1,10 @@
 ---
-title: '6.2 Sistemas de control de versiones'
+title: '6.14 Terminología y referencias'
 ---
 
-# Sistemas de control de versiones
-
-## Definición, clasificación y funcionamiento
-
-Se llama control de versiones a la gestión de los diversos cambios que se realizan sobre los elementos de algún producto o una configuración del mismo. Una versión, revisión o edición de un producto, es el estado en el que se encuentra dicho producto en un momento dado de su desarrollo o modificación. Aunque un sistema de control de versiones puede realizarse de forma manual, es muy aconsejable disponer de herramientas que faciliten esta gestión dando lugar a los llamados sistemas de control de versiones o SVC (del inglés System Version Control).
-
-Estos sistemas facilitan la administración de las distintas versiones de cada producto desarrollado, así como las posibles especializaciones realizadas (por ejemplo, para algún cliente específico). Ejemplos de este tipo de herramientas son entre otros: CVS, Subversion, SourceSafe, ClearCase, Darcs, Bazaar , Plastic SCM, Git, Mercurial, Perforce.
-
 ## Terminología
+
+Al trabajar con git haremos uso de cierta terminología común a todos los usuarios de este sistema. Aquí tienes una lista de términos que te servirán de referencia en un futuro.
 
 Repositorio ("repository")
 : El repositorio es el lugar en el que se almacenan los datos actualizados e históricos de cambios.
@@ -50,32 +44,20 @@ Fusionar, integrar, mezclar ("merge")
 - Un conjunto de archivos se bifurca, un problema que existía antes de la ramificación se trabaja en una nueva rama, y la solución se combina luego en la otra rama.
 - Se crea una rama, el código de los archivos es independiente editado, y la rama actualizada se incorpora más tarde en un único tronco unificado.
 
-## Clasificación
 
-Podemos clasificar los sistemas de control de versiones atendiendo a la arquitectura utilizada para el almacenamiento del código: locales, centralizados y distribuidos.
+# Referencias
 
-### Locales
-
-Los cambios son guardados localmente y no se comparten con nadie. Esta arquitectura es la antecesora de las dos siguientes.
-
-![Sistema de control de versiones local](Ud6_img/git-local.png)
-
-### Centralizados
-
-Existe un repositorio centralizado de todo el código, del cual es responsable un único usuario (o conjunto de ellos). Se facilitan las tareas administrativas a cambio de reducir flexibilidad, pues todas las decisiones fuertes (como crear una nueva rama) necesitan la aprobación del responsable. Algunos ejemplos son CVS y Subversion.
-
-![Sistema de control de versiones centralizado](Ud6_img/git-central.png)
-
-### Distribuidos
-
-Cada usuario tiene su propio repositorio. Los distintos repositorios pueden intercambiar y mezclar revisiones entre ellos. Es frecuente el uso de un repositorio, que está normalmente disponible, que sirve de punto de sincronización de los distintos repositorios locales. Ejemplos: Git y Mercurial.
-
-![Sistema de control de versiones distribuido](Ud6_img/git-distrib.png)
-
-#### Ventajas de sistemas distribuidos
-
-- No es necesario estar conectado para guardar cambios.
-- Posibilidad de continuar trabajando si el repositorio remoto no está accesible.
-- El repositorio central está más libre de ramas de pruebas.
-- Se necesitan menos recursos para el repositorio remoto.
-- Más flexibles al permitir gestionar cada repositorio personal como se quiera.
+- [Aula de Software Libre de la Universidad de Córdoba](https://www.uco.es/aulasoftwarelibre).
+- [Documentación oficial en inglés](http://git-scm.com/documentation).
+- [Documentación oficial en español (quizás incompleta)](http://git-scm.com/book/es).
+- [Curso de Git (inglés)](http://gitimmersion.com/lab_01.html). La mayoría de la documentación de este manual está basada en este curso.
+- [Curso interactivo de Git (inglés)](http://try.github.io/levels/1/challenges/1).
+- [Página de referencia de todas las órdenes de Git (inglés)](http://gitref.org/).
+- [Chuleta con las órdenes más usuales de Git](http://byte.kde.org/~zrusin/git/git-cheat-sheet-large.png).
+- [Gitmagic (ingles y español). Otro manual de Git](http://www-cs-students.stanford.edu/~blynn/gitmagic/intl/es/)
+- [Artículo técnico: Un modelo exitoso de ramificación en Git ](http://nvie.com/posts/a-successful-git-branching-model/).
+- [Curso detallado y gratuito sobre Git y github](https://www.udacity.com/course/how-to-use-git-and-github--ud775)
+- [Otra guia rápida de git](https://github.com/github/training-kit/blob/master/downloads/github-git-cheat-sheet.pdf)
+- [Guía de estilos según Udacity](http://udacity.github.io/git-styleguide/)
+- [Flujo de trabajo de Gitflow](https://www.atlassian.com/es/git/tutorials/comparing-workflows/gitflow-workflow)
+- [Libro Pro Git](https://git-scm.com/book/en/v2)

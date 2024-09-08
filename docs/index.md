@@ -8,12 +8,13 @@ title: Despliegue de aplicaciones web
 Apuntes y prácticas del módulo **Despliegue de aplicaciones web** de <u>2º de DAW</u>
 
 1. Introducción
-2. Arquitectura web - Implantación y admnistración de servidores web
-3. Servidores de aplicaciones
-4. Servicios de red implicados en el despliegue de aplicaciones web
-5. Control de versiones
-6. Contenedores
-7. CI/CD (Integración y despliegue continuo)
+2. Control de versiones
+3. Contenedores
+4. Arquitectura web - Implantación y admnistración de servidores web
+5. Servidores de aplicaciones
+6. Servicios de red implicados en el despliegue de aplicaciones web - FTP
+7. Servicios de red implicados en el despliegue de aplicaciones web - DNS y LDAP
+10. CI/CD (Integración y despliegue continuo)
 
 ## Tabla de versiones
 
