@@ -1,5 +1,5 @@
 ---
-title: '6.10 Flujo de trabajo en GitHub'
+title: '1.10 Flujo de trabajo en GitHub'
 ---
 
 # Flujo de trabajo en GitHub

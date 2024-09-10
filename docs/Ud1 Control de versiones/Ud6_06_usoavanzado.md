@@ -1,5 +1,5 @@
 ---
-title: '6.6 Uso avanzado de Git'
+title: '1.6 Uso avanzado de Git'
 ---
 
 # Uso avanzado de Git

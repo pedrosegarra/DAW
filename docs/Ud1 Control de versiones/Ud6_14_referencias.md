@@ -1,5 +1,5 @@
 ---
-title: '6.14 Terminología y referencias'
+title: '1.14 Terminología y referencias'
 ---
 
 ## Terminología

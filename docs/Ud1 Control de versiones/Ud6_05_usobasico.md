@@ -1,10 +1,10 @@
 ---
-title: '6.5 Uso básico de Git'
+title: '1.5 Uso básico de Git'
 ---
 
 # Uso básico de Git
 
-Vamos primero a recordar algunas cuestiones básicas de git que ya vimos en el taller inicial de este curso.
+Vamos primero a recordar algunas cuestiones básicas de git.
 
 ## Secciones principales de un repositorio `git`
 
@@ -15,7 +15,7 @@ En un repositorio `git` podemos diferenciar las siguientes secciones:
 * *Local repository*
 * *Remote repository*
 
-![](../Unidad%201/P1_4/01.png)
+![](../Ud0%20Introduccion/P1_4/01.png)
 
 Figura 1: Imagen de [Oliver Steele](http://osteele.com).
 
@@ -24,8 +24,8 @@ Figura 1: Imagen de [Oliver Steele](http://osteele.com).
 Un archivo puede estar en alguno de los siguientes estados:
 
 * Sin seguimiento (*untracked*)
-* Preparado (*staged*)
 * Modificado (*modified*)
+* Preparado (*staged*)
 * Confirmado (*commited*)
 
 El siguiente diagrama muestra en qué sección se puede encontrar cada archivo en función de su estado.

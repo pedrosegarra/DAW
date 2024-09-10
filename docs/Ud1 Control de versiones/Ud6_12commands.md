@@ -1,5 +1,5 @@
 ---
-title: '6.12 Comandos de git'
+title: '1.12 Comandos de git'
 ---
 
 # Comandos de git

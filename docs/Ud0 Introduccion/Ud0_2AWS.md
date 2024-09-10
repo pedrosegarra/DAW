@@ -1,5 +1,5 @@
 ---
-title: '1.2. Introducción a AWS Academy'
+title: '0.2. Introducción a AWS Academy'
 ---
 
 ## ¿Qué es AWS Academy?

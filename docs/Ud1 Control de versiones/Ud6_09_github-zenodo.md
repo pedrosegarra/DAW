@@ -1,5 +1,5 @@
 ---
-title: '6.9 Citar proyectos en GitHub'
+title: '1.9 Citar proyectos en GitHub'
 ---
 
 # Citar proyectos en GitHub

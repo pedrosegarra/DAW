@@ -1,5 +1,5 @@
 ---
-title: '6.2 Sistemas de control de versiones'
+title: '1.2 Sistemas de control de versiones'
 ---
 
 # Sistemas de control de versiones

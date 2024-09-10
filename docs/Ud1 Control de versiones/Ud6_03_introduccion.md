@@ -1,5 +1,5 @@
 ---
-title: '6.3 Introducción a git '
+title: '1.3 Introducción a git '
 ---
 
 # Introducción a git
@@ -12,7 +12,12 @@ title: '6.3 Introducción a git '
 
 ## Los tres estados
 
-Git tiene tres estados principales en los que se pueden encontrar tus archivos: **confirmado (committed)**, **modificado (modified)**, y **preparado (staged)**. Confirmado significa que los datos están almacenados de manera segura en tu repositorio local. Modificado significa que has modificado el archivo pero todavía no lo has confirmado a tu repositorio local. Preparado significa que has marcado un archivo modificado en su versión actual para que vaya en tu próxima confirmación.
+Git tiene tres estados principales en los que se pueden encontrar tus archivos: **confirmado (committed)**, **modificado (modified)**, y **preparado (staged)**. 
+
+* Modificado **modified** significa que has modificado el archivo pero todavía no lo has preparado ni confirmado a tu repositorio local.
+* Preparado **staged** significa que has marcado un archivo modificado en su versión actual para que vaya en tu próxima confirmación.
+* Confirmado **committed** significa que los datos están almacenados de manera segura en tu repositorio local. 
+
 
 Esto nos lleva a las tres secciones principales de un proyecto de Git: el directorio de Git (Git directory), el directorio de trabajo (working directory), y el área de preparación (staging area).
 
@@ -26,7 +31,7 @@ Hemos visto en qué consiste un entorno de control de versiones distribuido, per
 
 ### Flujo de trabajo centralizado
 
-Existe un único repositorio o punto central que guarda el código y todo el mundo sincroniza su trabajo con él. Si dos desarrolladores clonan desde el punto central, y ambos hacen cambios; tan solo el primero de ellos en enviar sus cambios de vuelta lo podrá hacer limpiamente. El segundo desarrollador deberá fusionar previamente su trabajo con el del primero, antes de enviarlo, para evitar el sobreescribir los cambios del primero
+Existe un único repositorio o punto central que guarda el código y todo el mundo sincroniza su trabajo con él. Si dos desarrolladores clonan desde el punto central, y ambos hacen cambios, tan solo el primero de ellos en enviar sus cambios de vuelta lo podrá hacer limpiamente. El segundo desarrollador deberá fusionar previamente su trabajo con el del primero, antes de enviarlo, para evitar el sobreescribir los cambios del primero
 
 ![ Flujo de trabajo centralizado ](Ud6_img/flujo-centralizado.png)
 

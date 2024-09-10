@@ -1,5 +1,5 @@
 ---
-title: '6.4 Instalación y configuración de Git'
+title: '1.4 Instalación y configuración de Git'
 ---
 
 # Instalación y configuración de Git

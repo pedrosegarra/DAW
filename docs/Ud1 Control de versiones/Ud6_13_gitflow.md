@@ -1,5 +1,5 @@
 ---
-title: '6.13 Flujo de trabajo con Git (git flow)'
+title: '1.13 Flujo de trabajo con Git (git flow)'
 ---
 
 # Flujo de trabajo con Git (git flow)
