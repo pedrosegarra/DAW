@@ -76,11 +76,14 @@ print new HolaMundo($nombre);
 Podríamos confirmar los cambios todos de golpe, pero lo haremos de uno en uno, con su comentario.
 
     $ git add lib/HolaMundo.php
+    
     $ git commit -m "Añadida la clase HolaMundo"
     [hola 6932156] Añadida la clase HolaMundo
      1 file changed, 17 insertions(+)
      create mode 100644 lib/HolaMundo.php
+    
     $ git add lib/hola.php
+    
     $ git commit -m "hola usa la clase HolaMundo"
     [hola 9862f33] hola usa la clase HolaMundo
      1 file changed, 3 insertions(+), 1 deletion(-)
@@ -89,6 +92,7 @@ Y ahora con la orden `git checkout` podemos movernos entre ramas:
 
     $ git checkout master
     Switched to branch 'master'
+    
     $ git checkout hola
     Switched to branch 'hola'
 
@@ -110,6 +114,7 @@ Este proyecto contiene el curso de introducción a GIT
 Y lo añadimos a nuestro repositorio en la rama en la que estamos:
 
     $ git add README.md
+    
     $ git commit -m "Añadido README.md"
     [master c3e65d0] Añadido README.md
      1 file changed, 3 insertions(+)
@@ -147,6 +152,7 @@ Y en esta rama ejecutamos el `git merge nombrerama` con el nombre de la rama cuy
      README.md | 3 +++
      1 file changed, 3 insertions(+)
      create mode 100644 README.md
+    
     $ git hist --all
     *   9c6ac06 2013-06-16 | Merge branch 'master' into hola (HEAD -> hola) [Sergio Gómez]
     |\
@@ -184,9 +190,11 @@ $nombre = trim(fgets(STDIN));
 Y guardamos los cambios:
 
     $ git add lib/hola.php
+    
     $ git commit -m "Programa interactivo"
     [master 9c85275] Programa interactivo
      1 file changed, 2 insertions(+), 2 deletions(-)
+    
     $ git hist --all
 
 Comprueba el resultado
@@ -213,6 +221,7 @@ Volvemos a la rama hola y fusionamos. Recuerda que hemos modificado hola.php en 
 
     $ git checkout hola
     Switched to branch 'hola'
+    
     $ git merge master
     Auto-merging lib/hola.php
     CONFLICT (content): Merge conflict in lib/hola.php

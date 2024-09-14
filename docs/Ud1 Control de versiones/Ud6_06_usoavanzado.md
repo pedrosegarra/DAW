@@ -43,6 +43,7 @@ $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 
 Y comprobamos:
 
+```bash
     $ git status
     On branch master
     Changes not staged for commit:
@@ -52,6 +53,7 @@ Y comprobamos:
        modified:   hola.php
     
     no changes added to commit (use "git add" and/or "git commit -a")
+```
 
 Tenemos hola.php en Working Directory y nada en Staging Area.
 
@@ -70,18 +72,22 @@ Tenemos hola.php en Working Directory y nada en Staging Area.
        +                +                +
 ```
 
-El mismo Git nos indica que debemos hacer para añadir los cambios o para deshacerlos:
+El mismo Git nos indica que debemos hacer para añadir los cambios o para deshacerlos. En este caso los desharemos:
 
+```bash
     $ git restore hola.php
+    
     $ git status
     On branch master
     nothing to commit, working tree clean
+    
     $ cat hola.php
     <?php
     // El nombre por defecto es Mundo
     $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
     @print "Hola, {$nombre}\n";
     ?>
+```
 
 ### Deshaciendo cambios antes del commit
 
@@ -98,13 +104,16 @@ $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 
 Y lo añadimos al _staging_
 
+```bash
     $ git add hola.php
+
     $ git status
     On branch master
     Changes to be committed:
       (use "git restore --staged <file>..." to unstage)
     
        modified:   hola.php
+```
 
 Ahora tenemos una nueva versión de hola.php en Staging Area.
 
@@ -126,7 +135,9 @@ Ahora tenemos una nueva versión de hola.php en Staging Area.
 
 De nuevo, Git nos indica qué debemos hacer para deshacer el cambio. Primero lo sacamos del Staging Area.
 
+```bash
     $ git restore --staged hola.php
+    
     $ git status
     On branch master
     Changes not staged for commit:
@@ -136,6 +147,7 @@ De nuevo, Git nos indica qué debemos hacer para deshacer el cambio. Primero lo 
        modified:   hola.php
     
     no changes added to commit (use "git add" and/or "git commit -a")
+```
 
 Vuelve a estar en Working Directory.
 
@@ -176,16 +188,28 @@ $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 
 Pero ahora sí hacemos commit:
 
+```bash
     $ git add hola.php
+
     $ git commit -m "Ups... este commit está mal."
     master 5a5d067] Ups... este commit está mal
      1 file changed, 1 insertion(+), 1 deletion(-)
+```
 
 Bien, una vez confirmado el cambio, vamos a deshacer el cambio con la orden `git revert`:
 
+```bash
     $ git revert HEAD --no-edit
     [master 817407b] Revert "Ups... este commit está mal"
     1 file changed, 1 insertion(+), 1 deletion(-)
+```
+
+Explicación del comando:
+
+* git revert HEAD: Reviertes el último commit (el que apunta HEAD). Esto crea un nuevo commit que deshace los cambios realizados en ese commit.
+* --no-edit: Este parámetro le indica a Git que use el mensaje de commit por defecto que genera automáticamente (algo como "Revert 'mensaje original del commit'") y no abra el editor para modificarlo.
+
+```bash    
     $ git hist
     * 817407b 2013-06-16 | Revert "Ups... este commit está mal" (HEAD -> master) [Sergio Gómez]
     * 5a5d067 2013-06-16 | Ups... este commit está mal [Sergio Gómez]
@@ -193,18 +217,23 @@ Bien, una vez confirmado el cambio, vamos a deshacer el cambio con la orden `git
     * 3283e0d 2013-06-16 | Se añade un parámetro por defecto (tag: v1-beta) [Sergio Gómez]
     * efc252e 2013-06-16 | Parametrización del programa [Sergio Gómez]
     * e19f2c1 2013-06-16 | Creación del proyecto [Sergio Gómez]
+```
 
 ### Borrar commits de una rama
 
 El anterior apartado revierte un commit, pero deja huella en el historial de cambios. Para hacer que no aparezca hay que usar la orden `git reset`.
 
+```bash
     $ git reset --hard v1
     HEAD is now at fd4da94 Se añade un comentario al cambio del valor por defecto
+    
     $ git hist
     * fd4da94 2013-06-16 | Se añade un comentario al cambio del valor por defecto (HEAD -> master, tag: v1) [Sergio Góme
     * 3283e0d 2013-06-16 | Se añade un parámetro por defecto (tag: v1-beta) [Sergio Gómez]
     * efc252e 2013-06-16 | Parametrización del programa [Sergio Gómez]
     * e19f2c1 2013-06-16 | Creación del proyecto [Sergio Gómez]
+```
+
 
 El resto de cambios no se han borrado (aún), simplemente no están accesibles porque git no sabe como referenciarlos. Si sabemos su hash podemos acceder aún a ellos. Pasado un tiempo, eventualmente Git tiene un recolector de basura que los borrará. Se puede evitar etiquetando el estado final.
 
@@ -252,22 +281,24 @@ $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 
 Y en esta ocasión usamos `commit --amend` que nos permite modificar el último estado confirmado, sustituyéndolo por el estado actual:
 
+```bash
     $ git add hola.php
+    
     $ git commit --amend -m "Añadido el autor del programa y su email"
     [master 96a39df] Añadido el autor del programa y su email
      1 file changed, 1 insertion(+)
+    
     $ git hist
     * 96a39df 2013-06-16 | Añadido el autor del programa y su email (HEAD -> master) [Sergio Gómez]
     * fd4da94 2013-06-16 | Se añade un comentario al cambio del valor por defecto (tag: v1) [Sergio Gómez]
     * 3283e0d 2013-06-16 | Se añade un parámetro por defecto (tag: v1-beta) [Sergio Gómez]
     * efc252e 2013-06-16 | Parametrización del programa [Sergio Gómez]
     * e19f2c1 2013-06-16 | Creación del proyecto [Sergio Gómez]
+```
 
 !!! danger
 
-    Nunca modifiques un _commit_ que ya hayas sincronizado con otro repositorio o
-    que hayas recibido de él. Estarías alterando la historia de cambios y provocarías
-    problemas de sincronización.
+    Nunca modifiques un _commit_ que ya hayas sincronizado con otro repositorio o que hayas recibido de él. Estarías alterando la historia de cambios y provocarías problemas de sincronización.
 
 ## Moviendo y borrando archivos
 
@@ -275,28 +306,38 @@ Y en esta ocasión usamos `commit --amend` que nos permite modificar el último 
 
 Para mover archivos usaremos la orden `git mv`:
 
+```bash
     $ mkdir lib
+    
     $ git mv hola.php lib
+    
     $ git status
     On branch master
     Changes to be committed:
       (use "git reset HEAD <file>..." to unstage)
     
       renamed:    hola.php -> lib/hola.php
-    
+```    
 
 ### Mover y borrar archivos.
 
 Podíamos haber hecho el paso anterior con la órden del sistema _mv_ y el resultado hubiera sido el mismo. Lo siguiente es a modo de ejemplo y no es necesario que lo ejecutes:
 
+```bash
     $ mkdir lib
     $ mv hola.php lib
     $ git add lib/hola.php
     $ git rm hola.php
+```
 
 Y, ahora sí, ya podemos guardar los cambios:
 
+```bash
     $ git commit -m "Movido hola.php a lib."
     [master 8c2a509] Movido hola.php a lib.
      1 file changed, 0 insertions(+), 0 deletions(-)
      rename hola.php => lib/hola.php (100%)
+```
+
+!!!info
+    Hasta aquí hemos aprendido los aspectos básicos de git trabajando en entorno local. Hemos instalado git, configurado sus parámetros globales, creado un proyecto y aprendido los 3 estados en los que puede estar un archivo. También hemos aprendido los comandos para incorporar cambios a la zona "staged" y a "working directory". En las próximas secciones aprenderemos a trabajar con ramas y a utilizar un repositorio compartido en GitHub

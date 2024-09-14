@@ -77,7 +77,9 @@ echo "Hola Mundo\n";
 Para crear un nuevo repositorio se usa la orden `git init`
 
     $ git init
-    Initialized empty Git repository in /home/cc0gobas/git/curso-de-git/.git/
+    Initialized empty Git repository in /home/admin/curso-de-git/.git/
+
+Comprueba con un `ls -la` que hay un nuevo directorio oculto .git donde git guardará toda la información que necesite de forma transparente al usuario.
 
 Al inicializar nuestro proyecto, el archivo `hola.php` estará en el Workspace o Working Directory.
 
@@ -98,7 +100,11 @@ Vamos a almacenar el archivo que hemos creado en el repositorio para poder traba
 
     $ git add hola.php
 
-Al ejecutar el git add, el archivo pasará a la "Staging area" o área de preparación.
+Al ejecutar el git add, el archivo pasará a la "Staging area" o área de preparación. Podemos ejecutar el siguiente comando tras cada orden para ir comprobando el estado del proyecto:
+
+```bash
+    $ git status
+```
 
 ```
 +-------------+  +-------------+  +-------------+  
@@ -113,7 +119,7 @@ Al ejecutar el git add, el archivo pasará a la "Staging area" o área de prepar
 
     $ git commit -m "Creación del proyecto"
     [master (root-commit) e19f2c1] Creación del proyecto
-     1 file changed, 2 insertions(+)
+     1 file changed, 3 insertions(+)
      create mode 100644 hola.php
 
 El archivo pasará al "Local Ropository" y se le asignará un hash o código de inserción.
@@ -147,6 +153,7 @@ Si modificamos el archivo `hola.php`:
 
 Y volvemos a comprobar el estado del repositorio:
 
+```bash
     $ git status
     On branch master
     Changes not staged for commit:
@@ -156,6 +163,7 @@ Y volvemos a comprobar el estado del repositorio:
        modified:   hola.php
 
     no changes added to commit (use "git add" and/or "git commit -a")
+```
 
 Nos indica que `hola.php` vuelve a estar en el working directory, porque lo hemos modificado. Y nos dice que podemos usar `git add hola.php` para volverlo a pasar a la "Staging Area" o bien `git restore hola.php` para descartar los cambios en el Working Directory y recuperar la version anterior en "Local Repository". En nuestro esquema veremos más arriba las versiones más recientes y más abajo las más antiguas, que es como nos lo mostrarán los comandos git para ver históricos. Es como una pila en la que la nueva versión queda sobre las anteriores.
 
@@ -176,6 +184,7 @@ Nos indica que `hola.php` vuelve a estar en el working directory, porque lo hemo
 
 Con la orden `git add` indicamos a git que prepare los cambios para que sean almacenados.
 
+```bash
     $ git add hola.php
     $ git status
     On branch master
@@ -183,7 +192,8 @@ Con la orden `git add` indicamos a git que prepare los cambios para que sean alm
       (use "git restore --staged <file>..." to unstage)
     
       modified:   hola.php
-    
+```
+
 Hemos vuelto a pasar `hola.php` a la "Staging area"
 
 ```
@@ -203,12 +213,14 @@ Hemos vuelto a pasar `hola.php` a la "Staging area"
 
 Con la orden `git commit` confirmamos los cambios definitivamente, lo que hace que se guarden permanentemente en nuestro repositorio.
 
+```bash
     $ git commit -m "Parametrización del programa"
     [master efc252e] Parametrización del programa
      1 file changed, 1 insertion(+), 1 deletion(-)
     $ git status
     On branch master
     nothing to commit, working tree clean
+```
 
 El archivo pasará al "Local Ropository" con un nuevo hash.
 
@@ -283,6 +295,7 @@ $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
 
 Y vemos el estado en el que está el repositorio
 
+```bash
     $ git status
     On branch master
     Changes to be committed:
@@ -295,7 +308,8 @@ Y vemos el estado en el que está el repositorio
       (use "git restore <file>..." to discard changes in working directory)
     
       modified:   hola.php
-    
+```
+
 Podemos ver como aparecen el archivo `hola.php` dos veces. El primero está preparado
 para ser confirmado y está almacenado en la "Staging Area" y es el que hicimos el add en primer lugar. El segundo indica
 que el archivo `hola.php` está modificado otra vez en la zona de trabajo "Working Directory". Como vemos en el gráfico, el mismo archivo está en 2 zonas distintas en este momento, además de las 2 versiones anteriores que hicimos commit.
@@ -321,9 +335,11 @@ que el archivo `hola.php` está modificado otra vez en la zona de trabajo "Worki
 
 Almacenamos los cambios por separado:
 
+```bash
     $ git commit -m "Se añade un parámetro por defecto"
     [master 3283e0d] Se añade un parámetro por defecto
      1 file changed, 2 insertions(+), 1 deletion(-)
+    
     $ git status
     On branch master
     Changes not staged for commit:
@@ -333,6 +349,7 @@ Almacenamos los cambios por separado:
        modified:   hola.php
     
     no changes added to commit (use "git add" and/or "git commit -a")
+```
 
 Con el commit hemos pasado el hola.php que estaba en Staging Area al Local Repository quedando en el "Working Directory" el último que habíamos editado.
 
@@ -352,6 +369,7 @@ Con el commit hemos pasado el hola.php que estaba en Staging Area al Local Repos
 
 Si ahora hacemos un git add:
 
+```bash
     $ git add .
     $ git status
     On branch master
@@ -359,7 +377,7 @@ Si ahora hacemos un git add:
       (use "git restore --staged <file>..." to unstage)
     
       modified:   hola.php
-    
+```    
 
 El archivo en Working Directory pasa a Staging Area.
 
@@ -379,9 +397,11 @@ El archivo en Working Directory pasa a Staging Area.
 
 Y si ahora hacemos un commit.
 
+```bash
     $ git commit -m "Se añade un comentario al cambio del valor por defecto"
     [master fd4da94] Se añade un comentario al cambio del valor por defecto
      1 file changed, 1 insertion(+)
+```
 
 ```
 +-------------+  +-------------+  +-------------+  
@@ -491,6 +511,7 @@ Thumbs.db
 
 Con la orden `git log` podemos ver todos los cambios que hemos hecho. Antes de nada vuelve al directorio `curso-de-git` en el que estábamos trabajando:
 
+```bash
     $ git log
     commit fd4da946326fbe8b24e89282ad25a71721bf40f6  (HEAD -> master)
     Author: Sergio Gómez <sergio@uco.es>
@@ -515,6 +536,7 @@ Con la orden `git log` podemos ver todos los cambios que hemos hecho. Antes de n
     Date:   Sun Jun 16 11:55:23 2013 +0200
 
         Creación del proyecto
+```
 
 Para salir escribe `q`.
 
@@ -536,27 +558,33 @@ Recuerda los distintos hash que se habían generado cada vez que hacíamos un co
 
 También es posible ver versiones abreviadas o limitadas, dependiendo de los parámetros:
 
+```bash
     $ git log --oneline
     fd4da94 (HEAD -> master) Se añade un comentario al cambio del valor por defecto
     3283e0d Se añade un parámetro por defecto
     efc252e Parametrización del programa
     e19f2c1 Creación del proyecto
+```
 
 Prueba estas otras opciones y comprobarás lo que hace cada una.
 
+```bash
     git log --oneline --max-count=2
     git log --oneline --since='5 minutes ago'
     git log --oneline --until='5 minutes ago'
     git log --oneline --author=sergio   # Cambia sergio por tu nombre de usuario
     git log --oneline --all
+```
 
 Una versión muy útil de `git log` es la siguiente, pues nos permite ver en que lugares está master y HEAD, entre otras cosas:
 
+```bash
     $ git log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
     * fd4da94 2013-06-16 | Se añade un comentario al cambio del valor por defecto (HEAD, master) [Sergio Gómez]
     * 3283e0d 2013-06-16 | Se añade un parámetro por defecto [Sergio Gómez]
     * efc252e 2013-06-16 | Parametrización del programa [Sergio Gómez]
     * e19f2c1 2013-06-16 | Creación del proyecto [Sergio Gómez]
+```
 
 ### Crear alias
 
@@ -582,6 +610,7 @@ Ahora basta con ejecutar:
 
 Cada cambio es etiquetado por un hash, para poder regresar a ese momento del estado del proyecto se usa la orden `git checkout`. Prueba con el hash de tu primer commit.
 
+```bash
     $ git checkout e19f2c1
     Note: switching to 'e19f2c1'.
 
@@ -601,7 +630,7 @@ Cada cambio es etiquetado por un hash, para poder regresar a ese momento del est
     urn off this advice by setting config variable advice.detachedHead to false
 
     HEAD is now at e19f2c1 Parametrización del programa     
-    
+```
 
 Hemos vuelto a aquí:
 
@@ -616,17 +645,25 @@ Hemos vuelto a aquí:
        +                +                +
 ```
 
-El aviso que nos sale nos indica que estamos en un estado donde no trabajamos en ninguna rama concreta. Eso significa que los cambios que hagamos podrían "perderse" porque si no son guardados en una nueva rama, en principio no podríamos volver a recuperarlos. Hay que pensar que Git es como un árbol donde un nodo tiene información de su nodo padre, no de sus nodos hijos, con lo que siempre necesitaríamos información de dónde se encuentran los nodos finales o de otra manera no podríamos acceder a ellos.
+El aviso que nos sale nos indica que estamos en un estado donde no trabajamos en ninguna rama concreta. Eso significa que los cambios que hagamos podrían "perderse" porque si no son guardados en una nueva rama, en principio no podríamos volver a recuperarlos. Hay que pensar que Git es como un árbol donde un nodo tiene información de su nodo padre, no de sus nodos hijos, con lo que siempre necesitaríamos información de dónde se encuentran los nodos finales o de otra manera no podríamos acceder a ellos. Vamos a comprobarlo.
+
+Edita `hola.php` y añade un comentario. Haz un commit y comentalo como "Prueba en detached HEAD". Después haz un log para comprobar la rama.
 
 Antes de continuar desharemos con 
 
+```bash
+$ git switch -
 ```
-git switch -
-```
+
+Comprueba que todos los cambios que hiciste en el "detached HEAD" se han perdido.
 
 ### Volver a la última versión de la rama master.
 
-Usamos `git checkout` indicando el nombre de la rama:
+Ya hemos tratado el concepto de HEAD, pero no lo hemos definido formalmente. HEAD hace referencia al puntero que señala a la referencia actual de la rama activa o commit en el que estás trabajando. En otras palabras, es un indicador que te dice en qué commit estás situado en ese momento.
+
+Vamos a ver otra forma de llevar nuevamente el HEAD a nuestro primer commit, como hicimos en el punto anterior. ¿Recuerdas cómo lo hicimos?
+
+A continuación usamos `git checkout` indicando el nombre de la rama:
 
     $ git checkout master
     Previous HEAD position was e19f2c1... Creación del proyecto
@@ -689,10 +726,14 @@ Para borrar etiquetas:
 
     git tag -d nombre_etiqueta
 
+De momento no borres las que hemos creado.
+
+
 ### Visualizar cambios
 
 Para ver los cambios que se han realizado en el código usamos la orden `git diff`. La orden sin especificar nada más, mostrará los cambios que no han sido añadidos aún, es decir, todos los cambios que se han hecho antes de usar la orden `git add`. Después se puede indicar un parámetro y dará los cambios entre la versión indicada y el estado actual. O para comparar dos versiones entre sí, se indica la más antigua y la más nueva. Ejemplo:
 
+```bash
     $ git diff v1-beta v1
     diff --git a/hola.php b/hola.php
     index a31e01f..25a35c0 100644
@@ -704,6 +745,7 @@ Para ver los cambios que se han realizado en el código usamos la orden `git dif
      $nombre = isset($argv[1]) ? $argv[1] : "Mundo";
      @print "Hola, {$nombre}\n";
      ?>
+```
 
 La salida del comando git diff v1-beta v1 muestra las diferencias entre dos puntos en la historia del repositorio de Git, específicamente entre las versiones "v1-beta" y "v1". Aquí está el desglose de la salida:
 
@@ -726,3 +768,5 @@ La salida del comando git diff v1-beta v1 muestra las diferencias entre dos punt
 * @print "Hola, {$nombre}\n";: Esta línea está presente tanto en la versión original como en la versión modificada.
 
 En resumen, la salida indica que se ha agregado un comentario en la línea 2 de la versión "v1", y la diferencia en el contenido de la línea 3 se debe a la adición del comentario en la versión "v1".
+
+No borres lo que hemos hecho hasta aquí. Seguiremos con este ejemplo en el siguiente apartado.
