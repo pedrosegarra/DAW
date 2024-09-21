@@ -4,7 +4,14 @@ title: '1.8 Github'
 
 # Github
 
-Github es lo que se denomina una forja, un repositorio de proyectos que usan Git como sistema de control de versiones. Es la forja más popular, ya que alberga más de 10 millones de repositorios. Debe su popularidad a sus funcionalidades sociales, principalmente dos: la posibilidad de hacer forks de otros proyectos y la posibilidad de cooperar aportando código para arreglar errores o mejorar el código. Si bien, no es que fuera una novedad, sí lo es lo fácil que resulta hacerlo. A raíz de este proyecto han surgido otros como _Gitorius_ o _Gitlab_, pero _Github_ sigue siendo el más popular y el que tiene mejores y mayores características. algunas de estas son:
+![](Ud6_img/git_github.png)
+
+Github es lo que se denomina una **forja**, un repositorio de proyectos que usan Git como sistema de control de versiones. Es la forja más popular, ya que alberga más de 10 millones de repositorios. Debe su popularidad a sus funcionalidades sociales, principalmente dos: 
+
+* la posibilidad de hacer forks de otros proyectos y 
+* la posibilidad de cooperar aportando código para arreglar errores o mejorar el código. 
+
+Si bien, no es que fuera una novedad, sí lo es lo fácil que resulta hacerlo. A raíz de este proyecto han surgido otros como _Gitorius_ o _Gitlab_, pero _Github_ sigue siendo el más popular y el que tiene mejores y mayores características. Algunas de estas son:
 
 - Un wiki para documentar el proyecto, que usa MarkDown como lenguaje de marca.
 - Un portal web para cada proyecto.
@@ -21,7 +28,7 @@ Muchos servidores Git utilizan la autentificación a través de claves públicas
 
 Para crear una nueva clave usamos la siguiente orden:
 
-    $ ssh-keygen -t rsa -C "Cuenta Thinstation"
+    $ ssh-keygen -t rsa -C "Cuenta GitHub"
 
 !!! warning
 
@@ -63,17 +70,22 @@ Ahora tenemos que designar un nombre para nuestro repositorio, por ejemplo: '_ta
 
 Nada más crear el repositorio nos saldrá una pantalla con instrucciones precisas de como proceder a continuación.
 
-Básicamente podemos partir de tres situaciones:
+Básicamente podemos partir de 3 situaciones:
 
-1. Todavía no hemos creado ningún repositorio en nuestro equipo.
-1. Ya tenemos un repositorio creado y queremos sincronizarlo con Github.
-1. Queremos importar un repositorio de otro sistema de control de versiones distinto.
+1. Quick setup - olvidamos por ahora
+2. Todavía no hemos creado ningún repositorio en nuestro equipo. (…or create a new repository on the command line)
+3. Ya tenemos un repositorio creado y queremos sincronizarlo con Github. (…or push an existing repository from the command line)
 
-Veremos una pantalla similar a esta. Los comandos pueden variar ligeramente si existe una nueva versión de git. Fíjate en los comandos que a ti te aparecen.
+
+
+!!!warning
+    Veremos una pantalla similar a esta. Los comandos pueden variar ligeramente si existe una nueva versión de git. Fíjate en los comandos que a ti te aparecen.
+    
+    En el momento de revisar estas notas la última de las opciones que se ve en la captura ya no aparece en GitHub
 
 ![Quick setup](Ud6_img//github-quicksetup.png)
 
-Nuestra situación es la segunda, así que nos aseguramos de que hemos elegido SSH como protocolo. A continuación pulsamos el icono del portapapeles y ejecutamos las dos ordenes que nos indica la web en nuestro terminal.
+Nuestra situación es la tercera, ya tenemos un repositorio creado y vamos a sincronizarlo con github así que seguiremos las instrucciones de la apartado "…or push an existing repository from the command line" desde la consola de nuestro equipo y dentro del directorio `curso-de-git` que venimos utilizando en estas notas.
 
     $ git remote add origin git@github.com:sgomez/taller-de-git.git
     $ git branch -M main
@@ -105,7 +117,7 @@ En la página principal de nuestro proyecto podemos ver un botón que indica `Cl
 Si la pulsamos nos da, de nuevo, la opción de elegir entre clonar con _ssh_ o _https_.
 Recordad que si estáis en otro equipo y queréis seguir utilizando ssh deberéis
 generar otra para de claves privada/pública como hicimos en la sección de
-_[Aspectos básicos de Git](curso-de-git/git/#tu-clave-publicaprivada)_ y instalarla
+_[Tu clave pública/privada](#tu-clave-publicaprivada)_ y instalarla
 en nuestro perfil de Github, como vimos anteriormente.
 
 Para clonar nuestro repositorio y poder trabajar con él todo lo que debemos hacer es
@@ -136,7 +148,7 @@ $ git hist --all
 ```
 
 Aparece que hay una nueva rama llamada `origin/main`. Esta rama indica el estado de sincronización
-de nuestro repositorio con un repositorio remoto llamado _origin_. En este caso el de _Github_.
+de nuestro repositorio con un repositorio remoto llamado _origin/main   _. En este caso el de _Github_.
 
 !!! info
 
@@ -304,7 +316,7 @@ que la rama `main` local.
     `git fetch` trae la información de los cambios realizados en GitHub, pero no importa directamente los cambios en local
 
 Ahora necesitamos incorporar los cambios de la rama remota en la local. La forma de hacerlo
-lo vimos en el [capítulo anterior](Ud6_07_ramas.md/#mezclar-ramas) usando `git merge` o `git rebase`.
+lo vimos en el [capítulo de ramas](../Ud1%20Control%20de%20versiones/T07_ramas.md/#mezclar-ramas) usando `git merge` o `git rebase`.
 
 Habitualmente se usa `git merge`:
 
@@ -542,3 +554,13 @@ Podría darse el caso de que al sacar los cambios de la pila hubiera algún
 conflicto. En ese caso actuamos como con el caso de _merge_ o _rebase_.
 
 De nuevo este tipo de problemas no deben suceder si nos acostumbramos a trabajar en ramas.
+
+## Practicar
+
+Llegados a este punto es buen momento para empezar a practicar solos. Realiza las siguientes prácticas antes de continuar con los contenidos del tema:
+
+* P1.1 Introducción a git y GitHub
+* P1.2 Git Trabajando con ramas y uniones
+* P1.3 Ejercicios Git y GitHub
+* P1.4 Ejercicios Git y GitHub II
+* P1.5 Git avanzado - Aprendiendo branching

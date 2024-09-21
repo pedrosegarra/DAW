@@ -1,5 +1,5 @@
 ---
-title: '1.9 Citar proyectos en GitHub'
+title: '1.12 Citar proyectos en GitHub'
 ---
 
 # Citar proyectos en GitHub
@@ -40,7 +40,7 @@ En primer lugar ve al desplegable, arriba a la derecha, despliega y selecciona G
 
 ![zenodo](Ud6_img/zenodo01.png)
 
-Para habilitar esta funcionalidad, simplemente haremo clic en el botón que está junto a cada uno de los repositorios que queremos archivar.
+Para habilitar esta funcionalidad, simplemente haremos clic en el botón que está junto a cada uno de los repositorios que queremos archivar.
 
 !!! important
 

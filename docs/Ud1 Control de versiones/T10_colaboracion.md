@@ -1,5 +1,5 @@
 ---
-title: '1.11 Github avanzado'
+title: '1.10 Colaboración en GitHub'
 ---
 
 # Github avanzado
@@ -14,10 +14,10 @@ Nos vamos a la web del proyecto en el que queremos colaborar. En este caso el pr
 
 Una vez se termine de clonar el repositorio, nos encontraremos con el espacio de trabajo del mismo:
 
-- En la parte superior información sobre los commits, ramas, etiquetas, etc.
-- Justo debajo un explorador de archivos.
-- En la parte derecha un selector para cambiar de contexto entre: explorador de código, peticiones de colaboración (pull request), wiki, configuración, etc.
-- Justo abajo a la derecha información sobre como clonar localmente o descargar un proyecto.
+- Arriba del todo un menú para cambiar de contexto entre: explorador de código, peticiones de colaboración (pull request), wiki, configuración, etc.
+- Un explorador de archivos con los archivos del proyecto.
+- Justo encima información sobre los commits, ramas, etiquetas, etc.
+- Un botón verde con información sobre como clonar localmente o descargar un proyecto.
 
 ![Espacio de trabajo](Ud6_img//github-main.png)
 
@@ -94,8 +94,7 @@ Recordemos que _fetch_ solo trae los cambios que existan en el repositorio remot
 Vamos a crear una nueva funcionalidad: vamos a añadir una licencia de uso. Para ello preferentemente crearemos una nueva rama.
 
     $ git checkout -b add-license
-    $ echo "LICENCIA MIT" > LICESE
-    # el error es intencionado
+    $ echo "LICENCIA MIT" > LICESE    # el error es intencionado
     $ git add LICESE
     $ git commit -m "Archivo de licencia de uso"
 
@@ -104,8 +103,7 @@ En principio habría que probar que todo funciona bien y entonces integraremos e
     $ git checkout master
     $ git merge add-license --no-ff
 
-    $ git push --set-upstream origin add-license
-    # Enviamos la rama a nuestro repositorio origin
+    $ git push --set-upstream origin add-license    # Enviamos la rama a nuestro repositorio origin
 
 Si volvemos a Github, veremos que nos avisa de que hemos subido una nueva rama y si queremos crear un pull request.
 

@@ -15,7 +15,7 @@ En un repositorio `git` podemos diferenciar las siguientes secciones:
 * *Local repository*
 * *Remote repository*
 
-![](../Ud0%20Introduccion/P1_4/01.png)
+![](P1/01.png)
 
 Figura 1: Imagen de [Oliver Steele](http://osteele.com).
 

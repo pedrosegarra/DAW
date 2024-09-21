@@ -1,5 +1,5 @@
 ---
-title: '1.10 Flujo de trabajo en GitHub'
+title: '1.9 Flujo de trabajo en GitHub'
 ---
 
 # Flujo de trabajo en GitHub
@@ -24,6 +24,8 @@ Una vez creado, al mismo se le asignará un número.
 
     Vamos a crear una incidencia llamada "Crear archivo de autores", donde indiquemos que vamos a crear un archivo `AUTHORS.md` con
     la lista de desarrolladores del proyecto.
+
+    ![Nueva Issue](Ud6_img//github-issues-new2.png)
 
 ## Paso 1. Crear una rama
 
@@ -101,7 +103,7 @@ Ahora la rama ya se ha subido y nos informa, además, de que podemos crear un _P
     Un pull request (también conocido como "PR" en la jerga de desarrollo) es una función que facilita la colaboración en proyectos de Git, especialmente en plataformas como GitHub, GitLab o Bitbucket. Un pull request es una solicitud que un desarrollador hace para que los cambios que ha realizado en una rama de su repositorio se fusionen con otra rama, generalmente con la rama principal (como master o main).
 
 
-Aquí podemos informar de en qué consiste la rama que estamos enviando. Si ya tenemos una _issue_ abierta, no es necesario repetir la misma información. Podemos hacer referencia con el siguiente texto:
+Aquí podemos informar de en qué consiste la rama que estamos enviando. Si ya tenemos una _issue_ abierta, no es necesario repetir la misma información. Podemos hacer referencia con el siguiente texto en el contenido (no en el título):
 
     Closes #1
 
@@ -110,6 +112,8 @@ Esto lo que le indica a GitHub que esta PR cierra el _issues_ número 1. Cuando 
 Lo hacemos y le damos a crear.
 
 ![Nuevo Pull Request](Ud6_img//github-flow-pr-created.png)
+
+Ahora podríamos hacer ya el merge con nuestra rama master, pero vamos a esperar un poco y la haremos más adelante.
 
 ## Paso 2. Crear commits
 
