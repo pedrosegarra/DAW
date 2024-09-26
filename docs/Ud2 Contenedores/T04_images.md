@@ -1,5 +1,5 @@
 ---
-title: '7.4 Imágenes'
+title: '4 Imágenes'
 ---
 
 # Imágenes

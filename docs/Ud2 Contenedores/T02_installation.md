@@ -1,5 +1,5 @@
 ---
-title: '7.2 Instalación'
+title: '2 Instalación'
 ---
 
 # Instalación

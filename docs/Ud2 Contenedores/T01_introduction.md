@@ -1,8 +1,10 @@
 ---
-title: '7.1 Introducción'
+title: '1 Introducción'
 ---
 
 # Introducción
+
+![Introducción a los contenedores y a Docker](Ud7_img/DockerLogo.png)
 
 En esta unidad, realizaremos una introducción al concepto de contenedores. Nos centraremos en contenedores Linux y, en concreto, en la tecnología de Docker.
 

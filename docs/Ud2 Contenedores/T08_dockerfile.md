@@ -1,5 +1,5 @@
 ---
-title: '7.8 Aplicaciones en Docker'
+title: '8 Aplicaciones en Docker'
 ---
 
 # Crear imágenes propias

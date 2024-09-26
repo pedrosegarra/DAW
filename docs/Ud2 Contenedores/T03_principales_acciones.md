@@ -1,5 +1,5 @@
 ---
-title: '7.3 Principales acciones con Docker'
+title: '3 Principales acciones con Docker'
 ---
 
 # Principales acciones con Docker
