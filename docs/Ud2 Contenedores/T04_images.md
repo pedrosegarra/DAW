@@ -26,6 +26,10 @@ Una vez finalices la parte teórica prueba a realizar estas dos prácticas para 
 
 [Caso práctico 02 - Apache 2 con PHP desde Alpine](Ud7_img/Docker04_5CasoPractico03.pdf)
 
+!!! warning
+    Esta práctica despliega un servidor web APACHE con Php. Todavía no hemos visto el tema de servidores web así que no te preocupes por los detalles referentes al servidor web. Lo importante de esta práctica es ver cómo usa los distintos comandos en el Dockerfile ADD, RUN, EXPOSE... Lo que va detrás no es necesario que lo entiendas ahora
+ 
+
 En esta práctica, en el punto 2 veréis que el Dockerfile contiene la línea "ADD ./start.sh /start.sh". Tenéis que crear en el mismo directorio donde está el Dockerfile un archivo `start.sh` con este contenido:
 
     #/bin/sh
