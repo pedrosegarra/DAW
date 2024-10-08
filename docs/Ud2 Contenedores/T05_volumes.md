@@ -60,6 +60,10 @@ Como todos los objetos de _Docker_, los volúmenes también pueden ser borrados,
 
 Para borrar un contenedor usaremos `docker volume rm` y el nombre del volumen.
 
+```console
+$ docker volume rm wordpress-db
+```
+
 ## Para saber más
 
 Se puede profundizar mucho más en el tema de volúmenes en Docker, pero para el propósito de nuestro curso es suficiente con lo visto hasta aquí. Si quieres profundizar más en el tema, así como aprender cómo trata Docker el "Networking" puedes consultar este documento.

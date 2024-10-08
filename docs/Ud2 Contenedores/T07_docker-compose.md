@@ -1,5 +1,5 @@
 ---
-title: '7 Levantar un WordPress con Docker Compose'
+title: '7 Docker Compose'
 ---
 
 # Levantar un WordPress con Docker Compose
@@ -16,7 +16,7 @@ Para esta parte vamos a detener y borrar lo que hemos creado:
     ```sh
     docker container stop wordpress wordpress-db
     docker container rm wordpress wordpress-db
-    docker volume rm wordpress-db
+    docker volume rm vol-wordpress-db
     sudo rm -R -f target/*
     ```
 ## Docker Compose
