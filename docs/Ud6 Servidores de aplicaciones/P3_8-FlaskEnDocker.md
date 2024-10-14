@@ -1,16 +1,19 @@
 ---
-title: '8 Aplicaciones en Docker'
+title: 'Aplicación Python con Flask en Docker'
 ---
 
 # Crear imágenes propias
 
-Ya hemos visto como usar imágenes de terceros para crear aplicaciones y servicios. Y en el capítulo 7.4 vimos cómo crear imágenes propias usando `docker build` y el fichero `Dockerfile`. Pero, ¿y si queremos hacer una imagen de nuestra aplicación para distribuirla?
+Ya hemos visto como usar imágenes de terceros para crear aplicaciones y servicios. Y en el capítulo 4 vimos cómo crear imágenes propias usando `docker build` y el fichero `Dockerfile`. Pero, ¿y si queremos hacer una imagen de nuestra aplicación para distribuirla?
 
 Vamos primero a recordar brevemente el proceso de creación de una imagen propia sobre la que desarrollaremos nuestra aplicación. Aunque podríamos hacerla partiendo de cero, es un esfuerzo que no tiene sentido. Existe ya imágenes base para crear las nuestras y es mucho más fácil crear una imagen basándose en otra que hacerlo todo nosotros.
 
 Podemos partir de una imagen base que parte de un lenguaje de programación (_python_, _php_) o de alguna distribución (_ubuntu_, _debian_).
 
 ## Recordando el Dockerfile
+
+![docker build](P3_8/docker_build_run.png)
+Fuente: [https://nilesh93.medium.com/practical-guide-on-writing-a-dockerfile-for-your-application-89376f88b3b5](https://nilesh93.medium.com/practical-guide-on-writing-a-dockerfile-for-your-application-89376f88b3b5)
 
 Los _Dockerfile_ son los archivos que contienen las instrucciones que crean las imágenes. Deben estar guardados dentro de un _build context_, es decir, un directorio. Este directorio es el que contiene todos los archivos necesarios para construir nuestra imagen, de ahí lo de _build context_.
 
@@ -42,7 +45,7 @@ Ahora para crear nuestra imagen usaremos `docker build`.
 docker build -t helloapp:v1 .
 ```
 
-El parámetro `-t` nos permite etiquetar la imagen con un nombre y una versión. El `.` indica que el _build context_ es el directorio actual.
+El parámetro `-t` nos permite etiquetar la imagen con un nombre y una versión. El `.` indica que el _build context_ es el directorio actual. No olvides el punto final que casi no se ve.
 
 El resultado de ejecutar lo anterior sería:
 
@@ -76,7 +79,7 @@ helloapp     v1   f738f117d4b6  40 seconds ago  1.16MB
 
 ## Creando aplicaciones en contenedores
 
-Vamos a crear un aplicación en python y la vamos a guardarla en un contenedor. Comenzamos creando un nuevo _build context_:
+Vamos a crear un aplicación en python y la vamos a guardar en un contenedor. Comenzamos creando un nuevo _build context_:
 
 ```sh
 mkdir -p  ~/Sites/friendlyhello

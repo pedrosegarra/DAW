@@ -1,12 +1,12 @@
 ---
-title: 'Práctica 1 - Dockerización del despliegue de una aplicación con Node.js'
+title: 'Práctica 3.4.2 - Dockerización del despliegue de una aplicación con Node.js'
 ---
 
 # Práctica 1 - Dockerización del despliegue de una aplicación Node.js
 
 ## Introducción
 
-En este caso vamos a Dockerizar la aplicación que ya desplegamos en la [práctica 3.4](../Ud6%20Servidores%20de%20aplicaciones/P3_4-NodeJS-Express.md).
+En este caso vamos a Dockerizar la aplicación que ya desplegamos en la [práctica 3.4.1](P3_4_1-NodeJS-Express.md).
 
 ### ¿Por qué *dockerizar*?
 

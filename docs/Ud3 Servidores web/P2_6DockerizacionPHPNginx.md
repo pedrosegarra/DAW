@@ -1,5 +1,5 @@
 ---
-title: 'Práctica 2 - Despliegue de una aplicación PHP con Nginx y MySQL usando Docker y docker-compose'
+title: 'Práctica 2.6 - Despliegue de una aplicación PHP con Nginx y MySQL usando Docker y docker-compose'
 ---
 
 # Práctica 2 - Despliegue de una aplicación PHP con Nginx y MySQL usando *Docker* y *docker-compose*
@@ -22,7 +22,7 @@ Por lo tanto, crear múltiples `Dockerfile` y ejecutarlos todo en un script qued
 
 Aquí es donde entra `docker-compose` el cual es una herramienta que nos permite definir y correr múltiples contenedores en Docker. Estos múltiples contenedores se definen en un fichero denominado docker-compose con la extensión .yml. Luego, con un solo comando, crea e inicia todos los servicios desde su configuración.
 
-![](Ud7_img/compose.jpeg)
+![](P2_6/compose.jpeg)
 
 Compose funciona en todos los entornos: producción, puesta en escena, desarrollo, pruebas, así como flujos de trabajo de CI.
 
@@ -99,7 +99,7 @@ docker-compose up -d
 ```
 Con la opción `-d` (de daemon), estamos indicando que el contenedor se ejecute en background o segundo plano:
 
-![](Ud7_img/detached.png)
+![](P2_6/detached.png)
 
 Para comprobar que el contenedor está corriendo, podemos hacer:
 
@@ -116,7 +116,7 @@ c6641e4d5bbf   nginx:latest   "/docker-entrypoint.…"   5 seconds ago   Up 3 se
 
 Además, si abrimos el navegador de nuestra máquina anfitrión y accedemos a `http://IP_Maq_Virtual` deberíamos ver la página de bienvenida de Nginx:
 
-![](Ud7_img/nginx-test.png)
+![](P2_6/nginx-test.png)
 
 
 ### 3. Creación de un contenedor PHP
@@ -452,7 +452,7 @@ fbca95944234   php:7.0-fpm            "docker-php-entrypoi…"   2 hours ago    
 
 Si ahora accedemos a `http://IP_Maq_Virtual`, deberíamos obtener la siguiente pantalla:
 
-![](Ud7_img/db-test.png)
+![](P2_6/db-test.png)
 
 Como podéis ver, nos dice que no tenemos ninguna tabla en la base de datos *mydb*.
 
@@ -471,7 +471,7 @@ $password = "secret";
 ```
 Guardad el archivo y refrescad la página. Deberías obtener ahora una pantalla con todas las tablas de la base de datos, tal que así:
 
-![](Ud7_img/db-test2.png)
+![](P2_6/db-test2.png)
 
 !!!task "Tarea"
     Documenta, incluyendo capturas de pantallas, el proceso que has seguido para realizar el despliegue de esta nueva aplicación, así como el resultado final.

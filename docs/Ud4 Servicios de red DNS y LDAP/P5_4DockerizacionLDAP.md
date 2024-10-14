@@ -1,5 +1,5 @@
 ---
-title: 'Práctica 3- Servidor web con usuarios autenticados mediante servicio de directorio (LDAP)'
+title: 'Práctica 5.4 - Dockerización de servidor web con usuarios autenticados mediante servicio de directorio (LDAP)'
 ---
 
 # Práctica 3 - Despliegue de servidores web con usuarios autenticados mediante LDAP usando *Docker* y *docker-compose*
@@ -17,7 +17,7 @@ Generalmente un servidor LDAP se encarga de almacenar información de autenticac
 
 LDAP es un protocolo que nos permite acceder a los recursos de la red local, sin necesidad de crear los diferentes usuarios en el sistema operativo, además, es mucho más versátil. Por ejemplo, LDAP permite realizar tareas de autenticación y autorización a usuarios de diferentes softwares como Docker, OpenVPN, servidores de archivos como los usados por QNAP, Synology o ASUSTOR entre otros, y muchos más usos.
 
-![](Ud7_img/ldap1.webp)
+![](P5_4/ldap1.webp)
 
 LDAP puede ser utilizado tanto por un usuario al que se pide unos  credenciales de acceso, como también por las aplicaciones para saber si tienen acceso a determinada información del sistema o no. Generalmente un servidor LDAP se encuentra en una red privada, es decir, redes de área local, para autenticar las diferentes aplicaciones y usuarios, pero también podría funcionar sobre redes públicas sin ningún problema.
 
@@ -44,11 +44,11 @@ Y muchos otros servicios también lo usan, sobre todo el último, OpenLDAP, el c
 
 Las entradas que representan países aparecen en la parte superior del árbol. Debajo de ellos, están las entradas que representan los estados y las organizaciones nacionales. Debajo de estás, pueden estar las entradas que representan las unidades organizacionales, empleados, impresoras, documentos o todo aquello que pueda imaginarse. La siguiente figura muestra un ejemplo de un árbol de directorio LDAP haciendo uso del nombramiento tradicional.
 
-![](Ud7_img/ldap2.png)
+![](P5_4/ldap2.png)
 
 El árbol también se puede organizar basándose en los nombres de dominio de Internet. Este tipo de nombramiento es muy popular, ya que permite localizar un servicio de directorio haciendo uso de los DNS. La siguiente figura muestra un ejemplo de un directorio LDAP que hace uso de los nombres basados en dominios.
 
-![](Ud7_img/ldap3.png)
+![](P5_4/ldap3.png)
 
 #### ¿Cómo se referencia la información?
 
@@ -100,14 +100,14 @@ La solución aprovecha el módulo ngx_http_auth_request_module de Nginx y NGINX,
 
 Para realizar la autenticación, el módulo http_auth_request realiza una subconsulta HTTP al demonio ldap-auth, que actúa como intermediario e interpreta la subconsulta para el servidor LDAP - utiliza HTTP para la comunicación con Nginx y la API apropiada para la comunicación con el servidor LDAP.
 
-![](Ud7_img/ldap4.jpeg)
+![](P5_4/ldap4.jpeg)
 
 
 A continuación se describe paso a paso el proceso de autenticación en la implementación de referencia. Los detalles se determinan por los ajustes en el archivo de configuración nginx-ldap-auth.conf; ver Configuración de la implementación de referencia más abajo. 
 
 El diagrama de flujo debajo de los pasos resume el proceso.
 
-![](Ud7_img/ldap5.jpeg)
+![](P5_4/ldap5.jpeg)
 
 1. Un cliente envía una solicitud HTTP para un recurso protegido alojado en un servidor para el que Nginx está actuando como proxy inverso.
 

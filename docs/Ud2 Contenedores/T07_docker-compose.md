@@ -2,23 +2,22 @@
 title: '7 Docker Compose'
 ---
 
-# Levantar un WordPress con Docker Compose
+# Docker Compose
 
-En el capítulo anterior hemos usado el cliente de _Docker_ para crear contenedores, así como para crear el resto de objetos y vincularlos entre sí. Si recuerdas los comandos son complejos y extensos. Además hemos de ejecutar primero la creación del contenedor con la base de datos y luego el contenedor con Wordpress. Vemos que sería mucho más cómodo poder configurarlo todo en un solo archivo y lanzar todos los contenedores, convenientemente enlazados, con un solo comando. 
+![Docker Compose](Ud7_img/docker_compose.jpeg)
 
-Para automatizar la creación, inicio y parada de un contenedor o un conjunto de ellos, _Docker_ proporciona una herramiento llamada _Docker Compose_.
+En el capítulo anterior hemos levantado un Wordpress usado el cliente de _Docker_ para crear los contenedores, así como para crear el resto de objetos y vincularlos entre sí. Si recuerdas los comandos son complejos y extensos. Además hemos de ejecutar primero la creación del contenedor con la base de datos y luego el contenedor con Wordpress. Vemos que sería mucho más cómodo poder configurarlo todo en un solo archivo y lanzar todos los contenedores, convenientemente enlazados, con un solo comando. 
 
-Para esta parte vamos a detener y borrar lo que hemos creado:
+Para automatizar la creación, inicio y parada de un contenedor o un conjunto de ellos, _Docker_ proporciona una herramienta llamada _Docker Compose_.
 
-!!! example
+Para esta parte vamos a levantar el mismo Wordpress del capítulo anterior pero usando esta herramienta. Empezaremos por detener y borrar lo que hemos creado:
 
-    Borra el trabajo actual:
-    ```sh
+```console
     docker container stop wordpress wordpress-db
     docker container rm wordpress wordpress-db
     docker volume rm vol-wordpress-db
-    sudo rm -R -f target/*
-    ```
+    sudo rm -R -f ~/Sites/wordpress/target/*
+```
 ## Docker Compose
 
 _Compose_ es una herramienta para definir y ejecutar aplicaciones multi-contenedor. Con un solo comando podremos crear e iniciar todos los servicios que necesitamos para nuestra aplicación.
@@ -73,7 +72,10 @@ volumes:
 !!! info
     YAML es un lenguaje de serialización de datos diseñado para ser leído y escrito por personas. Se recomienda que sigas algún tutorial para entender su formato: [Aprende YAML en Y minutos](https://learnxinyminutes.com/docs/es-es/yaml-es/).
 
-Los ficheros de _Compose_ están divididos en tres secciones: _services_, _volumes_ y _networks_; y deben indicar un número de versión. Nos permite realizar practicamente lo mismo que podemos hacer con el cliente de _docker_, pero de forma automática.
+Los ficheros de _Compose_ están divididos en tres secciones: _services_, _volumes_ y _networks_; y deben indicar un número de versión de _Docket compose_ que estamos usando. Nos permite realizar practicamente lo mismo que podemos hacer con el cliente de _docker_, pero de forma automática.
+
+![secciones docker compose](Ud7_img/docker_compose2.webp)
+    Fuente: [https://medium.com/@laurap_85411/docker-compose-stop-vs-down-e4e8d6515a85](https://medium.com/@laurap_85411/docker-compose-stop-vs-down-e4e8d6515a85)
 
 !!! note
     En este taller no entramos en el apartado de _networks_.
@@ -106,7 +108,7 @@ El parámetro `-d` es similar al que hemos visto en `docker run`: nos permite le
 Veamos los contenedores activos:
 
 ```console
-$ docker container ls
+$ docker ps
 CONTAINER ID  IMAGE            COMMAND      CREATED         STATUS         PORTS                  NAMES
 a07b5d4d3982  wordpress:4.9.8  "docker.s…"  10 seconds ago  Up 8 seconds   0.0.0.0:8080->80/tcp   wordpress_web_1
 d9204884cec5  mariadb:10.3.9   "docker.s…"  11 seconds ago  Up 10 seconds  3306/tcp               wordpress_db_1
@@ -122,10 +124,17 @@ wordpress_web_1   docker-entrypoint.sh apach ...   Up      0.0.0.0:8080->80/tcp
 ```
 Lo que tenemos que tener en cuenta es lo siguiente:
 
-* `docker-compose ps` solo muestra información de los servicios que se define en `docker-compose.yaml`, mientras que `docker` muestra todos.
-* Cuando creamos contenedores con `docker` sin indicar un nombre, por defecto asigna uno aleatorio; mientras que en _Compose_ el prefijo es el nombre del directorio y el sufijo el nombre del servicio: _**wordpress**\_**db**\_1_. El número indica el número de instancia. Es posible levantar más de una instancia de un mismo servicio.
+* `docker-compose ps` solo muestra información de los servicios que se define en `docker-compose.yaml`, mientras que `docker ps` muestra todos.
+* Cuando creamos contenedores con `docker` sin indicar un nombre, por defecto asigna uno aleatorio; mientras que en _Compose_ el prefijo es el nombre del directorio en que se encuentra el fichero .yaml y el sufijo el nombre del servicio: _**wordpress**\_**db**\_1_. El número final indica el número de instancia. Es posible levantar más de una instancia de un mismo servicio.
 
 Si accedemos a la dirección [http://localhost:8080/](http://localhost:8080/), veremos de nuevo la instalación de WordPress.
+
+!!! warning
+    Recuerda que si estás trabajando en AWS Academy y accedes a la EC2 desde tu PC host, deberás sustituir *localhost* por la IP pública de tu EC2.
+
+    Fíjate bien que accedemos a wordpress con http y no https. Los navegadores modernos intentarán usar https si no les dices lo contrario. 
+    
+    Recuerda que deberás crear una regla de entrada en el "grupo de seguridad" que usa tu EC2 de AWS para permitir el acceso a la máquina por http.
 
 ## Detener servicios
 
@@ -153,7 +162,7 @@ Veamos la configuración por partes:
 version: '3'
 ```
 
-_Compose_ se actualiza a menudo, con lo que el archivo de configuración va adquiriendo nuevas funcionalidades. La versión '3' (es una cadena, importante poner comillas) es la última y para conocer todas sus características mira la [página de referencia de la versión 3 de Compose](https://docs.docker.com/compose/compose-file/).
+_Compose_ se actualiza a menudo, con lo que el archivo de configuración va adquiriendo nuevas funcionalidades. La versión '3' (es una cadena, importante poner comillas) es la última en el momento de escribir estas notas. Para conocer todas sus características mira la [página de referencia de la versión 3 de Compose](https://docs.docker.com/compose/compose-file/).
 
 ```yaml hl_lines="1"
 volumes:
@@ -268,6 +277,20 @@ La equivalencia de los parámetros es la siguiente:
     ```
 
     Otros valores son: `no` (por defecto), `always` y `on-failure`.
+
+## Crear nuestras propias aplicaciones con docker compose
+
+En este ejemplo hemos visto cómo podemos montar un servicio a partir de imágenes docker que descargamos del repositorio, en este caso una imagen "wordpress" y una imagen "mariadb". Pero ¿se puede desplegar un servicio a partir de una aplicación propia? Por supuesto que si, en este caso en lugar de decirle a docker compose la imagen a usar con:
+
+    `image: mariadb:10.3.9`
+
+Usaremos
+
+    `build: .`
+
+Y en el mismo directorio donde tenemos nuestro docker-compose.yaml incluiremos un fichero Dockerfile con los comandos para crear la imagen que necesitemos.
+
+Esto es solo un avance. Lo veremos con más detalle cuando veamos la unidad de "Servidores de aplicaciones"
 
 ## Para saber más
 
