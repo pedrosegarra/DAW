@@ -164,8 +164,8 @@ Si listamos el directorio target comprobaremos que tenemos todos los archivos de
     4. Comprueba que sigue existiendo el directorio ~/Sites/worpress/target en la máquina anfitrión con los ficheros de configuración.
     5. Vuelve a crear el contenedor **wordpress-db** pero actualizando la versión de MariaDb. Usa la imagen mariadb:11.
     6. Vuelve a crear el contenedor **wordpress** pero actualizando la versión de Wordpress. Usa la imagen wordpress:5.0.0-apache.
-    7. Vuelve a acceder a tu wordpress y comprueba lo que ha costado actualizar la versión y cómo se han mantenido los datos de la base de datos y de los ficherso guardados en el anfitrión.
-    8. Vuelve a borrarlos y borra también el volumen.
+    7. Vuelve a acceder a tu wordpress y comprueba lo que ha costado actualizar la versión y cómo se han mantenido los datos de la base de datos y de los ficheros guardados en el anfitrión.
+    8. Vuelve a borrarlos y borra también el volumen y el contenido de ~/Sites/worpress/target
     9.  Vuelve a crear el volumen y los contenedores y comprueba que ahora sí hay que volver a instalar _WordPress_. Ahora puedes hacerlo con la versión latest de ambos servidores.
 
 !!! nota
