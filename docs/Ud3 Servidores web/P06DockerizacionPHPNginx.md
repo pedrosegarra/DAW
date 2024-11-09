@@ -1,5 +1,5 @@
 ---
-title: 'Práctica 2.6 - Despliegue de una aplicación PHP con Nginx y MySQL usando Docker y docker-compose'
+title: 'Práctica 3.6 - Despliegue de una aplicación PHP con Nginx y MySQL usando Docker y docker-compose'
 ---
 
 # Práctica 2 - Despliegue de una aplicación PHP con Nginx y MySQL usando *Docker* y *docker-compose*
