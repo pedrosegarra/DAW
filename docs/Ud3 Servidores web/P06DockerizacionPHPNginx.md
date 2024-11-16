@@ -253,9 +253,8 @@ CONTAINER ID   IMAGE                  COMMAND                  CREATED          
 10778c6686d8   php:7.0-fpm            "docker-php-entrypoi…"   25 seconds ago   Up 23 seconds   9000/tcp                            php-container
 ```
 
-Y si ahora volvemos a acceder a `http://IP_Maq_Virtual`, veremos la página `Hola mundo`:
+Y si ahora volvemos a acceder a `http://IP_Maq_Virtual`, veremos la página `Hola mundo`.
 
-![]()
 
 ### 4. Creación de un contenedor para datos
 
@@ -264,7 +263,7 @@ Como véis, hemos montado el directorio `www/html` en ambos contenedores, el de 
 Para llevar a cabo esta tarea, volvemos a editar el `docker-compose.yml`:
 
 ```sh
-nano /usuario/home/practica6-2/docker-compose.yml
+nano ~/practica6-2/docker-compose.yml
 ```
 Y añadiremos un nuevo servicio a los que ya teníamos, quedando así:
 
