@@ -1,10 +1,12 @@
 ---
-title: 'Práctica 3.6 - Despliegue de una aplicación PHP con Nginx y MySQL usando Docker y docker-compose'
+title: 'Práctica 3.6 - Instalación pila LAMP dockerizada'
 ---
 
-# Práctica 2 - Despliegue de una aplicación PHP con Nginx y MySQL usando *Docker* y *docker-compose*
+# Práctica 3.6 - Instalación pila LAMP dockerizada
 
 ## Introducción
+
+En esta práctica vamos a instalar una pila LAMP dockerizada. Para comprobar que todos los contenedores trabajan conjuntamente desplegaremos una pequeña aplicación PHP que consulta la base de datos instalada.
 
 !!!warning "¡Atención!"
     En caso de que tengáis problemas, esta práctica está comprobada y funcionando usando las siguientes versiones:
@@ -14,7 +16,7 @@ title: 'Práctica 3.6 - Despliegue de una aplicación PHP con Nginx y MySQL usan
 
 ### Recordando qué es *docker-compose*
 
-[Como vimos en la parte de teoría](https://raul-profesor.github.io/DEAW/docker-compose/) para ejecutar nuestra aplicación en docker creamos un fichero llamado `Dockerfile` y este fichero contiene una configuración. Esta configuración varía dependiendo de qué queremos poner en el contenedor, ya que no es lo mismo poner una página web, que una base de datos.
+Como vimos en la parte de teoría para ejecutar nuestra aplicación en docker creamos un fichero llamado `Dockerfile` y este fichero contiene una configuración. Esta configuración varía dependiendo de qué queremos poner en el contenedor, ya que no es lo mismo poner una página web, que una base de datos.
 
 Este proceso, de crear todos los `Dockerfile` y ejecutarlos puede ser bastante tedioso, ya que debemos pensar que una aplicación de tamaño mediano es probable que tenga un front end, un back end, quizá algunos background-workers así como la base de datos, sistema de caché, sistema de colas o de message-broker... por lo que cada uno de nuestros servicios será un contenedor diferente.
 
@@ -229,7 +231,7 @@ services:
     volumes:
       - ./www/html/:/var/www/html/
 ```
-Ahora con este fichero `docker-compose.yml` se creará un nuevo contenedor PHP-FPM en el puerto 9000, enlazará el contenedor *nginx* con el contendor *php*, así como creará un volumen y lo montará en el directorio `/var/www/html` de los contenedores.
+Ahora con este fichero `docker-compose.yml` se creará un nuevo contenedor PHP-FPM en el puerto 9000, enlazará el contenedor *nginx* con el contendor *php*, así como usará el directorio local de la máquina host ~/practica6-2/www/html y lo montará en el directorio `/var/www/html` de los contenedores.
 
 Así pues, ejecutaremos el nuevo contenedor volviendo a ejecutando compose. Cuidado pues se debe ejecutar el comando en el mismo directorio donde tengamos nuestro archivo `docker-compose.yml`:
 
@@ -255,10 +257,16 @@ CONTAINER ID   IMAGE                  COMMAND                  CREATED          
 
 Y si ahora volvemos a acceder a `http://IP_Maq_Virtual`, veremos la página `Hola mundo`.
 
+!!! question
+    ¿La directiva `links` es necesaria? ¿Qué pasaría si la eliminamos?
+
 
 ### 4. Creación de un contenedor para datos
 
 Como véis, hemos montado el directorio `www/html` en ambos contenedores, el de nginx y el de php. Sin embargo, esta no es una forma adecuada de hacerlo. En este paso crearemos un contenedor independiente que se encargará de contener los datos y lo enlazaremos con el resto de contenedores.
+
+!!! warning
+    Esta práctica está sacada de [aquí](https://www.atlantic.net/vps-hosting/how-to-deploy-a-php-application-with-nginx-and-mysql-using-docker-and-docker-compose/). En esta práctica usa un contenedor para guardar datos en lugar de usar un "volumen" docker. Mantenemos esta forma de hacerlo para que veas formas distintas de trabajo con docker que puedes encontrarte, aunque pensamos que no es la forma más adecuada. Piensa cómo podrías hacer lo mismo con volúmenes.
 
 Para llevar a cabo esta tarea, volvemos a editar el `docker-compose.yml`:
 
@@ -314,6 +322,10 @@ CONTAINER ID   IMAGE                  COMMAND                  CREATED          
 59a0d7040fd8   php:7.0-fpm            "docker-php-entrypoi…"   28 seconds ago   Up 27 seconds               9000/tcp                            php-container
 fbca95944234   php:7.0-fpm            "docker-php-entrypoi…"   29 seconds ago   Exited (0) 28 seconds ago                                       app-data-container
 ```
+
+!!! question
+    ¿Tiene sentido usar un contenedor cuya única función es alojar datos? ¿Qué otra forma nos ofrece docker para este cometido? ¿Cómo podrías modificar el docker-compose.yaml para hacerlo?
+
 
 ### 5. Creación de un contenedor MySQL
 
@@ -444,6 +456,9 @@ ca4f63797d11   docker-project_php     "docker-php-entrypoi…"   2 hours ago    
 fbca95944234   php:7.0-fpm            "docker-php-entrypoi…"   2 hours ago      Exited (0) 39 seconds ago                                       app-data-
 ```
 
+!!! question
+    Nuevamente usa un contenedor para alojar datos. ¿Tiene sentido usar un contenedor cuya única función es alojar datos? ¿Qué otra forma nos ofrece docker para este cometido? ¿Cómo podrías modificar el docker-compose.yaml para hacerlo?
+
 ### 6. Verificación de conexión a la base de datos
 
 !!!Atención
@@ -473,7 +488,13 @@ Guardad el archivo y refrescad la página. Deberías obtener ahora una pantalla 
 ![](P2_6/db-test2.png)
 
 !!!task "Tarea"
-    Documenta, incluyendo capturas de pantallas, el proceso que has seguido para realizar el despliegue de esta nueva aplicación, así como el resultado final.
+    Esta práctica usa algunas cosas de docker que están obsoletas. Aunque la práctica funciona podría mejorarse usando prácticas más actuales. Te propongo que modifiques el `docker-compose.yaml` para hacerlo más limpio y mejorado.
+
+    Algunas de las cosas que podrían mejorarse son:
+
+      * Uso de directiva `links`
+      * Uso de `volumes_from`
+      * Uso de volúmenes en lugar de contenedores para almacenar los datos
 
 ## Referencias
 
@@ -485,11 +506,3 @@ Guardad el archivo y refrescad la página. Deberías obtener ahora una pantalla 
 
 [How to Deploy a PHP Application with Nginx and MySQL Using Docker and Docker Compose](https://www.atlantic.net/vps-hosting/how-to-deploy-a-php-application-with-nginx-and-mysql-using-docker-and-docker-compose/)
 
-## Evaluación
-
-| Criterio      | Puntuación                         |
-| :--------- | :----------------------------------: |
-| Se muestra una correcta estructura de directorios      |**2.5 puntos**  |
-| Se muestra correctamente la página que informa de la versión de PHP corriendo así como de que no hay tablas en la BBDD | **3.5 puntos**|
-| Muestra correctametne las tablas de la BBDD con el usuario adecuado      |**3 puntos**  |
-| Se ha prestado especial atención al formato del documento, utilizando la plantilla actualizada y haciendo un correcto uso del lenguaje técnico  |**1 puntos**  |
