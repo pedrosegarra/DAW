@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 5.4 - Dockerización de servidor web con usuarios autenticados mediante servicio de directorio (LDAP)'
+title: 'Práctica 4 - Dockerización de servidor web con usuarios autenticados mediante servicio de directorio (LDAP)'
 ---
 
-# Práctica 3 - Despliegue de servidores web con usuarios autenticados mediante LDAP usando *Docker* y *docker-compose*
+# Práctica 4 - Despliegue de servidores web con usuarios autenticados mediante LDAP usando *Docker* y *docker-compose*
 
 ## Introducción
 

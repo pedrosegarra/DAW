@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 5.1 - Configuración de un servidor DNS'
+title: 'Práctica 1 - Configuración de un servidor DNS'
 ---
 
-# Práctica 5.1 - Configuración de un servidor DNS
+# Práctica 1 - Configuración de un servidor DNS
 
 !!!note "Nota importante"
     Es muy importante que antes de empezar esta práctica eliminéis las entradas que habéis ido introduciendo hasta ahora en vuestro archivo ```/etc/hosts``` para asegurarnos que realmente la resolución de nombres va a nuestro servidor DNS. Si no hacéis esto, resolverá los nombres, pensaréis que está bien pero en realidad estará mal.
