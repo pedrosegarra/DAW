@@ -289,7 +289,19 @@ sudo named-checkconf
 
 Si no aparecen errores, entonces todo está en orden. Reinicia el servicio y prueba a consultar nuevamente desde tu máquina anfitrión. ¿Recibe ahora la respuesta esperada?
 
-Con esta configuración básica ya hemos comprobado que nuestro servidor DNS está funcionando y respondiendo a peticiones de la propia máquina y de otras externas. 
+Con esta configuración básica ya hemos comprobado que nuestro servidor DNS está funcionando y respondiendo a peticiones de la propia máquina y de otras externas.
+
+#### Desactivar la recursividad
+
+En la teoría vimos que cuando un servidor DNS tiene la recursividad activada dará una respuesta completa cuando le consulten. Si no tiene la respuesta buscará la forma de conseguirla para dar una respuesta al cliente. Este es el estado por defecto cuando instalamos bind9. Pero si queremos desactivar la recursividad incluiremos la siguiente directiva de configuración en `/etc/bind/named.conf.options`:
+
+```yaml
+recursion no;
+```
+
+Incluye la directiva, reinicia el servicio y haz una consulta por cualquier dominio, por ejemplo "cisco.com". Observa el resultado.
+
+Puedes comentar la directiva para dejar la recursividad activada de momento.
 
 #### Configuración como forwarder
 
