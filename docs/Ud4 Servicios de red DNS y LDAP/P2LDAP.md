@@ -8,9 +8,9 @@ title: 'Práctica 2 - Configuración de un servidor LDAP y autenticación en Apa
 
 Para empezar, entra en AWS Academy y crea un nuevo EC2 Debian con estas características. 
 
-* Llámale P5ServidorLDAP.
+* Llámale ServidorLDAP.
 * Dale los recursos que te ofrece por defecto.
-* Crea un Grupo de seguridad con el nombre P5ServidorLDAP y abre los puertos necesarios para que una máquina externa pueda consultarlo.
+* Crea un Grupo de seguridad con el nombre ServidorLDAP y abre los puertos necesarios para que una máquina externa pueda consultarlo.
 * Arranca la máquina y actualízala para que cuente con las últimas versiones de todos los paquetes.
 
 ## Servidor LDAP
@@ -143,6 +143,8 @@ $servers->setValue('server','base',array('dc=daw,dc=ieselcaminas'));
 $servers->setValue('login','bind_id','cn=admin,dc=daw,dc=ieselcaminas');
 ```
 
+Si lees la descripción de esas líneas verás que también puedes borrarlas o comentarlas, con el mismo resultado.
+
 Refresca tu navegador y ahora ya deberías ver el DIT correcto.
 
 ![ldap](P5_2/phpLDAPadmin04.png)
@@ -214,7 +216,7 @@ Crea un directorio denominado `test` y crea dentro un archivo index.html. Cambia
 
 ```sh
 sudo mkdir /var/www/html/test
-sudo cp /var/www/html/index.html /var/www/html/test/
+sudo cp /var/www/html/index.html /var/www/html/test
 sudo chown -R www-data:www-data /var/www/html/test 
 ```
 
@@ -252,6 +254,9 @@ Incluímos las líneas resaltadas:
 3. El usuario con el que conectarse al servidor ldap. El mismo que usamos en phpldapadmin
 4. La contraseña de ese usuario
 
+!!! Ojo
+        Si copias y pegas asegúrate de eliminar los # al final de algunas líneas o no te funcionará
+
 La directiva AuthLDAPURL es la que tendréis que cambiar según la situación:
 
 ```
@@ -259,15 +264,15 @@ AuthLDAPURL ldap://host:port/basedn?attribute?scope?filter [NONE|SSL|TLS|STARTTL
 ```
 Si desmenuzamos la sintaxis:
 
-* host y port son evidentes
+* **host y port** son evidentes
 
-* basedn es la ruta LDAP donde buscar los usuarios
+* **basedn** es la ruta en el DIT (recuerda, el árbol) a partir de donde buscar los usuarios
 
-* attribute, define el nombre atributo que contiene el nombre del usuario (normalmente uid)
+* **attribute**, define el nombre atributo que contiene el nombre del usuario (normalmente uid)
 
-* scope, puede ser one (para buscar en un subnivel a partir del basedn) o sub (para buscar en todos los subniveles)
+* **scope**, puede ser *one* (para buscar en un subnivel a partir del basedn) o *sub* (para buscar en todos los subniveles)
 
-* filter, filtro opcional de búsqueda, por ejemplo: (&(objectClass=inetOrgPerson)(description=*#*test*))
+* **filter**, filtro opcional de búsqueda, por ejemplo: (&(objectClass=inetOrgPerson)(description=*#*test*))
 
 * [NONE|SSL|TLS|STARTTLS], parámetro opcional definiendo el tipo de conexión, por defecto NONE.
 

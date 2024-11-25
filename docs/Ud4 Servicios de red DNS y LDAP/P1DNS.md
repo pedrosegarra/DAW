@@ -303,9 +303,9 @@ Incluye la directiva, reinicia el servicio y haz una consulta por cualquier domi
 
 Puedes comentar la directiva para dejar la recursividad activada de momento.
 
-#### Configuración como forwarder
+#### Configuración de los forwarder
 
-Hemos visto que por defecto nuestro servidor hará consultas iterativas. Para que realice consultas recursivas preguntando a un servidor DNS configurado por nosotros, todo lo que se requiere es simplemente agregar los números de IP de los servidores DNS deseados.
+Hemos visto que por defecto nuestro servidor hará consultas iterativas empezando por el servidor raíz. Para que realice consultas recursivas preguntando a un servidor DNS configurado por nosotros (forwarder), todo lo que se requiere es simplemente agregar los números de IP de los servidores DNS deseados en la sección "forwarders".
 
 Simplemente descomenta y edita lo siguiente en `/etc/bind/named.conf.options`:
 
@@ -316,7 +316,9 @@ Simplemente descomenta y edita lo siguiente en `/etc/bind/named.conf.options`:
     };
 ```
 
-Aquí hemos configurado los DNS de google.
+Aquí hemos configurado los DNS de google. 
+
+Reinicia el servicio para activarlos.
 
 #### Comprobación del funcionamiento de la caché
 
