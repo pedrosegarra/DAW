@@ -143,7 +143,7 @@ $servers->setValue('server','base',array('dc=daw,dc=ieselcaminas'));
 $servers->setValue('login','bind_id','cn=admin,dc=daw,dc=ieselcaminas');
 ```
 
-Si lees la descripción de esas líneas verás que también puedes borrarlas o comentarlas, con el mismo resultado.
+Si lees la descripción de esas líneas verás que también puedes borrarlas o comentarlas. En ese caso no te ofrecerá valores por defecto al entrar y tendrás que escribirlos tu.
 
 Refresca tu navegador y ahora ya deberías ver el DIT correcto.
 
@@ -197,92 +197,6 @@ Tras hacer clic sobre "commit" ya tendremos creado nuestro usuario.
 Crea un par de usuarios más. Por ejemplo un `alu01` y `alu02`.
 
 ![ldap](P5_2/phpLDAPadmin15.png)
-
-## Autenticación Apache contra LDAP
-
-Ya hemos instalado nuestro servidor OpenLDAP y hemos aprendido a crear usuarios. La utilidad real de esos usuarios será usarlos para validarse al acceder a algún sistema. Uno de los usos más habituales es para acceder al sistema operativo en distintos ordenadores. Pero como nosotros estamos en despliegue de aplicaciones web vamos a usarlo para acceder a una zona de un servidor web Apache. El motivo de usar Apache es que ya se instaló al instalar phpldapadmin y que la autenticación es muy sencilla de configurar.
-
-En primer lugar comprobaremos que el servicio `apache2` está funcionando.
-
-Habilita el módulo de autenticación LDAP Apache2.
-
-```sh
-sudo a2enmod authnz_ldap
-```
-
-Vamos a solicitar la autenticación a los usuarios que intentan acceder a un directorio denominado `test`.
-
-Crea un directorio denominado `test` y crea dentro un archivo index.html. Cambia el usuario y grupo del directorio `test` y su contenido a www-data.
-
-```sh
-sudo mkdir /var/www/html/test
-sudo cp /var/www/html/index.html /var/www/html/test
-sudo chown -R www-data:www-data /var/www/html/test 
-```
-
-Ahora vamos a editar el archivo de configuración Apache 000-default.conf.
-
-```sh
-sudo nano /etc/apache2/sites-enabled/000-default.conf
-```
-Incluímos las líneas resaltadas:
-
-```yaml hl_lines="7-17"
-<VirtualHost *:80>
-        ServerAdmin webmaster@localhost
-        DocumentRoot /var/www/html
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-        <Directory "/var/www/html/test"> #(1)
-        Options Indexes FollowSymlinks
-        AuthType Basic
-        AuthName "Apache LDAP authentication"
-        AuthBasicAuthoritative Off
-        AuthBasicProvider ldap 
-        AuthLDAPURL "ldap://127.0.0.1/ou=usuarios,dc=daw,dc=ieselcaminas?uid?sub" #(2)
-        AuthLDAPBindDN "cn=admin,dc=daw,dc=ieselcaminas" #(3)
-        AuthLDAPBindPassword ieselcaminas #(4)
-        Require valid-user
-        </Directory>
-
-</VirtualHost>
-```
-
-1. El directorio al que vamos a pedir autenticación para acceder
-2. El servidor ldap y la ruta donde buscar los usuarios. Lo veremos en detalle
-3. El usuario con el que conectarse al servidor ldap. El mismo que usamos en phpldapadmin
-4. La contraseña de ese usuario
-
-!!! Ojo
-        Si copias y pegas asegúrate de eliminar los # al final de algunas líneas o no te funcionará
-
-La directiva AuthLDAPURL es la que tendréis que cambiar según la situación:
-
-```
-AuthLDAPURL ldap://host:port/basedn?attribute?scope?filter [NONE|SSL|TLS|STARTTLS]
-```
-Si desmenuzamos la sintaxis:
-
-* **host y port** son evidentes
-
-* **basedn** es la ruta en el DIT (recuerda, el árbol) a partir de donde buscar los usuarios
-
-* **attribute**, define el nombre atributo que contiene el nombre del usuario (normalmente uid)
-
-* **scope**, puede ser *one* (para buscar en un subnivel a partir del basedn) o *sub* (para buscar en todos los subniveles)
-
-* **filter**, filtro opcional de búsqueda, por ejemplo: (&(objectClass=inetOrgPerson)(description=*#*test*))
-
-* [NONE|SSL|TLS|STARTTLS], parámetro opcional definiendo el tipo de conexión, por defecto NONE.
-
-Recuerda reiniciar `apache2` para que se apliquen los cambios.
-
-Ahora ya solo nos queda probar el funcionamiento. Abre una ventana privada de navegador en tu ordenador. Deberás abrir una ventana privada para cada prueba.
-
-Accede a `http://IPSERVER/test`.
-
-Te debería pedir un usuario y contraseña. Prueba con `profe01` y la contraseña que le pusiste antes. Luego abre una ventana privada y prueba con una contraseña incorrecta.
 
 ## Recursos.
 

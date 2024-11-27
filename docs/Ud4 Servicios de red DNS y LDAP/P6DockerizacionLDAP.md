@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 4 - Dockerización de servidor web con usuarios autenticados mediante servicio de directorio (LDAP)'
+title: 'Práctica 6 - Dockerización de servidor web con usuarios autenticados mediante servicio de directorio (LDAP)'
 ---
 
-# Práctica 4 - Despliegue de servidores web con usuarios autenticados mediante LDAP usando *Docker* y *docker-compose*
+# Práctica 6 - Despliegue de servidores web con usuarios autenticados mediante LDAP usando *Docker* y *docker-compose*
 
 ## Introducción
 
@@ -22,7 +22,7 @@ LDAP es un protocolo que nos permite acceder a los recursos de la red local, sin
 LDAP puede ser utilizado tanto por un usuario al que se pide unos  credenciales de acceso, como también por las aplicaciones para saber si tienen acceso a determinada información del sistema o no. Generalmente un servidor LDAP se encuentra en una red privada, es decir, redes de área local, para autenticar las diferentes aplicaciones y usuarios, pero también podría funcionar sobre redes públicas sin ningún problema.
 
 !!!info
-    En definitiva, LDAP nos proporciona un serivicio de autenticación y autorización para poder acceder a distintos recursos en red, como por ejemplo, a un sitio web. Si recordamos la práctica 2.3, nuestro usuario se autenticaba utilizando usuarios creados en el mismo sistema operativo (Debian Linux) donde se había instalado el servidor web Nginx.
+    En definitiva, LDAP nos proporciona un serivicio de autenticación y autorización para poder acceder a distintos recursos en red, como por ejemplo, a un sitio web. Si recordamos la práctica de autenticación en un servidor web, nuestro usuario se autenticaba utilizando usuarios creados en el mismo sistema operativo (Debian Linux) donde se había instalado el servidor web.
 
     Tenemos, por tanto, la posibilidad de utilizar otra autenticación centralizada para el mismo cometido con LDAP.
 
@@ -96,7 +96,7 @@ Se puede extender la funcionalidad de Nginx añadiendo módulos propios. Esta ar
 
 #### Módulo autenticación LDAP en Nginx
 
-La solución aprovecha el módulo ngx_http_auth_request_module de Nginx y NGINX, que reenvía las peticiones de autenticación a un servicio externo. En la implementación de referencia, ese servicio es un demonio que llamamos ldap-auth. Está escrito en Python y se comunica con un servidor de autenticación del Protocolo Ligero de Acceso a Directorios (LDAP) - OpenLDAP por defecto, pero hemos probado el demonio ldap-auth también con configuraciones por defecto de Microsoft® Windows® Server Active Directory (tanto la versión 2003 como la 2012).
+La solución aprovecha el módulo ngx_http_auth_request_module de Nginx, que reenvía las peticiones de autenticación a un servicio externo. En la implementación de referencia, ese servicio es un demonio que llamamos ldap-auth. Está escrito en Python y se comunica con un servidor de autenticación del Protocolo Ligero de Acceso a Directorios (LDAP) - OpenLDAP por defecto, pero hemos probado el demonio ldap-auth también con configuraciones por defecto de Microsoft® Windows® Server Active Directory (tanto la versión 2003 como la 2012).
 
 Para realizar la autenticación, el módulo http_auth_request realiza una subconsulta HTTP al demonio ldap-auth, que actúa como intermediario e interpreta la subconsulta para el servidor LDAP - utiliza HTTP para la comunicación con Nginx y la API apropiada para la comunicación con el servidor LDAP.
 
@@ -338,7 +338,7 @@ docker-compose up
 
     ```sh
     docker run \
-        -p 3000:80 \
+        -p 8080:80 \
         --name ldap_demo \
         -e LDAP_BIND_ON='cn=read-only-admin,dc=example,dc=com' \
         -e LDAP_PASSWORD='password' \
@@ -346,7 +346,7 @@ docker-compose up
         docker-ldap
     ```
 
-8. No nos queda más que visitar `http://IP-Máq-Debian:3000/demo`. Si todo ha ido bien, nos solicitará nuestras credenciales para loguearnos contra el servidor openldap. Puedes acceder a [https://www.forumsys.com/2022/05/10/online-ldap-test-server/](https://www.forumsys.com/2022/05/10/online-ldap-test-server/) para obtener usuarios y sus passwords.
+8. No nos queda más que visitar `http://IP-Máq-Debian:8080/demo`. Si todo ha ido bien, nos solicitará nuestras credenciales para loguearnos contra el servidor openldap. Puedes acceder a [https://www.forumsys.com/2022/05/10/online-ldap-test-server/](https://www.forumsys.com/2022/05/10/online-ldap-test-server/) para obtener usuarios y sus passwords.
 
 
 ## Referencias

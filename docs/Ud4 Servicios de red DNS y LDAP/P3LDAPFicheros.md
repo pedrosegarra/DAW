@@ -12,9 +12,9 @@ Para esta práctica crearemos un nuevo servidor LDAP.
 
 Para empezar, entra en AWS Academy y crea un nuevo EC2 Debian con estas características. 
 
-* Llámale P5ServidorLDAP2.
+* Llámale ServidorLDAP2.
 * Dale los recursos que te ofrece por defecto.
-* Puedes usar el grupo de seguridad de la práctica anterior P5ServidorLDAP2.
+* Puedes usar el grupo de seguridad de la práctica anterior ServidorLDAP.
 * Arranca la máquina y actualízala para que cuente con las últimas versiones de todos los paquetes.
 
 Instala OpenLDAP igual que hicimos en la práctica anterior y ejecuta el comando de reconfiguración.
@@ -32,7 +32,7 @@ Comprueba con slapcat que se ha creado la base de datos y podemos empezar a trab
 Empezaremos creando 2 unidades organizativas "ou". Crea un archivo `estructura_basica.ldif` con el siguiente contenido:
 
 
-```sh
+```conf
 # Usuarios
 dn: ou=usuarios,dc=proyecto-empresa,dc=local
 objectClass: organizationalUnit
@@ -49,16 +49,18 @@ Fíjate en el contenido. Primero definimos en dn de cada unidad organizativa. Lu
 Ahora vamos a incorporar esa información a la base de datos con el siguiente comando:
 
 ```sh
-ldapadd -x -D cn=admin,dc=proyecto-empresa,dc=local -w ieselcaminas -f estructura_basica.ldif
+$ ldapadd -x -D cn=admin,dc=proyecto-empresa,dc=local -w ieselcaminas -f estructura_basica.ldif
 adding new entry "ou=usuarios,dc=proyecto-empresa,dc=local"
 adding new entry "ou=grupos,dc=proyecto-empresa,dc=local"`
 ```
 
+Identifica los distintos parámetros del comando para saber lo que estás haciendo.
+
 Podemos comprobar que se han añadido después de cada comando con `slapcat`. También puedes instalar phpldapadmin e ir comprobando gráficamente lo que vas haciendo.
 
-Ya tenemos creadas nuestras 2 ou. Ahora vamos a crear los grupos dentro de la ou=grupos. Crea un fichero grupos con este contenido:
+Ya tenemos creadas nuestras 2 ou. Ahora vamos a crear los grupos dentro de la ou=grupos. Crea un fichero `grupos.ldif` con este contenido:
 
-```sh
+```conf
 #Grupo profesores
 dn: cn=profesores,ou=grupos,dc=proyecto-empresa,dc=local
 objectClass: posixGroup
@@ -85,7 +87,7 @@ adding new entry "cn=alumnos,ou=grupos,dc=proyecto-empresa,dc=local"
 
 Ahora crearemos los usuarios de los profesores. Crea el siguiente archivo y llámale `profesores.ldif`.
 
-```sh
+```conf
 # Profe01
 dn: uid=profe01,ou=usuarios,dc=proyecto-empresa,dc=local
 objectClass: inetOrgPerson
