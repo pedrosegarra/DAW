@@ -1,10 +1,12 @@
 ---
-title: 'Práctica 6 - Dockerización de servidor web con usuarios autenticados mediante servicio de directorio (LDAP)'
+title: 'PV1 - Dockerización de servidor web con usuarios autenticados mediante servicio de directorio (LDAP)'
 ---
 
-# Práctica 6 - Despliegue de servidores web con usuarios autenticados mediante LDAP usando *Docker* y *docker-compose*
+# Práctica Voluntaria 1 - Despliegue de servidores web con usuarios autenticados mediante LDAP usando *Docker* y *docker-compose*
 
 ## Introducción
+
+Esta práctica la dejamos como práctica voluntaria. La principal novedad es que realiza la autenticación en NGINX de forma distinta a cómo la hemos hecho nosotros en la práctica 8. Puede servir a quien le interese para aprender otra forma de trabajar en nginx.
 
 ### ¿Qué es un servicio de directorio LDAP? 
 

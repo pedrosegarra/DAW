@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 4 - Autenticación Apache contra LDAP'
+title: 'Práctica 6 - Autenticación Apache contra LDAP'
 ---
 
-# Práctica 4 - Autenticación Apache contra LDAP
+# Práctica 6 - Autenticación Apache contra LDAP
 
 !!! Nota
     Para esta práctica partiremos de la "Práctica 2 - Configuración de un servidor LDAP y autenticación en Apache". Asegúrate de tenerla funcionando antes de empezar.

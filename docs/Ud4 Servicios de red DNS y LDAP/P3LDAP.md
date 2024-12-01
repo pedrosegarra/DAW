@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 2 - Configuración de un servidor LDAP y autenticación en Apache'
+title: 'Práctica 3 - Configuración de un servidor LDAP'
 ---
 
-# Práctica 2 - Configuración de un servidor LDAP y autenticación en Apache
+# Práctica 3 - Configuración de un servidor LDAP 
 
 ## Creación de la máquina virtual
 

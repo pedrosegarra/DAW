@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 5 - Autenticación Nginx contra LDAP'
+title: 'Práctica 8 - Autenticación Nginx contra LDAP'
 ---
 
-# Práctica 5 - Autenticación Nginx contra LDAP
+# Práctica 8 - Autenticación Nginx contra LDAP
 
 En esta práctica vamos a autenticar el acceso en Nginx usando un servidor LDAP.
 

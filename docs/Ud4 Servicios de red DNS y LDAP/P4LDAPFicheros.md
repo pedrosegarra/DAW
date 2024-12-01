@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 3 - Carga de datos en servidor LDAP mediante ficheros ldif'
+title: 'Práctica 4 - Carga de datos en servidor LDAP mediante ficheros ldif'
 ---
 
-# Práctica 3 - Carga de datos en servidor LDAP mediante ficheros ldif
+# Práctica 4 - Carga de datos en servidor LDAP mediante ficheros ldif
 
 ## Introducción
 
