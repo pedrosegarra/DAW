@@ -120,7 +120,7 @@ Pensemos también que el fichero de configuración del sitio lo tiene que actual
 Para ello el administrador solo debería hacer lo siguiente. Recuperaremos el fichero de configuración original:
 
 ```sh
-sudo cp /etc/apache2/sites-enabled/000-default.conf /etc/apache2/sites-enabled/000-default.conf.backup
+sudo cp /etc/apache2/sites-enabled/000-default.conf.backup /etc/apache2/sites-enabled/000-default.conf
 ```
 
 Dejaremos el bloque "Directory" así:
