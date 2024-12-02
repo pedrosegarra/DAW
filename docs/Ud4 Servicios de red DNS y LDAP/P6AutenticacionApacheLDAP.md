@@ -25,8 +25,22 @@ Crea un directorio denominado `test` y crea dentro un archivo index.html. Cambia
 
 ```sh
 sudo mkdir /var/www/html/test
-sudo cp /var/www/html/index.html /var/www/html/test
+sudo nano /var/www/html/test/index.html
 sudo chown -R www-data:www-data /var/www/html/test 
+```
+
+El fichero index.html podemos usar el siguiente:
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sitio LDAP!</title>
+</head>
+<body>
+<h1>Bienvendido al sitio validado por LDAP!</h1>
+</body>
+</html>
 ```
 
 Ahora vamos a editar el archivo de configuración Apache 000-default.conf. Antes haremos una copia de seguridad del mismo.
