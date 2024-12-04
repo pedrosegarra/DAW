@@ -111,6 +111,7 @@ Cambia IPSERVIDOR por la IP externa de la máquina virtual con el servidor LDAP.
 
 Fíjate que el bloque `ldap-server` ha de estar antes de la directiva `include /etc/nginx/sites-enabled/*` para que el servidor esté configurado antes de hacer uso de él en la configuración del sitio virtual. Vamos a ella. Modifica `/etc/nginx/sites-available/sitioldap` así:
 
+```
 server {
     listen 80;
     server_name sitioldap;
@@ -124,6 +125,7 @@ server {
         auth_ldap_servers mi_servidor_ldap;
     }
 }
+```
 
 Antes de nada prueba que las configuraciones son correctas con:
 
