@@ -69,7 +69,9 @@ Y el fichero 000-default.conf usaremos uno como este:
 
 Fíjate que es igual que el de la práctica anterior salvo que hemos modificado la línea `AuthLDAPURL "ldap://ldap-service/ou=usuarios,dc=daw,dc=ieselcaminas?uid?sub" `. En la anterior usamos `AuthLDAPURL "ldap://127.0.0.1/ou=usuarios,dc=daw,dc=ieselcaminas?uid?sub" ` porque el servidor ldap estaba en el mismo equipo. Ahora está en otro contenedor y nos referiremos a él por su "hostname" que definimos en docker.
 
-Cuando ya lo tengamos todo podemos crear nuestra imagen particularizada con
+Cuando ya lo tengamos todo podemos crear nuestra imagen particularizada. Llámale my-apache2-
+
+Después lanzamos el contenedor con:
 
 ```
 docker run \
