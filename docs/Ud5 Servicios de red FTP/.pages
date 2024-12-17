@@ -1,4 +1,10 @@
 nav:
-    - ... | Ud*.md
-    - Prácticas:
-        - ... | P*.md
+    - T01.md
+    - T02.md
+    - P01.md
+    - T03.md
+    - P02.md
+    - T04.md
+    - P03.md
+    - T05.md
+    - P04.md
