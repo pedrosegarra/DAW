@@ -1,4 +1,9 @@
 nav:
+    - T01.md
+    - T02.md
+    - T03.md
+    - P01-TomcatInstalacion.md
+    - P02-TomcatDespliegue.md
+    - P03-TomcatMaven.md
+    - T04.md
     - ...
-    - Prácticas:
-        - ... | P*.md

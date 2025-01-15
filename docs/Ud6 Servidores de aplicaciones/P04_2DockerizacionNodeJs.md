@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 3.4.2 - Dockerización del despliegue de una aplicación con Node.js'
+title: 'Práctica 4.2 - Dockerización del despliegue de una aplicación con Node.js'
 ---
 
-# Práctica 1 - Dockerización del despliegue de una aplicación Node.js
+# Práctica 4.2 - Dockerización del despliegue de una aplicación Node.js
 
 ## Introducción
 

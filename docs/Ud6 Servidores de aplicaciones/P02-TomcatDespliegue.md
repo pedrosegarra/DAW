@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 3.2: Despliegue de aplicaciones con Tomcat.'
+title: 'Práctica 2: Despliegue de aplicaciones con Tomcat.'
 ---
 
-# Práctica 3.2: Despliegue de aplicaciones con Tomcat.
+# Práctica 2: Despliegue de aplicaciones con Tomcat.
 
 ## Despliegue manual mediante Gestor de Aplicaciones Web de Tomcat
 
@@ -60,10 +60,11 @@ Observa un par de cosas.
    * La aplicación "sample" que desplegamos anteriormente tiene el fichero `sample.war` que subimos y una carpeta `sample` que corresponde a la aplicación ya desplegada
 
 Recordamos pues que la estructura de un Archivo WAR es la siguiente:
-- **/**  : Este directorio base contiene los elementos que comúnmente son utilizados en un sitio, Documentos en HTML , JSP's , CSS("Cascading Style Sheets") y otros elementos. 
-- **/WEB-INF/web.xml** : Contiene elementos de seguridad de la aplicación así como detalles sobre los Servlets que serán utilizados dentro de la misma.
-- **/WEB-INF/classes/** : Contiene las clases Java adicionales a las del JDK que serán empleadas en los JSP's y Servlets
-- **/WEB-INF/lib/** : Contiene los JAR's que serán utilizados por su aplicación.
+
+* **/**  : Este directorio base contiene los elementos que comúnmente son utilizados en un sitio, Documentos en HTML , JSP's , CSS("Cascading Style Sheets") y otros elementos. 
+* **/WEB-INF/web.xml** : Contiene elementos de seguridad de la aplicación así como detalles sobre los Servlets que serán utilizados dentro de la misma.
+* **/WEB-INF/classes/** : Contiene las clases Java adicionales a las del JDK que serán empleadas en los JSP's y Servlets
+* **/WEB-INF/lib/** : Contiene los JAR's que serán utilizados por su aplicación.
 
   Y comprobamos que nuestra aplicación sample cumple con esa estructura:
 ```sh
@@ -83,6 +84,7 @@ drwxr-x--- 2 tomcat tomcat 4096 Nov  5 18:07 lib
 ```
 
 Por tanto, para desplegar nuevas aplicaciones manualmente deberemos :
+
 1. Primero logearnos como usuario `tomcat` 
 2. Segundo generar una estructura de carpetas para la aplicación a desplegar similar a la de "sample", que es la estructura que necesita Tomcat.
 

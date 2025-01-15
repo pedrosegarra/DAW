@@ -1,5 +1,5 @@
 ---
-title: 'Aplicación Python con Flask en Docker'
+title: 'Práctica 8 - Aplicación Python con Flask en Docker'
 ---
 
 # Crear imágenes propias

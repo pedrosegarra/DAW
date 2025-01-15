@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 3.3: Despliegue en Tomcat con Maven'
+title: 'Práctica 3: Despliegue en Tomcat con Maven'
 ---
 
-# Práctica 3.3: Despliegue en Tomcat con Maven
+# Práctica 3: Despliegue en Tomcat con Maven
 
 Apache Maven es una herramienta de gestión de proyectos ampliamente utilizada en el desarrollo de software. Proporciona una forma eficiente de administrar la construcción, el ciclo de vida y las dependencias de proyectos Java y otros lenguajes de programación. Con Maven, los desarrolladores pueden automatizar la compilación, la prueba y la distribución de sus proyectos, lo que simplifica el proceso de desarrollo y garantiza la consistencia en la gestión de proyectos a lo largo del tiempo. Además, Maven facilita la colaboración en proyectos de código abierto al proporcionar una forma estándar de compartir y gestionar bibliotecas y dependencias.
 
@@ -109,9 +109,9 @@ Como ya vimos en el taller de Git, estamos clonando un proyecto de GitHub y colo
 Ahora debemos modificar el `POM` del proyecto para que haga referencia a que el despliegue se realice con el plugin de Maven para Tomcat. 
 
 !!!info
-No existen plugins **oficiales** para Tomcat más allá de la versión 7 del servidor. No obstante, el plugin para  Tomcat 7 sigue funcionando correctamente con Tomcat 9. 
+    No existen plugins **oficiales** para Tomcat más allá de la versión 7 del servidor. No obstante, el plugin para  Tomcat 7 sigue funcionando correctamente con Tomcat 9. 
         
-Otra opción sería utilizar el plugin [Cargo](https://codehaus-cargo.github.io/cargo/Home.html)
+    Otra opción sería utilizar el plugin [Cargo](https://codehaus-cargo.github.io/cargo/Home.html)
 
     
 Donde lo que añadimos es el bloque `<plugin>` dentro del bloque `<plugins>`.

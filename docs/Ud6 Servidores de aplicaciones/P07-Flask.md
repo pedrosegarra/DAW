@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 3.7 - Despliegue de una aplicación Flask (Python)'
+title: 'Práctica 7 - Despliegue de una aplicación Flask (Python)'
 ---
 
-# Práctica 3.7: Despliegue de una aplicación Flask (Python)
+# Práctica 7: Despliegue de una aplicación Flask (Python)
 
 ## Introducción
 

@@ -1,8 +1,8 @@
 ---
-title: 'Práctica Voluntaria 3.1 - Despliegue de una aplicación Node.js en Heroku (PaaS)'
+title: 'Práctica Voluntaria 1 - Despliegue de una aplicación Node.js en Heroku (PaaS)'
 ---
 
-# Práctica Voluntaria 3.1: Despliegue de una aplicación Node.js en Heroku (PaaS)
+# Práctica Voluntaria 1: Despliegue de una aplicación Node.js en Heroku (PaaS)
 
 !!!warning "Atención"
     De un tiempo a esta parte Heroku se ha convertido en una plataforma de pago. En el momento de escribir esta guía[^1] ofrece el ["Student Developer Program"](https://blog.heroku.com/github-student-developer-program) que proporciona un crédito gratuíto de $13/mes durante 12 meses para aquellos alumnos poseedores de una cuenta "Github Student". Pero incluso bajo estas condiciones exige proporcionar una tarjeta de crédito para validar la cuenta. Este es el motivo de dejar esta práctica como voluntaria y no obligatoria.

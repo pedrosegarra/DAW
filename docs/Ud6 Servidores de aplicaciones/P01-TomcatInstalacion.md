@@ -1,10 +1,12 @@
 ---
-title: 'Práctica 3.1: Instalación de Tomcat.'
+title: 'Práctica 1: Instalación de Tomcat.'
 ---
 
-# Práctica 3.1: Instalación de Tomcat
+# Práctica 1: Instalación de Tomcat
 
 ## Introducción
+
+Recordamos que estamos en el apartado de "Despliegue de aplicaciones Java" y, com ya vimos en la teoría, Tomcat es una de las opciones para este tipo de despliegues.
 
 En esta práctica vamos a instalar el servidor de aplicaciones Apache Tomcat en su última versión disponible.
 
@@ -12,7 +14,7 @@ Si consultamos el apartado de [versiones de Tomcat](https://tomcat.apache.org/wh
 
 En Java 9 se introdujeron novedades como un nuevo sistema de módulos (Jigsaw), [entre otras](https://blog.codmind.com/java-9-analisis-de-las-novedades/){:target="_blank"}.
 
-En Java 11 se dio un paso más al haber renombrado completamente las rutas de paquetes javax.* a jakarta.*. Oracle, a pesar de haber hecho público el desarrollo de Java, no hizo lo mismo con su nombre. Por tanto, si el paquete a desplegar ya está compilado, poco podemos hacer. Pero si disponemos del código fuente y nos da un error de complilación, podemos mirar si los paquetes que está usando son los javax.* y sustituirlos por jakarta.* e intentar complilar de nuevo.
+En Java 11 se dio un paso más al haber renombrado completamente las rutas de paquetes *"javax.\*"* a *"jakarta.\*"*. Oracle, a pesar de haber hecho público el desarrollo de Java, no hizo lo mismo con su nombre. Por tanto, si el paquete a desplegar ya está compilado, poco podemos hacer. Pero si disponemos del código fuente y nos da un error de complilación, podemos mirar si los paquetes que está usando son los *"javax.\*"* y sustituirlos por *"jakarta.\*"* e intentar complilar de nuevo.
 
 ### Instalación de Tomcat
 
@@ -24,7 +26,7 @@ Esta práctica es muy sencilla y va a consistir en realizar la instalación del 
 
 Para empezar, entra en AWS Academy y crea un nuevo EC2 Debian con estas características. 
 
-* Llámale P3Tomcat.
+* Llámale PTomcat.
 * Dale los recursos que te ofrece por defecto.
 * El acceso al servidor Tomcat se realiza por el puerto TCP 8080. Puedes modificar el Grupo de seguridad ahora para permitir el acceso por http, https y TCP 8080 ahora o editarlo más tarde.
 
@@ -93,12 +95,13 @@ Vamos a crearlo modificando el archivo `/etc/tomcat10/tomcat-users.xml` (con el
 editor que quieras).
 
 Merece la pena dedicarle un tiempo a leer ese fichero. Verás que Tomcat tiene una serie de roles administrativos predefinidos. Hemos de activar aquellos que queramos y luego asignarlos a los usuarios que deseemos. 
-Para poder tener acceso al :
-- **"Gestor de Aplicaciones Web de Tomcat"** deberemos activar el rol **"manager-gui"**.
-- **"Gestor de Máquina Virtual de Tomcat"** necesitaremos activar el rol **"admin-gui"**.
+Para poder tener acceso al:
+
+* **"Gestor de Aplicaciones Web de Tomcat"** deberemos activar el rol **"manager-gui"**.
+* **"Gestor de Máquina Virtual de Tomcat"** necesitaremos activar el rol **"admin-gui"**.
 
 ```sh
-sudo vi /etc/tomcat10/tomcat-users.xml
+sudo nano /etc/tomcat10/tomcat-users.xml
 ```
 Añade las siguientes líneas antes del cierre </tomcat users>.
 
