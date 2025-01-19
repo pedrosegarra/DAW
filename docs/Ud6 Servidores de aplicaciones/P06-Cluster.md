@@ -1,8 +1,8 @@
 ---
-title: 'Práctica 5 - Despliegue de una aplicación "clusterizada" con Node Express'
+title: 'Práctica 6 - Despliegue de una aplicación "clusterizada" con Node Express'
 ---
 
-# Práctica 5: Despliegue de una aplicación "clusterizada" con Node Express
+# Práctica 6: Despliegue de una aplicación "clusterizada" con Node Express
 
 ## Introducción
 

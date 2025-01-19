@@ -1,12 +1,12 @@
 ---
-title: 'Práctica 4.2 - Dockerización del despliegue de una aplicación con Node.js'
+title: 'Práctica 5 - Dockerización del despliegue de una aplicación con Node.js'
 ---
 
-# Práctica 4.2 - Dockerización del despliegue de una aplicación Node.js
+# Práctica 5 - Dockerización del despliegue de una aplicación Node.js
 
 ## Introducción
 
-En este caso vamos a Dockerizar la aplicación que ya desplegamos en la [práctica 3.4.1](P3_4_1-NodeJS-Express.md).
+En este caso vamos a Dockerizar la aplicación que ya desplegamos en la [Práctica 4 - Despliegue de aplicaciones con Node Express](P04-NodeJS-Express.md).
 
 ### ¿Por qué *dockerizar*?
 
@@ -66,8 +66,8 @@ _____ ["npm", "run", "start:dev"] #(9)
 4. `_____` como su nombre indica, copia los archivos que le indiquemos dentro del contenedor, en este caso `package.json`    
     !!!info
         Recordemos que `package.json` cumplía ciertas funciones importantes:
-         + Centraliza la forma de interactuar con la aplicación por medio de definición de scripts (indica comandos que podemos correr dentro de nuestro proyecto, asociándolos a una palabra clave para que npm (o yarn) los reconozca cuando queramos ejecutarlos.)
-         + Gestiona de una forma clara y sencilla las dependencias necesarias para que la aplicación pueda funcionar correctamente.
+           * Centraliza la forma de interactuar con la aplicación por medio de definición de scripts (indica comandos que podemos correr dentro de nuestro proyecto, asociándolos a una palabra clave para que npm (o yarn) los reconozca cuando queramos ejecutarlos.)
+           * Gestiona de una forma clara y sencilla las dependencias necesarias para que la aplicación pueda funcionar correctamente.
 5. Con otro `_____` ejecutamos el ya conocido comando que nos instala las dependencias que se indican en el archivo que hemos copiado en el paso anterior, el `package.json`
 6. Copiamos todos los archivos de nuestro directorio de trabajo al contenedor
 7. Con `_____` le indicaremos el usuario con el que correrá el contenedor
@@ -114,7 +114,7 @@ Muy probablemente en algún momento de la creación de la imagen recibas un mens
     Removing intermediate container 8f00b40eaca1
     ---> b81619303488
 
-Ya nos sucedió en la práctica 3.4, ¿recuerdas? Aunque has podido hacer funcionar la imagen pese a esta advertencia, lo cierto es que sería mejor que npm funcionara con la última versión disponible. 
+Ya nos sucedió en la **Práctica 4 - Despliegue de aplicaciones con Node Express**, ¿recuerdas? Aunque has podido hacer funcionar la imagen pese a esta advertencia, lo cierto es que sería mejor que npm funcionara con la última versión disponible. 
 
 Borra el contenedor creado y la imagen que habías creado. Modifica el Docker file para que la imagen se cree actualizando npm, no a la versión 10.2.4 sino a la última disponible en el momento de crear la imagen. Busca en Internet o consula a ChatGPT para obtener el comando adecuado. ¿Qué comando incluyes en el Dockerfile y en qué posición?
 

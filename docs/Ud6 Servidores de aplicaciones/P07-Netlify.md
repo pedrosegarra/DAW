@@ -1,8 +1,8 @@
 ---
-title: 'Práctica  6 - Despliegue de una aplicación en Netlify (Paas)'
+title: 'Práctica  7 - Despliegue de una aplicación en Netlify (Paas)'
 ---
 
-# Práctica 6: Despliegue de una aplicación en Netlify (PaaS)
+# Práctica 7: Despliegue de una aplicación en Netlify (PaaS)
 
 !!!note "Nota"
     Para esta práctica vamos a crearnos cuentas en distintos servicios cuando se os pida:
