@@ -243,8 +243,8 @@ Accede ahora con el navegador a [http://localhost:4000/](http://localhost:4000/)
 Recuerda parar los contenedores y borrarlos con   
 
 ```
-docker compose stop
-docker compose down
+docker-compose stop
+docker-compose down
 ```
 
 Y en este caso se nos crea un directorio data sobre el que no tenemos permisos y deberemos borrar para el siguiente apartado:
