@@ -22,8 +22,10 @@ Apuntes y prácticas del módulo **Despliegue de aplicaciones web** de <u>2º de
 | ------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | 0.0     | [Raúl Riesco Montes](mailto:r.riesco@edu.gva.es)                            | Versión original de estos apuntes del compañero Raúl Riesco, del IES Severo Ochoa de Elche |
 | Curso23/24    | [José Muñoz Jimeno](https://about.me/jmunozj){:target="_blank"} y Noelia Beltrán Mañas | Adaptación de los materiales a nueva normativa y necesidades del IES El Caminàs.                               |
-| Curso24/25   | [José Muñoz Jimeno](https://about.me/jmunozj){:target="_blank"} | Modificación de los materiales para el nuevo curso escolar.                               |
-
+| Curso24/25   | [José Muñoz Jimeno](https://about.me/jmunozj){:target="_blank"} | Modificación de los materiales para el nuevo curso escolar.  
+                             |
+| Curso25/26   | [Pedro Segarra](){:target="_blank"} | Toma de contacto con la impartición de la asignatura  
+                             |
 ## Marco normativo
 El presente módulo profesional se enmarca en el 2º curso del título de Técnico Superior en Desarrollo de Aplicaciones Web. Dicho título viene regulado por:
 
