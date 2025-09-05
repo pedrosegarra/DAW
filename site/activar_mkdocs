@@ -1,3 +1,0 @@
-source /Users/Pp/venv/bin/activate 
-cd /Users/Pp/Prof\ Secundaria/Materiales/DAW/
-mkdocs serve &
