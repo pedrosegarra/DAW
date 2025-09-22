@@ -14,7 +14,7 @@ Si quieres instalar Git en Linux a través de un instalador binario, en general 
 
 O si estás en una distribución basada en Debian como Ubuntu, prueba con apt-get:
 
-    $ apt-get install git
+    $ apt-get install git-all
 
 ### Instalando en Windows
 
