@@ -2980,37 +2980,45 @@
 <p>Pero como nuestro servidor solo acepta login por claves ssh, entonces deberemos hacerlo manualmente. Así entenderemos mejor lo que ocurre realmente. Sigue estos pasos:</p>
 <p><strong>1. Desde el terminal local</strong></p>
 <p>Copia la clave pública generada al portapapeles. Si tienes Windows, utiliza Notepad. Y si tienes Linux puedes utilizar este comando. </p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$ cat ~/.ssh/id_rsa.pub | pbcopy
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$ cat ~/.ssh/id_rsa.pub | pbcopy
 </code></pre></div>
+Para instalar pbcopy puedes realizar lo siguiente:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo apt update &amp;&amp; sudo apt install xclip -y 
+</code></pre></div>
+Y crear un alias para usarlo:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a># Añadir en ~/.bashrc o ~/.zshrc
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>alias pbcopy=&#39;xclip -selection clipboard&#39;
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>alias pbpaste=&#39;xclip -selection clipboard -o&#39;
+</code></pre></div></p>
 <p><strong>2. En el servidor remoto Debian</strong></p>
 <p>Conéctate al servidor Debian como <code>admin</code>. Ya sabes cómo.</p>
 <p>Cada usuario guarda las claves públicas en el archivo denominado <strong>~/.ssh/authorized_keys</strong>. Puedes ver la clave pública del usuario <code>admin</code> correspondiente a la clave privada con la que se conecta con:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$ cat /home/admin/.ssh/authorized_keys
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>$ cat /home/admin/.ssh/authorized_keys
 </code></pre></div>
 <p>Pero ahora necesitamos crear una nueva clave pública para <code>profe</code>, así que desde el usuario <code>admin</code> cambiaremos al usuario <code>profe</code></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>admin@ip-172-31-42-159:~$ su profe
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>profe@ip-172-31-42-159:~$
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>admin@ip-172-31-42-159:~$ su profe
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>profe@ip-172-31-42-159:~$
 </code></pre></div>
 <p>Cambiaremos a la carpeta raiz de profe:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>profe@ip-172-31-42-159:~$ cd
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>profe@ip-172-31-42-159:~$ pwd
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>/home/profe
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>profe@ip-172-31-42-159:~$ cd
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>profe@ip-172-31-42-159:~$ pwd
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>/home/profe
 </code></pre></div>
 <p>Ahora creamos la carpeta .ssh y creamos y editamos authorized_keys</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>profe@ip-172-31-42-159:~$ mkdir .ssh
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>profe@ip-172-31-42-159:~$ cd .ssh/
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>profe@ip-172-31-42-159:~/.ssh$ nano authorized_keys
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>profe@ip-172-31-42-159:~$ mkdir .ssh
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>profe@ip-172-31-42-159:~$ cd .ssh/
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>profe@ip-172-31-42-159:~/.ssh$ nano authorized_keys
 </code></pre></div>
 <p>Ahora pegamos el contenido del portapapeles que copiamos anteriormente con CTRL+U y cerramos guardando con CTRL+X.</p>
 <p>Deberemos cambiar los permisos del fichero authorized_keys.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>profe@ip-172-31-42-159:~/.ssh$ chmod 600 ~/.ssh/authorized_keys
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>profe@ip-172-31-42-159:~/.ssh$ chmod 600 ~/.ssh/authorized_keys
 </code></pre></div>
 <p>Reinicia el servicio SSH para aplicar los cambios:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>profe@ip-172-31-42-159:~/.ssh$ sudo service ssh restart 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>profe@ip-172-31-42-159:~/.ssh$ sudo service ssh restart 
 </code></pre></div>
 <h2 id="comprobacion-de-acceso-al-servidor-con-ese-nuevo-usuario">Comprobación de acceso al servidor con ese nuevo usuario</h2>
 <p>Ahora ya podemos conectarnos <strong>desde nuestro equipo local</strong> a la máquina remota usando la clave privada que generamos para <code>profe</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>$ ssh -i ~/.ssh/id_rsa profe@direccion-ip-publica-servidor-debian
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>$ ssh -i ~/.ssh/id_rsa profe@direccion-ip-publica-servidor-debian
 </code></pre></div>
 <p>Para finalizar, si vas a generar y usar varias claves para distintas finalidades podría ser interesante asignarles nombres descriptivos según las mismas.</p>
 <blockquote>
