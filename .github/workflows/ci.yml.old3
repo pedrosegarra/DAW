@@ -1,0 +1,94 @@
+name: ci
+
+on:
+  push:
+    branches: [ master, main ]
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      cache_id: ${{ github.run_number }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          cache: 'pip'
+
+      - uses: actions/cache@v3
+        with:
+          key: mkdocs-material-${{ env.cache_id }}
+          path: .cache
+          restore-keys: |
+            mkdocs-material-
+
+      - name: Install deps
+        run: |
+          pip install --upgrade pip
+          pip install mkdocs-material mkdocs-awesome-pages-plugin
+
+      - name: Configure git for gh-deploy
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+      - name: Build (optional)
+        run: mkdocs build --strict
+
+      - name: Deploy to gh-pages
+        run: mkdocs gh-deploy --force --no-history
+name: ci
+
+on:
+  push:
+    branches: [ master, main ]
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      cache_id: ${{ github.run_number }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          cache: 'pip'
+
+      - uses: actions/cache@v3
+        with:
+          key: mkdocs-material-${{ env.cache_id }}
+          path: .cache
+          restore-keys: |
+            mkdocs-material-
+
+      - name: Install deps
+        run: |
+          pip install --upgrade pip
+          pip install mkdocs-material mkdocs-awesome-pages-plugin
+
+      - name: Configure git for gh-deploy
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+      - name: Build (optional)
+        run: mkdocs build --strict
+
+      - name: Deploy to gh-pages
+        run: mkdocs gh-deploy --force --no-history
