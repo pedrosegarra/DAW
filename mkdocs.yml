@@ -66,6 +66,10 @@ extra:
       provider: google 
       property: G-3NX5MD5C8H
 
+draft_docs: |
+  drafts/**          # todo lo que esté en docs/drafts/ es borrador
+
+
 #nav:
 #  - ... | Ud1 Introduccion/*.md
 #  - ... | Unidad 2/*.md
