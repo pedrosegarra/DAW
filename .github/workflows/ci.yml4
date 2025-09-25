@@ -2,8 +2,9 @@ name: ci
 
 on:
   push:
-    branches: [ master, main ]
-  workflow_dispatch:      # <-- permite lanzarlo a mano desde Actions
+    branches:
+      - master
+      - main
 
 permissions:
   contents: write
@@ -12,20 +13,17 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      cache_id: ${{ github.run_number }}
+      cache_id: ${{ github.run_number }}   # evita el warning del editor
 
     steps:
-      - name: Sanity check
-        run: echo "CI triggered on $GITHUB_REF by $GITHUB_ACTOR"
-
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0                   # historial completo (más seguro para gh-deploy)
 
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-          cache: 'pip'
+          cache: 'pip'                     # cachea dependencias de pip
 
       - uses: actions/cache@v3
         with:
@@ -34,18 +32,18 @@ jobs:
           restore-keys: |
             mkdocs-material-
 
-      - name: Install deps
+      - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install mkdocs-material mkdocs-awesome-pages-plugin
 
-      - name: Configure git for gh-deploy
+      - name: Configure git author (required by gh-deploy)
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
-      - name: Build (optional)
+      - name: Build site (optional but recommended)
         run: mkdocs build --strict
 
-      - name: Deploy to gh-pages
+      - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force --no-history
