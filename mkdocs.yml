@@ -67,8 +67,7 @@ extra:
       property: G-3NX5MD5C8H
 
 draft_docs: |
-  drafts/**          # todo lo que esté en docs/drafts/ es borrador
-
+  drafts/**
 
 #nav:
 #  - ... | Ud1 Introduccion/*.md
