@@ -1,5 +1,5 @@
 site_name: Despliegue de aplicaciones web
-site_url: https://pedrosegarra.github.io/DAW
+site_url: https://pedrosegarra.github.io/DAW/
 
 theme:
   name: material
