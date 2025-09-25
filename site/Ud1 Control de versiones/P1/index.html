@@ -2959,61 +2959,67 @@
 <p>Utilizando distintos comandos podemos pasar los archivos de una sección a otra y cambiar su estado. A continuación veremos los comandos básicos que nos permitirán una utilización básica de git usando como repositorio remoto GitHub.</p>
 <h2 id="que-tienes-que-hacer">¿Qué tienes que hacer?</h2>
 <ol>
-<li>
-<p>Crea una cuenta en GitHub (<strong>Si no la tienes!!!</strong>). La forma de acceder a los repositorios remotos de GitHub va a ser por SSH, por lo tanto debes copiar tu clave pública RSA a GitHub, para ello:</p>
-<ul>
-<li>Genera una par de claves ssh, como hicimos en una práctica anterior. Puedes usar la que creaste entonces si quieres.</li>
-<li>Ve a GitHub - Settings - "SSH and GPG keys".</li>
-<li>Crea una `New SSH Key".</li>
-<li>Copia el contenido de tu fichero <code>~/.ssh/id_rsa.pub</code> y pega el contenido de tu clave pública.</li>
+<li>Crea una cuenta en GitHub (<strong>Si no la tienes!!!</strong>). La forma de acceder a los repositorios remotos de GitHub va a ser por SSH, por lo tanto debes copiar tu clave pública RSA a GitHub, para ello:<ul>
+<li>Genera una par de claves ssh, como hicimos en una práctica anterior. Puedes usar la que creaste entonces si quieres. Recuerda:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ssh-keygen -b 4096
+</code></pre></div>
+Si dejáis las opciones por defecto, creará una clave privada id_rsa y una clave pública id_rsa.pub en el directorio /home/nombreusuario/.ssh. Compruébalo.</li>
 </ul>
 </li>
+</ol>
+<p>Os pedirá una contraseña para proteger el uso de la clave privada. Puesto que precisamente queremos agilizar el proceso de conexión por SSH para no introducir contraseñas, debéis dejarla vacía.</p>
+<p>Una vez creado el par de claves, tal y como hemos visto en el apartado anterior, el servidor SSH (Debian) debe poseer nuestra clave pública para que podamos autenticarnos con nuestra clave privada, que como su nombre indica, sólo debemos poseer nosotros y por eso nos identifica unívocamente.</p>
+<div class="highlight"><pre><span></span><code>* Ve a GitHub - Settings - &quot;SSH and GPG keys&quot;.
+* Crea una `New SSH Key&quot;.
+* Copia el contenido de tu fichero `~/.ssh/id_rsa.pub` y pega el contenido de tu clave pública.
+</code></pre></div>
+<ol>
 <li>
 <p>Crea en GitHub un repositorio con el nombre <strong>prueba_tu_nombre</strong> (inicializa el repositorio con un fichero README) y la descripción <strong>Repositorio de prueba de Nombre</strong>.</p>
 </li>
 <li>
 <p>Instala git en tu ordenador (<strong>si no lo tienes instalado!!!</strong>).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>apt-get<span class="w"> </span>install<span class="w"> </span>git-all
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>apt-get<span class="w"> </span>install<span class="w"> </span>git-all
 </code></pre></div>
 </li>
 <li>
 <p>Configuración de git. Lo primero que deberías hacer cuando instalas Git es establecer tu nombre de usuario y dirección de correo electrónico (<strong>Asegurate que los datos son correctos y que has puesto tu nombre completo</strong>). Esto es importante porque las confirmaciones de cambios (commits) en Git usan esta información, y es introducida de manera inmutable en los commits que envías:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="w">    </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.name<span class="w"> </span><span class="s2">&quot;John Doe&quot;</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.email<span class="w"> </span>johndoe@example.com
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="w">    </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.name<span class="w"> </span><span class="s2">&quot;John Doe&quot;</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.email<span class="w"> </span>johndoe@example.com
 </code></pre></div>
 <p>De nuevo, sólo necesitas hacer esto una vez si especificas la opción <code>--global</code>, ya que Git siempre usará esta información para todo lo que hagas en ese sistema.</p>
 </li>
 <li>
 <p>Clonar el repositorio remoto. Copia la url SSH del repositorio (<strong>no copies la URL https</strong>) y vamos a clonar el repositorio en nuestro ordenador. Sitúate en un directorio, dentro del cual quieras clonar el repositorio remoto.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="w">    </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:xxxxxxx/xxxxxxx.git
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="w">    </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:xxxxxxx/xxxxxxx.git
 </code></pre></div>
 <p>Comprueba que dentro del repositorio que hemos creado se encuentra el fichero README.md, en este fichero podemos poner la descripción del proyecto.</p>
 <p>Comprueba también que existe un directorio .git que contiene todos los ficheros que git utiliza para gestionar el proyecto.</p>
 </li>
 <li>
 <p>Vamos a crear un nuevo fichero, lo vamos a añadir a nuestro repositorio local y luego lo vamos a sincronizar con nuestro repositorio remoto de GitHub. Cada vez que hagamos una modificación en un fichero lo podemos señalar creando un commit. Los mensajes de los commits son fundamentales para explicar la evolución de un proyecto. Un commit debe ser un conjunto pequeño de cambios de los ficheros del proyecto con una cierta coherencia. Comprueba tras cada comando git el estado y área donde se encuentra el archivo con git status.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Esto es una prueba&quot;</span>&gt;ejemplo.txt
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span>git<span class="w"> </span>add<span class="w"> </span>ejemplo.txt
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span>git<span class="w"> </span>status
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;He creado el fichero ejemplo.txt&quot;</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span>git<span class="w"> </span>status
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span>git<span class="w"> </span>push
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Esto es una prueba&quot;</span>&gt;ejemplo.txt
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span>git<span class="w"> </span>add<span class="w"> </span>ejemplo.txt
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span>git<span class="w"> </span>status
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;He creado el fichero ejemplo.txt&quot;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span>git<span class="w"> </span>status
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span>git<span class="w"> </span>push
 </code></pre></div>
 <p>Comprueba ahora en el repositorio remoto de GitHub que se ha subido el fichero ejemplo.txt y los comentarios del commit.</p>
 </li>
 <li>
 <p>Si modificas un fichero en tu repositorio local, pasará al área "workspace" y estado "modificado". Vamos a probarlo.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot; modificada&quot;</span>&gt;&gt;ejemplo.txt
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span>git<span class="w"> </span>status
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot; modificada&quot;</span>&gt;&gt;ejemplo.txt
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span>git<span class="w"> </span>status
 </code></pre></div>
 <p>Comprueba como te dice que el fichero ejemplo.txt esta en estado modificado.</p>
 </li>
 <li>
 <p>Ahora podríamos pasarlo al àrea "stage" nuevamente con <code>git add ejemplo.txt</code> o pasarlo directamente al "Repositorio local" con <code>git commit -a</code>. Por rapidez usaremos esta última forma. Fíjate que usaremos siempre <code>-m</code> para incluir un comentario descriptivo a cada commit.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="w">    </span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;He modificado el fichero ejemplo.txt&quot;</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span>git<span class="w"> </span>status
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span>git<span class="w"> </span>push
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span>git<span class="w"> </span>status
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="w">    </span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;He modificado el fichero ejemplo.txt&quot;</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span>git<span class="w"> </span>status
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span>git<span class="w"> </span>push
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span>git<span class="w"> </span>status
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -3022,25 +3028,25 @@
 </li>
 <li>
 <p>Si quieres cambiar el nombre de un fichero o directorio de tu repositorio:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="w">    </span>git<span class="w"> </span>mv<span class="w"> </span>ejemplo.txt<span class="w"> </span>ejemplo2.txt
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;He cambiado el nombre del fichero&quot;</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span>git<span class="w"> </span>status
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span>git<span class="w"> </span>push
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span>git<span class="w"> </span>status
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="w">    </span>git<span class="w"> </span>mv<span class="w"> </span>ejemplo.txt<span class="w"> </span>ejemplo2.txt
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;He cambiado el nombre del fichero&quot;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span>git<span class="w"> </span>status
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span>git<span class="w"> </span>push
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span>git<span class="w"> </span>status
 </code></pre></div>
 </li>
 <li>
 <p>Si quieres borrar un fichero de tu repositorio:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="w">    </span>git<span class="w"> </span>rm<span class="w"> </span>ejemplo2.txt
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span>git<span class="w"> </span>status
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;He borrado el fichero ejemplo2&quot;</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span>git<span class="w"> </span>status
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span>git<span class="w"> </span>push
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="w">    </span>git<span class="w"> </span>rm<span class="w"> </span>ejemplo2.txt
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span>git<span class="w"> </span>status
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;He borrado el fichero ejemplo2&quot;</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span>git<span class="w"> </span>status
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span>git<span class="w"> </span>push
 </code></pre></div>
 </li>
 <li>
 <p>Puedes comprobar el historial de commits del proyecto así</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="w">    </span>git<span class="w"> </span>log
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="w">    </span>git<span class="w"> </span>log
 </code></pre></div>
 </li>
 <li>
@@ -3050,7 +3056,7 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Puedes clonar tu repositorio de GitHub en varios ordenadores (por ejemplo, si quieres trabajar en tu casa y en el instituto), por lo tanto antes de trabajar en un repositorio local tienes que sincronizar los posibles cambios que se hayan producido en el repositorio remoto, para ello:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="w">    </span>git<span class="w"> </span>pull
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="w">    </span>git<span class="w"> </span>pull
 </code></pre></div>
 </div>
 
