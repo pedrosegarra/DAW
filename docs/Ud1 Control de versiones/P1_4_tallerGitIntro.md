@@ -72,6 +72,14 @@ Utilizando distintos comandos podemos pasar los archivos de una sección a otra 
 ## ¿Qué tienes que hacer?
 
 1. Crea una cuenta en GitHub (**Si no la tienes!!!**). La forma de acceder a los repositorios remotos de GitHub va a ser por SSH, por lo tanto debes copiar tu clave pública RSA a GitHub, para ello:
+   * Genera una par de claves ssh, como hicimos en una práctica anterior. Puedes usar la que creaste entonces si quieres. Recuerda:
+	```
+	ssh-keygen -b 4096
+	```
+Si dejáis las opciones por defecto, creará una clave privada id_rsa y una clave pública id_rsa.pub en el directorio /home/nombreusuario/.ssh. Compruébalo.
+
+Os pedirá una contraseña para proteger el uso de la clave privada. Puesto que precisamente queremos agilizar el proceso de conexión por SSH para no introducir contraseñas, debéis dejarla vacía.
+
 	* Copia el contenido de tu fichero `~/.ssh/id_rsa.pub`, para ello: añade una nueva clave SSH en el apartado "SSH keys" de tu perfil en GitHub y pega el contenido de tu clave pública.
 	* Si no tienes ningún par de llaves SSH, puedes generarlas y copiar la llave pública a GitHub. En el siguiente enlace dispones de toda la información sobre cómo generar el par de llaves y cómo añadir la llave pública a GitHub. [Documentación sobre conectarse a GitHub mediante SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh).
 
