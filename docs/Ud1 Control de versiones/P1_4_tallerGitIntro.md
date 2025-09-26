@@ -80,8 +80,9 @@ Si dejáis las opciones por defecto, creará una clave privada id_rsa y una clav
 
 Os pedirá una contraseña para proteger el uso de la clave privada. Puesto que precisamente queremos agilizar el proceso de conexión por SSH para no introducir contraseñas, debéis dejarla vacía.
 
-	* Copia el contenido de tu fichero `~/.ssh/id_rsa.pub`, para ello: añade una nueva clave SSH en el apartado "SSH keys" de tu perfil en GitHub y pega el contenido de tu clave pública.
-	* Si no tienes ningún par de llaves SSH, puedes generarlas y copiar la llave pública a GitHub. En el siguiente enlace dispones de toda la información sobre cómo generar el par de llaves y cómo añadir la llave pública a GitHub. [Documentación sobre conectarse a GitHub mediante SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh).
+* Copia el contenido de tu fichero `~/.ssh/id_rsa.pub`, para ello: añade una nueva clave SSH en el apartado "SSH keys" de tu perfil en GitHub y pega el contenido de tu clave pública.
+
+* Si no tienes ningún par de llaves SSH, puedes generarlas y copiar la llave pública a GitHub. En el siguiente enlace dispones de toda la información sobre cómo generar el par de llaves y cómo añadir la llave pública a GitHub. [Documentación sobre conectarse a GitHub mediante SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh).
 
 2. Crea desde la plataforma web de GitHub un repositorio con el nombre **repo_DAW_tu_nombre** (inicializa el repositorio con un fichero README) y la descripción **Repositorio para la asignatura de DAW de 2DAW**.
 
