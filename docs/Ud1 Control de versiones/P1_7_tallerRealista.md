@@ -39,7 +39,11 @@ Markdown es especialmente útil para crear documentación, escribir publicacione
 
 ## ¿Qué tienes que hacer?
 
-  1. Crea un repositorio nuevo en GitHub y clónalo en local.
+  1. Crea un par de claves privada y publica para conectarte al servidor web. Para ello realiza lo siguiente:
+  ```
+  ssh-keygen -t ed25519 -C "correo@alu.edu.gva.es" -f ~/.ssh/web
+  ```
+
   2. A los archivos en markdown les solemos poner extensión md. Crea un fichero llamado `miprimermd.md`. Este fichero tiene que tener los siguientes elementos en este orden:
 
      * Un título principal
