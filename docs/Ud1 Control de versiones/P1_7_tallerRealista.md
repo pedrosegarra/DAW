@@ -23,8 +23,8 @@ En esta práctica vamos a realizar el ciclo de despliegue de local a publicado e
     * Sería conveniente que en local veas también la publicación de la página. Pero lo veremos más adelante con algún servicio web.
   4. Conéctate a tu página web pública, será del estilo correo.iespublico.com. Si tu dirección de correo tenía un punto se sustituirá por un -, por ejemplo p.segarracabedo, la web será p-segarracabedo.iespublico.com
   De momento la web será sin certificado, a lo largo del curso aprenderemos a hacerla con certificado SSL.
-  5. Ahora debes conectarte al servidor correspondiente por ssh y realizar desde allí un pull a tu github para subir el index.html. Debes "estudiar" dónde se guardan las páginas web en un servidor Apache. La estructura será en ......../el_nombre_del_subdominio.
-  Si todo ha ido bien, veremos en tu subdominio.iespublico.com, tu index.html publicado.
+  5. [Tarea explicada en clase] Ahora debes conectarte al servidor correspondiente por ssh y realizar desde allí un pull a tu github para subir el index.html. Debes "estudiar" dónde se guardan las páginas web en un servidor Apache. La estructura será en ......../el_nombre_del_subdominio.
+  Si todo ha ido bien [Después de la explicación, la realizarás en casa o en AWS] , veremos en tu subdominio.iespublico.com, tu index.html publicado.
   
 
 
