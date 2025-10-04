@@ -34,3 +34,4 @@ En esta práctica vamos a realizar el ciclo de despliegue de local a publicado e
     1. La URL de GitHub para acceder al fichero que has creado.
     2. La URL de tu subdominio.iespublico.com
     3. Captura de que el index.html se vé correcto en tu subdominio.iespublico.com
+    4. Entrega un documento pdf con la explicación de todo el montaje de la práctica, con los pasos detallados de lo que has debido configurar para realizar todo el ciclo de local-repositorio a publicar en web.
