@@ -44,6 +44,7 @@ Crea un archivo llamado `index.html` con el siguiente contenido de ejemplo (pued
 ## 3. Subir el proyecto a GitHub
 
 Desde el terminal integrado de Visual Studio Code, sube tu proyecto al repositorio de GitHub de la práctica (`P1_4`). Asegúrate de tener Git instalado y la autenticación por SSH configurada previamente.
+![](P1_7/terminal.png)
 
 ### Pasos
 
