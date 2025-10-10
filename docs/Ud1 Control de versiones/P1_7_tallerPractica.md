@@ -156,6 +156,25 @@ git pull origin main      # o: git pull origin master
 # Si es la primera vez
 git clone git@github.com:tu_usuario/P1_4.git .
 ```
+> [!NOTE]
+> Para la conexión correcta se debe poner:  
+> `ssh -i ~/.ssh/id_ed25519 git@github.com`  
+>
+> Ya que la clave que hemos creado no es predeterminada, debemos usar la opción **-i** para indicar cuál utilizar.  
+>
+> Puedes hacer una mejora configurando una vez el archivo `~/.ssh/config`:
+>
+> ```bash
+> Host github.com
+>   HostName github.com
+>   User git
+>   IdentityFile ~/.ssh/id_ed25519
+> ```
+>
+> A partir de ahí, ya podrás conectarte directamente con:  
+> `ssh git@github.com`
+
+
 
 4) Comprueba que `index.html` está en `public_html` y verifica la publicación accediendo a:
 
