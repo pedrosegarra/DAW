@@ -1,4 +1,4 @@
 nav:
     - ... | T*.md
-#    - Prácticas:
-#        - ... | P*.md
+    - Prácticas:
+        - ... | P*.md
