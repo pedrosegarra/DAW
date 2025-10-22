@@ -1,4 +1,4 @@
-# P2 – Fase 3 (Alumno): Verificación de despliegue y acceso en servidor
+# Práctica 2 – Fase 3: Verificación de despliegue y acceso en servidor
 
 **Centro:** IES El Caminàs  
 **Módulo:** Despliegue de Aplicaciones Web  
@@ -162,5 +162,5 @@ Incluye también un breve comentario indicando si la descarga (`docker pull`) y 
 
 ---
 
-**Fin de la Fase 3 (Alumno)**  
+**Fin de la Fase 3**  
 IES El Caminàs – Módulo Despliegue de Aplicaciones Web
