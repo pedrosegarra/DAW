@@ -24,6 +24,7 @@ En esta fase **no** se realiza el despliegue en el servidor del profesor. Ese pa
     Las **claves SSH** se usan únicamente para Git (código fuente), no para GHCR.
 
 ---
+ 
 
 ## 1. Subir el proyecto a GitHub (por SSH)
 
@@ -47,6 +48,10 @@ git push -u origin main
       IdentityFile ~/.ssh/id_ed25519
     ```
 
+---
+!!! note "Cuidado"
+    En vez de poner id_ed25519, pon tu clave
+    
 ---
 
 ## 2. Etiquetar la imagen local con el espacio de nombres de GHCR
