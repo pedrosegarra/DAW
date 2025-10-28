@@ -57,6 +57,15 @@ plugins:
       lang: es
   - awesome-pages:
       collapse_single_pages: true
+  - with-pdf:
+      output_path: pdf/
+      toc_level: 2-4
+      cover_title: Despliegue de aplicaciones web
+      cover_subtitle: Material para el curso de DAW
+      cover_author: Pedro Segarra
+      cover_logo: assets/logocaminas.png
+      pdf_stylesheet: stylesheets/pdf.css
+
 
 extra_css:
   - stylesheets/extra.css
