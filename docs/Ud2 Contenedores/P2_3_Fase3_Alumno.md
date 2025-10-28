@@ -1,8 +1,9 @@
 # Práctica 2 – Fase 3: Verificación de despliegue y acceso en servidor
 
 **Centro:** IES El Caminàs  
-**Módulo:** Despliegue de Aplicaciones Web  
-**Curso:** 2024/2025  
+**Módulo:** Despliegue de Aplicaciones Web
+**Profesor:** Pedro Segarra  
+**Curso:** 2025/2026  
 
 ---
 

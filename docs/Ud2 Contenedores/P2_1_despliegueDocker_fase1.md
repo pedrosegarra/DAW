@@ -1,7 +1,8 @@
 # Práctica P2 – Fase 1: Despliegue local con Docker y Visual Studio Code
 
 **Centro:** IES El Caminàs  
-**Módulo:** Despliegue de Aplicaciones Web  
+**Módulo:** Despliegue de Aplicaciones Web
+**Profesor:** Pedro Segarra   
 **Curso:** 2025/2026  
 
 ---
