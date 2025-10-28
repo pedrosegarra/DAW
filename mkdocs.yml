@@ -62,6 +62,7 @@ plugins:
       cover_title: "DAW"      # opcional
       cover_subtitle: "Documentación"  # opcional
       output_path: pdf/DAW.pdf
+  - page-to-pdf:
 
 
 extra_css:
