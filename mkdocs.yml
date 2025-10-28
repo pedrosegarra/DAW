@@ -59,7 +59,6 @@ plugins:
       collapse_single_pages: true
   - with-pdf:
       output_path: pdf/
-      toc_level: 2-4
       cover_title: Despliegue de aplicaciones web
       cover_subtitle: Material para el curso de DAW
       cover_author: Pedro Segarra
