@@ -58,12 +58,10 @@ plugins:
   - awesome-pages:
       collapse_single_pages: true
   - with-pdf:
-      output_path: pdf/
-      cover_title: Despliegue de aplicaciones web
-      cover_subtitle: Material para el curso de DAW
-      cover_author: Pedro Segarra
-      cover_logo: assets/logocaminas.png
-      pdf_stylesheet: stylesheets/pdf.css
+      toc_level: 2            # entero, sin comillas
+      cover_title: "DAW"      # opcional
+      cover_subtitle: "Documentación"  # opcional
+      output_path: pdf/DAW.pdf
 
 
 extra_css:
