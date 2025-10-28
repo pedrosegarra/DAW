@@ -2,7 +2,7 @@
 
 **Centro:** IES El Caminàs  
 **Módulo:** Despliegue de Aplicaciones Web  
-**Curso:** 2024/2025  
+**Curso:** 2025/2026  
 
 ---
 

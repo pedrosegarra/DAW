@@ -2,6 +2,7 @@
 
 **Centro:** IES El Caminàs  
 **Módulo:** Despliegue de Aplicaciones Web  
+**Profesor:** Pedro Segarra 
 **Curso:** 2025/2026  
 
 ---
