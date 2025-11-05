@@ -4,6 +4,23 @@ title: '7 Docker Compose'
 
 # Docker Compose
 
+!!! warning "Actualización importante (noviembre 2025)"
+    Docker ha cambiado la forma de ejecutar **Compose**:  
+    el comando ya **no usa guion**.
+
+    **Antes:**
+    ```bash
+    docker-compose up -d
+    ```
+
+    **Ahora:**
+    ```bash
+    docker compose up -d
+    ```
+
+    > El formato antiguo (`docker-compose`) está **en desuso** y se eliminará en futuras versiones.
+
+
 ![Docker Compose](Ud7_img/docker_compose.jpeg)
 
 En el capítulo anterior hemos levantado un Wordpress usado el cliente de _Docker_ para crear los contenedores, así como para crear el resto de objetos y vincularlos entre sí. Si recuerdas los comandos son complejos y extensos. Además hemos de ejecutar primero la creación del contenedor con la base de datos y luego el contenedor con Wordpress. Vemos que sería mucho más cómodo poder configurarlo todo en un solo archivo y lanzar todos los contenedores, convenientemente enlazados, con un solo comando. 
