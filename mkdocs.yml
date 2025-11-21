@@ -57,12 +57,12 @@ plugins:
       lang: es
   - awesome-pages:
       collapse_single_pages: true
-  - with-pdf:
-      toc_level: 2            # entero, sin comillas
-      cover_title: "DAW"      # opcional
-      cover_subtitle: "Documentación"  # opcional
-      output_path: pdf/DAW.pdf
-  - page-to-pdf:
+  #- with-pdf:
+   #   toc_level: 2            # entero, sin comillas
+    #  cover_title: "DAW"      # opcional
+     # cover_subtitle: "Documentación"  # opcional
+      #output_path: pdf/DAW.pdf
+  #- page-to-pdf:
 
 
 extra_css:
