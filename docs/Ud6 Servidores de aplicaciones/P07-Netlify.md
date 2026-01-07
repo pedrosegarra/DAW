@@ -23,7 +23,7 @@ A la hora de desplegar la aplicación en producción, podría utilizarse el mét
 
 ### ¿Qué es Github?
 
-A pesar de que trataremos un poco más en profundidad Github en un tema posterior, daremos una breve explicación aquí.
+Hemos visto GitHub en los temas anteriores, sin embargo se va a poner un recordatorio de explicación.
 
 GitHub es un servicio basado en la nube que aloja un sistema de control de versiones (VCS) llamado Git. Éste permite a los desarrolladores colaborar y realizar cambios en proyectos compartidos, a la vez que mantienen un seguimiento detallado de su progreso.
 
