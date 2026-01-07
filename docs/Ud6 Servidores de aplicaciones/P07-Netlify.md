@@ -59,7 +59,7 @@ Hay numerosas razones a favor de usar Netlify, aquí están algunas de ellas:
 
 Vuestra primera tarea será [registraros en Netlify](https://www.netlify.com/) con vuestro email (no con vuestra cuenta de Github) y decirle que no cuando os pida enlazar con vuestra cuenta de Github (lo haremos más adelante).
 
-Crearemos una EC2 Debian básica en AWS Academy. Nos conectaremos a ella por SSH, actualizaremos los repositorios e instalaremos GIT. También instalaremos Node.js como hicimos en la práctica P3.4.
+Crearemos una EC2 Debian básica en AWS Academy. Nos conectaremos a ella por SSH, actualizaremos los repositorios e instalaremos GIT. También instalaremos Node.js como hicimos en la práctica P4 de esta unidad.
 
 ## Opciones de despliegue en Netlify
 
