@@ -254,7 +254,7 @@ If everything looks good on your draft URL, deploy it to your main site URL with
 netlify deploy --prod
 ```
 
-Haz la prueba. Cuando te pida el "Publish directory" debes ponerle `./build` nuevamente. 
+Haz la prueba. Usa netlify deploy --prod.
 
 Ya puedes acceder a tu aplicación en `https://tunombre-practica3-6.netlify.app/`.
 
