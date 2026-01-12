@@ -268,6 +268,8 @@ Ve a la página web de Netlify y busca tu aplicación. Comprueba las opciones qu
     
     * El directorio que se genera al ejecutar el build y dónde se encuentra el index.html dentro de ese directorio. O conoces el framework o buscas el index.html dentro de las carpetas creadas tras el build.
 
+![](P3_6/netlify1-pedro.png)
+
 ### Despliegue mediante conexión con Github
 
 En primer lugar, vamos a eliminar el site que hemos desplegado antes en Netlify para evitarnos cualquier problema y/o conflicto:
