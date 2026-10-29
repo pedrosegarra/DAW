@@ -1,0 +1,3411 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://pedrosegarra.github.io/DAW/Ud3%20Servidores%20web/P07/">
+      
+      
+        <link rel="prev" href="../P06DockerizacionPHPNginx/">
+      
+      
+        <link rel="next" href="../../Ud5%20Servicios%20de%20red%20FTP/T01/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Práctica guiada: Forgejo detrás de Nginx, paso a paso - Despliegue de aplicaciones web</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-3NX5MD5C8H"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-3NX5MD5C8H",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-3NX5MD5C8H",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#practica-guiada-forgejo-detras-de-nginx-paso-a-paso" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Despliegue de aplicaciones web" class="md-header__button md-logo" aria-label="Despliegue de aplicaciones web" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Despliegue de aplicaciones web
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Práctica guiada: Forgejo detrás de Nginx, paso a paso
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-orange"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Despliegue de aplicaciones web" class="md-nav__button md-logo" aria-label="Despliegue de aplicaciones web" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    Despliegue de aplicaciones web
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Despliegue de aplicaciones web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud0 Introduccion
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Ud0 Introduccion
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud0%20Introduccion/Ud0_1Introalmodulo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0.1. Introducción al módulo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud0%20Introduccion/Ud0_2AWS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0.2. Introducción a AWS Academy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Prácticas
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Prácticas
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud0%20Introduccion/P0_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    P0.1. Linux Server en AWSAcademy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud0%20Introduccion/P0_2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    P0.2 Windows Server en AWSAcademy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud0%20Introduccion/P0_3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    P0.3. Conceder acceso a un segundo administrador
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud0%20Introduccion/P0_4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    P0.4. Comandos básicos Linux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud1 Control de versiones
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Ud1 Control de versiones
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T02_cvs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.2 Sistemas de control de versiones
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T03_introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.3 Introducción a git 
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T04_git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.4 Instalación y configuración de Git
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T05_usobasico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.5 Uso básico de Git
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T06_usoavanzado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.6 Uso avanzado de Git
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T07_ramas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.7 Ramas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T08_github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.8 Github
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T09_github-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.9 Flujo de trabajo en GitHub
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Prácticas
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            Prácticas
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/P1_4_tallerGitIntro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Taller 1: Introducción a git y GitHub
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/P1_5_tallerGitRamasUniones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Taller 2: Git. Trabajando con ramas y uniones
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/P1_6_tallerMarkdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Taller 3: Introducción a Markdown
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/P1_7_tallerPractica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 1.4 – Ciclo de despliegue: de local a publicado en web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud2 Contenedores
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Ud2 Contenedores
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T01_introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Introducción
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T02_installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Instalación
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T03_principales_acciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Principales acciones con Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T04_images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Imágenes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T05_volumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Volúmenes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T06_integrandovolsyconts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Integrar contenedores y volúmenes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T07_docker-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Docker Compose
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T09_tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 Trucos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Prácticas
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            Prácticas
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/P2_1_despliegueDocker_fase1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica P2 – Fase 1: Despliegue local con Docker y Visual Studio Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/P2_2_subidaAGHCR/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica P2 – Fase 2: Publicación en GitHub Container Registry (GHCR)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/P2_3_Fase3_Alumno/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 2 – Fase 3: Verificación de despliegue y acceso en servidor
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud3 Servidores web
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Ud3 Servidores web
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../T01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.1. Implantación de arquitecturas web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../T02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.2. Arquitectura Web. Implantación y administración de servidores web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../T03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.3. Los protocolos HTTP y HTTPS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../T04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.4. Servidores web: Nginx vs Apache
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Prácticas
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            Prácticas
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 3.1 – Instalación y configuración de servidores web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 3.2 – Creación de un sitio virtual
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 3.3 – Autenticación
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Practica 3.4 - Activación HTTPS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Practica 3.5 - Instalación de la pila LAMP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../P06DockerizacionPHPNginx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 3.6 - Instalación pila LAMP dockerizada
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Práctica guiada: Forgejo detrás de Nginx, paso a paso
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica guiada: Forgejo detrás de Nginx, paso a paso
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#antes-de-empezar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Antes de empezar
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-1-forgejo-y-postgresql-con-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 1. Forgejo y PostgreSQL con Docker Compose
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 1. Forgejo y PostgreSQL con Docker Compose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-11-dar-nombre-a-tu-servidor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 1.1. Dar nombre a tu servidor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-12-escribir-el-docker-composeyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 1.2. Escribir el docker-compose.yml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-13-arrancar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 1.3. Arrancar
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-14-instalar-forgejo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 1.4. Instalar Forgejo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-15-crear-un-repositorio-de-prueba" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 1.5. Crear un repositorio de prueba
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-2-nginx-como-proxy-inverso" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 2. Nginx como proxy inverso
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 2. Nginx como proxy inverso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-21-configurar-el-sitio-de-forgejo-en-nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 2.1. Configurar el sitio de Forgejo en Nginx
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-22-anadir-nginx-al-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 2.2. Añadir Nginx al compose
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-23-cerrar-el-puerto-3000" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 2.3. Cerrar el puerto 3000
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-24-fallo-provocado-la-url-de-clonado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 2.4. Fallo provocado: la URL de clonado
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-25-fallo-provocado-el-error-413" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 2.5. Fallo provocado: el error 413
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-3-un-segundo-sitio-en-el-mismo-servidor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 3. Un segundo sitio en el mismo servidor
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 3. Un segundo sitio en el mismo servidor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-31-la-web-estatica" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 3.1. La web estática
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-32-el-sitio-en-nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 3.2. El sitio en Nginx
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-33-quien-decide-es-la-cabecera-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 3.3. Quien decide es la cabecera Host
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-34-fallo-provocado-un-nombre-que-no-existe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 3.4. Fallo provocado: un nombre que no existe
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-4-leer-http-en-crudo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 4. Leer HTTP en crudo
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 4. Leer HTTP en crudo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-41-ver-solo-las-cabeceras" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 4.1. Ver solo las cabeceras
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-42-provocar-cada-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 4.2. Provocar cada código
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-43-el-inicio-de-sesion-visto-por-dentro" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 4.3. El inicio de sesión visto por dentro
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-44-el-log-de-acceso" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 4.4. El log de acceso
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-5-tu-propia-autoridad-de-certificacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 5. Tu propia autoridad de certificación
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 5. Tu propia autoridad de certificación">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-51-crear-la-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 5.1. Crear la CA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-52-pedir-un-certificado-para-el-servidor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 5.2. Pedir un certificado para el servidor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-53-indicar-los-nombres-san" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 5.3. Indicar los nombres: SAN
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-54-firmar-con-tu-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 5.4. Firmar con tu CA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-55-proteger-las-claves" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 5.5. Proteger las claves
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-6-https-en-nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 6. HTTPS en Nginx
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 6. HTTPS en Nginx">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-61-publicar-el-443-y-montar-el-certificado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 6.1. Publicar el 443 y montar el certificado
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-62-pasar-los-sitios-a-https" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 6.2. Pasar los sitios a HTTPS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-63-la-nueva-url-publica-de-forgejo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 6.3. La nueva URL pública de Forgejo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-64-que-el-navegador-confie-en-tu-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 6.4. Que el navegador confíe en tu CA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-65-fallo-provocado-git-no-confia-en-tu-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 6.5. Fallo provocado: Git no confía en tu CA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-66-comprobar-la-redireccion-hsts-y-la-cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 6.6. Comprobar la redirección, HSTS y la cookie
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-67-ver-el-saludo-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 6.7. Ver el saludo TLS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demostracion-final-al-profesor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demostración final al profesor
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#si-algo-falla" class="md-nav__link">
+    <span class="md-ellipsis">
+      Si algo falla
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud5 Servicios de red FTP
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Ud5 Servicios de red FTP
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Servicios%20de%20red%20FTP/T01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Servidor de Transferencia de Ficheros
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Servicios%20de%20red%20FTP/T02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Servidores y clientes FTP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Servicios%20de%20red%20FTP/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 1 - Acceso a un servidor FTP público ftp.rediris.es
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Servicios%20de%20red%20FTP/T03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Autenticación, control de acceso y cuotas.
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Servicios%20de%20red%20FTP/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 2 - Instalar y Configurar el servidor vsFTPd sin cifrado
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Servicios%20de%20red%20FTP/T04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Protocolo de transferencia de ficheros seguro.
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Servicios%20de%20red%20FTP/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 3. Configuración de servidor FTP con Cifrado
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Servicios%20de%20red%20FTP/T05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Utilización de FTP en el proceso de despliegue de la aplicación web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud5%20Servicios%20de%20red%20FTP/P04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 4. Dockerizar un servidor FTP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud6 Servidores de aplicaciones
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Ud6 Servidores de aplicaciones
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/T01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Servidores de aplicaciones
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/T02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Despliegue de aplicaciones web.
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/T03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Despliegue de aplicaciones Java
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P01-TomcatInstalacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 1: Instalación de Tomcat.
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P02-TomcatDespliegue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 2: Despliegue de aplicaciones con Tomcat.
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P03-TomcatMaven/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 3: Despliegue en Tomcat con Maven
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/T04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Despliegue de aplicaciones Javascript
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P04-NodeJS-Express/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 4 - Despliegue de aplicaciones con Node Express
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P05-DockerizacionNodeJs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 5 - Dockerización del despliegue de una aplicación con Node.js
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P06-Cluster/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 6 - Despliegue de una aplicación "clusterizada" con Node Express
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P07-Netlify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica  7 - Despliegue de una aplicación en Netlify (Paas)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P08-Flask/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 8 - Despliegue de una aplicación Flask (Python)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P09-FlaskEnDocker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 9 - Aplicación Python con Flask en Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/PV01-Heroku/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica Voluntaria 1 - Despliegue de una aplicación Node.js en Heroku (PaaS)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/T07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. CI/CD (Continous Integration/Continous Deployment-Delivery).
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud7 CI CD
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Ud7 CI CD
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20CI-CD/Ud8_1_cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8.1 - CI/CD (Integración y despliegue continuo)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Prácticas
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            Prácticas
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20CI-CD/P8_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 8.1- Toma de contacto con CI/CD usando Github actions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="practica-guiada-forgejo-detras-de-nginx-paso-a-paso">Práctica guiada: Forgejo detrás de Nginx, paso a paso</h1>
+<p>Vas a montar tu propio Forgejo y publicarlo como en producción: detrás de Nginx, con dos sitios en el mismo servidor y con HTTPS. Sigue los pasos en orden; cada uno explica qué está pasando y cómo comprobar que ha funcionado. Al final enseñarás al profesor que todo funciona.</p>
+<h2 id="antes-de-empezar">Antes de empezar</h2>
+<pre class="mermaid"><code>flowchart LR
+    C["Cliente&lt;br/&gt;navegador, curl, git"] -- "80 / 443" --&gt; N["nginx&lt;br/&gt;publica 80 y 443"]
+    subgraph compose["Docker Compose · red interna"]
+        N -- proxy_pass --&gt; F["forgejo&lt;br/&gt;forgejo.daw.local · :3000"]
+        N -- root --&gt; P["./pages&lt;br/&gt;pages.daw.local"]
+        F -- SQL --&gt; D["db · PostgreSQL&lt;br/&gt;5432, sin puerto publicado"]
+    end</code></pre>
+<p>Todo el tráfico entra por Nginx. Forgejo y PostgreSQL viven en una red interna de Docker y no se pueden alcanzar desde fuera. Nginx decide a dónde va cada petición mirando el nombre que pidió el cliente.</p>
+<p>Cada paso de la guía tiene hasta tres partes:</p>
+<ul>
+<li><strong>Haz:</strong> los comandos o ficheros. Cópialos, pero léelos antes.</li>
+<li><strong>Qué está pasando:</strong> la explicación. Es lo que entra en el examen.</li>
+<li><strong>Comprueba:</strong> lo que tienes que ver. Si no lo ves, no sigas: mira la última sección, «Si algo falla».</li>
+</ul>
+<p>Algunos pasos fallan <strong>a propósito</strong>. Están marcados con «Fallo provocado»: son los errores que te encontrarás en cualquier despliegue real, y aprenderás a reconocerlos.</p>
+<p><strong>Necesitas:</strong> Docker con Docker Compose, un terminal, Firefox y <code>git</code>. Comprueba que tienes todo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>version
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>git<span class="w"> </span>--version
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>sudo<span class="w"> </span>ss<span class="w"> </span>-ltnp<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;:(80|443) &#39;</span><span class="w">     </span><span class="c1"># no debe salir nada</span>
+</code></pre></div>
+<p>Si el último comando muestra algo escuchando en el 80 o el 443, avisa al profesor antes de seguir.</p>
+<p>Crea la carpeta del proyecto, que usarás en todas las partes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>~/practica-http/<span class="o">{</span>nginx/conf.d,nginx/certs,pages<span class="o">}</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>~/practica-http
+</code></pre></div>
+<p>A partir de aquí, todos los comandos se ejecutan dentro de <code>~/practica-http</code>.</p>
+<h2 id="parte-1-forgejo-y-postgresql-con-docker-compose">Parte 1. Forgejo y PostgreSQL con Docker Compose</h2>
+<p>En esta parte levantas Forgejo con su base de datos y lo dejas funcionando en el puerto 3000. Es el punto de partida: todavía no hay Nginx.</p>
+<h3 id="paso-11-dar-nombre-a-tu-servidor">Paso 1.1. Dar nombre a tu servidor</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;127.0.0.1 forgejo.daw.local pages.daw.local&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/hosts
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> No tenemos un servidor DNS para estos nombres, así que se los enseñamos a tu equipo a mano. <code>/etc/hosts</code> se consulta antes que el DNS: cualquier programa que pida <code>forgejo.daw.local</code> recibirá <code>127.0.0.1</code>, tu propia máquina.</p>
+<p><strong>Comprueba:</strong> <code>ping -c1 forgejo.daw.local</code> responde desde <code>127.0.0.1</code>.</p>
+<h3 id="paso-12-escribir-el-docker-composeyml">Paso 1.2. Escribir el <code>docker-compose.yml</code></h3>
+<p><strong>Haz:</strong> crea <code>~/practica-http/docker-compose.yml</code> con este contenido.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">db</span><span class="p">:</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:16-alpine</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="nt">POSTGRES_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">forgejo</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">      </span><span class="nt">POSTGRES_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">forgejo</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">      </span><span class="nt">POSTGRES_DB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">forgejo</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./postgres:/var/lib/postgresql/data</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">  </span><span class="nt">forgejo</span><span class="p">:</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">codeberg.org/forgejo/forgejo:16</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">      </span><span class="nt">USER_UID</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1000&quot;</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">      </span><span class="nt">USER_GID</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1000&quot;</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">      </span><span class="nt">FORGEJO__database__DB_TYPE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">      </span><span class="nt">FORGEJO__database__HOST</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db:5432</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">      </span><span class="nt">FORGEJO__database__NAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">forgejo</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">      </span><span class="nt">FORGEJO__database__USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">forgejo</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">      </span><span class="nt">FORGEJO__database__PASSWD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">forgejo</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">      </span><span class="nt">FORGEJO__server__DISABLE_SSH</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">      </span><span class="nt">FORGEJO__server__ROOT_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost:3000/</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./forgejo:/data</span>
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;3000:3000&quot;</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong></p>
+<ul>
+<li>Hay dos servicios en la misma red de Compose. Dentro de esa red, cada servicio se encuentra por su nombre: Forgejo llega a la base de datos con <code>db:5432</code>.</li>
+<li>Las variables <code>FORGEJO__seccion__CLAVE</code> rellenan el fichero de configuración de Forgejo, <code>app.ini</code>, cada vez que arranca el contenedor. <code>FORGEJO__database__HOST</code> es la clave <code>HOST</code> de la sección <code>[database]</code>.</li>
+<li>Los datos se guardan en las carpetas <code>./postgres</code> y <code>./forgejo</code> de tu proyecto. Si borras el contenedor, no pierdes nada.</li>
+<li><code>ports: "3000:3000"</code> publica el puerto de Forgejo en tu equipo. Es <strong>provisional</strong>: en la parte 2 lo quitarás.</li>
+<li>Desactivamos SSH para centrarnos solo en HTTP.</li>
+</ul>
+<h3 id="paso-13-arrancar">Paso 1.3. Arrancar</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>forgejo
+</code></pre></div>
+<p>Espera a ver en el log una línea que diga que escucha en el puerto 3000 y sal con <code>Ctrl+C</code>. Salir del log no para el contenedor.</p>
+<p><strong>Comprueba:</strong> <code>docker compose ps</code> muestra <code>db</code> y <code>forgejo</code> en estado <code>running</code>.</p>
+<h3 id="paso-14-instalar-forgejo">Paso 1.4. Instalar Forgejo</h3>
+<p><strong>Haz:</strong> abre <code>http://localhost:3000</code>. Verás el asistente de instalación con la base de datos ya rellena gracias a las variables. Baja hasta <strong>Configuración de la cuenta de administrador</strong>, despliégala y crea tu usuario. Pulsa <strong>Instalar Forgejo</strong>.</p>
+<p>Si después de instalar no puedes entrar con tu usuario, créalo desde el terminal:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-u<span class="w"> </span><span class="m">1000</span><span class="w"> </span>forgejo<span class="w"> </span>forgejo<span class="w"> </span>admin<span class="w"> </span>user<span class="w"> </span>create<span class="w"> </span>--admin<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>--username<span class="w"> </span>tu_usuario<span class="w"> </span>--password<span class="w"> </span><span class="s1">&#39;Cambiar1234!&#39;</span><span class="w"> </span>--email<span class="w"> </span>tu_usuario@daw.local<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span>--must-change-password<span class="o">=</span><span class="nb">false</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> <code>-u 1000</code> ejecuta el comando como el usuario de Forgejo dentro del contenedor. Como <code>root</code>, Forgejo se niega a arrancar por seguridad.</p>
+<h3 id="paso-15-crear-un-repositorio-de-prueba">Paso 1.5. Crear un repositorio de prueba</h3>
+<p><strong>Haz:</strong> en Forgejo, botón <strong>+</strong> › <strong>Nuevo repositorio</strong>. Nombre: <code>prueba</code>. Marca <strong>Inicializar repositorio</strong> para que tenga un README.</p>
+<p><strong>Comprueba:</strong> ves el repositorio <code>prueba</code> con su README. Fíjate en la URL que aparece junto al botón de clonar HTTP: la necesitarás en la parte 2.</p>
+<h2 id="parte-2-nginx-como-proxy-inverso">Parte 2. Nginx como proxy inverso</h2>
+<p>Ahora pones Nginx delante de Forgejo y cierras el puerto 3000. Al final de esta parte solo se podrá entrar a Forgejo a través de Nginx.</p>
+<h3 id="paso-21-configurar-el-sitio-de-forgejo-en-nginx">Paso 2.1. Configurar el sitio de Forgejo en Nginx</h3>
+<p><strong>Haz:</strong> crea <code>nginx/conf.d/forgejo.conf</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">forgejo.daw.local</span><span class="p">;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">        </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://forgejo:3000</span><span class="p">;</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">Host</span><span class="w">              </span><span class="nv">$host</span><span class="p">;</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Real-IP</span><span class="w">         </span><span class="nv">$remote_addr</span><span class="p">;</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-For</span><span class="w">   </span><span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-Proto</span><span class="w"> </span><span class="nv">$scheme</span><span class="p">;</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong></p>
+<ul>
+<li>Un bloque <code>server</code> es un sitio web. Este atiende las peticiones al puerto 80 cuyo nombre sea <code>forgejo.daw.local</code>.</li>
+<li><code>proxy_pass</code> reenvía la petición a Forgejo. <code>forgejo</code> es el nombre del servicio en el compose, igual que <code>db</code> en la parte 1.</li>
+<li>Las cuatro cabeceras le cuentan a Forgejo lo que Nginx sabe y Forgejo no: qué nombre se pidió (<code>Host</code>), la IP real del cliente (<code>X-Real-IP</code> y <code>X-Forwarded-For</code>) y si el cliente llegó por <code>http</code> o <code>https</code> (<code>X-Forwarded-Proto</code>). Sin ellas, Forgejo creería que todas las visitas vienen de Nginx.</li>
+</ul>
+<h3 id="paso-22-anadir-nginx-al-compose">Paso 2.2. Añadir Nginx al compose</h3>
+<p><strong>Haz:</strong> añade este servicio al final de <code>docker-compose.yml</code>, al mismo nivel que <code>db</code> y <code>forgejo</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="w">  </span><span class="nt">nginx</span><span class="p">:</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx:stable-alpine</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">forgejo</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;80:80&quot;</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./nginx/conf.d:/etc/nginx/conf.d:ro</span>
+</code></pre></div>
+<p>Y arranca: <code>docker compose up -d</code>.</p>
+<p><strong>Qué está pasando.</strong> Montamos tu carpeta <code>nginx/conf.d</code> encima de la de la imagen. Así desaparece la página de bienvenida de Nginx y solo quedan tus sitios. El <code>:ro</code> lo monta en solo lectura: el contenedor no puede modificar tus ficheros.</p>
+<p><strong>Comprueba:</strong> <code>http://forgejo.daw.local</code> (sin puerto) muestra Forgejo.</p>
+<h3 id="paso-23-cerrar-el-puerto-3000">Paso 2.3. Cerrar el puerto 3000</h3>
+<p><strong>Haz:</strong> borra estas dos líneas del servicio <code>forgejo</code> en el compose:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;3000:3000&quot;</span>
+</code></pre></div>
+<p>Y aplica el cambio:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>curl<span class="w"> </span>-I<span class="w"> </span>http://localhost:3000<span class="w">          </span><span class="c1"># debe fallar</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>curl<span class="w"> </span>-I<span class="w"> </span>http://forgejo.daw.local<span class="w">        </span><span class="c1"># debe dar 200 OK</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Forgejo sigue escuchando en el 3000, pero solo dentro de la red de Docker, donde Nginx lo alcanza. Desde tu equipo ya no se llega. El <code>restart nginx</code> es necesario porque <code>up -d</code> ha recreado el contenedor de Forgejo y puede haberle cambiado la IP. Nginx averigua la IP de <code>forgejo</code> solo al arrancar y, si no lo reinicias, seguiría apuntando a la antigua.</p>
+<p><strong>Comprueba:</strong> el primer <code>curl</code> dice <code>Connection refused</code> y el segundo <code>HTTP/1.1 200 OK</code> con <code>Server: nginx</code>.</p>
+<h3 id="paso-24-fallo-provocado-la-url-de-clonado">Paso 2.4. Fallo provocado: la URL de clonado</h3>
+<p><strong>Haz:</strong> entra en tu repositorio <code>prueba</code> y mira la URL de clonado HTTP.</p>
+<p><strong>Qué ves:</strong> <code>http://localhost:3000/tu_usuario/prueba.git</code>. Esa dirección ya no existe: acabas de cerrar el 3000.</p>
+<p><strong>Qué está pasando.</strong> Nginx reenvía las peticiones, pero Forgejo no sabe con qué dirección le ve el usuario. Para los enlaces absolutos (clonado, correos, webhooks) usa su URL pública, <code>ROOT_URL</code>, que sigue diciendo <code>localhost:3000</code>. Cualquier aplicación detrás de un proxy necesita saber su URL pública.</p>
+<p><strong>Haz:</strong> en el servicio <code>forgejo</code> del compose, cambia <code>ROOT_URL</code> y añade <code>DOMAIN</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="w">      </span><span class="nt">FORGEJO__server__DOMAIN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">forgejo.daw.local</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">      </span><span class="nt">FORGEJO__server__ROOT_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://forgejo.daw.local/</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
+</code></pre></div>
+<p><strong>Comprueba:</strong> recarga el repositorio. La URL de clonado es ahora <code>http://forgejo.daw.local/tu_usuario/prueba.git</code>.</p>
+<h3 id="paso-25-fallo-provocado-el-error-413">Paso 2.5. Fallo provocado: el error 413</h3>
+<p><strong>Haz:</strong> clona el repositorio, añade un fichero de 5 MB y súbelo. Git te pedirá tu usuario y contraseña de Forgejo.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nb">cd</span><span class="w"> </span>~
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>git<span class="w"> </span>clone<span class="w"> </span>http://forgejo.daw.local/tu_usuario/prueba.git
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nb">cd</span><span class="w"> </span>prueba
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>/dev/urandom<span class="w"> </span><span class="nv">of</span><span class="o">=</span>grande.bin<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1M<span class="w"> </span><span class="nv">count</span><span class="o">=</span><span class="m">5</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>git<span class="w"> </span>add<span class="w"> </span>grande.bin
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Fichero grande&quot;</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>git<span class="w"> </span>push
+</code></pre></div>
+<p><strong>Qué ves:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>error: RPC failed; HTTP 413 curl 22 The requested URL returned error: 413
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>fatal: the remote end hung up unexpectedly
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> <code>413</code> significa que la petición es demasiado grande. No lo dice Forgejo sino Nginx, que por defecto solo acepta cuerpos de 1 MB. La petición nunca llega a Forgejo: el proxy la corta antes, y para eso sirve. Míralo en su log:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nb">cd</span><span class="w"> </span>~/practica-http
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>nginx<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;too large&quot;</span>
+</code></pre></div>
+<p><strong>Haz:</strong> dentro del bloque <code>server</code> de <code>nginx/conf.d/forgejo.conf</code>, justo debajo de <code>server_name</code>, añade:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="w">    </span><span class="k">client_max_body_size</span><span class="w"> </span><span class="mi">512m</span><span class="p">;</span>
+</code></pre></div>
+<p>Y recarga Nginx sin pararlo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-t
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-s<span class="w"> </span>reload
+</code></pre></div>
+<p><code>nginx -t</code> comprueba que la configuración no tiene errores. Hazlo <strong>siempre</strong> antes de recargar.</p>
+<p><strong>Comprueba:</strong> vuelve a <code>~/prueba</code> y repite <code>git push</code>. Ahora funciona y el fichero aparece en Forgejo.</p>
+<h2 id="parte-3-un-segundo-sitio-en-el-mismo-servidor">Parte 3. Un segundo sitio en el mismo servidor</h2>
+<p>Vas a servir dos webs distintas con la misma IP y el mismo puerto. Es lo que hace cualquier hosting con miles de dominios.</p>
+<h3 id="paso-31-la-web-estatica">Paso 3.1. La web estática</h3>
+<p><strong>Haz:</strong> crea <code>pages/index.html</code> y pon tu nombre donde se indica.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;es&quot;</span><span class="p">&gt;</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">&gt;&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Pages de TU NOMBRE<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>  <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hola, soy TU NOMBRE<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Esta página la sirve Nginx directamente, sin pasar por Forgejo.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="paso-32-el-sitio-en-nginx">Paso 3.2. El sitio en Nginx</h3>
+<p><strong>Haz:</strong> crea <code>nginx/conf.d/pages.conf</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">pages.daw.local</span><span class="p">;</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">    </span><span class="kn">root</span><span class="w">  </span><span class="s">/usr/share/nginx/pages</span><span class="p">;</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">    </span><span class="kn">index</span><span class="w"> </span><span class="s">index.html</span><span class="p">;</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">        </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="nv">$uri/</span><span class="w"> </span><span class="p">=</span><span class="mi">404</span><span class="p">;</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="p">}</span>
+</code></pre></div>
+<p>En el compose, añade un segundo volumen al servicio <code>nginx</code>, debajo del de <code>conf.d</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./pages:/usr/share/nginx/pages:ro</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Este <code>server</code> no reenvía nada: sirve ficheros de una carpeta (<code>root</code>). <code>try_files</code> busca primero un fichero con ese nombre, después una carpeta y, si no hay ninguno, responde <code>404</code>.</p>
+<p><strong>Comprueba:</strong> <code>http://pages.daw.local</code> muestra tu página y <code>http://forgejo.daw.local</code> sigue mostrando Forgejo.</p>
+<h3 id="paso-33-quien-decide-es-la-cabecera-host">Paso 3.3. Quien decide es la cabecera <code>Host</code></h3>
+<p><strong>Haz:</strong> pide las dos webs a la misma dirección, <code>127.0.0.1</code>, cambiando solo una cabecera:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: pages.daw.local&quot;</span><span class="w">   </span>http://127.0.0.1/
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>curl<span class="w"> </span>-s<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: forgejo.daw.local&quot;</span><span class="w"> </span>http://127.0.0.1/<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;&lt;title&quot;</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Las dos peticiones van a la misma IP y al mismo puerto. Lo único distinto es la cabecera <code>Host</code>, y Nginx la compara con el <code>server_name</code> de cada bloque. El nombre que escribes en el navegador sirve para dos cosas: averiguar la IP y rellenar esa cabecera. Por eso en HTTP/1.1 es obligatoria.</p>
+<p><strong>Comprueba:</strong> el primer comando devuelve tu <code>index.html</code> y el segundo el título de Forgejo.</p>
+<h3 id="paso-34-fallo-provocado-un-nombre-que-no-existe">Paso 3.4. Fallo provocado: un nombre que no existe</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: hola.daw.local&quot;</span><span class="w"> </span>http://127.0.0.1/<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;&lt;title&quot;</span>
+</code></pre></div>
+<p><strong>Qué ves:</strong> Forgejo, aunque <code>hola.daw.local</code> no está configurado en ningún sitio. Lo mismo pasa con <code>http://localhost</code>.</p>
+<p><strong>Qué está pasando.</strong> Si ningún <code>server_name</code> coincide, Nginx usa el <strong>servidor por defecto</strong> del puerto. Si nadie lo ha marcado como tal, es el primero que carga. Nginx lee los ficheros de <code>conf.d</code> en orden alfabético y <code>forgejo.conf</code> va antes que <code>pages.conf</code>.</p>
+<p><strong>Haz:</strong> crea <code>nginx/conf.d/00-default.conf</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="w"> </span><span class="s">default_server</span><span class="p">;</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">_</span><span class="p">;</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">    </span><span class="kn">return</span><span class="w"> </span><span class="mi">444</span><span class="p">;</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-t<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-s<span class="w"> </span>reload
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>curl<span class="w"> </span>-v<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: hola.daw.local&quot;</span><span class="w"> </span>http://127.0.0.1/
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> <code>default_server</code> lo marca explícitamente como el servidor por defecto, así que el orden de los ficheros deja de importar. <code>444</code> es un código propio de Nginx: cierra la conexión sin responder nada. No le das pistas a quien pregunta por nombres que no son tuyos.</p>
+<p><strong>Comprueba:</strong> <code>curl</code> termina con <code>Empty reply from server</code>, y <code>forgejo.daw.local</code> y <code>pages.daw.local</code> siguen funcionando.</p>
+<h2 id="parte-4-leer-http-en-crudo">Parte 4. Leer HTTP en crudo</h2>
+<p>HTTP es texto. En esta parte lo lees directamente, con <code>curl</code> y con las herramientas del navegador, y aprendes a distinguir si una respuesta la da la aplicación o el proxy.</p>
+<h3 id="paso-41-ver-solo-las-cabeceras">Paso 4.1. Ver solo las cabeceras</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-D<span class="w"> </span>-<span class="w"> </span>http://forgejo.daw.local/
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> <code>-o /dev/null</code> tira el cuerpo (el HTML) y <code>-D -</code> imprime las cabeceras de la respuesta. La primera línea es la <strong>línea de estado</strong>: versión, código y frase. Debajo vienen las cabeceras, una por línea.</p>
+<p><strong>Comprueba:</strong> la primera línea es <code>HTTP/1.1 200 OK</code> y entre las cabeceras está <code>Server: nginx</code>.</p>
+<h3 id="paso-42-provocar-cada-codigo">Paso 4.2. Provocar cada código</h3>
+<p><strong>Haz:</strong> ejecuta cada comando, mira la línea de estado y fíjate en la cabecera indicada.</p>
+<table>
+<thead>
+<tr>
+<th>Qué provocas</th>
+<th>Comando</th>
+<th>Qué debes ver</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Redirección</td>
+<td><code>curl -s -o /dev/null -D - http://forgejo.daw.local/user/settings</code></td>
+<td><code>303 See Other</code> y una cabecera <code>Location</code> hacia <code>/user/login</code></td>
+</tr>
+<tr>
+<td>No autenticado</td>
+<td><code>curl -i http://forgejo.daw.local/api/v1/user</code></td>
+<td><code>401 Unauthorized</code> y un cuerpo en JSON</td>
+</tr>
+<tr>
+<td>No encontrado</td>
+<td><code>curl -s -o /dev/null -D - http://forgejo.daw.local/nadie/nada</code></td>
+<td><code>404 Not Found</code></td>
+</tr>
+<tr>
+<td>Aplicación caída</td>
+<td><code>docker compose stop forgejo</code> y repite el primer comando</td>
+<td><code>502 Bad Gateway</code></td>
+</tr>
+</tbody>
+</table>
+<p>Después del <code>502</code>, vuelve a dejarlo todo en marcha:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>start<span class="w"> </span>forgejo
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Los tres primeros códigos los genera Forgejo: Nginx solo los transporta. El <code>502</code> lo genera Nginx porque no ha podido hablar con Forgejo. Cuando algo falle en un despliegue, la primera pregunta es siempre: <strong>¿quién ha contestado, la aplicación o el proxy?</strong> La página del <code>502</code> es la de Nginx, no la de Forgejo, y eso ya te da la respuesta.</p>
+<h3 id="paso-43-el-inicio-de-sesion-visto-por-dentro">Paso 4.3. El inicio de sesión visto por dentro</h3>
+<p><strong>Haz:</strong></p>
+<ol>
+<li>Cierra sesión en Forgejo.</li>
+<li>Abre las herramientas de desarrollo de Firefox con <code>F12</code> y ve a la pestaña <strong>Red</strong>.</li>
+<li>Inicia sesión.</li>
+<li>Busca la petición <code>POST</code> a <code>/user/login</code> y haz clic en ella.</li>
+</ol>
+<p><strong>Qué está pasando.</strong></p>
+<ul>
+<li>El formulario se envía con <code>POST</code> y el servidor responde <code>303</code> con <code>Location: /</code>. Es el patrón <strong>Post/Redirect/Get</strong>: después de un POST se redirige, así que recargar la página no reenvía el formulario.</li>
+<li>En las cabeceras de la respuesta hay un <code>Set-Cookie</code>: así deja el servidor tu sesión en el navegador. A partir de ahí, el navegador la envía en cada petición.</li>
+</ul>
+<p><strong>Comprueba:</strong> en la pestaña <strong>Almacenamiento</strong> › <strong>Cookies</strong> busca la cookie de sesión de Forgejo (suele llamarse <code>i_like_gitea</code>). Anota qué atributos tiene: <code>HttpOnly</code> (JavaScript no puede leerla), <code>SameSite</code> (no viaja en peticiones lanzadas desde otros sitios) y <code>Secure</code> (solo viaja por HTTPS). Ahora mismo <code>Secure</code> falta: lo recuperarás en la parte 6.</p>
+<h3 id="paso-44-el-log-de-acceso">Paso 4.4. El log de acceso</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>--tail<span class="w"> </span><span class="m">5</span><span class="w"> </span>nginx
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Cada línea es una petición, con este formato:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>172.18.0.1 - - [28/Oct/2026:16:10:01 +0100] &quot;GET /user/login HTTP/1.1&quot; 200 12345 &quot;-&quot; &quot;curl/8.5.0&quot;
+</code></pre></div>
+<p>La IP de origen, la fecha, la línea de la petición, el código, los bytes de la respuesta, de dónde venías (<code>Referer</code>) y qué programa la hizo (<code>User-Agent</code>). La IP no es <code>127.0.0.1</code> sino la de la puerta de enlace de Docker: Docker hace NAT al publicar el puerto.</p>
+<p><strong>Comprueba:</strong> localiza en el log tus peticiones de la tabla del paso 4.2 con su código.</p>
+<h2 id="parte-5-tu-propia-autoridad-de-certificacion">Parte 5. Tu propia autoridad de certificación</h2>
+<p>Para HTTPS necesitas un certificado. Los públicos los firma una autoridad de certificación (CA) en la que los navegadores ya confían. Aquí vas a crear tu propia CA y a firmar con ella un certificado para tus dos nombres. Es el mismo modelo que usa la red del instituto.</p>
+<p>Trabaja dentro de la carpeta de certificados:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="nb">cd</span><span class="w"> </span>~/practica-http/nginx/certs
+</code></pre></div>
+<h3 id="paso-51-crear-la-ca">Paso 5.1. Crear la CA</h3>
+<p><strong>Haz:</strong> pon tu nombre en el <code>-subj</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>openssl<span class="w"> </span>req<span class="w"> </span>-x509<span class="w"> </span>-newkey<span class="w"> </span>rsa:4096<span class="w"> </span>-noenc<span class="w"> </span>-keyout<span class="w"> </span>ca.key<span class="w"> </span>-out<span class="w"> </span>ca.crt<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">  </span>-days<span class="w"> </span><span class="m">1825</span><span class="w"> </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=CA DAW Tu Nombre&quot;</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Generas una clave privada (<code>ca.key</code>) y un certificado autofirmado (<code>ca.crt</code>) válido 5 años. <code>-noenc</code> deja la clave sin contraseña para no tener que escribirla en cada paso.</p>
+<p>En esta práctica, <code>ca.crt</code> es lo que repartes: lo importarás en el navegador y en Git. <code>ca.key</code> es lo más valioso de todo, porque quien la tenga puede firmar certificados en los que tus equipos confiarán. <strong>Nunca sale de esta carpeta</strong>: ni al contenedor ni al repositorio.</p>
+<h3 id="paso-52-pedir-un-certificado-para-el-servidor">Paso 5.2. Pedir un certificado para el servidor</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>openssl<span class="w"> </span>req<span class="w"> </span>-newkey<span class="w"> </span>rsa:2048<span class="w"> </span>-noenc<span class="w"> </span>-keyout<span class="w"> </span>daw.key<span class="w"> </span>-out<span class="w"> </span>daw.csr<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=forgejo.daw.local&quot;</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Generas la clave del servidor (<code>daw.key</code>) y una petición de firma (<code>daw.csr</code>). La CSR es lo que en el mundo real se envía a una CA para que la firme.</p>
+<h3 id="paso-53-indicar-los-nombres-san">Paso 5.3. Indicar los nombres: SAN</h3>
+<p><strong>Haz:</strong> crea el fichero <code>san.ext</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>san.ext<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="s">subjectAltName=DNS:forgejo.daw.local,DNS:pages.daw.local</span>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="s">basicConstraints=CA:FALSE</span>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="s">keyUsage=digitalSignature,keyEncipherment</span>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="s">extendedKeyUsage=serverAuth</span>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="s">EOF</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> El campo <code>CN</code> del paso anterior solo admite un nombre, y los navegadores dejaron de mirarlo hace años. Los nombres válidos de un certificado van en la extensión <strong>SAN</strong> (<code>subjectAltName</code>), que admite varios. Las otras líneas dicen que no es una CA y que sirve para un servidor web.</p>
+<h3 id="paso-54-firmar-con-tu-ca">Paso 5.4. Firmar con tu CA</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> </span>-in<span class="w"> </span>daw.csr<span class="w"> </span>-CA<span class="w"> </span>ca.crt<span class="w"> </span>-CAkey<span class="w"> </span>ca.key<span class="w"> </span>-CAcreateserial<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">  </span>-out<span class="w"> </span>daw.crt<span class="w"> </span>-days<span class="w"> </span><span class="m">825</span><span class="w"> </span>-sha256<span class="w"> </span>-extfile<span class="w"> </span>san.ext
+</code></pre></div>
+<p><strong>Comprueba:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>openssl<span class="w"> </span>x509<span class="w"> </span>-in<span class="w"> </span>daw.crt<span class="w"> </span>-noout<span class="w"> </span>-text<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A1<span class="w"> </span><span class="s2">&quot;Alternative Name&quot;</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>openssl<span class="w"> </span>verify<span class="w"> </span>-CAfile<span class="w"> </span>ca.crt<span class="w"> </span>daw.crt
+</code></pre></div>
+<p>Debes ver <code>DNS:forgejo.daw.local, DNS:pages.daw.local</code> y <code>daw.crt: OK</code>.</p>
+<h3 id="paso-55-proteger-las-claves">Paso 5.5. Proteger las claves</h3>
+<p><strong>Haz:</strong> crea <code>~/practica-http/.gitignore</code> para que nunca se suban al repositorio.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>forgejo/
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>postgres/
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>*.key
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>*.csr
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>*.srl
+</code></pre></div>
+<h2 id="parte-6-https-en-nginx">Parte 6. HTTPS en Nginx</h2>
+<p>Ahora los dos sitios pasan a HTTPS con tu certificado. El puerto 80 se queda solo para redirigir a HTTPS.</p>
+<h3 id="paso-61-publicar-el-443-y-montar-el-certificado">Paso 6.1. Publicar el 443 y montar el certificado</h3>
+<p><strong>Haz:</strong> en el servicio <code>nginx</code> del compose, añade el puerto 443 y dos volúmenes más. Debe quedar así:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;80:80&quot;</span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;443:443&quot;</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./nginx/conf.d:/etc/nginx/conf.d:ro</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./pages:/usr/share/nginx/pages:ro</span>
+<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./nginx/certs/daw.crt:/etc/nginx/certs/daw.crt:ro</span>
+<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./nginx/certs/daw.key:/etc/nginx/certs/daw.key:ro</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Montas <strong>solo</strong> el certificado y la clave del servidor, no toda la carpeta <code>certs</code>. Nginx no necesita la clave de la CA, así que no debe estar a su alcance.</p>
+<h3 id="paso-62-pasar-los-sitios-a-https">Paso 6.2. Pasar los sitios a HTTPS</h3>
+<p><strong>Haz:</strong> sustituye el contenido de <code>nginx/conf.d/forgejo.conf</code> por este:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">443</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">    </span><span class="kn">http2</span><span class="w"> </span><span class="no">on</span><span class="p">;</span>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">forgejo.daw.local</span><span class="p">;</span>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">    </span><span class="kn">ssl_certificate</span><span class="w">     </span><span class="s">/etc/nginx/certs/daw.crt</span><span class="p">;</span>
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="w">    </span><span class="kn">ssl_certificate_key</span><span class="w"> </span><span class="s">/etc/nginx/certs/daw.key</span><span class="p">;</span>
+<a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="w">    </span><span class="kn">ssl_protocols</span><span class="w">       </span><span class="s">TLSv1.2</span><span class="w"> </span><span class="s">TLSv1.3</span><span class="p">;</span>
+<a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a>
+<a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="w">    </span><span class="kn">add_header</span><span class="w"> </span><span class="s">Strict-Transport-Security</span><span class="w"> </span><span class="s">&quot;max-age=300&quot;</span><span class="w"> </span><span class="s">always</span><span class="p">;</span>
+<a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a>
+<a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a><span class="w">    </span><span class="kn">client_max_body_size</span><span class="w"> </span><span class="mi">512m</span><span class="p">;</span>
+<a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a>
+<a id="__codelineno-37-14" name="__codelineno-37-14" href="#__codelineno-37-14"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-37-15" name="__codelineno-37-15" href="#__codelineno-37-15"></a><span class="w">        </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://forgejo:3000</span><span class="p">;</span>
+<a id="__codelineno-37-16" name="__codelineno-37-16" href="#__codelineno-37-16"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">Host</span><span class="w">              </span><span class="nv">$host</span><span class="p">;</span>
+<a id="__codelineno-37-17" name="__codelineno-37-17" href="#__codelineno-37-17"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Real-IP</span><span class="w">         </span><span class="nv">$remote_addr</span><span class="p">;</span>
+<a id="__codelineno-37-18" name="__codelineno-37-18" href="#__codelineno-37-18"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-For</span><span class="w">   </span><span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+<a id="__codelineno-37-19" name="__codelineno-37-19" href="#__codelineno-37-19"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-Proto</span><span class="w"> </span><span class="nv">$scheme</span><span class="p">;</span>
+<a id="__codelineno-37-20" name="__codelineno-37-20" href="#__codelineno-37-20"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-37-21" name="__codelineno-37-21" href="#__codelineno-37-21"></a><span class="p">}</span>
+</code></pre></div>
+<p>Y el de <code>nginx/conf.d/pages.conf</code> por este:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">443</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span>
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">    </span><span class="kn">http2</span><span class="w"> </span><span class="no">on</span><span class="p">;</span>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">pages.daw.local</span><span class="p">;</span>
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>
+<a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="w">    </span><span class="kn">ssl_certificate</span><span class="w">     </span><span class="s">/etc/nginx/certs/daw.crt</span><span class="p">;</span>
+<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a><span class="w">    </span><span class="kn">ssl_certificate_key</span><span class="w"> </span><span class="s">/etc/nginx/certs/daw.key</span><span class="p">;</span>
+<a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a><span class="w">    </span><span class="kn">ssl_protocols</span><span class="w">       </span><span class="s">TLSv1.2</span><span class="w"> </span><span class="s">TLSv1.3</span><span class="p">;</span>
+<a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a>
+<a id="__codelineno-38-10" name="__codelineno-38-10" href="#__codelineno-38-10"></a><span class="w">    </span><span class="kn">add_header</span><span class="w"> </span><span class="s">Strict-Transport-Security</span><span class="w"> </span><span class="s">&quot;max-age=300&quot;</span><span class="w"> </span><span class="s">always</span><span class="p">;</span>
+<a id="__codelineno-38-11" name="__codelineno-38-11" href="#__codelineno-38-11"></a>
+<a id="__codelineno-38-12" name="__codelineno-38-12" href="#__codelineno-38-12"></a><span class="w">    </span><span class="kn">root</span><span class="w">  </span><span class="s">/usr/share/nginx/pages</span><span class="p">;</span>
+<a id="__codelineno-38-13" name="__codelineno-38-13" href="#__codelineno-38-13"></a><span class="w">    </span><span class="kn">index</span><span class="w"> </span><span class="s">index.html</span><span class="p">;</span>
+<a id="__codelineno-38-14" name="__codelineno-38-14" href="#__codelineno-38-14"></a>
+<a id="__codelineno-38-15" name="__codelineno-38-15" href="#__codelineno-38-15"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-38-16" name="__codelineno-38-16" href="#__codelineno-38-16"></a><span class="w">        </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="nv">$uri/</span><span class="w"> </span><span class="p">=</span><span class="mi">404</span><span class="p">;</span>
+<a id="__codelineno-38-17" name="__codelineno-38-17" href="#__codelineno-38-17"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-38-18" name="__codelineno-38-18" href="#__codelineno-38-18"></a><span class="p">}</span>
+</code></pre></div>
+<p>Crea <code>nginx/conf.d/01-redirect.conf</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">forgejo.daw.local</span><span class="w"> </span><span class="s">pages.daw.local</span><span class="p">;</span>
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="w">    </span><span class="kn">return</span><span class="w"> </span><span class="mi">301</span><span class="w"> </span><span class="s">https://</span><span class="nv">$host$request_uri</span><span class="p">;</span>
+<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="p">}</span>
+</code></pre></div>
+<p>Y añade al final de <code>nginx/conf.d/00-default.conf</code> un servidor por defecto para el 443:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">443</span><span class="w"> </span><span class="s">ssl</span><span class="w"> </span><span class="s">default_server</span><span class="p">;</span>
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">_</span><span class="p">;</span>
+<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="w">    </span><span class="kn">ssl_reject_handshake</span><span class="w"> </span><span class="no">on</span><span class="p">;</span>
+<a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="p">}</span>
+</code></pre></div>
+<p>Aplica todo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="nb">cd</span><span class="w"> </span>~/practica-http
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-t
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
+</code></pre></div>
+<p><strong>Qué está pasando.</strong></p>
+<ul>
+<li><code>listen 443 ssl</code> activa TLS en ese sitio con el certificado indicado. Solo permitimos TLS 1.2 y 1.3; las versiones anteriores son inseguras.</li>
+<li><code>http2 on</code> activa HTTP/2, que solo los navegadores usan sobre HTTPS.</li>
+<li>El puerto 80 ya solo devuelve <code>301</code>: «esto se ha movido para siempre a la misma dirección con <code>https://</code>».</li>
+<li><code>Strict-Transport-Security</code> (HSTS) le dice al navegador que, durante <code>max-age</code> segundos, no intente nunca HTTP con este sitio. Lo vemos en el paso 6.6.</li>
+<li><code>ssl_reject_handshake</code> rechaza las conexiones TLS a nombres que no son tuyos, igual que el <code>444</code> en el puerto 80.</li>
+</ul>
+<h3 id="paso-63-la-nueva-url-publica-de-forgejo">Paso 6.3. La nueva URL pública de Forgejo</h3>
+<p><strong>Haz:</strong> en el compose, cambia <code>ROOT_URL</code> a HTTPS y aplica:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="w">      </span><span class="nt">FORGEJO__server__ROOT_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://forgejo.daw.local/</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
+</code></pre></div>
+<p><strong>Comprueba:</strong> la URL de clonado de tu repositorio empieza ahora por <code>https://</code>.</p>
+<h3 id="paso-64-que-el-navegador-confie-en-tu-ca">Paso 6.4. Que el navegador confíe en tu CA</h3>
+<p><strong>Haz:</strong> abre <code>https://forgejo.daw.local</code>.</p>
+<p><strong>Qué ves:</strong> un aviso de seguridad, <code>SEC_ERROR_UNKNOWN_ISSUER</code>. El certificado es correcto, pero lo firma una CA que Firefox no conoce. <strong>No aceptes la excepción.</strong></p>
+<p><strong>Haz:</strong> en Firefox, Ajustes › Privacidad y seguridad › Certificados › <strong>Ver certificados</strong> › pestaña <strong>Autoridades</strong> › <strong>Importar</strong>. Elige <code>~/practica-http/nginx/certs/ca.crt</code> y marca «Confiar en esta CA para identificar sitios web».</p>
+<p><strong>Qué está pasando.</strong> No confías en el certificado del servidor, sino en quien lo firma. A partir de ahora Firefox aceptará cualquier certificado firmado por tu CA. Firefox tiene su propio almacén de certificados, independiente del sistema.</p>
+<p><strong>Comprueba:</strong> recarga. Ves el candado sin avisos en <code>https://forgejo.daw.local</code> y en <code>https://pages.daw.local</code>.</p>
+<h3 id="paso-65-fallo-provocado-git-no-confia-en-tu-ca">Paso 6.5. Fallo provocado: Git no confía en tu CA</h3>
+<p><strong>Haz:</strong> cambia tu copia local de <code>prueba</code> para que use HTTPS y sube algo.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="nb">cd</span><span class="w"> </span>~/prueba
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>git<span class="w"> </span>remote<span class="w"> </span>set-url<span class="w"> </span>origin<span class="w"> </span>https://forgejo.daw.local/tu_usuario/prueba.git
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>git<span class="w"> </span>pull
+</code></pre></div>
+<p><strong>Qué ves:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>fatal: unable to access &#39;...&#39;: SSL certificate problem: unable to get local issuer certificate
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Git no usa el almacén de Firefox, sino el suyo, y ahí no está tu CA. En internet verás la «solución» <code>git config http.sslVerify false</code>. <strong>Está prohibida en esta práctica:</strong> la conexión sigue cifrada, pero Git aceptaría cualquier certificado. Cualquiera en tu red podría hacerse pasar por el servidor y quedarse con tu contraseña.</p>
+<p><strong>Haz:</strong> dile a Git que confíe en tu CA, y solo para este servidor:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>http.https://forgejo.daw.local/.sslCAInfo<span class="w"> </span>~/practica-http/nginx/certs/ca.crt
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>git<span class="w"> </span>pull
+</code></pre></div>
+<p><strong>Comprueba:</strong> <code>git pull</code> funciona. Haz un cambio en el README, <code>commit</code> y <code>push</code>: también funciona.</p>
+<h3 id="paso-66-comprobar-la-redireccion-hsts-y-la-cookie">Paso 6.6. Comprobar la redirección, HSTS y la cookie</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="nb">cd</span><span class="w"> </span>~/practica-http
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-D<span class="w"> </span>-<span class="w"> </span>http://forgejo.daw.local/
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-D<span class="w"> </span>-<span class="w"> </span>--cacert<span class="w"> </span>nginx/certs/ca.crt<span class="w"> </span>https://forgejo.daw.local/
+</code></pre></div>
+<p><strong>Comprueba:</strong></p>
+<ul>
+<li>El primero devuelve <code>301 Moved Permanently</code> con <code>Location: https://forgejo.daw.local/</code>.</li>
+<li>El segundo devuelve <code>HTTP/2 200</code> y la cabecera <code>strict-transport-security: max-age=300</code>.</li>
+<li>En Firefox, la cookie de sesión de Forgejo tiene ahora el atributo <code>Secure</code>. Forgejo lo activa solo cuando su <code>ROOT_URL</code> empieza por <code>https</code>.</li>
+</ul>
+<p><strong>Qué está pasando.</strong> La redirección <code>301</code> deja un hueco: la primera petición sigue saliendo por HTTP sin cifrar y alguien en medio podría interceptarla. Con HSTS, el navegador recuerda que este sitio solo va por HTTPS y ni siquiera intenta HTTP. Usamos 300 segundos porque es un dominio de pruebas: en producción se pone un año.</p>
+<h3 id="paso-67-ver-el-saludo-tls">Paso 6.7. Ver el saludo TLS</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>openssl<span class="w"> </span>s_client<span class="w"> </span>-connect<span class="w"> </span><span class="m">127</span>.0.0.1:443<span class="w"> </span>-servername<span class="w"> </span>forgejo.daw.local<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="w">  </span>-CAfile<span class="w"> </span>nginx/certs/ca.crt<span class="w"> </span>&lt;/dev/null<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;^(subject|issuer)|Protocol|Verify return&quot;</span>
+</code></pre></div>
+<p>Y ahora sin <code>-servername</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>openssl<span class="w"> </span>s_client<span class="w"> </span>-connect<span class="w"> </span><span class="m">127</span>.0.0.1:443<span class="w"> </span>&lt;/dev/null
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> En HTTPS, el servidor tiene que enseñar su certificado <strong>antes</strong> de recibir la petición cifrada con la cabecera <code>Host</code>. Para saber cuál enseñar, el cliente manda el nombre en el primer mensaje del saludo TLS: es <strong>SNI</strong> (Server Name Indication). <code>-servername</code> lo envía. Sin él, tu servidor por defecto rechaza la conexión.</p>
+<p><strong>Comprueba:</strong> con <code>-servername</code> ves tu certificado, el emisor <code>CA DAW Tu Nombre</code>, <code>TLSv1.3</code> y <code>Verify return code: 0 (ok)</code>. Sin <code>-servername</code>, el saludo falla.</p>
+<h2 id="demostracion-final-al-profesor">Demostración final al profesor</h2>
+<p>Cuando termines, llama al profesor y enséñale en directo, en este orden, que todo funciona. Son unos 5 minutos. Ve marcando cada punto.</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Contenedores.</strong> <code>docker compose ps</code> muestra <code>db</code>, <code>forgejo</code> y <code>nginx</code> en marcha, y solo <code>nginx</code> tiene puertos publicados (80 y 443).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Forgejo no es accesible directamente.</strong> <code>curl -I http://localhost:3000</code> falla.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Redirección y candado.</strong> Escribe <code>http://forgejo.daw.local</code> en el navegador: acaba en <code>https://</code> con el candado y sin avisos.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Segundo sitio.</strong> <code>https://pages.daw.local</code> muestra tu página con tu nombre.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Nombre desconocido.</strong> <code>curl -v -H "Host: hola.daw.local" http://127.0.0.1/</code> termina en <code>Empty reply from server</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Certificado con SAN.</strong> <code>openssl x509 -in nginx/certs/daw.crt -noout -text | grep -A1 "Alternative Name"</code> muestra los dos nombres, y el certificado lo emite tu CA.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>HSTS.</strong> <code>curl -s -o /dev/null -D - --cacert nginx/certs/ca.crt https://forgejo.daw.local/</code> muestra <code>strict-transport-security</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Git por HTTPS sin trampas.</strong> Haz un cambio en <code>~/prueba</code>, <code>commit</code> y <code>push</code> delante del profesor. <code>git config --global --get http.sslVerify</code> no devuelve nada.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Sin claves en el repositorio.</strong> En tu repositorio <code>practica-http</code>, <code>git ls-files | grep key</code> no devuelve nada.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Explícalo.</strong> El profesor te hará una pregunta de las que aparecen en «Qué está pasando». Por ejemplo: quién genera un <code>502</code>, por qué hace falta <code>ROOT_URL</code> o para qué sirve SNI.</li>
+</ul>
+<p>Sube después el proyecto a un repositorio llamado <code>practica-http</code> en el Forgejo del instituto: <code>docker-compose.yml</code>, la carpeta <code>nginx</code> sin claves, <code>pages</code> y el <code>.gitignore</code>.</p>
+<h2 id="si-algo-falla">Si algo falla</h2>
+<p>Antes de preguntar, mira los logs: <code>docker compose logs nginx</code> y <code>docker compose logs forgejo</code>. Casi siempre dicen qué pasa.</p>
+<table>
+<thead>
+<tr>
+<th>Lo que ves</th>
+<th>Por qué pasa</th>
+<th>Qué hacer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>502 Bad Gateway</code> justo después de <code>docker compose up -d</code></td>
+<td>Forgejo se ha recreado con otra IP y Nginx sigue usando la antigua</td>
+<td><code>docker compose restart nginx</code></td>
+</tr>
+<tr>
+<td>Nginx no arranca: <code>host not found in upstream "forgejo"</code></td>
+<td>El nombre en <code>proxy_pass</code> no coincide con el del servicio</td>
+<td>Revisa que el servicio se llame <code>forgejo</code> en el compose</td>
+</tr>
+<tr>
+<td><code>bind: address already in use</code> en el 80 o el 443</td>
+<td>Otro programa usa ese puerto</td>
+<td>Compruébalo con <code>sudo ss -ltnp</code> y avisa al profesor</td>
+</tr>
+<tr>
+<td><code>permission denied</code> al publicar el 80</td>
+<td>Docker sin privilegios no puede abrir puertos bajos</td>
+<td>Avisa al profesor</td>
+</tr>
+<tr>
+<td><code>nginx -t</code> da un error con número de línea</td>
+<td>Falta un <code>;</code> o una <code>}</code> en tus ficheros</td>
+<td>Ve a esa línea del fichero que indica</td>
+</tr>
+<tr>
+<td>Cambias <code>ROOT_URL</code> y no se aplica</td>
+<td>El contenedor no se ha recreado</td>
+<td><code>docker compose up -d</code> después de editar el compose</td>
+</tr>
+<tr>
+<td><code>NET::ERR_CERT_COMMON_NAME_INVALID</code> o el nombre no coincide</td>
+<td>Al certificado le faltan los SAN</td>
+<td>Repite los pasos 5.2 a 5.4 y reinicia Nginx</td>
+</tr>
+<tr>
+<td>Sigue el aviso del navegador tras importar</td>
+<td>Has importado <code>daw.crt</code> en vez de <code>ca.crt</code>, o en «Servidores» en vez de «Autoridades»</td>
+<td>Borra la importación e importa <code>ca.crt</code> en Autoridades</td>
+</tr>
+<tr>
+<td>No puedes borrar las carpetas <code>forgejo</code> o <code>postgres</code></td>
+<td>Pertenecen al usuario de dentro del contenedor</td>
+<td><code>docker compose down</code> y después <code>docker run --rm -v "$PWD":/w alpine rm -rf /w/forgejo /w/postgres</code></td>
+</tr>
+<tr>
+<td><code>git push</code> pide la contraseña y falla</td>
+<td>Usuario o contraseña de Forgejo incorrectos</td>
+<td>Usa el usuario y la contraseña que creaste en el paso 1.4</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "toc.integrate", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
