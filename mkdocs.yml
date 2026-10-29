@@ -4,13 +4,13 @@ site_url: https://pedrosegarra.github.io/DAW/
 theme:
   name: material
   logo: assets/logocaminas.png
-  
-  palette: 
-    - media: "(prefers-color-scheme: light)"    
+
+  palette:
     # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: blue
-      accent: green 
+      accent: green
       toggle:
         icon: material/weather-night
         name: Cambiar a modo oscuro
@@ -32,11 +32,16 @@ theme:
     - search.highlight
     - content.code.annotate
     - content.code.copy
+
 markdown_extensions:
   - meta
   - tables
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - admonition
   - pymdownx.inlinehilite
   - pymdownx.arithmatex:
@@ -44,44 +49,28 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.highlight:
       anchor_linenums: true
-  - pymdownx.superfences
   - pymdownx.mark
   - pymdownx.tabbed:
-      alternate_style: true 
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - attr_list
   - md_in_html
   - footnotes
-  
-plugins: 
+
+plugins:
   - search:
       lang: es
   - awesome-pages:
       collapse_single_pages: true
-  #- with-pdf:
-   #   toc_level: 2            # entero, sin comillas
-    #  cover_title: "DAW"      # opcional
-     # cover_subtitle: "Documentación"  # opcional
-      #output_path: pdf/DAW.pdf
-  #- page-to-pdf:
-
 
 extra_css:
   - stylesheets/extra.css
 
 extra:
-  analytics: 
-      provider: google 
-      property: G-3NX5MD5C8H
+  analytics:
+    provider: google
+    property: G-3NX5MD5C8H
 
 draft_docs: |
   drafts/**
-
-#nav:
-#  - ... | Ud1 Introduccion/*.md
-#  - ... | Unidad 2/*.md
-#  - ... | Unidad 3/*.md
-#  - ... | Unidad 4/*.md
-#  - ... | Unidad 5/*.md
-# - ... | Unidad 6/*.md
-#  - ... | Unidad 7/*.md
-#  - ... | Unidad 8/*.md
