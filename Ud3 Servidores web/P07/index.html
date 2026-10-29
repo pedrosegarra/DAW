@@ -1585,9 +1585,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#paso-11-dar-nombre-a-tu-servidor" class="md-nav__link">
+  <a href="#paso-11-los-nombres-de-tu-servidor" class="md-nav__link">
     <span class="md-ellipsis">
-      Paso 1.1. Dar nombre a tu servidor
+      Paso 1.1. Los nombres de tu servidor
     </span>
   </a>
   
@@ -2789,10 +2789,11 @@
 <li><strong>Comprueba:</strong> lo que tienes que ver. Si no lo ves, no sigas: mira la última sección, «Si algo falla».</li>
 </ul>
 <p>Algunos pasos fallan <strong>a propósito</strong>. Están marcados con «Fallo provocado»: son los errores que te encontrarás en cualquier despliegue real, y aprenderás a reconocerlos.</p>
-<p><strong>Necesitas:</strong> Docker con Docker Compose, un terminal, Firefox y <code>git</code>. Comprueba que tienes todo:</p>
+<p><strong>Necesitas:</strong> Docker con Docker Compose, un terminal, Firefox y <code>git</code>. En el aula trabajas con <strong>Docker rootless</strong>: Docker funciona con tu propio usuario, sin permisos de administrador. En ningún paso de esta práctica necesitas <code>sudo</code>.</p>
+<p>Comprueba que tienes todo:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>version
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>git<span class="w"> </span>--version
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>sudo<span class="w"> </span>ss<span class="w"> </span>-ltnp<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;:(80|443) &#39;</span><span class="w">     </span><span class="c1"># no debe salir nada</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>ss<span class="w"> </span>-ltn<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;:(80|443) &#39;</span><span class="w">     </span><span class="c1"># no debe salir nada</span>
 </code></pre></div>
 <p>Si el último comando muestra algo escuchando en el 80 o el 443, avisa al profesor antes de seguir.</p>
 <p>Crea la carpeta del proyecto, que usarás en todas las partes:</p>
@@ -2802,12 +2803,13 @@
 <p>A partir de aquí, todos los comandos se ejecutan dentro de <code>~/practica-http</code>.</p>
 <h2 id="parte-1-forgejo-y-postgresql-con-docker-compose">Parte 1. Forgejo y PostgreSQL con Docker Compose</h2>
 <p>En esta parte levantas Forgejo con su base de datos y lo dejas funcionando en el puerto 3000. Es el punto de partida: todavía no hay Nginx.</p>
-<h3 id="paso-11-dar-nombre-a-tu-servidor">Paso 1.1. Dar nombre a tu servidor</h3>
+<h3 id="paso-11-los-nombres-de-tu-servidor">Paso 1.1. Los nombres de tu servidor</h3>
 <p><strong>Haz:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;127.0.0.1 forgejo.daw.local pages.daw.local&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/hosts
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>grep<span class="w"> </span>daw.local<span class="w"> </span>/etc/hosts
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>ping<span class="w"> </span>-c1<span class="w"> </span>forgejo.daw.local
 </code></pre></div>
-<p><strong>Qué está pasando.</strong> No tenemos un servidor DNS para estos nombres, así que se los enseñamos a tu equipo a mano. <code>/etc/hosts</code> se consulta antes que el DNS: cualquier programa que pida <code>forgejo.daw.local</code> recibirá <code>127.0.0.1</code>, tu propia máquina.</p>
-<p><strong>Comprueba:</strong> <code>ping -c1 forgejo.daw.local</code> responde desde <code>127.0.0.1</code>.</p>
+<p><strong>Qué está pasando.</strong> No tenemos un servidor DNS para estos nombres, así que se le enseñan a tu equipo a mano en el fichero <code>/etc/hosts</code>. Ese fichero se consulta antes que el DNS: cualquier programa que pida <code>forgejo.daw.local</code> recibirá <code>127.0.0.1</code>, tu propia máquina. Editarlo necesita permisos de administrador, así que el profesor ya ha añadido la línea en todos los equipos del aula.</p>
+<p><strong>Comprueba:</strong> el primer comando muestra <code>127.0.0.1 forgejo.daw.local pages.daw.local</code> y el <code>ping</code> responde desde <code>127.0.0.1</code>. Si no sale la línea, avisa al profesor.</p>
 <h3 id="paso-12-escribir-el-docker-composeyml">Paso 1.2. Escribir el <code>docker-compose.yml</code></h3>
 <p><strong>Haz:</strong> crea <code>~/practica-http/docker-compose.yml</code> con este contenido.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">services</span><span class="p">:</span>
@@ -2850,18 +2852,21 @@
 <li>Desactivamos SSH para centrarnos solo en HTTP.</li>
 </ul>
 <h3 id="paso-13-arrancar">Paso 1.3. Arrancar</h3>
-<p><strong>Haz:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>forgejo
+<p><strong>Haz:</strong> primero descarga las imágenes. Con Docker rootless cada usuario tiene las suyas, y la primera vez tarda unos minutos porque toda la clase descarga a la vez.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>pull
+</code></pre></div>
+<p>Después arranca y mira el log de Forgejo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>forgejo
 </code></pre></div>
 <p>Espera a ver en el log una línea que diga que escucha en el puerto 3000 y sal con <code>Ctrl+C</code>. Salir del log no para el contenedor.</p>
 <p><strong>Comprueba:</strong> <code>docker compose ps</code> muestra <code>db</code> y <code>forgejo</code> en estado <code>running</code>.</p>
 <h3 id="paso-14-instalar-forgejo">Paso 1.4. Instalar Forgejo</h3>
 <p><strong>Haz:</strong> abre <code>http://localhost:3000</code>. Verás el asistente de instalación con la base de datos ya rellena gracias a las variables. Baja hasta <strong>Configuración de la cuenta de administrador</strong>, despliégala y crea tu usuario. Pulsa <strong>Instalar Forgejo</strong>.</p>
 <p>Si después de instalar no puedes entrar con tu usuario, créalo desde el terminal:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-u<span class="w"> </span><span class="m">1000</span><span class="w"> </span>forgejo<span class="w"> </span>forgejo<span class="w"> </span>admin<span class="w"> </span>user<span class="w"> </span>create<span class="w"> </span>--admin<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>--username<span class="w"> </span>tu_usuario<span class="w"> </span>--password<span class="w"> </span><span class="s1">&#39;Cambiar1234!&#39;</span><span class="w"> </span>--email<span class="w"> </span>tu_usuario@daw.local<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span>--must-change-password<span class="o">=</span><span class="nb">false</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-u<span class="w"> </span><span class="m">1000</span><span class="w"> </span>forgejo<span class="w"> </span>forgejo<span class="w"> </span>admin<span class="w"> </span>user<span class="w"> </span>create<span class="w"> </span>--admin<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>--username<span class="w"> </span>tu_usuario<span class="w"> </span>--password<span class="w"> </span><span class="s1">&#39;Cambiar1234!&#39;</span><span class="w"> </span>--email<span class="w"> </span>tu_usuario@daw.local<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span>--must-change-password<span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> <code>-u 1000</code> ejecuta el comando como el usuario de Forgejo dentro del contenedor. Como <code>root</code>, Forgejo se niega a arrancar por seguridad.</p>
 <h3 id="paso-15-crear-un-repositorio-de-prueba">Paso 1.5. Crear un repositorio de prueba</h3>
@@ -2871,18 +2876,18 @@
 <p>Ahora pones Nginx delante de Forgejo y cierras el puerto 3000. Al final de esta parte solo se podrá entrar a Forgejo a través de Nginx.</p>
 <h3 id="paso-21-configurar-el-sitio-de-forgejo-en-nginx">Paso 2.1. Configurar el sitio de Forgejo en Nginx</h3>
 <p><strong>Haz:</strong> crea <code>nginx/conf.d/forgejo.conf</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">forgejo.daw.local</span><span class="p">;</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">        </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://forgejo:3000</span><span class="p">;</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">Host</span><span class="w">              </span><span class="nv">$host</span><span class="p">;</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Real-IP</span><span class="w">         </span><span class="nv">$remote_addr</span><span class="p">;</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-For</span><span class="w">   </span><span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-Proto</span><span class="w"> </span><span class="nv">$scheme</span><span class="p">;</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">forgejo.daw.local</span><span class="p">;</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">        </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://forgejo:3000</span><span class="p">;</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">Host</span><span class="w">              </span><span class="nv">$host</span><span class="p">;</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Real-IP</span><span class="w">         </span><span class="nv">$remote_addr</span><span class="p">;</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-For</span><span class="w">   </span><span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-Proto</span><span class="w"> </span><span class="nv">$scheme</span><span class="p">;</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="p">}</span>
 </code></pre></div>
 <p><strong>Qué está pasando.</strong></p>
 <ul>
@@ -2892,29 +2897,29 @@
 </ul>
 <h3 id="paso-22-anadir-nginx-al-compose">Paso 2.2. Añadir Nginx al compose</h3>
 <p><strong>Haz:</strong> añade este servicio al final de <code>docker-compose.yml</code>, al mismo nivel que <code>db</code> y <code>forgejo</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="w">  </span><span class="nt">nginx</span><span class="p">:</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx:stable-alpine</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">forgejo</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;80:80&quot;</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./nginx/conf.d:/etc/nginx/conf.d:ro</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="w">  </span><span class="nt">nginx</span><span class="p">:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx:stable-alpine</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">forgejo</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;80:80&quot;</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./nginx/conf.d:/etc/nginx/conf.d:ro</span>
 </code></pre></div>
 <p>Y arranca: <code>docker compose up -d</code>.</p>
 <p><strong>Qué está pasando.</strong> Montamos tu carpeta <code>nginx/conf.d</code> encima de la de la imagen. Así desaparece la página de bienvenida de Nginx y solo quedan tus sitios. El <code>:ro</code> lo monta en solo lectura: el contenedor no puede modificar tus ficheros.</p>
 <p><strong>Comprueba:</strong> <code>http://forgejo.daw.local</code> (sin puerto) muestra Forgejo.</p>
 <h3 id="paso-23-cerrar-el-puerto-3000">Paso 2.3. Cerrar el puerto 3000</h3>
 <p><strong>Haz:</strong> borra estas dos líneas del servicio <code>forgejo</code> en el compose:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;3000:3000&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;3000:3000&quot;</span>
 </code></pre></div>
 <p>Y aplica el cambio:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>curl<span class="w"> </span>-I<span class="w"> </span>http://localhost:3000<span class="w">          </span><span class="c1"># debe fallar</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>curl<span class="w"> </span>-I<span class="w"> </span>http://forgejo.daw.local<span class="w">        </span><span class="c1"># debe dar 200 OK</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>curl<span class="w"> </span>-I<span class="w"> </span>http://localhost:3000<span class="w">          </span><span class="c1"># debe fallar</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>curl<span class="w"> </span>-I<span class="w"> </span>http://forgejo.daw.local<span class="w">        </span><span class="c1"># debe dar 200 OK</span>
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> Forgejo sigue escuchando en el 3000, pero solo dentro de la red de Docker, donde Nginx lo alcanza. Desde tu equipo ya no se llega. El <code>restart nginx</code> es necesario porque <code>up -d</code> ha recreado el contenedor de Forgejo y puede haberle cambiado la IP. Nginx averigua la IP de <code>forgejo</code> solo al arrancar y, si no lo reinicias, seguiría apuntando a la antigua.</p>
 <p><strong>Comprueba:</strong> el primer <code>curl</code> dice <code>Connection refused</code> y el segundo <code>HTTP/1.1 200 OK</code> con <code>Server: nginx</code>.</p>
@@ -2923,36 +2928,36 @@
 <p><strong>Qué ves:</strong> <code>http://localhost:3000/tu_usuario/prueba.git</code>. Esa dirección ya no existe: acabas de cerrar el 3000.</p>
 <p><strong>Qué está pasando.</strong> Nginx reenvía las peticiones, pero Forgejo no sabe con qué dirección le ve el usuario. Para los enlaces absolutos (clonado, correos, webhooks) usa su URL pública, <code>ROOT_URL</code>, que sigue diciendo <code>localhost:3000</code>. Cualquier aplicación detrás de un proxy necesita saber su URL pública.</p>
 <p><strong>Haz:</strong> en el servicio <code>forgejo</code> del compose, cambia <code>ROOT_URL</code> y añade <code>DOMAIN</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="w">      </span><span class="nt">FORGEJO__server__DOMAIN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">forgejo.daw.local</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">      </span><span class="nt">FORGEJO__server__ROOT_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://forgejo.daw.local/</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="w">      </span><span class="nt">FORGEJO__server__DOMAIN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">forgejo.daw.local</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">      </span><span class="nt">FORGEJO__server__ROOT_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://forgejo.daw.local/</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
 </code></pre></div>
 <p><strong>Comprueba:</strong> recarga el repositorio. La URL de clonado es ahora <code>http://forgejo.daw.local/tu_usuario/prueba.git</code>.</p>
 <h3 id="paso-25-fallo-provocado-el-error-413">Paso 2.5. Fallo provocado: el error 413</h3>
 <p><strong>Haz:</strong> clona el repositorio, añade un fichero de 5 MB y súbelo. Git te pedirá tu usuario y contraseña de Forgejo.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nb">cd</span><span class="w"> </span>~
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>git<span class="w"> </span>clone<span class="w"> </span>http://forgejo.daw.local/tu_usuario/prueba.git
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nb">cd</span><span class="w"> </span>prueba
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>/dev/urandom<span class="w"> </span><span class="nv">of</span><span class="o">=</span>grande.bin<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1M<span class="w"> </span><span class="nv">count</span><span class="o">=</span><span class="m">5</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>git<span class="w"> </span>add<span class="w"> </span>grande.bin
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Fichero grande&quot;</span>
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>git<span class="w"> </span>push
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nb">cd</span><span class="w"> </span>~
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>git<span class="w"> </span>clone<span class="w"> </span>http://forgejo.daw.local/tu_usuario/prueba.git
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nb">cd</span><span class="w"> </span>prueba
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>/dev/urandom<span class="w"> </span><span class="nv">of</span><span class="o">=</span>grande.bin<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1M<span class="w"> </span><span class="nv">count</span><span class="o">=</span><span class="m">5</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>git<span class="w"> </span>add<span class="w"> </span>grande.bin
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Fichero grande&quot;</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>git<span class="w"> </span>push
 </code></pre></div>
 <p><strong>Qué ves:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>error: RPC failed; HTTP 413 curl 22 The requested URL returned error: 413
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>fatal: the remote end hung up unexpectedly
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>error: RPC failed; HTTP 413 curl 22 The requested URL returned error: 413
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>fatal: the remote end hung up unexpectedly
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> <code>413</code> significa que la petición es demasiado grande. No lo dice Forgejo sino Nginx, que por defecto solo acepta cuerpos de 1 MB. La petición nunca llega a Forgejo: el proxy la corta antes, y para eso sirve. Míralo en su log:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nb">cd</span><span class="w"> </span>~/practica-http
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>nginx<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;too large&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nb">cd</span><span class="w"> </span>~/practica-http
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>nginx<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;too large&quot;</span>
 </code></pre></div>
 <p><strong>Haz:</strong> dentro del bloque <code>server</code> de <code>nginx/conf.d/forgejo.conf</code>, justo debajo de <code>server_name</code>, añade:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="w">    </span><span class="k">client_max_body_size</span><span class="w"> </span><span class="mi">512m</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="w">    </span><span class="k">client_max_body_size</span><span class="w"> </span><span class="mi">512m</span><span class="p">;</span>
 </code></pre></div>
 <p>Y recarga Nginx sin pararlo:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-t
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-s<span class="w"> </span>reload
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-t
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-s<span class="w"> </span>reload
 </code></pre></div>
 <p><code>nginx -t</code> comprueba que la configuración no tiene errores. Hazlo <strong>siempre</strong> antes de recargar.</p>
 <p><strong>Comprueba:</strong> vuelve a <code>~/prueba</code> y repite <code>git push</code>. Ahora funciona y el fichero aparece en Forgejo.</p>
@@ -2960,58 +2965,58 @@
 <p>Vas a servir dos webs distintas con la misma IP y el mismo puerto. Es lo que hace cualquier hosting con miles de dominios.</p>
 <h3 id="paso-31-la-web-estatica">Paso 3.1. La web estática</h3>
 <p><strong>Haz:</strong> crea <code>pages/index.html</code> y pon tu nombre donde se indica.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;es&quot;</span><span class="p">&gt;</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">&gt;&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Pages de TU NOMBRE<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>  <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hola, soy TU NOMBRE<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Esta página la sirve Nginx directamente, sin pasar por Forgejo.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;es&quot;</span><span class="p">&gt;</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">&gt;&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Pages de TU NOMBRE<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>  <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hola, soy TU NOMBRE<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Esta página la sirve Nginx directamente, sin pasar por Forgejo.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </code></pre></div>
 <h3 id="paso-32-el-sitio-en-nginx">Paso 3.2. El sitio en Nginx</h3>
 <p><strong>Haz:</strong> crea <code>nginx/conf.d/pages.conf</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">pages.daw.local</span><span class="p">;</span>
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
-<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">    </span><span class="kn">root</span><span class="w">  </span><span class="s">/usr/share/nginx/pages</span><span class="p">;</span>
-<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">    </span><span class="kn">index</span><span class="w"> </span><span class="s">index.html</span><span class="p">;</span>
-<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>
-<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">        </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="nv">$uri/</span><span class="w"> </span><span class="p">=</span><span class="mi">404</span><span class="p">;</span>
-<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">pages.daw.local</span><span class="p">;</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">    </span><span class="kn">root</span><span class="w">  </span><span class="s">/usr/share/nginx/pages</span><span class="p">;</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">    </span><span class="kn">index</span><span class="w"> </span><span class="s">index.html</span><span class="p">;</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">        </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="nv">$uri/</span><span class="w"> </span><span class="p">=</span><span class="mi">404</span><span class="p">;</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="p">}</span>
 </code></pre></div>
 <p>En el compose, añade un segundo volumen al servicio <code>nginx</code>, debajo del de <code>conf.d</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./pages:/usr/share/nginx/pages:ro</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./pages:/usr/share/nginx/pages:ro</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> Este <code>server</code> no reenvía nada: sirve ficheros de una carpeta (<code>root</code>). <code>try_files</code> busca primero un fichero con ese nombre, después una carpeta y, si no hay ninguno, responde <code>404</code>.</p>
 <p><strong>Comprueba:</strong> <code>http://pages.daw.local</code> muestra tu página y <code>http://forgejo.daw.local</code> sigue mostrando Forgejo.</p>
 <h3 id="paso-33-quien-decide-es-la-cabecera-host">Paso 3.3. Quien decide es la cabecera <code>Host</code></h3>
 <p><strong>Haz:</strong> pide las dos webs a la misma dirección, <code>127.0.0.1</code>, cambiando solo una cabecera:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: pages.daw.local&quot;</span><span class="w">   </span>http://127.0.0.1/
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>curl<span class="w"> </span>-s<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: forgejo.daw.local&quot;</span><span class="w"> </span>http://127.0.0.1/<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;&lt;title&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: pages.daw.local&quot;</span><span class="w">   </span>http://127.0.0.1/
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>curl<span class="w"> </span>-s<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: forgejo.daw.local&quot;</span><span class="w"> </span>http://127.0.0.1/<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;&lt;title&quot;</span>
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> Las dos peticiones van a la misma IP y al mismo puerto. Lo único distinto es la cabecera <code>Host</code>, y Nginx la compara con el <code>server_name</code> de cada bloque. El nombre que escribes en el navegador sirve para dos cosas: averiguar la IP y rellenar esa cabecera. Por eso en HTTP/1.1 es obligatoria.</p>
 <p><strong>Comprueba:</strong> el primer comando devuelve tu <code>index.html</code> y el segundo el título de Forgejo.</p>
 <h3 id="paso-34-fallo-provocado-un-nombre-que-no-existe">Paso 3.4. Fallo provocado: un nombre que no existe</h3>
 <p><strong>Haz:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: hola.daw.local&quot;</span><span class="w"> </span>http://127.0.0.1/<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;&lt;title&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: hola.daw.local&quot;</span><span class="w"> </span>http://127.0.0.1/<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;&lt;title&quot;</span>
 </code></pre></div>
 <p><strong>Qué ves:</strong> Forgejo, aunque <code>hola.daw.local</code> no está configurado en ningún sitio. Lo mismo pasa con <code>http://localhost</code>.</p>
 <p><strong>Qué está pasando.</strong> Si ningún <code>server_name</code> coincide, Nginx usa el <strong>servidor por defecto</strong> del puerto. Si nadie lo ha marcado como tal, es el primero que carga. Nginx lee los ficheros de <code>conf.d</code> en orden alfabético y <code>forgejo.conf</code> va antes que <code>pages.conf</code>.</p>
 <p><strong>Haz:</strong> crea <code>nginx/conf.d/00-default.conf</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="w"> </span><span class="s">default_server</span><span class="p">;</span>
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">_</span><span class="p">;</span>
-<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">    </span><span class="kn">return</span><span class="w"> </span><span class="mi">444</span><span class="p">;</span>
-<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="w"> </span><span class="s">default_server</span><span class="p">;</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">_</span><span class="p">;</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">    </span><span class="kn">return</span><span class="w"> </span><span class="mi">444</span><span class="p">;</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="p">}</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-t<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-s<span class="w"> </span>reload
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>curl<span class="w"> </span>-v<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: hola.daw.local&quot;</span><span class="w"> </span>http://127.0.0.1/
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-t<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-s<span class="w"> </span>reload
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>curl<span class="w"> </span>-v<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: hola.daw.local&quot;</span><span class="w"> </span>http://127.0.0.1/
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> <code>default_server</code> lo marca explícitamente como el servidor por defecto, así que el orden de los ficheros deja de importar. <code>444</code> es un código propio de Nginx: cierra la conexión sin responder nada. No le das pistas a quien pregunta por nombres que no son tuyos.</p>
 <p><strong>Comprueba:</strong> <code>curl</code> termina con <code>Empty reply from server</code>, y <code>forgejo.daw.local</code> y <code>pages.daw.local</code> siguen funcionando.</p>
@@ -3019,7 +3024,7 @@
 <p>HTTP es texto. En esta parte lo lees directamente, con <code>curl</code> y con las herramientas del navegador, y aprendes a distinguir si una respuesta la da la aplicación o el proxy.</p>
 <h3 id="paso-41-ver-solo-las-cabeceras">Paso 4.1. Ver solo las cabeceras</h3>
 <p><strong>Haz:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-D<span class="w"> </span>-<span class="w"> </span>http://forgejo.daw.local/
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-D<span class="w"> </span>-<span class="w"> </span>http://forgejo.daw.local/
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> <code>-o /dev/null</code> tira el cuerpo (el HTML) y <code>-D -</code> imprime las cabeceras de la respuesta. La primera línea es la <strong>línea de estado</strong>: versión, código y frase. Debajo vienen las cabeceras, una por línea.</p>
 <p><strong>Comprueba:</strong> la primera línea es <code>HTTP/1.1 200 OK</code> y entre las cabeceras está <code>Server: nginx</code>.</p>
@@ -3057,8 +3062,8 @@
 </tbody>
 </table>
 <p>Después del <code>502</code>, vuelve a dejarlo todo en marcha:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>start<span class="w"> </span>forgejo
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>start<span class="w"> </span>forgejo
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> Los tres primeros códigos los genera Forgejo: Nginx solo los transporta. El <code>502</code> lo genera Nginx porque no ha podido hablar con Forgejo. Cuando algo falle en un despliegue, la primera pregunta es siempre: <strong>¿quién ha contestado, la aplicación o el proxy?</strong> La página del <code>502</code> es la de Nginx, no la de Forgejo, y eso ya te da la respuesta.</p>
 <h3 id="paso-43-el-inicio-de-sesion-visto-por-dentro">Paso 4.3. El inicio de sesión visto por dentro</h3>
@@ -3077,102 +3082,79 @@
 <p><strong>Comprueba:</strong> en la pestaña <strong>Almacenamiento</strong> › <strong>Cookies</strong> busca la cookie de sesión de Forgejo (suele llamarse <code>i_like_gitea</code>). Anota qué atributos tiene: <code>HttpOnly</code> (JavaScript no puede leerla), <code>SameSite</code> (no viaja en peticiones lanzadas desde otros sitios) y <code>Secure</code> (solo viaja por HTTPS). Ahora mismo <code>Secure</code> falta: lo recuperarás en la parte 6.</p>
 <h3 id="paso-44-el-log-de-acceso">Paso 4.4. El log de acceso</h3>
 <p><strong>Haz:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>--tail<span class="w"> </span><span class="m">5</span><span class="w"> </span>nginx
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>--tail<span class="w"> </span><span class="m">5</span><span class="w"> </span>nginx
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> Cada línea es una petición, con este formato:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>172.18.0.1 - - [28/Oct/2026:16:10:01 +0100] &quot;GET /user/login HTTP/1.1&quot; 200 12345 &quot;-&quot; &quot;curl/8.5.0&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>172.18.0.1 - - [28/Oct/2026:16:10:01 +0100] &quot;GET /user/login HTTP/1.1&quot; 200 12345 &quot;-&quot; &quot;curl/8.5.0&quot;
 </code></pre></div>
-<p>La IP de origen, la fecha, la línea de la petición, el código, los bytes de la respuesta, de dónde venías (<code>Referer</code>) y qué programa la hizo (<code>User-Agent</code>). La IP no es <code>127.0.0.1</code> sino la de la puerta de enlace de Docker: Docker hace NAT al publicar el puerto.</p>
+<p>La IP de origen, la fecha, la línea de la petición, el código, los bytes de la respuesta, de dónde venías (<code>Referer</code>) y qué programa la hizo (<code>User-Agent</code>). La IP no es <code>127.0.0.1</code> ni la de tu equipo, sino una IP interna de Docker. Con Docker rootless, los puertos publicados pasan por un proceso intermedio que reenvía las conexiones, y Nginx solo ve a ese intermediario. Es lo mismo que le pasa a Forgejo con Nginx delante, y por eso existen las cabeceras <code>X-Forwarded-For</code> y <code>X-Real-IP</code> del paso 2.1.</p>
 <p><strong>Comprueba:</strong> localiza en el log tus peticiones de la tabla del paso 4.2 con su código.</p>
 <h2 id="parte-5-tu-propia-autoridad-de-certificacion">Parte 5. Tu propia autoridad de certificación</h2>
 <p>Para HTTPS necesitas un certificado. Los públicos los firma una autoridad de certificación (CA) en la que los navegadores ya confían. Aquí vas a crear tu propia CA y a firmar con ella un certificado para tus dos nombres. Es el mismo modelo que usa la red del instituto.</p>
 <p>Trabaja dentro de la carpeta de certificados:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="nb">cd</span><span class="w"> </span>~/practica-http/nginx/certs
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nb">cd</span><span class="w"> </span>~/practica-http/nginx/certs
 </code></pre></div>
 <h3 id="paso-51-crear-la-ca">Paso 5.1. Crear la CA</h3>
 <p><strong>Haz:</strong> pon tu nombre en el <code>-subj</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>openssl<span class="w"> </span>req<span class="w"> </span>-x509<span class="w"> </span>-newkey<span class="w"> </span>rsa:4096<span class="w"> </span>-noenc<span class="w"> </span>-keyout<span class="w"> </span>ca.key<span class="w"> </span>-out<span class="w"> </span>ca.crt<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">  </span>-days<span class="w"> </span><span class="m">1825</span><span class="w"> </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=CA DAW Tu Nombre&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>openssl<span class="w"> </span>req<span class="w"> </span>-x509<span class="w"> </span>-newkey<span class="w"> </span>rsa:4096<span class="w"> </span>-noenc<span class="w"> </span>-keyout<span class="w"> </span>ca.key<span class="w"> </span>-out<span class="w"> </span>ca.crt<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span>-days<span class="w"> </span><span class="m">1825</span><span class="w"> </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=CA DAW Tu Nombre&quot;</span>
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> Generas una clave privada (<code>ca.key</code>) y un certificado autofirmado (<code>ca.crt</code>) válido 5 años. <code>-noenc</code> deja la clave sin contraseña para no tener que escribirla en cada paso.</p>
 <p>En esta práctica, <code>ca.crt</code> es lo que repartes: lo importarás en el navegador y en Git. <code>ca.key</code> es lo más valioso de todo, porque quien la tenga puede firmar certificados en los que tus equipos confiarán. <strong>Nunca sale de esta carpeta</strong>: ni al contenedor ni al repositorio.</p>
 <h3 id="paso-52-pedir-un-certificado-para-el-servidor">Paso 5.2. Pedir un certificado para el servidor</h3>
 <p><strong>Haz:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>openssl<span class="w"> </span>req<span class="w"> </span>-newkey<span class="w"> </span>rsa:2048<span class="w"> </span>-noenc<span class="w"> </span>-keyout<span class="w"> </span>daw.key<span class="w"> </span>-out<span class="w"> </span>daw.csr<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=forgejo.daw.local&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>openssl<span class="w"> </span>req<span class="w"> </span>-newkey<span class="w"> </span>rsa:2048<span class="w"> </span>-noenc<span class="w"> </span>-keyout<span class="w"> </span>daw.key<span class="w"> </span>-out<span class="w"> </span>daw.csr<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">  </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=forgejo.daw.local&quot;</span>
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> Generas la clave del servidor (<code>daw.key</code>) y una petición de firma (<code>daw.csr</code>). La CSR es lo que en el mundo real se envía a una CA para que la firme.</p>
 <h3 id="paso-53-indicar-los-nombres-san">Paso 5.3. Indicar los nombres: SAN</h3>
 <p><strong>Haz:</strong> crea el fichero <code>san.ext</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>san.ext<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="s">subjectAltName=DNS:forgejo.daw.local,DNS:pages.daw.local</span>
-<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="s">basicConstraints=CA:FALSE</span>
-<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="s">keyUsage=digitalSignature,keyEncipherment</span>
-<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="s">extendedKeyUsage=serverAuth</span>
-<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="s">EOF</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>san.ext<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="s">subjectAltName=DNS:forgejo.daw.local,DNS:pages.daw.local</span>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="s">basicConstraints=CA:FALSE</span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="s">keyUsage=digitalSignature,keyEncipherment</span>
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="s">extendedKeyUsage=serverAuth</span>
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="s">EOF</span>
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> El campo <code>CN</code> del paso anterior solo admite un nombre, y los navegadores dejaron de mirarlo hace años. Los nombres válidos de un certificado van en la extensión <strong>SAN</strong> (<code>subjectAltName</code>), que admite varios. Las otras líneas dicen que no es una CA y que sirve para un servidor web.</p>
 <h3 id="paso-54-firmar-con-tu-ca">Paso 5.4. Firmar con tu CA</h3>
 <p><strong>Haz:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> </span>-in<span class="w"> </span>daw.csr<span class="w"> </span>-CA<span class="w"> </span>ca.crt<span class="w"> </span>-CAkey<span class="w"> </span>ca.key<span class="w"> </span>-CAcreateserial<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">  </span>-out<span class="w"> </span>daw.crt<span class="w"> </span>-days<span class="w"> </span><span class="m">825</span><span class="w"> </span>-sha256<span class="w"> </span>-extfile<span class="w"> </span>san.ext
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> </span>-in<span class="w"> </span>daw.csr<span class="w"> </span>-CA<span class="w"> </span>ca.crt<span class="w"> </span>-CAkey<span class="w"> </span>ca.key<span class="w"> </span>-CAcreateserial<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">  </span>-out<span class="w"> </span>daw.crt<span class="w"> </span>-days<span class="w"> </span><span class="m">825</span><span class="w"> </span>-sha256<span class="w"> </span>-extfile<span class="w"> </span>san.ext
 </code></pre></div>
 <p><strong>Comprueba:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>openssl<span class="w"> </span>x509<span class="w"> </span>-in<span class="w"> </span>daw.crt<span class="w"> </span>-noout<span class="w"> </span>-text<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A1<span class="w"> </span><span class="s2">&quot;Alternative Name&quot;</span>
-<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>openssl<span class="w"> </span>verify<span class="w"> </span>-CAfile<span class="w"> </span>ca.crt<span class="w"> </span>daw.crt
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>openssl<span class="w"> </span>x509<span class="w"> </span>-in<span class="w"> </span>daw.crt<span class="w"> </span>-noout<span class="w"> </span>-text<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A1<span class="w"> </span><span class="s2">&quot;Alternative Name&quot;</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>openssl<span class="w"> </span>verify<span class="w"> </span>-CAfile<span class="w"> </span>ca.crt<span class="w"> </span>daw.crt
 </code></pre></div>
 <p>Debes ver <code>DNS:forgejo.daw.local, DNS:pages.daw.local</code> y <code>daw.crt: OK</code>.</p>
 <h3 id="paso-55-proteger-las-claves">Paso 5.5. Proteger las claves</h3>
 <p><strong>Haz:</strong> crea <code>~/practica-http/.gitignore</code> para que nunca se suban al repositorio.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>forgejo/
-<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>postgres/
-<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>*.key
-<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>*.csr
-<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>*.srl
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>forgejo/
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>postgres/
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>*.key
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>*.csr
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>*.srl
 </code></pre></div>
 <h2 id="parte-6-https-en-nginx">Parte 6. HTTPS en Nginx</h2>
 <p>Ahora los dos sitios pasan a HTTPS con tu certificado. El puerto 80 se queda solo para redirigir a HTTPS.</p>
 <h3 id="paso-61-publicar-el-443-y-montar-el-certificado">Paso 6.1. Publicar el 443 y montar el certificado</h3>
 <p><strong>Haz:</strong> en el servicio <code>nginx</code> del compose, añade el puerto 443 y dos volúmenes más. Debe quedar así:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
-<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;80:80&quot;</span>
-<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;443:443&quot;</span>
-<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
-<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./nginx/conf.d:/etc/nginx/conf.d:ro</span>
-<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./pages:/usr/share/nginx/pages:ro</span>
-<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./nginx/certs/daw.crt:/etc/nginx/certs/daw.crt:ro</span>
-<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./nginx/certs/daw.key:/etc/nginx/certs/daw.key:ro</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;80:80&quot;</span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;443:443&quot;</span>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./nginx/conf.d:/etc/nginx/conf.d:ro</span>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./pages:/usr/share/nginx/pages:ro</span>
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./nginx/certs/daw.crt:/etc/nginx/certs/daw.crt:ro</span>
+<a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./nginx/certs/daw.key:/etc/nginx/certs/daw.key:ro</span>
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> Montas <strong>solo</strong> el certificado y la clave del servidor, no toda la carpeta <code>certs</code>. Nginx no necesita la clave de la CA, así que no debe estar a su alcance.</p>
 <h3 id="paso-62-pasar-los-sitios-a-https">Paso 6.2. Pasar los sitios a HTTPS</h3>
 <p><strong>Haz:</strong> sustituye el contenido de <code>nginx/conf.d/forgejo.conf</code> por este:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">443</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span>
-<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">    </span><span class="kn">http2</span><span class="w"> </span><span class="no">on</span><span class="p">;</span>
-<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">forgejo.daw.local</span><span class="p">;</span>
-<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>
-<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">    </span><span class="kn">ssl_certificate</span><span class="w">     </span><span class="s">/etc/nginx/certs/daw.crt</span><span class="p">;</span>
-<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="w">    </span><span class="kn">ssl_certificate_key</span><span class="w"> </span><span class="s">/etc/nginx/certs/daw.key</span><span class="p">;</span>
-<a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="w">    </span><span class="kn">ssl_protocols</span><span class="w">       </span><span class="s">TLSv1.2</span><span class="w"> </span><span class="s">TLSv1.3</span><span class="p">;</span>
-<a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a>
-<a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="w">    </span><span class="kn">add_header</span><span class="w"> </span><span class="s">Strict-Transport-Security</span><span class="w"> </span><span class="s">&quot;max-age=300&quot;</span><span class="w"> </span><span class="s">always</span><span class="p">;</span>
-<a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a>
-<a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a><span class="w">    </span><span class="kn">client_max_body_size</span><span class="w"> </span><span class="mi">512m</span><span class="p">;</span>
-<a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a>
-<a id="__codelineno-37-14" name="__codelineno-37-14" href="#__codelineno-37-14"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-37-15" name="__codelineno-37-15" href="#__codelineno-37-15"></a><span class="w">        </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://forgejo:3000</span><span class="p">;</span>
-<a id="__codelineno-37-16" name="__codelineno-37-16" href="#__codelineno-37-16"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">Host</span><span class="w">              </span><span class="nv">$host</span><span class="p">;</span>
-<a id="__codelineno-37-17" name="__codelineno-37-17" href="#__codelineno-37-17"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Real-IP</span><span class="w">         </span><span class="nv">$remote_addr</span><span class="p">;</span>
-<a id="__codelineno-37-18" name="__codelineno-37-18" href="#__codelineno-37-18"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-For</span><span class="w">   </span><span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
-<a id="__codelineno-37-19" name="__codelineno-37-19" href="#__codelineno-37-19"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-Proto</span><span class="w"> </span><span class="nv">$scheme</span><span class="p">;</span>
-<a id="__codelineno-37-20" name="__codelineno-37-20" href="#__codelineno-37-20"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-37-21" name="__codelineno-37-21" href="#__codelineno-37-21"></a><span class="p">}</span>
-</code></pre></div>
-<p>Y el de <code>nginx/conf.d/pages.conf</code> por este:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">443</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span>
 <a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">    </span><span class="kn">http2</span><span class="w"> </span><span class="no">on</span><span class="p">;</span>
-<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">pages.daw.local</span><span class="p">;</span>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">forgejo.daw.local</span><span class="p">;</span>
 <a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>
 <a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="w">    </span><span class="kn">ssl_certificate</span><span class="w">     </span><span class="s">/etc/nginx/certs/daw.crt</span><span class="p">;</span>
 <a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a><span class="w">    </span><span class="kn">ssl_certificate_key</span><span class="w"> </span><span class="s">/etc/nginx/certs/daw.key</span><span class="p">;</span>
@@ -3180,33 +3162,56 @@
 <a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a>
 <a id="__codelineno-38-10" name="__codelineno-38-10" href="#__codelineno-38-10"></a><span class="w">    </span><span class="kn">add_header</span><span class="w"> </span><span class="s">Strict-Transport-Security</span><span class="w"> </span><span class="s">&quot;max-age=300&quot;</span><span class="w"> </span><span class="s">always</span><span class="p">;</span>
 <a id="__codelineno-38-11" name="__codelineno-38-11" href="#__codelineno-38-11"></a>
-<a id="__codelineno-38-12" name="__codelineno-38-12" href="#__codelineno-38-12"></a><span class="w">    </span><span class="kn">root</span><span class="w">  </span><span class="s">/usr/share/nginx/pages</span><span class="p">;</span>
-<a id="__codelineno-38-13" name="__codelineno-38-13" href="#__codelineno-38-13"></a><span class="w">    </span><span class="kn">index</span><span class="w"> </span><span class="s">index.html</span><span class="p">;</span>
-<a id="__codelineno-38-14" name="__codelineno-38-14" href="#__codelineno-38-14"></a>
-<a id="__codelineno-38-15" name="__codelineno-38-15" href="#__codelineno-38-15"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-38-16" name="__codelineno-38-16" href="#__codelineno-38-16"></a><span class="w">        </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="nv">$uri/</span><span class="w"> </span><span class="p">=</span><span class="mi">404</span><span class="p">;</span>
-<a id="__codelineno-38-17" name="__codelineno-38-17" href="#__codelineno-38-17"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-38-18" name="__codelineno-38-18" href="#__codelineno-38-18"></a><span class="p">}</span>
+<a id="__codelineno-38-12" name="__codelineno-38-12" href="#__codelineno-38-12"></a><span class="w">    </span><span class="kn">client_max_body_size</span><span class="w"> </span><span class="mi">512m</span><span class="p">;</span>
+<a id="__codelineno-38-13" name="__codelineno-38-13" href="#__codelineno-38-13"></a>
+<a id="__codelineno-38-14" name="__codelineno-38-14" href="#__codelineno-38-14"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-38-15" name="__codelineno-38-15" href="#__codelineno-38-15"></a><span class="w">        </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://forgejo:3000</span><span class="p">;</span>
+<a id="__codelineno-38-16" name="__codelineno-38-16" href="#__codelineno-38-16"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">Host</span><span class="w">              </span><span class="nv">$host</span><span class="p">;</span>
+<a id="__codelineno-38-17" name="__codelineno-38-17" href="#__codelineno-38-17"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Real-IP</span><span class="w">         </span><span class="nv">$remote_addr</span><span class="p">;</span>
+<a id="__codelineno-38-18" name="__codelineno-38-18" href="#__codelineno-38-18"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-For</span><span class="w">   </span><span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+<a id="__codelineno-38-19" name="__codelineno-38-19" href="#__codelineno-38-19"></a><span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-Proto</span><span class="w"> </span><span class="nv">$scheme</span><span class="p">;</span>
+<a id="__codelineno-38-20" name="__codelineno-38-20" href="#__codelineno-38-20"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-38-21" name="__codelineno-38-21" href="#__codelineno-38-21"></a><span class="p">}</span>
+</code></pre></div>
+<p>Y el de <code>nginx/conf.d/pages.conf</code> por este:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">443</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="w">    </span><span class="kn">http2</span><span class="w"> </span><span class="no">on</span><span class="p">;</span>
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">pages.daw.local</span><span class="p">;</span>
+<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>
+<a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="w">    </span><span class="kn">ssl_certificate</span><span class="w">     </span><span class="s">/etc/nginx/certs/daw.crt</span><span class="p">;</span>
+<a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a><span class="w">    </span><span class="kn">ssl_certificate_key</span><span class="w"> </span><span class="s">/etc/nginx/certs/daw.key</span><span class="p">;</span>
+<a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a><span class="w">    </span><span class="kn">ssl_protocols</span><span class="w">       </span><span class="s">TLSv1.2</span><span class="w"> </span><span class="s">TLSv1.3</span><span class="p">;</span>
+<a id="__codelineno-39-9" name="__codelineno-39-9" href="#__codelineno-39-9"></a>
+<a id="__codelineno-39-10" name="__codelineno-39-10" href="#__codelineno-39-10"></a><span class="w">    </span><span class="kn">add_header</span><span class="w"> </span><span class="s">Strict-Transport-Security</span><span class="w"> </span><span class="s">&quot;max-age=300&quot;</span><span class="w"> </span><span class="s">always</span><span class="p">;</span>
+<a id="__codelineno-39-11" name="__codelineno-39-11" href="#__codelineno-39-11"></a>
+<a id="__codelineno-39-12" name="__codelineno-39-12" href="#__codelineno-39-12"></a><span class="w">    </span><span class="kn">root</span><span class="w">  </span><span class="s">/usr/share/nginx/pages</span><span class="p">;</span>
+<a id="__codelineno-39-13" name="__codelineno-39-13" href="#__codelineno-39-13"></a><span class="w">    </span><span class="kn">index</span><span class="w"> </span><span class="s">index.html</span><span class="p">;</span>
+<a id="__codelineno-39-14" name="__codelineno-39-14" href="#__codelineno-39-14"></a>
+<a id="__codelineno-39-15" name="__codelineno-39-15" href="#__codelineno-39-15"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-39-16" name="__codelineno-39-16" href="#__codelineno-39-16"></a><span class="w">        </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="nv">$uri/</span><span class="w"> </span><span class="p">=</span><span class="mi">404</span><span class="p">;</span>
+<a id="__codelineno-39-17" name="__codelineno-39-17" href="#__codelineno-39-17"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-39-18" name="__codelineno-39-18" href="#__codelineno-39-18"></a><span class="p">}</span>
 </code></pre></div>
 <p>Crea <code>nginx/conf.d/01-redirect.conf</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
-<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">forgejo.daw.local</span><span class="w"> </span><span class="s">pages.daw.local</span><span class="p">;</span>
-<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="w">    </span><span class="kn">return</span><span class="w"> </span><span class="mi">301</span><span class="w"> </span><span class="s">https://</span><span class="nv">$host$request_uri</span><span class="p">;</span>
-<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="p">}</span>
-</code></pre></div>
-<p>Y añade al final de <code>nginx/conf.d/00-default.conf</code> un servidor por defecto para el 443:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">443</span><span class="w"> </span><span class="s">ssl</span><span class="w"> </span><span class="s">default_server</span><span class="p">;</span>
-<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">_</span><span class="p">;</span>
-<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="w">    </span><span class="kn">ssl_reject_handshake</span><span class="w"> </span><span class="no">on</span><span class="p">;</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">forgejo.daw.local</span><span class="w"> </span><span class="s">pages.daw.local</span><span class="p">;</span>
+<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="w">    </span><span class="kn">return</span><span class="w"> </span><span class="mi">301</span><span class="w"> </span><span class="s">https://</span><span class="nv">$host$request_uri</span><span class="p">;</span>
 <a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="p">}</span>
 </code></pre></div>
+<p>Y añade al final de <code>nginx/conf.d/00-default.conf</code> un servidor por defecto para el 443:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">443</span><span class="w"> </span><span class="s">ssl</span><span class="w"> </span><span class="s">default_server</span><span class="p">;</span>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">_</span><span class="p">;</span>
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="w">    </span><span class="kn">ssl_reject_handshake</span><span class="w"> </span><span class="no">on</span><span class="p">;</span>
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="p">}</span>
+</code></pre></div>
 <p>Aplica todo:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="nb">cd</span><span class="w"> </span>~/practica-http
-<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
-<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-t
-<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="nb">cd</span><span class="w"> </span>~/practica-http
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>nginx<span class="w"> </span>nginx<span class="w"> </span>-t
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
 </code></pre></div>
 <p><strong>Qué está pasando.</strong></p>
 <ul>
@@ -3218,9 +3223,9 @@
 </ul>
 <h3 id="paso-63-la-nueva-url-publica-de-forgejo">Paso 6.3. La nueva URL pública de Forgejo</h3>
 <p><strong>Haz:</strong> en el compose, cambia <code>ROOT_URL</code> a HTTPS y aplica:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="w">      </span><span class="nt">FORGEJO__server__ROOT_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://forgejo.daw.local/</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="w">      </span><span class="nt">FORGEJO__server__ROOT_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://forgejo.daw.local/</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>nginx
 </code></pre></div>
 <p><strong>Comprueba:</strong> la URL de clonado de tu repositorio empieza ahora por <code>https://</code>.</p>
 <h3 id="paso-64-que-el-navegador-confie-en-tu-ca">Paso 6.4. Que el navegador confíe en tu CA</h3>
@@ -3231,24 +3236,24 @@
 <p><strong>Comprueba:</strong> recarga. Ves el candado sin avisos en <code>https://forgejo.daw.local</code> y en <code>https://pages.daw.local</code>.</p>
 <h3 id="paso-65-fallo-provocado-git-no-confia-en-tu-ca">Paso 6.5. Fallo provocado: Git no confía en tu CA</h3>
 <p><strong>Haz:</strong> cambia tu copia local de <code>prueba</code> para que use HTTPS y sube algo.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="nb">cd</span><span class="w"> </span>~/prueba
-<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>git<span class="w"> </span>remote<span class="w"> </span>set-url<span class="w"> </span>origin<span class="w"> </span>https://forgejo.daw.local/tu_usuario/prueba.git
-<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>git<span class="w"> </span>pull
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="nb">cd</span><span class="w"> </span>~/prueba
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>git<span class="w"> </span>remote<span class="w"> </span>set-url<span class="w"> </span>origin<span class="w"> </span>https://forgejo.daw.local/tu_usuario/prueba.git
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>git<span class="w"> </span>pull
 </code></pre></div>
 <p><strong>Qué ves:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>fatal: unable to access &#39;...&#39;: SSL certificate problem: unable to get local issuer certificate
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>fatal: unable to access &#39;...&#39;: SSL certificate problem: unable to get local issuer certificate
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> Git no usa el almacén de Firefox, sino el suyo, y ahí no está tu CA. En internet verás la «solución» <code>git config http.sslVerify false</code>. <strong>Está prohibida en esta práctica:</strong> la conexión sigue cifrada, pero Git aceptaría cualquier certificado. Cualquiera en tu red podría hacerse pasar por el servidor y quedarse con tu contraseña.</p>
 <p><strong>Haz:</strong> dile a Git que confíe en tu CA, y solo para este servidor:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>http.https://forgejo.daw.local/.sslCAInfo<span class="w"> </span>~/practica-http/nginx/certs/ca.crt
-<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>git<span class="w"> </span>pull
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>http.https://forgejo.daw.local/.sslCAInfo<span class="w"> </span>~/practica-http/nginx/certs/ca.crt
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>git<span class="w"> </span>pull
 </code></pre></div>
 <p><strong>Comprueba:</strong> <code>git pull</code> funciona. Haz un cambio en el README, <code>commit</code> y <code>push</code>: también funciona.</p>
 <h3 id="paso-66-comprobar-la-redireccion-hsts-y-la-cookie">Paso 6.6. Comprobar la redirección, HSTS y la cookie</h3>
 <p><strong>Haz:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="nb">cd</span><span class="w"> </span>~/practica-http
-<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-D<span class="w"> </span>-<span class="w"> </span>http://forgejo.daw.local/
-<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-D<span class="w"> </span>-<span class="w"> </span>--cacert<span class="w"> </span>nginx/certs/ca.crt<span class="w"> </span>https://forgejo.daw.local/
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="nb">cd</span><span class="w"> </span>~/practica-http
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-D<span class="w"> </span>-<span class="w"> </span>http://forgejo.daw.local/
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-D<span class="w"> </span>-<span class="w"> </span>--cacert<span class="w"> </span>nginx/certs/ca.crt<span class="w"> </span>https://forgejo.daw.local/
 </code></pre></div>
 <p><strong>Comprueba:</strong></p>
 <ul>
@@ -3259,11 +3264,11 @@
 <p><strong>Qué está pasando.</strong> La redirección <code>301</code> deja un hueco: la primera petición sigue saliendo por HTTP sin cifrar y alguien en medio podría interceptarla. Con HSTS, el navegador recuerda que este sitio solo va por HTTPS y ni siquiera intenta HTTP. Usamos 300 segundos porque es un dominio de pruebas: en producción se pone un año.</p>
 <h3 id="paso-67-ver-el-saludo-tls">Paso 6.7. Ver el saludo TLS</h3>
 <p><strong>Haz:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>openssl<span class="w"> </span>s_client<span class="w"> </span>-connect<span class="w"> </span><span class="m">127</span>.0.0.1:443<span class="w"> </span>-servername<span class="w"> </span>forgejo.daw.local<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="w">  </span>-CAfile<span class="w"> </span>nginx/certs/ca.crt<span class="w"> </span>&lt;/dev/null<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;^(subject|issuer)|Protocol|Verify return&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>openssl<span class="w"> </span>s_client<span class="w"> </span>-connect<span class="w"> </span><span class="m">127</span>.0.0.1:443<span class="w"> </span>-servername<span class="w"> </span>forgejo.daw.local<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="w">  </span>-CAfile<span class="w"> </span>nginx/certs/ca.crt<span class="w"> </span>&lt;/dev/null<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;^(subject|issuer)|Protocol|Verify return&quot;</span>
 </code></pre></div>
 <p>Y ahora sin <code>-servername</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>openssl<span class="w"> </span>s_client<span class="w"> </span>-connect<span class="w"> </span><span class="m">127</span>.0.0.1:443<span class="w"> </span>&lt;/dev/null
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>openssl<span class="w"> </span>s_client<span class="w"> </span>-connect<span class="w"> </span><span class="m">127</span>.0.0.1:443<span class="w"> </span>&lt;/dev/null
 </code></pre></div>
 <p><strong>Qué está pasando.</strong> En HTTPS, el servidor tiene que enseñar su certificado <strong>antes</strong> de recibir la petición cifrada con la cabecera <code>Host</code>. Para saber cuál enseñar, el cliente manda el nombre en el primer mensaje del saludo TLS: es <strong>SNI</strong> (Server Name Indication). <code>-servername</code> lo envía. Sin él, tu servidor por defecto rechaza la conexión.</p>
 <p><strong>Comprueba:</strong> con <code>-servername</code> ves tu certificado, el emisor <code>CA DAW Tu Nombre</code>, <code>TLSv1.3</code> y <code>Verify return code: 0 (ok)</code>. Sin <code>-servername</code>, el saludo falla.</p>
@@ -3304,14 +3309,19 @@
 <td>Revisa que el servicio se llame <code>forgejo</code> en el compose</td>
 </tr>
 <tr>
-<td><code>bind: address already in use</code> en el 80 o el 443</td>
-<td>Otro programa usa ese puerto</td>
-<td>Compruébalo con <code>sudo ss -ltnp</code> y avisa al profesor</td>
+<td><code>docker compose pull</code> muy lento o con <code>timeout</code></td>
+<td>Toda la clase descarga las imágenes a la vez</td>
+<td>Espera un poco y repítelo; solo se descarga una vez</td>
 </tr>
 <tr>
-<td><code>permission denied</code> al publicar el 80</td>
-<td>Docker sin privilegios no puede abrir puertos bajos</td>
-<td>Avisa al profesor</td>
+<td><code>bind: address already in use</code> en el 80 o el 443</td>
+<td>Otro programa usa ese puerto, o te quedó una práctica anterior arrancada</td>
+<td><code>docker ps</code> para ver tus contenedores y <code>docker compose down</code> en la carpeta de esa práctica; si no es tuyo, avisa al profesor</td>
+</tr>
+<tr>
+<td><code>permission denied</code> o <code>cannot expose privileged port</code> al publicar el 80</td>
+<td>Docker rootless no tiene permiso para abrir puertos por debajo del 1024 en ese equipo</td>
+<td>Avisa al profesor: falta el ajuste de puertos en el equipo</td>
 </tr>
 <tr>
 <td><code>nginx -t</code> da un error con número de línea</td>
@@ -3335,7 +3345,7 @@
 </tr>
 <tr>
 <td>No puedes borrar las carpetas <code>forgejo</code> o <code>postgres</code></td>
-<td>Pertenecen al usuario de dentro del contenedor</td>
+<td>Pertenecen a los usuarios internos de tu Docker rootless, no a tu usuario</td>
 <td><code>docker compose down</code> y después <code>docker run --rm -v "$PWD":/w alpine rm -rf /w/forgejo /w/postgres</code></td>
 </tr>
 <tr>
