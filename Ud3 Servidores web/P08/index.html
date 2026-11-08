@@ -2766,10 +2766,6 @@ Al final, en el <strong>reto</strong>, tendrás que repetir el proceso sin la gu
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>└── compose.yaml        ← lo crearás en el apartado 8
 </code></pre></div>
 <hr />
-<div class="admonition note">
-<p class="admonition-title">¿compose.yaml o docker-compose.yml?</p>
-<p>Los dos funcionan. <code>compose.yaml</code> es el nombre actual; <code>docker-compose.yml</code> es el antiguo, que se sigue aceptando por compatibilidad. Usa solo uno en cada carpeta.</p>
-</div>
 <h2 id="3-escribir-la-pagina-y-el-dockerfile">3. Escribir la página y el Dockerfile</h2>
 <h3 id="31-indexhtml">3.1. <code>index.html</code></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">&lt;!DOCTYPE html&gt;</span>
@@ -2817,6 +2813,12 @@ Al final, en el <strong>reto</strong>, tendrás que repetir el proceso sin la gu
 <div class="admonition question">
 <p class="admonition-title">Pregunta 1</p>
 <p>¿Por qué fijamos <code>nginx:1.28-alpine</code> en lugar de poner <code>nginx:latest</code>? ¿Qué podría pasar dentro de seis meses si usaras <code>latest</code>?</p>
+<details class="success">
+<summary>Ver respuesta</summary>
+<p>Porque <code>latest</code> no es una versión: es una etiqueta que el mantenedor de nginx <strong>mueve</strong> cada vez que publica una versión nueva.</p>
+<p>Si dentro de seis meses reconstruyes la imagen, podrías recibir una versión distinta de nginx, con cambios de configuración o incompatibilidades, sin haber tocado tu <code>Dockerfile</code>. La misma receta daría resultados diferentes: la construcción <strong>deja de ser reproducible</strong>.</p>
+<p>Fijando <code>1.28-alpine</code> decides tú cuándo actualizar, y cuando lo haces queda reflejado en el <code>Dockerfile</code> (y en Git).</p>
+</details>
 </div>
 <hr />
 <h2 id="4-construir-la-imagen-y-probarla-en-local">4. Construir la imagen y probarla en local</h2>
@@ -2845,6 +2847,15 @@ Al final, en el <strong>reto</strong>, tendrás que repetir el proceso sin la gu
 <div class="admonition question">
 <p class="admonition-title">Pregunta 2</p>
 <p>Acabas de borrar el contenedor, pero la imagen sigue ahí. Explica con tus palabras la diferencia entre <strong>imagen</strong> y <strong>contenedor</strong>.</p>
+<details class="success">
+<summary>Ver respuesta</summary>
+<ul>
+<li>La <strong>imagen</strong> es la plantilla: un conjunto de capas de solo lectura con el sistema, nginx y tu web. No se ejecuta; se guarda.</li>
+<li>El <strong>contenedor</strong> es una instancia en ejecución de esa imagen, con su propia capa de escritura encima.</li>
+</ul>
+<p>De una misma imagen puedes lanzar muchos contenedores. Al borrar un contenedor solo desaparece esa instancia (y lo que hubiera escrito en su capa); la imagen sigue intacta para crear otros.</p>
+<p>Una comparación: la imagen es la clase y el contenedor es el objeto; o la imagen es la ISO y el contenedor, la máquina arrancada.</p>
+</details>
 </div>
 <hr />
 <h2 id="5-poner-a-la-imagen-su-nombre-completo">5. Poner a la imagen su nombre completo</h2>
@@ -2866,6 +2877,11 @@ Al final, en el <strong>reto</strong>, tendrás que repetir el proceso sin la gu
 <div class="admonition question">
 <p class="admonition-title">Pregunta 3</p>
 <p>Las tres líneas tienen el mismo <code>IMAGE ID</code>. ¿Cuántas imágenes hay realmente en el disco? ¿Qué es entonces una <strong>etiqueta</strong>?</p>
+<details class="success">
+<summary>Ver respuesta</summary>
+<p>Solo <strong>una</strong>. Las tres líneas tienen el mismo <code>IMAGE ID</code>, así que apuntan a las mismas capas en el disco.</p>
+<p>Una <strong>etiqueta</strong> es solo un nombre (un puntero) que señala a una imagen. Puedes ponerle a una imagen tantos nombres como quieras sin ocupar más espacio, y moverlos a otra imagen cuando quieras. Por eso <code>docker tag</code> es instantáneo: no copia nada.</p>
+</details>
 </div>
 <hr />
 <h2 id="6-iniciar-sesion-en-docker-hub">6. Iniciar sesión en Docker Hub</h2>
@@ -2908,30 +2924,41 @@ Al final, en el <strong>reto</strong>, tendrás que repetir el proceso sin la gu
 <div class="admonition question">
 <p class="admonition-title">Pregunta 4</p>
 <p>Apunta el <code>digest</code> que te ha dado el <code>push</code> de la <code>1.0</code>. Lo usarás en el apartado 11.</p>
+<details class="success">
+<summary>Ver respuesta</summary>
+<p>Es la línea final del <code>push</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>1.0: digest: sha256:9c3f...e21a size: 1989
+</code></pre></div>
+<p>Si no la apuntaste, puedes recuperarla así:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>docker<span class="w"> </span>images<span class="w"> </span>--digests<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>servidorxyz
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>docker<span class="w"> </span>inspect<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;{{index .RepoDigests 0}}&#39;</span><span class="w"> </span>usuario/servidorxyz:1.0
+</code></pre></div>
+<p>También aparece en Docker Hub, en la pestaña <strong>Tags</strong>, junto a cada etiqueta.</p>
+</details>
 </div>
 <hr />
 <h2 id="8-desplegar-desde-docker-hub-con-composeyaml">8. Desplegar desde Docker Hub con <code>compose.yaml</code></h2>
 <p>Ahora simulamos lo que hará el profesor: una máquina <strong>sin tu imagen</strong> que la descarga de Docker Hub.</p>
 <h3 id="81-borrar-todo-lo-local">8.1. Borrar todo lo local</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>docker<span class="w"> </span>rmi<span class="w"> </span>servidorxyz<span class="w"> </span>usuario/servidorxyz:1.0<span class="w"> </span>usuario/servidorxyz:latest
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>docker<span class="w"> </span>images<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>servidorxyz<span class="w">      </span><span class="c1"># no debe salir nada</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>docker<span class="w"> </span>rmi<span class="w"> </span>servidorxyz<span class="w"> </span>usuario/servidorxyz:1.0<span class="w"> </span>usuario/servidorxyz:latest
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>docker<span class="w"> </span>images<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>servidorxyz<span class="w">      </span><span class="c1"># no debe salir nada</span>
 </code></pre></div>
 <h3 id="82-crear-composeyaml">8.2. Crear <code>compose.yaml</code></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nt">services</span><span class="p">:</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="nt">webxyz</span><span class="p">:</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">usuario/servidorxyz:1.0</span><span class="w">   </span><span class="c1"># sin &quot;build:&quot;: la imagen viene de Docker Hub</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webxyz</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8080:80&quot;</span>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nt">webxyz</span><span class="p">:</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">usuario/servidorxyz:1.0</span><span class="w">   </span><span class="c1"># sin &quot;build:&quot;: la imagen viene de Docker Hub</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webxyz</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8080:80&quot;</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
 </code></pre></div>
 <h3 id="83-levantarlo">8.3. Levantarlo</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
 </code></pre></div>
 <p>Salida esperada:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>[+] Running 2/2
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a> ✔ webxyz Pulled
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a> ✔ Container webxyz  Started
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>[+] Running 2/2
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a> ✔ webxyz Pulled
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a> ✔ Container webxyz  Started
 </code></pre></div>
 <div class="admonition success">
 <p class="admonition-title">La prueba</p>
@@ -2945,24 +2972,29 @@ Al final, en el <strong>reto</strong>, tendrás que repetir el proceso sin la gu
 <hr />
 <h2 id="9-publicar-una-nueva-version-la-11">9. Publicar una nueva versión: la 1.1</h2>
 <p>Cambia en <code>index.html</code> la línea de la versión:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>Versión 1.1<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;</span> · Ahora con más estilo<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>Versión 1.1<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;</span> · Ahora con más estilo<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
 </code></pre></div>
 <p>Construye la nueva versión con sus dos etiquetas de una vez y súbela:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>usuario/servidorxyz:1.1<span class="w"> </span>-t<span class="w"> </span>usuario/servidorxyz:latest<span class="w"> </span>.
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>docker<span class="w"> </span>push<span class="w"> </span>usuario/servidorxyz:1.1
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>docker<span class="w"> </span>push<span class="w"> </span>usuario/servidorxyz:latest
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>usuario/servidorxyz:1.1<span class="w"> </span>-t<span class="w"> </span>usuario/servidorxyz:latest<span class="w"> </span>.
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>docker<span class="w"> </span>push<span class="w"> </span>usuario/servidorxyz:1.1
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>docker<span class="w"> </span>push<span class="w"> </span>usuario/servidorxyz:latest
 </code></pre></div>
 <p>Mira Docker Hub: ahora tienes <strong>tres etiquetas</strong>: <code>1.0</code>, <code>1.1</code> y <code>latest</code>.</p>
 <div class="admonition question">
 <p class="admonition-title">Pregunta 5</p>
 <p>¿A qué versión apunta ahora <code>latest</code>? ¿Ha desaparecido la <code>1.0</code> de Docker Hub?</p>
+<details class="success">
+<summary>Ver respuesta</summary>
+<p><code>latest</code> apunta ahora a la <strong>1.1</strong>, porque es la última imagen que has subido con esa etiqueta. No es automático: <code>latest</code> apunta a lo que tú etiquetes como <code>latest</code>, aunque sea más antiguo.</p>
+<p>La <code>1.0</code> <strong>no ha desaparecido</strong>: subir una etiqueta nueva no borra las anteriores. Docker Hub guarda todas las versiones hasta que tú las elimines.</p>
+</details>
 </div>
 <h3 id="91-actualizar-el-despliegue">9.1. Actualizar el despliegue</h3>
 <p>Cambia en <code>compose.yaml</code> la etiqueta:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">usuario/servidorxyz:1.1</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">usuario/servidorxyz:1.1</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>curl<span class="w"> </span>http://localhost:8080<span class="w">      </span><span class="c1"># debe decir &quot;Versión 1.1&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>curl<span class="w"> </span>http://localhost:8080<span class="w">      </span><span class="c1"># debe decir &quot;Versión 1.1&quot;</span>
 </code></pre></div>
 <p>Compose detecta que la imagen ha cambiado y <strong>recrea</strong> el contenedor.</p>
 <div class="admonition warning">
@@ -2972,40 +3004,65 @@ Al final, en el <strong>reto</strong>, tendrás que repetir el proceso sin la gu
 <hr />
 <h2 id="10-rollback-volver-a-la-10">10. Rollback: volver a la 1.0</h2>
 <p>Imagina que la 1.1 tiene un error grave en producción. Volver atrás es tan fácil como cambiar la etiqueta:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">usuario/servidorxyz:1.0</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">usuario/servidorxyz:1.0</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>curl<span class="w"> </span>http://localhost:8080<span class="w">      </span><span class="c1"># vuelve a decir &quot;Versión 1.0&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>curl<span class="w"> </span>http://localhost:8080<span class="w">      </span><span class="c1"># vuelve a decir &quot;Versión 1.0&quot;</span>
 </code></pre></div>
 <div class="admonition question">
 <p class="admonition-title">Pregunta 6</p>
 <p>¿Por qué el rollback ha sido inmediato y no has tenido que volver a construir nada?</p>
+<details class="success">
+<summary>Ver respuesta</summary>
+<p>Porque la imagen <code>1.0</code> ya existe, ya construida, en Docker Hub (y seguramente en la caché local). Compose solo tiene que descargarla, si no la tiene, y crear un contenedor nuevo con ella.</p>
+<p>Las versiones de una imagen son <strong>artefactos ya construidos</strong>: volver atrás es elegir otra versión, no rehacerla. Eso convierte el rollback en una operación de segundos, sin depender de que el código antiguo siga compilando.</p>
+</details>
 </div>
 <div class="admonition question">
 <p class="admonition-title">Pregunta 7</p>
 <p>Si en el <code>compose.yaml</code> hubieras puesto <code>latest</code>, ¿podrías hacer este rollback? ¿Qué versión se descargaría un compañero que lo levantara hoy? ¿Y si lo levantara después de que publicaras una 1.2?</p>
+<details class="success">
+<summary>Ver respuesta</summary>
+<ul>
+<li><strong>Rollback con <code>latest</code>:</strong> no de forma directa. Tendrías que volver a etiquetar la 1.0 como <code>latest</code> y subirla otra vez. Además, si la máquina ya tiene un <code>latest</code> en caché, no lo descarga de nuevo hasta que hagas <code>docker compose pull</code>.</li>
+<li><strong>Un compañero hoy:</strong> se descargaría la <strong>1.1</strong>, que es a la que apunta <code>latest</code> ahora.</li>
+<li><strong>Después de publicar la 1.2:</strong> se descargaría la <strong>1.2</strong>.</li>
+</ul>
+<p>Es decir, con <code>latest</code> el mismo <code>compose.yaml</code> despliega cosas distintas según el día y la máquina. Por eso en despliegues reales se fija siempre una versión concreta.</p>
+</details>
 </div>
 <hr />
 <h2 id="11-el-digest-el-identificador-que-no-se-puede-cambiar">11. El digest: el identificador que no se puede cambiar</h2>
 <p>Una etiqueta es <strong>móvil</strong>: tú mismo has movido <code>latest</code> de la 1.0 a la 1.1. Incluso podrías volver a subir otra imagen distinta con la etiqueta <code>1.0</code>. El <strong>digest</strong> (<code>sha256:…</code>), en cambio, se calcula a partir del contenido: si el contenido cambia, cambia el digest.</p>
 <p>Mira los digests de tus imágenes:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>docker<span class="w"> </span>images<span class="w"> </span>--digests<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>servidorxyz
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>docker<span class="w"> </span>images<span class="w"> </span>--digests<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>servidorxyz
 </code></pre></div>
 <p>Despliega usando el digest de la 1.0 que apuntaste en el apartado 7:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">usuario/servidorxyz@sha256:9c3f...e21a</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">usuario/servidorxyz@sha256:9c3f...e21a</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
-<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>curl<span class="w"> </span>http://localhost:8080<span class="w">      </span><span class="c1"># Versión 1.0, garantizado</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>curl<span class="w"> </span>http://localhost:8080<span class="w">      </span><span class="c1"># Versión 1.0, garantizado</span>
 </code></pre></div>
 <div class="admonition question">
 <p class="admonition-title">Pregunta 8</p>
 <p>¿En qué situaciones te interesaría desplegar por <strong>digest</strong> en lugar de por etiqueta?</p>
+<details class="success">
+<summary>Ver respuesta</summary>
+<p>Cuando necesitas la <strong>garantía</strong> de que se ejecuta exactamente la imagen que has probado:</p>
+<ul>
+<li>En <strong>producción</strong>, para que nadie pueda cambiar lo que se despliega volviendo a subir otra imagen con la misma etiqueta.</li>
+<li>Por <strong>seguridad</strong>: si alguien consigue acceso a tu cuenta y sobrescribe la <code>1.0</code> con una imagen maliciosa, un despliegue por digest no la aceptaría.</li>
+<li>En <strong>pipelines de CI/CD</strong>, para que lo que se prueba en una fase sea exactamente lo que se despliega en la siguiente.</li>
+<li>Para <strong>auditorías</strong> y para poder reproducir un despliegue antiguo de forma exacta.</li>
+</ul>
+<p>El inconveniente es que el digest no es legible para las personas; por eso se suele combinar: <code>usuario/servidorxyz:1.0@sha256:...</code>.</p>
+</details>
 </div>
 <hr />
 <h2 id="12-cerrar-la-sesion">12. Cerrar la sesión</h2>
 <p>En los ordenadores del aula, <strong>siempre</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
-<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>docker<span class="w"> </span><span class="nb">logout</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>docker<span class="w"> </span><span class="nb">logout</span>
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Revoca el token</p>
@@ -3015,9 +3072,9 @@ Al final, en el <strong>reto</strong>, tendrás que repetir el proceso sin la gu
 <h2 id="13-si-trabajas-en-un-mac-con-procesador-apple-m1-m2-m3">13. Si trabajas en un Mac con procesador Apple (M1, M2, M3…)</h2>
 <p>Tu Mac construye imágenes para <strong>ARM</strong> (<code>linux/arm64</code>). Los PC del aula y la mayoría de servidores son <strong>x86</strong> (<code>linux/amd64</code>), y tu imagen no arrancará en ellos (<code>exec format error</code>).</p>
 <p>Construye para las dos arquitecturas y súbela en un solo paso:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>docker<span class="w"> </span>buildx<span class="w"> </span>build<span class="w"> </span>--platform<span class="w"> </span>linux/amd64,linux/arm64<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">  </span>-t<span class="w"> </span>usuario/servidorxyz:1.1<span class="w"> </span>-t<span class="w"> </span>usuario/servidorxyz:latest<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">  </span>--push<span class="w"> </span>.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>docker<span class="w"> </span>buildx<span class="w"> </span>build<span class="w"> </span>--platform<span class="w"> </span>linux/amd64,linux/arm64<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span>-t<span class="w"> </span>usuario/servidorxyz:1.1<span class="w"> </span>-t<span class="w"> </span>usuario/servidorxyz:latest<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span>--push<span class="w"> </span>.
 </code></pre></div>
 <div class="admonition success">
 <p class="admonition-title">Comprobación</p>
@@ -3065,8 +3122,8 @@ Al final, en el <strong>reto</strong>, tendrás que repetir el proceso sin la gu
 <ul>
 <li>Causa: no has hecho <code>build</code> + <code>push</code> después del cambio, o compose está usando la imagen local.</li>
 <li>Solución:
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>pull
-<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>pull
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
 </code></pre></div></li>
 </ul>
 </div>
@@ -3089,39 +3146,39 @@ Al final, en el <strong>reto</strong>, tendrás que repetir el proceso sin la gu
 </ul>
 <hr />
 <h2 id="16-resumen-de-comandos">16. Resumen de comandos</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="c1"># 1) Construir y probar en local</span>
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>servidorxyz<span class="w"> </span>.
-<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>prueba<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:80<span class="w"> </span>servidorxyz
-<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>docker<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>prueba
-<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>
-<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="c1"># 2) Etiquetar con el nombre de Docker Hub</span>
-<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>docker<span class="w"> </span>tag<span class="w"> </span>servidorxyz<span class="w"> </span>usuario/servidorxyz:1.0
-<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>docker<span class="w"> </span>tag<span class="w"> </span>servidorxyz<span class="w"> </span>usuario/servidorxyz:latest
-<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>
-<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a><span class="c1"># 3) Autenticación con token</span>
-<a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a><span class="nb">read</span><span class="w"> </span>-s<span class="w"> </span>TOKEN
-<a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>docker<span class="w"> </span>login<span class="w"> </span>-u<span class="w"> </span>usuario<span class="w"> </span>--password-stdin
-<a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a><span class="nb">unset</span><span class="w"> </span>TOKEN
-<a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>
-<a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a><span class="c1"># 4) Publicar</span>
-<a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a>docker<span class="w"> </span>push<span class="w"> </span>usuario/servidorxyz:1.0
-<a id="__codelineno-31-17" name="__codelineno-31-17" href="#__codelineno-31-17"></a>docker<span class="w"> </span>push<span class="w"> </span>usuario/servidorxyz:latest
-<a id="__codelineno-31-18" name="__codelineno-31-18" href="#__codelineno-31-18"></a>
-<a id="__codelineno-31-19" name="__codelineno-31-19" href="#__codelineno-31-19"></a><span class="c1"># 5) Desplegar desde Docker Hub</span>
-<a id="__codelineno-31-20" name="__codelineno-31-20" href="#__codelineno-31-20"></a>docker<span class="w"> </span>rmi<span class="w"> </span>servidorxyz<span class="w"> </span>usuario/servidorxyz:1.0<span class="w"> </span>usuario/servidorxyz:latest
-<a id="__codelineno-31-21" name="__codelineno-31-21" href="#__codelineno-31-21"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
-<a id="__codelineno-31-22" name="__codelineno-31-22" href="#__codelineno-31-22"></a>
-<a id="__codelineno-31-23" name="__codelineno-31-23" href="#__codelineno-31-23"></a><span class="c1"># 6) Nueva versión</span>
-<a id="__codelineno-31-24" name="__codelineno-31-24" href="#__codelineno-31-24"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>usuario/servidorxyz:1.1<span class="w"> </span>-t<span class="w"> </span>usuario/servidorxyz:latest<span class="w"> </span>.
-<a id="__codelineno-31-25" name="__codelineno-31-25" href="#__codelineno-31-25"></a>docker<span class="w"> </span>push<span class="w"> </span>usuario/servidorxyz:1.1
-<a id="__codelineno-31-26" name="__codelineno-31-26" href="#__codelineno-31-26"></a>docker<span class="w"> </span>push<span class="w"> </span>usuario/servidorxyz:latest
-<a id="__codelineno-31-27" name="__codelineno-31-27" href="#__codelineno-31-27"></a>
-<a id="__codelineno-31-28" name="__codelineno-31-28" href="#__codelineno-31-28"></a><span class="c1"># 7) Ver digests</span>
-<a id="__codelineno-31-29" name="__codelineno-31-29" href="#__codelineno-31-29"></a>docker<span class="w"> </span>images<span class="w"> </span>--digests<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>servidorxyz
-<a id="__codelineno-31-30" name="__codelineno-31-30" href="#__codelineno-31-30"></a>
-<a id="__codelineno-31-31" name="__codelineno-31-31" href="#__codelineno-31-31"></a><span class="c1"># 8) Cerrar</span>
-<a id="__codelineno-31-32" name="__codelineno-31-32" href="#__codelineno-31-32"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
-<a id="__codelineno-31-33" name="__codelineno-31-33" href="#__codelineno-31-33"></a>docker<span class="w"> </span><span class="nb">logout</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="c1"># 1) Construir y probar en local</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>servidorxyz<span class="w"> </span>.
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>prueba<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:80<span class="w"> </span>servidorxyz
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>docker<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>prueba
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="c1"># 2) Etiquetar con el nombre de Docker Hub</span>
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>docker<span class="w"> </span>tag<span class="w"> </span>servidorxyz<span class="w"> </span>usuario/servidorxyz:1.0
+<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>docker<span class="w"> </span>tag<span class="w"> </span>servidorxyz<span class="w"> </span>usuario/servidorxyz:latest
+<a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a>
+<a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a><span class="c1"># 3) Autenticación con token</span>
+<a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a><span class="nb">read</span><span class="w"> </span>-s<span class="w"> </span>TOKEN
+<a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TOKEN</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>docker<span class="w"> </span>login<span class="w"> </span>-u<span class="w"> </span>usuario<span class="w"> </span>--password-stdin
+<a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a><span class="nb">unset</span><span class="w"> </span>TOKEN
+<a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a>
+<a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a><span class="c1"># 4) Publicar</span>
+<a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a>docker<span class="w"> </span>push<span class="w"> </span>usuario/servidorxyz:1.0
+<a id="__codelineno-33-17" name="__codelineno-33-17" href="#__codelineno-33-17"></a>docker<span class="w"> </span>push<span class="w"> </span>usuario/servidorxyz:latest
+<a id="__codelineno-33-18" name="__codelineno-33-18" href="#__codelineno-33-18"></a>
+<a id="__codelineno-33-19" name="__codelineno-33-19" href="#__codelineno-33-19"></a><span class="c1"># 5) Desplegar desde Docker Hub</span>
+<a id="__codelineno-33-20" name="__codelineno-33-20" href="#__codelineno-33-20"></a>docker<span class="w"> </span>rmi<span class="w"> </span>servidorxyz<span class="w"> </span>usuario/servidorxyz:1.0<span class="w"> </span>usuario/servidorxyz:latest
+<a id="__codelineno-33-21" name="__codelineno-33-21" href="#__codelineno-33-21"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<a id="__codelineno-33-22" name="__codelineno-33-22" href="#__codelineno-33-22"></a>
+<a id="__codelineno-33-23" name="__codelineno-33-23" href="#__codelineno-33-23"></a><span class="c1"># 6) Nueva versión</span>
+<a id="__codelineno-33-24" name="__codelineno-33-24" href="#__codelineno-33-24"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>usuario/servidorxyz:1.1<span class="w"> </span>-t<span class="w"> </span>usuario/servidorxyz:latest<span class="w"> </span>.
+<a id="__codelineno-33-25" name="__codelineno-33-25" href="#__codelineno-33-25"></a>docker<span class="w"> </span>push<span class="w"> </span>usuario/servidorxyz:1.1
+<a id="__codelineno-33-26" name="__codelineno-33-26" href="#__codelineno-33-26"></a>docker<span class="w"> </span>push<span class="w"> </span>usuario/servidorxyz:latest
+<a id="__codelineno-33-27" name="__codelineno-33-27" href="#__codelineno-33-27"></a>
+<a id="__codelineno-33-28" name="__codelineno-33-28" href="#__codelineno-33-28"></a><span class="c1"># 7) Ver digests</span>
+<a id="__codelineno-33-29" name="__codelineno-33-29" href="#__codelineno-33-29"></a>docker<span class="w"> </span>images<span class="w"> </span>--digests<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>servidorxyz
+<a id="__codelineno-33-30" name="__codelineno-33-30" href="#__codelineno-33-30"></a>
+<a id="__codelineno-33-31" name="__codelineno-33-31" href="#__codelineno-33-31"></a><span class="c1"># 8) Cerrar</span>
+<a id="__codelineno-33-32" name="__codelineno-33-32" href="#__codelineno-33-32"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+<a id="__codelineno-33-33" name="__codelineno-33-33" href="#__codelineno-33-33"></a>docker<span class="w"> </span><span class="nb">logout</span>
 </code></pre></div>
 <hr />
 <h2 id="17-reto-final-sin-guia">17. Reto final (sin guía)</h2>
