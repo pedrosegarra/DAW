@@ -1,0 +1,3564 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://pedrosegarra.github.io/DAW/Ud5%20Acceso%20remoto%20SSH/P01/">
+      
+      
+        <link rel="prev" href="../T01/">
+      
+      
+        <link rel="next" href="../../Ud6%20Servidores%20de%20aplicaciones/T01/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Práctica guiada: el cliente SSH a fondo, paso a paso - Despliegue de aplicaciones web</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-3NX5MD5C8H"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-3NX5MD5C8H",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-3NX5MD5C8H",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#practica-guiada-el-cliente-ssh-a-fondo-paso-a-paso" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Despliegue de aplicaciones web" class="md-header__button md-logo" aria-label="Despliegue de aplicaciones web" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Despliegue de aplicaciones web
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Práctica guiada: el cliente SSH a fondo, paso a paso
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="green"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-orange"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Despliegue de aplicaciones web" class="md-nav__button md-logo" aria-label="Despliegue de aplicaciones web" data-md-component="logo">
+      
+  <img src="../../assets/logocaminas.png" alt="logo">
+
+    </a>
+    Despliegue de aplicaciones web
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Despliegue de aplicaciones web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud0 Introduccion
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Ud0 Introduccion
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud0%20Introduccion/Ud0_1Introalmodulo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0.1. Introducción al módulo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud0%20Introduccion/Ud0_2AWS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    0.2. Introducción a AWS Academy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Prácticas
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Prácticas
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud0%20Introduccion/P0_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    P0.1. Linux Server en AWSAcademy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud0%20Introduccion/P0_2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    P0.2 Windows Server en AWSAcademy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud0%20Introduccion/P0_3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    P0.3. Conceder acceso a un segundo administrador
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud0%20Introduccion/P0_4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    P0.4. Comandos básicos Linux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud1 Control de versiones
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Ud1 Control de versiones
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T02_cvs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.2 Sistemas de control de versiones
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T03_introduccion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.3 Introducción a git 
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T04_git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.4 Instalación y configuración de Git
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T05_usobasico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.5 Uso básico de Git
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T06_usoavanzado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.6 Uso avanzado de Git
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T07_ramas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.7 Ramas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T08_github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.8 Github
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/T09_github-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.9 Flujo de trabajo en GitHub
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Prácticas
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            Prácticas
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/P1_4_tallerGitIntro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Taller 1: Introducción a git y GitHub
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/P1_5_tallerGitRamasUniones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Taller 2: Git. Trabajando con ramas y uniones
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/P1_6_tallerMarkdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Taller 3: Introducción a Markdown
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud1%20Control%20de%20versiones/P1_7_tallerPractica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 1.4 – Ciclo de despliegue: de local a publicado en web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud2 Contenedores
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Ud2 Contenedores
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T01_introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1 Introducción
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T02_installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2 Instalación
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T03_principales_acciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3 Principales acciones con Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T04_images/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4 Imágenes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T05_volumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5 Volúmenes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T06_integrandovolsyconts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6 Integrar contenedores y volúmenes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T07_docker-compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7 Docker Compose
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/T09_tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9 Trucos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Prácticas
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            Prácticas
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/P2_1_despliegueDocker_fase1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica P2 – Fase 1: Despliegue local con Docker y Visual Studio Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/P2_2_subidaAGHCR/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica P2 – Fase 2: Publicación en GitHub Container Registry (GHCR)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud2%20Contenedores/P2_3_Fase3_Alumno/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 2 – Fase 3: Verificación de despliegue y acceso en servidor
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud3 Servidores web
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Ud3 Servidores web
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Servidores%20web/T01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.1. Implantación de arquitecturas web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Servidores%20web/T02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.2. Arquitectura Web. Implantación y administración de servidores web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Servidores%20web/T03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.3. Los protocolos HTTP y HTTPS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Servidores%20web/T04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.4. Servidores web: Nginx vs Apache
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Prácticas
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            Prácticas
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Servidores%20web/P01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 3.1 – Instalación y configuración de servidores web
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Servidores%20web/P02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 3.2 – Creación de un sitio virtual
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Servidores%20web/P03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 3.3 – Autenticación
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Servidores%20web/P04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Practica 3.4 - Activación HTTPS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Servidores%20web/P05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Practica 3.5 - Instalación de la pila LAMP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Servidores%20web/P06DockerizacionPHPNginx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 3.6 - Instalación pila LAMP dockerizada
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Servidores%20web/P07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica guiada: Forgejo detrás de Nginx, paso a paso
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud3%20Servidores%20web/P08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica P08 (guiada): Publicación en Docker Hub con versiones
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud5 Acceso remoto SSH
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Ud5 Acceso remoto SSH
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../T01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    El cliente SSH a fondo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Práctica guiada: el cliente SSH a fondo, paso a paso
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica guiada: el cliente SSH a fondo, paso a paso
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#antes-de-empezar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Antes de empezar
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-0-montar-el-laboratorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 0. Montar el laboratorio
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 0. Montar el laboratorio">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-01-guardar-tu-configuracion-actual" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 0.1. Guardar tu configuración actual
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-02-descargar-los-ficheros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 0.2. Descargar los ficheros
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-03-crear-dos-pares-de-claves" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 0.3. Crear dos pares de claves
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-04-dar-las-claves-publicas-al-laboratorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 0.4. Dar las claves públicas al laboratorio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-05-arrancar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 0.5. Arrancar
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-06-comprobar-que-web-y-bd-estan-escondidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 0.6. Comprobar que web y bd están escondidos
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-1-la-forma-larga-sin-configuracion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 1. La forma larga, sin configuración
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 1. La forma larga, sin configuración">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-11-entrar-en-el-bastion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 1.1. Entrar en el bastión
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-12-fallo-provocado-saltar-a-web-con-j" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 1.2. Fallo provocado: saltar a web con -J
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-13-la-forma-mas-larga" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 1.3. La forma más larga
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-2-tu-primer-sshconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 2. Tu primer ~/.ssh/config
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 2. Tu primer ~/.ssh/config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-21-el-primer-alias" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 2.1. El primer alias
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-22-usarlo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 2.2. Usarlo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-23-ver-lo-que-calcula-ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 2.3. Ver lo que calcula SSH
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-3-el-orden-de-las-reglas-y-los-valores-por-defecto" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 3. El orden de las reglas y los valores por defecto
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 3. El orden de las reglas y los valores por defecto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-31-fallo-provocado-host-al-principio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 3.1. Fallo provocado: Host * al principio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-32-valores-comunes-en-host-al-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 3.2. Valores comunes en Host *, al final
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-33-comprobar-el-orden" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 3.3. Comprobar el orden
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-34-el-agente-la-passphrase-una-sola-vez" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 3.4. El agente: la passphrase, una sola vez
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-4-saltar-a-los-servidores-internos-con-proxyjump" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 4. Saltar a los servidores internos con ProxyJump
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 4. Saltar a los servidores internos con ProxyJump">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-41-un-bloque-para-web-y-bd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 4.1. Un bloque para web y bd
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-42-probar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 4.2. Probar
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-43-ver-el-tunel-desde-el-bastion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 4.3. Ver el túnel desde el bastión
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-5-un-tunel-declarado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 5. Un túnel declarado
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 5. Un túnel declarado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-51-el-alias-del-tunel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 5.1. El alias del túnel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-52-abrir-el-tunel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 5.2. Abrir el túnel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-53-fallo-provocado-el-destino-equivocado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 5.3. Fallo provocado: el destino equivocado
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-54-el-tunel-en-segundo-plano" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 5.4. El túnel en segundo plano
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-6-ordenar-la-casa-con-include" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 6. Ordenar la casa con Include
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 6. Ordenar la casa con Include">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-61-un-fichero-para-el-laboratorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 6.1. Un fichero para el laboratorio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-62-el-fichero-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 6.2. El fichero principal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-63-fallo-provocado-el-include-dentro-de-un-bloque" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 6.3. Fallo provocado: el Include dentro de un bloque
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-7-todas-las-herramientas-usan-los-alias" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 7. Todas las herramientas usan los alias
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-8-diagnostico-y-errores-provocados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 8. Diagnóstico y errores provocados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 8. Diagnóstico y errores provocados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-81-fallo-provocado-permisos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 8.1. Fallo provocado: permisos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-82-fallo-provocado-el-servidor-ha-cambiado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 8.2. Fallo provocado: el servidor ha cambiado
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-83-leer-la-traza" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 8.3. Leer la traza
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-84-el-registro-del-servidor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 8.4. El registro del servidor
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-9-ampliacion-dos-cuentas-de-github-en-el-mismo-equipo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parte 9. Ampliación: dos cuentas de GitHub en el mismo equipo
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 9. Ampliación: dos cuentas de GitHub en el mismo equipo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-91-una-clave-para-la-segunda-cuenta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 9.1. Una clave para la segunda cuenta
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-92-un-fichero-para-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paso 9.2. Un fichero para Git
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demostracion-final-al-profesor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demostración final al profesor
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#al-terminar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Al terminar
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#si-algo-falla" class="md-nav__link">
+    <span class="md-ellipsis">
+      Si algo falla
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#anexo-que-hay-dentro-del-laboratorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anexo. Qué hay dentro del laboratorio
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud6 Servidores de aplicaciones
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Ud6 Servidores de aplicaciones
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/T01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Servidores de aplicaciones
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/T02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Despliegue de aplicaciones web.
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/T03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Despliegue de aplicaciones Java
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P01-TomcatInstalacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 1: Instalación de Tomcat.
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P02-TomcatDespliegue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 2: Despliegue de aplicaciones con Tomcat.
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P03-TomcatMaven/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 3: Despliegue en Tomcat con Maven
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/T04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Despliegue de aplicaciones Javascript
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P04-NodeJS-Express/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 4 - Despliegue de aplicaciones con Node Express
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P05-DockerizacionNodeJs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 5 - Dockerización del despliegue de una aplicación con Node.js
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P06-Cluster/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 6 - Despliegue de una aplicación "clusterizada" con Node Express
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P07-Netlify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica  7 - Despliegue de una aplicación en Netlify (Paas)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P08-Flask/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 8 - Despliegue de una aplicación Flask (Python)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P09-FlaskEnDocker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 9 - Aplicación Python con Flask en Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P10-GuiaServidorWebYAplicaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Guía: servidor web y servidor de aplicaciones con Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/P11-EjercicioServidorWebYAplicaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ejercicio guiado: servidor web y servidor de aplicaciones separados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/PV01-Heroku/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica Voluntaria 1 - Despliegue de una aplicación Node.js en Heroku (PaaS)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/T07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. CI/CD (Continous Integration/Continous Deployment-Delivery).
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud6%20Servidores%20de%20aplicaciones/T08-DockerImagenesContenedoresVolumenes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Imágenes, contenedores y volúmenes: cómo se actualiza un servicio sin perder los datos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ud7 CI CD
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Ud7 CI CD
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20CI-CD/Ud8_1_cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8.1 - CI/CD (Integración y despliegue continuo)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Prácticas
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            Prácticas
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Ud7%20CI-CD/P8_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Práctica 8.1- Toma de contacto con CI/CD usando Github actions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="practica-guiada-el-cliente-ssh-a-fondo-paso-a-paso">Práctica guiada: el cliente SSH a fondo, paso a paso</h1>
+<div class="admonition warning">
+<p class="admonition-title">Actualizada el 22/11/2026</p>
+<p>Se ha cambiado el <strong>paso 1.2</strong>. Ahora el comando empieza por <code>SSH_AUTH_SOCK=</code> para que el fallo provocado salga siempre. Si ya hiciste ese paso y te dejó entrar en <code>web</code>, repítelo con el comando nuevo. El resto de la práctica no cambia.</p>
+</div>
+<p>Vas a conectarte por SSH a tres servidores, uno de ellos visible y dos escondidos detrás de él, como pasa en muchas empresas. Empezarás escribiendo comandos larguísimos y acabarás escribiendo solo <code>ssh web</code>. Sigue los pasos en orden; cada uno explica qué está pasando y cómo comprobar que ha funcionado. Al final enseñarás al profesor que todo funciona.</p>
+<h2 id="antes-de-empezar">Antes de empezar</h2>
+<pre class="mermaid"><code>flowchart LR
+    T["Tu equipo&lt;br/&gt;cliente SSH"] -- "127.0.0.1:2222" --&gt; B["bastion&lt;br/&gt;clave lab_bastion"]
+    subgraph interna["Red «interna» de Docker · sin acceso desde fuera"]
+        B -- ":22" --&gt; W["web&lt;br/&gt;panel en 127.0.0.1:8000"]
+        B -- ":22" --&gt; D["bd"]
+    end</code></pre>
+<p>El laboratorio son tres contenedores con un servidor SSH. Solo el <strong>bastión</strong> se ve desde tu equipo, en el puerto 2222. Los otros dos, <code>web</code> y <code>bd</code>, están en una red interna y solo se llega a ellos <strong>pasando por el bastión</strong>. Es lo que se hace con los servidores de producción: no se exponen a Internet y se entra por una única puerta bien vigilada.</p>
+<table>
+<thead>
+<tr>
+<th>Servidor</th>
+<th>Cómo se llega</th>
+<th>Usuario</th>
+<th>Clave que acepta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bastion</code></td>
+<td><code>localhost</code>, puerto <strong>2222</strong></td>
+<td><code>alumno</code></td>
+<td><code>lab_bastion</code></td>
+</tr>
+<tr>
+<td><code>web</code></td>
+<td><strong>solo</strong> desde <code>bastion</code></td>
+<td><code>alumno</code></td>
+<td><code>lab_interno</code></td>
+</tr>
+<tr>
+<td><code>bd</code></td>
+<td><strong>solo</strong> desde <code>bastion</code></td>
+<td><code>alumno</code></td>
+<td><code>lab_interno</code></td>
+</tr>
+</tbody>
+</table>
+<p>Ninguno acepta contraseña: solo claves.</p>
+<p>Cada paso de la guía tiene hasta tres partes:</p>
+<ul>
+<li><strong>Haz:</strong> los comandos o ficheros. Cópialos, pero léelos antes.</li>
+<li><strong>Qué está pasando:</strong> la explicación. Es lo que entra en el examen.</li>
+<li><strong>Comprueba:</strong> lo que tienes que ver. Si no lo ves, no sigas: mira la última sección, «Si algo falla».</li>
+</ul>
+<p>Algunos pasos fallan <strong>a propósito</strong>. Están marcados con «Fallo provocado»: son los errores que te encontrarás trabajando con servidores reales, y aprenderás a reconocerlos.</p>
+<p><strong>Necesitas:</strong> Docker con Docker Compose y un terminal. En el aula trabajas con <strong>Docker rootless</strong>: Docker funciona con tu propio usuario, sin permisos de administrador. En ningún paso de esta práctica necesitas <code>sudo</code>.</p>
+<p><strong>Duración aproximada:</strong> 2 horas.</p>
+<p>Comprueba que tienes todo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>version
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ssh<span class="w"> </span>-V
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>ss<span class="w"> </span>-ltn<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;:(2222|8080) &#39;</span><span class="w">     </span><span class="c1"># no debe salir nada</span>
+</code></pre></div>
+<p>Si el último comando muestra algo escuchando en el 2222 o el 8080, avisa al profesor antes de seguir.</p>
+<h2 id="parte-0-montar-el-laboratorio">Parte 0. Montar el laboratorio</h2>
+<h3 id="paso-01-guardar-tu-configuracion-actual">Paso 0.1. Guardar tu configuración actual</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ls<span class="w"> </span>-l<span class="w"> </span>~/.ssh/config
+</code></pre></div>
+<p>Si el fichero <strong>existe</strong>, apártalo para empezar de cero:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mv<span class="w"> </span>~/.ssh/config<span class="w"> </span>~/.ssh/config.antes
+</code></pre></div>
+<p>Si dice <code>No such file or directory</code>, no tienes que hacer nada.</p>
+<p><strong>Qué está pasando.</strong> Durante la práctica vas a escribir tu <code>~/.ssh/config</code> desde cero. Si ya tenías uno (por ejemplo, para Forgejo o GitHub), lo guardas aparte para no perderlo. En la parte 6 lo recuperarás.</p>
+<h3 id="paso-02-descargar-los-ficheros">Paso 0.2. Descargar los ficheros</h3>
+<p><strong>Haz:</strong> descarga <a href="../files/lab-ssh.zip">lab-ssh.zip</a> y descomprímelo en tu carpeta personal:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span>~
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>unzip<span class="w"> </span>~/Descargas/lab-ssh.zip
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nb">cd</span><span class="w"> </span>~/lab-ssh
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>ls
+</code></pre></div>
+<p><strong>Comprueba:</strong> ves <code>compose.yaml</code>, <code>Dockerfile</code>, <code>entrypoint.sh</code>, <code>sshd_lab.conf</code> y una carpeta <code>claves/</code> vacía.</p>
+<p>A partir de aquí, los comandos de <code>docker compose</code> se ejecutan <strong>dentro de <code>~/lab-ssh</code></strong>.</p>
+<h3 id="paso-03-crear-dos-pares-de-claves">Paso 0.3. Crear dos pares de claves</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="w"> </span>-f<span class="w"> </span>~/.ssh/lab_bastion<span class="w"> </span>-C<span class="w"> </span><span class="s2">&quot;bastion-</span><span class="nv">$USER</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="w"> </span>-f<span class="w"> </span>~/.ssh/lab_interno<span class="w"> </span>-C<span class="w"> </span><span class="s2">&quot;interno-</span><span class="nv">$USER</span><span class="s2">&quot;</span><span class="w"> </span>-N<span class="w"> </span><span class="s2">&quot;&quot;</span>
+</code></pre></div>
+<p>El primero te pedirá una <strong><em>passphrase</em></strong>: pon una que recuerdes (dos veces). El segundo no pregunta nada.</p>
+<p><strong>Qué está pasando.</strong></p>
+<ul>
+<li><code>-t ed25519</code> elige el tipo de clave, el recomendado hoy.</li>
+<li><code>-f</code> fija el nombre del fichero. Cada orden crea <strong>dos</strong> ficheros: la clave <strong>privada</strong> (<code>lab_bastion</code>) y la <strong>pública</strong> (<code>lab_bastion.pub</code>).</li>
+<li><code>-C</code> añade un comentario para reconocer la clave más adelante.</li>
+<li><code>-N ""</code> deja la clave sin <em>passphrase</em>. La de los servidores internos va sin ella solo porque es un laboratorio; la del bastión, la puerta de entrada, sí la lleva.</li>
+<li>Usas <strong>una clave distinta para cada destino</strong>: si te roban una, solo pierdes ese acceso.</li>
+</ul>
+<p><strong>Comprueba:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ls<span class="w"> </span>-l<span class="w"> </span>~/.ssh/lab_*
+</code></pre></div>
+<p>Hay cuatro ficheros. Las privadas tienen permisos <code>-rw-------</code> (solo tú puedes leerlas).</p>
+<h3 id="paso-04-dar-las-claves-publicas-al-laboratorio">Paso 0.4. Dar las claves públicas al laboratorio</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cp<span class="w"> </span>~/.ssh/lab_bastion.pub<span class="w"> </span>claves/bastion.pub
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cp<span class="w"> </span>~/.ssh/lab_interno.pub<span class="w"> </span>claves/interno.pub
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>ls<span class="w"> </span>claves
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Para que un servidor te deje entrar con una clave, tiene que tener tu clave <strong>pública</strong> en su lista de claves autorizadas (<code>~/.ssh/authorized_keys</code>). Al arrancar, cada contenedor copia la pública que le toca desde esta carpeta. La clave <strong>privada nunca sale de tu equipo</strong>: si alguna vez te piden que la copies a un servidor, algo está mal.</p>
+<p><strong>Comprueba:</strong> en <code>claves/</code> solo hay ficheros <code>.pub</code>.</p>
+<h3 id="paso-05-arrancar">Paso 0.5. Arrancar</h3>
+<p><strong>Haz:</strong> la primera vez se construye la imagen, y tarda unos minutos porque toda la clase descarga a la vez.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--build
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>ps
+</code></pre></div>
+<p><strong>Comprueba:</strong> <code>bastion</code>, <code>web</code> y <code>bd</code> aparecen en estado <code>running</code>, y solo <code>bastion</code> tiene un puerto publicado: <code>127.0.0.1:2222-&gt;22/tcp</code>.</p>
+<h3 id="paso-06-comprobar-que-web-y-bd-estan-escondidos">Paso 0.6. Comprobar que web y bd están escondidos</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ping<span class="w"> </span>-c1<span class="w"> </span>web
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>ssh<span class="w"> </span>alumno@web
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Los dos fallan porque tu equipo no sabe qué es <code>web</code>: ese nombre solo existe dentro de la red interna de Docker, y desde fuera no se puede llegar a ella. La única puerta es el puerto 2222 del bastión.</p>
+<p><strong>Comprueba:</strong> los dos comandos responden con un error del tipo <code>Name or service not known</code> (o «Nombre o servicio desconocido»).</p>
+<h2 id="parte-1-la-forma-larga-sin-configuracion">Parte 1. La forma larga, sin configuración</h2>
+<p>En esta parte te conectas escribiendo todas las opciones a mano. Así verás qué problema resuelve el fichero de configuración.</p>
+<h3 id="paso-11-entrar-en-el-bastion">Paso 1.1. Entrar en el bastión</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>ssh<span class="w"> </span>-p<span class="w"> </span><span class="m">2222</span><span class="w"> </span>-i<span class="w"> </span>~/.ssh/lab_bastion<span class="w"> </span>-o<span class="w"> </span><span class="nv">IdentitiesOnly</span><span class="o">=</span>yes<span class="w"> </span>alumno@localhost
+</code></pre></div>
+<p>La primera vez, SSH te enseña la <strong>huella</strong> del servidor y pregunta si confías en él. Escribe <code>yes</code>. Después te pide la <em>passphrase</em> de <code>lab_bastion</code> (puede salir en una ventana del escritorio en lugar de en el terminal; es normal).</p>
+<p>Ya dentro:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>hostname
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nb">exit</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong></p>
+<ul>
+<li><code>-p 2222</code>: el puerto, porque no es el 22 de siempre.</li>
+<li><code>-i ~/.ssh/lab_bastion</code>: la clave privada que hay que usar.</li>
+<li><code>-o IdentitiesOnly=yes</code>: usa <strong>solo</strong> esa clave, aunque tengas otras.</li>
+<li><code>alumno@localhost</code>: usuario y servidor.</li>
+<li>La huella que has aceptado se guarda en <code>~/.ssh/known_hosts</code>. La próxima vez, SSH comprobará que el servidor sigue siendo el mismo. Lo verás en la parte 8.</li>
+</ul>
+<p><strong>Comprueba:</strong> <code>hostname</code> responde <code>bastion</code>.</p>
+<h3 id="paso-12-fallo-provocado-saltar-a-web-con-j">Paso 1.2. Fallo provocado: saltar a web con <code>-J</code></h3>
+<p><strong>Haz:</strong> intenta llegar a <code>web</code> <strong>a través</strong> del bastión con la opción <code>-J</code> (<em>jump</em>, saltar):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nv">SSH_AUTH_SOCK</span><span class="o">=</span><span class="w"> </span>ssh<span class="w"> </span>-J<span class="w"> </span>alumno@localhost:2222<span class="w"> </span>-i<span class="w"> </span>~/.ssh/lab_interno<span class="w"> </span>-o<span class="w"> </span><span class="nv">IdentitiesOnly</span><span class="o">=</span>yes<span class="w"> </span>alumno@web
+</code></pre></div>
+<p>El <code>SSH_AUTH_SOCK=</code> del principio, vacío, desactiva el <strong>agente de claves</strong> solo para este comando. Lo pones porque en el paso 1.1 el agente de tu escritorio se quedó con la clave del bastión, y la ofrecería por su cuenta, tapando el fallo que quieres ver. En la parte 3 verás qué es el agente.</p>
+<p>Si te pide la <em>passphrase</em> de otra clave tuya (por ejemplo, <code>id_ed25519</code>), pulsa <code>Intro</code> sin escribir nada: esa clave no sirve para el bastión.</p>
+<p><strong>Qué ves:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>alumno@localhost: Permission denied (publickey).
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>Connection closed by UNKNOWN port 65535
+</code></pre></div>
+<p>Fíjate en <strong>quién</strong> te rechaza: <code>alumno@localhost</code>, es decir, el bastión, no <code>web</code>.</p>
+<p><strong>Qué está pasando.</strong> Con <code>-J</code>, SSH abre <strong>otra</strong> conexión, un segundo <code>ssh</code>, para llegar al bastión. Ese segundo <code>ssh</code> <strong>no recibe</strong> las opciones que has escrito (<code>-i</code>, <code>-o</code>): esas son para <code>web</code>. Así que intenta entrar en el bastión sin la clave <code>lab_bastion</code>, y el bastión lo rechaza. Acuérdate de esto: en la parte 4 lo resolverás.</p>
+<h3 id="paso-13-la-forma-mas-larga">Paso 1.3. La forma más larga</h3>
+<p><strong>Haz:</strong> indica a mano cómo se hace el salto, con todas sus opciones:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>ssh<span class="w"> </span>-o<span class="w"> </span><span class="nv">ProxyCommand</span><span class="o">=</span><span class="s2">&quot;ssh -p 2222 -i ~/.ssh/lab_bastion -o IdentitiesOnly=yes -W %h:%p alumno@localhost&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span>-i<span class="w"> </span>~/.ssh/lab_interno<span class="w"> </span>-o<span class="w"> </span><span class="nv">IdentitiesOnly</span><span class="o">=</span>yes<span class="w"> </span>alumno@web
+</code></pre></div>
+<p>Te pedirá la <em>passphrase</em> del bastión y, como es la primera vez que te conectas a <code>web</code>, su huella: escribe <code>yes</code>. Ya dentro:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>hostname
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nb">exit</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> <code>ProxyCommand</code> es el comando que SSH usa para «llegar» al servidor. Aquí es un <code>ssh</code> al bastión con sus propias opciones, y <code>-W %h:%p</code> le pide al bastión que reenvíe el tráfico hasta <code>web</code>, puerto 22 (<code>%h</code> y <code>%p</code> se sustituyen por el servidor y el puerto de destino). Por dentro de ese túnel viaja la conexión a <code>web</code>, con la clave <code>lab_interno</code>.</p>
+<p><strong>Comprueba:</strong> <code>hostname</code> responde <code>web</code>. Lo has conseguido… con unos 150 caracteres. En la parte siguiente lo dejarás en <code>ssh web</code>.</p>
+<h2 id="parte-2-tu-primer-sshconfig">Parte 2. Tu primer <code>~/.ssh/config</code></h2>
+<h3 id="paso-21-el-primer-alias">Paso 2.1. El primer alias</h3>
+<p><strong>Haz:</strong> crea el fichero con <code>nano ~/.ssh/config</code> y escribe:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Host bastion
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    HostName localhost
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    Port 2222
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    User alumno
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    IdentityFile ~/.ssh/lab_bastion
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    IdentitiesOnly yes
+</code></pre></div>
+<p>Guarda (<code>Ctrl+O</code>, <code>Intro</code>) y sal (<code>Ctrl+X</code>). Después ajusta los permisos:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>~/.ssh/config
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Cada bloque empieza con <code>Host</code> seguido de un <strong>alias</strong>, el nombre que tú vas a escribir. Las líneas de debajo son las opciones que antes ponías a mano:</p>
+<table>
+<thead>
+<tr>
+<th>Directiva</th>
+<th>Qué indica</th>
+<th>Antes era</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Host</code></td>
+<td>El alias que tú escribes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>HostName</code></td>
+<td>El nombre o la IP real del servidor</td>
+<td><code>@localhost</code></td>
+</tr>
+<tr>
+<td><code>Port</code></td>
+<td>El puerto</td>
+<td><code>-p 2222</code></td>
+</tr>
+<tr>
+<td><code>User</code></td>
+<td>El usuario remoto</td>
+<td><code>alumno@</code></td>
+</tr>
+<tr>
+<td><code>IdentityFile</code></td>
+<td>La clave privada</td>
+<td><code>-i</code></td>
+</tr>
+<tr>
+<td><code>IdentitiesOnly</code></td>
+<td>Usar solo esa clave</td>
+<td><code>-o IdentitiesOnly=yes</code></td>
+</tr>
+</tbody>
+</table>
+<p>La sangría solo sirve para leer mejor: un bloque llega hasta el siguiente <code>Host</code>. El <code>chmod 600</code> es obligatorio: SSH se niega a leer un fichero de configuración que otros usuarios puedan modificar.</p>
+<h3 id="paso-22-usarlo">Paso 2.2. Usarlo</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>ssh<span class="w"> </span>bastion<span class="w"> </span>hostname
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Puedes poner un comando después del alias: SSH lo ejecuta en el servidor, te muestra el resultado y cierra la conexión. Fíjate en que <strong>no</strong> te pregunta la huella: <code>known_hosts</code> guarda el servidor <strong>real</strong> (<code>[localhost]:2222</code>), no el alias, y ese ya lo aceptaste en el paso 1.1.</p>
+<p><strong>Comprueba:</strong> después de la <em>passphrase</em>, responde <code>bastion</code>.</p>
+<h3 id="paso-23-ver-lo-que-calcula-ssh">Paso 2.3. Ver lo que calcula SSH</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>ssh<span class="w"> </span>-G<span class="w"> </span>bastion<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;^(hostname|port|user|identityfile|identitiesonly) &#39;</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> <code>ssh -G</code> muestra <strong>todas</strong> las opciones que SSH aplicaría a ese alias, <strong>sin conectarse</strong>. Es la herramienta de diagnóstico más útil de toda la práctica: cuando algo no funcione, empieza siempre por aquí.</p>
+<p><strong>Comprueba:</strong> aparecen, entre otras, estas líneas:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>user alumno
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>hostname localhost
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>port 2222
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>identityfile ~/.ssh/lab_bastion
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>identitiesonly yes
+</code></pre></div>
+<h2 id="parte-3-el-orden-de-las-reglas-y-los-valores-por-defecto">Parte 3. El orden de las reglas y los valores por defecto</h2>
+<h3 id="paso-31-fallo-provocado-host-al-principio">Paso 3.1. Fallo provocado: <code>Host *</code> al principio</h3>
+<p><strong>Haz:</strong> abre <code>~/.ssh/config</code> y añade estas dos líneas <strong>al principio</strong>, antes de <code>Host bastion</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>Host *
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    User nadie
+</code></pre></div>
+<p>Después:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>ssh<span class="w"> </span>-G<span class="w"> </span>bastion<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;^user &#39;</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>ssh<span class="w"> </span>bastion<span class="w"> </span>hostname
+</code></pre></div>
+<p><strong>Qué ves:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>user nadie
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>nadie@localhost: Permission denied (publickey).
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> <code>Host *</code> coincide con <strong>cualquier</strong> alias. SSH lee el fichero de arriba abajo y, <strong>para cada opción, se queda con el primer valor que encuentra</strong>. Como <code>Host *</code> está arriba, fija el usuario a <code>nadie</code>, y cuando llega al bloque <code>bastion</code> el usuario ya está decidido: su <code>User alumno</code> se ignora.</p>
+<p>Cuidado, porque muchos programas funcionan al revés (gana el último valor). En SSH gana el <strong>primero</strong>. Por eso:</p>
+<ul>
+<li>lo <strong>concreto</strong> (cada servidor) va <strong>arriba</strong>;</li>
+<li>lo <strong>general</strong> (<code>Host *</code>) va <strong>al final</strong>, y solo rellena lo que nadie ha definido antes.</li>
+</ul>
+<h3 id="paso-32-valores-comunes-en-host-al-final">Paso 3.2. Valores comunes en <code>Host *</code>, al final</h3>
+<p><strong>Haz:</strong> deja <code>~/.ssh/config</code> exactamente así. Fíjate en que <code>IdentitiesOnly</code> sale del bloque <code>bastion</code> y pasa a <code>Host *</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Host bastion
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    HostName localhost
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>    Port 2222
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>    User alumno
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>    IdentityFile ~/.ssh/lab_bastion
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>Host *
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>    IdentitiesOnly yes
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>    AddKeysToAgent yes
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>    ServerAliveInterval 30
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>    ServerAliveCountMax 3
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Estas cuatro opciones te convienen para <strong>todos</strong> los servidores:</p>
+<ul>
+<li><code>IdentitiesOnly yes</code>: ofrece solo la clave indicada en <code>IdentityFile</code>. Sin ella, SSH prueba una tras otra todas las claves que tengas, y cada clave rechazada cuenta como un intento fallido. Muchos servidores cortan a los 3 intentos (<code>MaxAuthTries 3</code>) y te echan con <code>Too many authentication failures</code> antes de llegar a la buena.</li>
+<li><code>AddKeysToAgent yes</code>: guarda la clave en el <strong>agente</strong> la primera vez que escribes la <em>passphrase</em> (lo ves en el paso 3.4).</li>
+<li><code>ServerAliveInterval 30</code> y <code>ServerAliveCountMax 3</code>: cada 30 segundos envían una señal para que el cortafuegos no corte una sesión inactiva, y dan la conexión por perdida tras 3 señales sin respuesta, en lugar de dejar el terminal colgado.</li>
+</ul>
+<h3 id="paso-33-comprobar-el-orden">Paso 3.3. Comprobar el orden</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>ssh<span class="w"> </span>-G<span class="w"> </span>bastion<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;^(user|identitiesonly|serveraliveinterval) &#39;</span>
+</code></pre></div>
+<p><strong>Comprueba:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>user alumno
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>identitiesonly yes
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>serveraliveinterval 30
+</code></pre></div>
+<p>El usuario vuelve a ser <code>alumno</code>, y <code>IdentitiesOnly</code> se sigue aplicando aunque ya no esté en el bloque <code>bastion</code>: lo rellena <code>Host *</code>.</p>
+<h3 id="paso-34-el-agente-la-passphrase-una-sola-vez">Paso 3.4. El agente: la <em>passphrase</em>, una sola vez</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>ssh-add<span class="w"> </span>-l
+</code></pre></div>
+<p>Si responde <code>Could not open a connection to your authentication agent</code>, arranca un agente en este terminal y sigue trabajando en él:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>ssh-agent<span class="w"> </span>-s<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+<p>Ahora conéctate <strong>dos veces seguidas</strong> y mira de nuevo el agente:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>ssh<span class="w"> </span>bastion<span class="w"> </span>hostname
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>ssh<span class="w"> </span>bastion<span class="w"> </span>hostname
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>ssh-add<span class="w"> </span>-l
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> El <strong>agente</strong> (<code>ssh-agent</code>) es un pequeño programa que guarda en memoria tus claves ya descifradas y firma por ti cuando un servidor lo pide. Con <code>AddKeysToAgent yes</code>, la primera conexión te pide la <em>passphrase</em> y deja la clave en el agente; la segunda ya no pregunta nada. La clave sigue cifrada en el disco: si alguien copia el fichero, no le sirve sin la <em>passphrase</em>. Es el equilibrio entre seguridad y comodidad.</p>
+<p><strong>Comprueba:</strong> la <em>passphrase</em> solo se pide en la primera conexión, y <code>ssh-add -l</code> muestra una línea que termina en <code>bastion-tuusuario (ED25519)</code>: es el comentario que pusiste con <code>-C</code> en el paso 0.3.</p>
+<h2 id="parte-4-saltar-a-los-servidores-internos-con-proxyjump">Parte 4. Saltar a los servidores internos con ProxyJump</h2>
+<h3 id="paso-41-un-bloque-para-web-y-bd">Paso 4.1. Un bloque para web y bd</h3>
+<p><strong>Haz:</strong> añade este bloque <strong>entre</strong> <code>Host bastion</code> y <code>Host *</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Host web bd
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>    User alumno
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>    IdentityFile ~/.ssh/lab_interno
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>    ProxyJump bastion
+</code></pre></div>
+<p><strong>Qué está pasando.</strong></p>
+<ul>
+<li>Un bloque puede servir a <strong>varios</strong> alias a la vez: <code>Host web bd</code>.</li>
+<li>No hace falta <code>HostName</code>: si no lo pones, SSH usa el propio alias, <code>web</code> o <code>bd</code>.</li>
+<li><code>ProxyJump bastion</code> dice: «para llegar aquí, salta antes por el alias <code>bastion</code>». Y aquí está la solución al fallo del paso 1.2: el <code>ssh</code> que hace el salto <strong>lee el bloque <code>bastion</code></strong> de este fichero, con su puerto, su usuario y su clave.</li>
+</ul>
+<h3 id="paso-42-probar">Paso 4.2. Probar</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>ssh<span class="w"> </span>web<span class="w"> </span>hostname
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>ssh<span class="w"> </span>bd<span class="w"> </span>hostname
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>ssh<span class="w"> </span>bd<span class="w"> </span>--<span class="w"> </span>ip<span class="w"> </span>-br<span class="w"> </span>addr
+</code></pre></div>
+<p>La primera vez que te conectes a <code>bd</code> te preguntará su huella: escribe <code>yes</code>. (La de <code>web</code> ya la aceptaste en el paso 1.3.)</p>
+<p><strong>Qué está pasando.</strong> Cada <code>ssh web</code> son, en realidad, <strong>dos</strong> conexiones SSH, una dentro de otra:</p>
+<ol>
+<li>Tu equipo → bastión, con la clave <code>lab_bastion</code>. El bastión solo hace de túnel: abre una conexión al puerto 22 de <code>web</code> y le pasa los datos.</li>
+<li>Tu equipo → <code>web</code>, <strong>por dentro</strong> de la primera, con la clave <code>lab_interno</code> y cifrada de extremo a extremo. El bastión no puede leerla.</li>
+</ol>
+<p>Por eso el nombre <code>web</code> lo resuelve <strong>el bastión</strong> (es él quien abre la conexión), y la clave <code>lab_interno</code> <strong>no sale nunca de tu equipo</strong>.</p>
+<p><strong>Comprueba:</strong> los dos <code>hostname</code> responden <code>web</code> y <code>bd</code>, sin pedirte nada más. El último comando muestra las interfaces de <code>bd</code>, con una IP de la red interna de Docker.</p>
+<h3 id="paso-43-ver-el-tunel-desde-el-bastion">Paso 4.3. Ver el túnel desde el bastión</h3>
+<p><strong>Haz:</strong> abre una sesión en <code>web</code> y déjala abierta:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>ssh<span class="w"> </span>web
+</code></pre></div>
+<p>En <strong>otro terminal</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>ssh<span class="w"> </span>bastion<span class="w"> </span>--<span class="w"> </span>ss<span class="w"> </span>-tn
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> <code>ss -tn</code> lista las conexiones TCP del bastión. Verás dos tipos: las que llegan desde tu equipo al bastión y una que <strong>sale del bastión hacia el puerto 22 de <code>web</code></strong>. Esa última es el túnel por el que viaja tu sesión en <code>web</code>. Sal de la sesión de <code>web</code> con <code>exit</code>.</p>
+<p><strong>Comprueba:</strong> hay una línea <code>ESTAB</code> cuya última columna (la dirección remota) termina en <code>:22</code>: es la conexión hacia <code>web</code>.</p>
+<p>Hay otras dos formas de llegar a un servidor interno, y las dos son peores:</p>
+<table>
+<thead>
+<tr>
+<th>Forma</th>
+<th>Riesgo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ProxyJump</strong> (la tuya)</td>
+<td>Ninguno extra: la clave no sale de tu equipo</td>
+</tr>
+<tr>
+<td><code>ForwardAgent yes</code></td>
+<td>El administrador del bastión puede usar tu agente mientras estás conectado</td>
+</tr>
+<tr>
+<td>Copiar la clave privada al bastión</td>
+<td>Quien entre en el bastión entra en todos los servidores</td>
+</tr>
+</tbody>
+</table>
+<h2 id="parte-5-un-tunel-declarado">Parte 5. Un túnel declarado</h2>
+<p>El servidor <code>web</code> tiene un panel interno que <strong>solo escucha en su propio <code>127.0.0.1:8000</code></strong>: ni siquiera el bastión puede verlo. Lo vas a abrir en tu navegador con un túnel.</p>
+<h3 id="paso-51-el-alias-del-tunel">Paso 5.1. El alias del túnel</h3>
+<p><strong>Haz:</strong> en el bloque de los servidores internos, añade <code>web-panel</code> a la lista de alias:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>Host web bd web-panel
+</code></pre></div>
+<p>Y, justo debajo de ese bloque, añade uno nuevo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>Host web-panel
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>    HostName web
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>    LocalForward 8080 127.0.0.1:8000
+</code></pre></div>
+<p>Tu fichero queda así:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>Host bastion
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>    HostName localhost
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>    Port 2222
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>    User alumno
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>    IdentityFile ~/.ssh/lab_bastion
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a>Host web bd web-panel
+<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a>    User alumno
+<a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a>    IdentityFile ~/.ssh/lab_interno
+<a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a>    ProxyJump bastion
+<a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a>
+<a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a>Host web-panel
+<a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a>    HostName web
+<a id="__codelineno-35-14" name="__codelineno-35-14" href="#__codelineno-35-14"></a>    LocalForward 8080 127.0.0.1:8000
+<a id="__codelineno-35-15" name="__codelineno-35-15" href="#__codelineno-35-15"></a>
+<a id="__codelineno-35-16" name="__codelineno-35-16" href="#__codelineno-35-16"></a>Host *
+<a id="__codelineno-35-17" name="__codelineno-35-17" href="#__codelineno-35-17"></a>    IdentitiesOnly yes
+<a id="__codelineno-35-18" name="__codelineno-35-18" href="#__codelineno-35-18"></a>    AddKeysToAgent yes
+<a id="__codelineno-35-19" name="__codelineno-35-19" href="#__codelineno-35-19"></a>    ServerAliveInterval 30
+<a id="__codelineno-35-20" name="__codelineno-35-20" href="#__codelineno-35-20"></a>    ServerAliveCountMax 3
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> <code>web-panel</code> coge de <strong>dos</strong> bloques: del primero, el usuario, la clave y el salto; del segundo, el servidor real y el túnel. Así no repites nada.</p>
+<p>En <code>LocalForward 8080 127.0.0.1:8000</code>:</p>
+<ul>
+<li><code>8080</code> es un puerto de <strong>tu equipo</strong>;</li>
+<li><code>127.0.0.1:8000</code> es el destino, y se interpreta <strong>en el servidor al que te conectas</strong>, <code>web</code>. Ese <code>127.0.0.1</code> es el de <code>web</code>, no el tuyo.</li>
+</ul>
+<h3 id="paso-52-abrir-el-tunel">Paso 5.2. Abrir el túnel</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>ssh<span class="w"> </span>-N<span class="w"> </span>web-panel
+</code></pre></div>
+<p>Parece que no hace nada: se queda esperando. Es correcto. En <strong>otro terminal</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>curl<span class="w"> </span>http://localhost:8080
+</code></pre></div>
+<p>También puedes abrir <code>http://localhost:8080</code> en Firefox.</p>
+<p><strong>Qué está pasando.</strong> <code>-N</code> abre la conexión sin abrir una shell: solo sirve para mantener el túnel. Todo lo que llega al puerto 8080 de tu equipo viaja cifrado por SSH, atraviesa el bastión y sale en <code>web</code> hacia su <code>127.0.0.1:8000</code>.</p>
+<p><strong>Comprueba:</strong> <code>curl</code> devuelve <code>&lt;h1&gt;Panel interno de web&lt;/h1&gt;&lt;p&gt;Solo accesible desde 127.0.0.1&lt;/p&gt;</code>. Cierra el túnel con <code>Ctrl+C</code> en el primer terminal.</p>
+<h3 id="paso-53-fallo-provocado-el-destino-equivocado">Paso 5.3. Fallo provocado: el destino equivocado</h3>
+<p><strong>Haz:</strong> abre un túnel con la opción <code>-L</code> de la línea de órdenes (es lo mismo que <code>LocalForward</code>), pero poniendo <code>web</code> como destino en lugar de <code>127.0.0.1</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>ssh<span class="w"> </span>-N<span class="w"> </span>-L<span class="w"> </span><span class="m">9000</span>:web:8000<span class="w"> </span>web
+</code></pre></div>
+<p>En otro terminal:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>curl<span class="w"> </span>http://localhost:9000
+</code></pre></div>
+<p><strong>Qué ves:</strong> <code>curl</code> falla, y en el terminal del túnel aparece:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>channel 2: open failed: connect failed: Connection refused
+</code></pre></div>
+<p>(El número de <code>channel</code> puede ser otro.)</p>
+<p><strong>Qué está pasando.</strong> El destino lo interpreta <code>web</code>. Para <code>web</code>, el nombre <code>web</code> es la IP de su tarjeta de red, no su <code>127.0.0.1</code>. Como el panel solo escucha en <code>127.0.0.1</code>, rechaza la conexión. El túnel se abre bien; lo que falla es el último tramo, dentro de <code>web</code>. Cierra con <code>Ctrl+C</code>.</p>
+<h3 id="paso-54-el-tunel-en-segundo-plano">Paso 5.4. El túnel en segundo plano</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>ssh<span class="w"> </span>-fN<span class="w"> </span>web-panel
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>curl<span class="w"> </span>http://localhost:8080
+</code></pre></div>
+<p>Para cerrarlo, busca el proceso y termínalo con su número (PID):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>pgrep<span class="w"> </span>-af<span class="w"> </span>web-panel
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="nb">kill</span><span class="w"> </span><span class="m">12345</span><span class="w">        </span><span class="c1"># cambia 12345 por el número que te ha salido</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> <code>-f</code> manda SSH a segundo plano después de conectar, y te devuelve el terminal. Es cómodo, pero el túnel sigue abierto hasta que lo cierres: si lo olvidas y vuelves a lanzarlo, verás <code>Address already in use</code> porque el 8080 sigue ocupado.</p>
+<p><strong>Comprueba:</strong> después del <code>kill</code>, <code>curl http://localhost:8080</code> falla con <code>Connection refused</code>.</p>
+<h2 id="parte-6-ordenar-la-casa-con-include">Parte 6. Ordenar la casa con <code>Include</code></h2>
+<p>Con varios proyectos, un único <code>~/.ssh/config</code> crece sin control. Lo vas a partir en ficheros.</p>
+<h3 id="paso-61-un-fichero-para-el-laboratorio">Paso 6.1. Un fichero para el laboratorio</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>mkdir<span class="w"> </span>-m<span class="w"> </span><span class="m">700</span><span class="w"> </span>~/.ssh/config.d
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>nano<span class="w"> </span>~/.ssh/config.d/lab.conf
+</code></pre></div>
+<p>Escribe en <code>lab.conf</code> los <strong>tres bloques del laboratorio</strong> (<code>bastion</code>, <code>web bd web-panel</code> y <code>web-panel</code>), copiados de tu <code>~/.ssh/config</code>. Después:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>~/.ssh/config.d/lab.conf
+</code></pre></div>
+<h3 id="paso-62-el-fichero-principal">Paso 6.2. El fichero principal</h3>
+<p><strong>Haz:</strong> deja <code>~/.ssh/config</code> así:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>Include config.d/*.conf
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>Host *
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a>    IdentitiesOnly yes
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a>    AddKeysToAgent yes
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a>    ServerAliveInterval 30
+<a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a>    ServerAliveCountMax 3
+</code></pre></div>
+<p>Si en el paso 0.1 guardaste un <code>config.antes</code>, pega ahora su contenido <strong>entre</strong> la línea <code>Include</code> y <code>Host *</code>. Si tenía su propio <code>Host *</code>, no lo copies: junta sus opciones con las de este.</p>
+<p><strong>Qué está pasando.</strong></p>
+<ul>
+<li><code>Include config.d/*.conf</code> mete en ese punto todos los ficheros <code>.conf</code> de la carpeta, como si estuvieran escritos ahí. La ruta es relativa a <code>~/.ssh</code>.</li>
+<li>Va en la <strong>primera línea</strong> por la misma regla de la parte 3: los bloques concretos tienen que leerse antes que <code>Host *</code>.</li>
+<li>Así puedes tener un fichero por proyecto (<code>lab.conf</code>, <code>git.conf</code>, <code>trabajo.conf</code>) y borrar uno entero cuando termines.</li>
+</ul>
+<p><strong>Comprueba:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>ssh<span class="w"> </span>bastion<span class="w"> </span>hostname
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>ssh<span class="w"> </span>web<span class="w"> </span>hostname
+</code></pre></div>
+<p>Responden <code>bastion</code> y <code>web</code>, igual que antes.</p>
+<h3 id="paso-63-fallo-provocado-el-include-dentro-de-un-bloque">Paso 6.3. Fallo provocado: el <code>Include</code> dentro de un bloque</h3>
+<p><strong>Haz:</strong> cambia la primera línea de <code>~/.ssh/config</code> por estas tres:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>Host otro
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>    HostName 192.0.2.10
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>    Include config.d/*.conf
+</code></pre></div>
+<p>Y prueba:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>ssh<span class="w"> </span>bastion<span class="w"> </span>hostname
+</code></pre></div>
+<p><strong>Qué ves:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>ssh: Could not resolve hostname bastion: Name or service not known
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Un <code>Include</code> escrito <strong>dentro</strong> de un bloque solo se lee cuando ese bloque coincide; aquí, solo al conectar a <code>otro</code>. Para cualquier otro alias, los bloques del laboratorio no existen, y SSH intenta buscar en la red un servidor que se llame <code>bastion</code>.</p>
+<p><strong>Haz:</strong> deja la primera línea como estaba, <code>Include config.d/*.conf</code>, y comprueba que <code>ssh bastion hostname</code> vuelve a funcionar.</p>
+<h2 id="parte-7-todas-las-herramientas-usan-los-alias">Parte 7. Todas las herramientas usan los alias</h2>
+<p>Todo lo que funciona sobre SSH lee el mismo <code>~/.ssh/config</code>: el alias, el usuario, la clave y el salto por el bastión vienen gratis.</p>
+<p><strong>Haz:</strong> desde <code>~/lab-ssh</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Informe de </span><span class="nv">$USER</span><span class="s2">&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>informe.txt
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>scp<span class="w"> </span>informe.txt<span class="w"> </span>bd:~
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>ssh<span class="w"> </span>bd<span class="w"> </span>cat<span class="w"> </span>informe.txt
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>dist
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&lt;h1&gt;Hola desde </span><span class="nv">$USER</span><span class="s2">&lt;/h1&gt;&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>dist/index.html
+<a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a>rsync<span class="w"> </span>-av<span class="w"> </span>dist/<span class="w"> </span>web:~/dist/
+<a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a>ssh<span class="w"> </span>web<span class="w"> </span>cat<span class="w"> </span>dist/index.html
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>scp<span class="w"> </span>-3<span class="w"> </span>web:/etc/hostname<span class="w"> </span>bd:~/hostname-de-web
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a>ssh<span class="w"> </span>bd<span class="w"> </span>cat<span class="w"> </span>hostname-de-web
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>sftp<span class="w"> </span>bd
+</code></pre></div>
+<p>Dentro de <code>sftp</code>: <code>ls</code>, <code>get informe.txt informe-copia.txt</code> y <code>bye</code>.</p>
+<p><strong>Qué está pasando.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Herramienta</th>
+<th>Qué hace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scp</code></td>
+<td>Copia un fichero</td>
+</tr>
+<tr>
+<td><code>rsync</code></td>
+<td>Sincroniza carpetas y solo envía lo que ha cambiado. Es lo que se usa para desplegar una web en un servidor</td>
+</tr>
+<tr>
+<td><code>scp -3</code></td>
+<td>Copia de un servidor a otro <strong>pasando por tu equipo</strong>. Sin <code>-3</code>, sería <code>web</code> quien intentara conectar con <code>bd</code>, y no tiene ninguna clave para hacerlo (ni debe tenerla)</td>
+</tr>
+<tr>
+<td><code>sftp</code></td>
+<td>Una sesión interactiva para subir y bajar ficheros</td>
+</tr>
+</tbody>
+</table>
+<p>Ninguna lleva usuario, puerto ni clave. Si usas VS Code, la extensión <strong>Remote - SSH</strong> también lee este fichero: tus alias aparecen solos en su lista.</p>
+<p><strong>Comprueba:</strong> <code>informe.txt</code> aparece en <code>bd</code>; <code>dist/index.html</code>, en <code>web</code>; <code>hostname-de-web</code> contiene <code>web</code>; y en tu carpeta tienes <code>informe-copia.txt</code>.</p>
+<h2 id="parte-8-diagnostico-y-errores-provocados">Parte 8. Diagnóstico y errores provocados</h2>
+<h3 id="paso-81-fallo-provocado-permisos">Paso 8.1. Fallo provocado: permisos</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>chmod<span class="w"> </span><span class="m">664</span><span class="w"> </span>~/.ssh/config
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>ssh<span class="w"> </span>bastion<span class="w"> </span>hostname
+</code></pre></div>
+<p><strong>Qué ves:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>Bad owner or permissions on /home/tuusuario/.ssh/config
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Con <code>664</code>, tu grupo también puede modificar el fichero. Alguien podría cambiar a qué servidor te conectas o qué clave usas, así que SSH se niega a leerlo y no hace <strong>nada</strong>, con ningún alias.</p>
+<p><strong>Haz:</strong> déjalo bien:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>~/.ssh/config
+</code></pre></div>
+<h3 id="paso-82-fallo-provocado-el-servidor-ha-cambiado">Paso 8.2. Fallo provocado: el servidor ha cambiado</h3>
+<p><strong>Haz:</strong> recrea el bastión, que es lo mismo que reinstalarlo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--force-recreate<span class="w"> </span>bastion
+<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>ssh<span class="w"> </span>bastion<span class="w"> </span>hostname
+</code></pre></div>
+<p><strong>Qué ves:</strong> un aviso enorme que empieza así:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a>@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+<a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a>@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+</code></pre></div>
+<p>Léelo <strong>entero</strong>. Más abajo indica el servidor afectado, <code>[localhost]:2222</code>, y termina con <code>Host key verification failed.</code></p>
+<p><strong>Qué está pasando.</strong> Cada servidor tiene su propia clave de <strong>host</strong>, que lo identifica. La primera vez que te conectas, SSH guarda su huella en <code>known_hosts</code>, y a partir de ahí comprueba que coincide. Al recrear el contenedor se han generado claves de host nuevas, así que la huella ya no coincide.</p>
+<p>Aquí sabes por qué ha cambiado: lo acabas de recrear tú. Pero ese mismo aviso es el que verías si alguien se hubiera colocado entre tú y el servidor para hacerse pasar por él (un ataque <em>man-in-the-middle</em>). La regla es:</p>
+<ul>
+<li><strong>Si sabes por qué ha cambiado</strong> (lo has reinstalado tú), borra la huella antigua.</li>
+<li><strong>Si no lo sabes</strong> (nadie lo ha tocado, es un servidor de producción o estás en una red que no controlas), <strong>no la borres</strong>: confirma la huella nueva por otro canal, por ejemplo preguntando a quien lo administra.</li>
+<li><strong>Nunca</strong> pongas <code>StrictHostKeyChecking no</code> para que el aviso desaparezca: es desactivar tu única defensa contra ese ataque.</li>
+</ul>
+<p><strong>Haz:</strong> borra la entrada antigua, con el nombre <strong>exacto</strong> que indica el aviso:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>ssh-keygen<span class="w"> </span>-R<span class="w"> </span><span class="s1">&#39;[localhost]:2222&#39;</span>
+<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>ssh<span class="w"> </span>bastion<span class="w"> </span>hostname
+</code></pre></div>
+<p>Los corchetes y el puerto son necesarios porque no es el 22: <code>ssh-keygen -R localhost</code> no borraría nada.</p>
+<p><strong>Comprueba:</strong> SSH te pregunta la huella nueva como la primera vez; escribe <code>yes</code> y responde <code>bastion</code>.</p>
+<h3 id="paso-83-leer-la-traza">Paso 8.3. Leer la traza</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>ssh<span class="w"> </span>-v<span class="w"> </span>web<span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;Applying options|ProxyCommand|Authenticated to&#39;</span>
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> <code>-v</code> (<em>verbose</em>) cuenta todo lo que hace SSH. Con el <code>grep</code> te quedas con tres cosas:</p>
+<ul>
+<li><code>Applying options for …</code>: qué bloques de tu configuración se aplican, en qué fichero y en qué línea;</li>
+<li><code>ProxyCommand</code>: el <code>ssh -W</code> que lanza SSH para saltar por el bastión, el mismo que escribiste a mano en el paso 1.3;</li>
+<li><code>Authenticated to …</code>: con qué servidor y qué método ha entrado. Saldrán dos: uno para el bastión y otro para <code>web</code>.</li>
+</ul>
+<p>Si necesitas aún más detalle, usa <code>-vvv</code>.</p>
+<p><strong>Comprueba:</strong> ves las tres cosas, y una de las líneas <code>Applying options</code> menciona <code>config.d/lab.conf</code>.</p>
+<h3 id="paso-84-el-registro-del-servidor">Paso 8.4. El registro del servidor</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>web<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Accepted
+</code></pre></div>
+<p><strong>Qué está pasando.</strong> Es el otro lado: el servidor anota cada entrada, con el usuario, la dirección de origen y la huella de la clave usada. Fíjate en la dirección de origen: no es tu equipo, es <strong>el bastión</strong>. Para <code>web</code>, quien se conecta siempre es el bastión.</p>
+<p><strong>Comprueba:</strong> ves líneas <code>Accepted publickey for alumno from 172.…</code>.</p>
+<p>Cuando algo falle con SSH, sigue siempre este orden: primero <code>ssh -G</code> (¿he escrito bien la configuración?), después <code>ssh -v</code> (¿qué pasa al conectar?) y por último el registro del servidor.</p>
+<h2 id="parte-9-ampliacion-dos-cuentas-de-github-en-el-mismo-equipo">Parte 9. Ampliación: dos cuentas de GitHub en el mismo equipo</h2>
+<p>Esta parte es <strong>opcional</strong>. Necesitas dos cuentas de GitHub, por ejemplo una personal y otra del instituto. GitHub no deja usar la <strong>misma</strong> clave en dos cuentas.</p>
+<h3 id="paso-91-una-clave-para-la-segunda-cuenta">Paso 9.1. Una clave para la segunda cuenta</h3>
+<p><strong>Haz:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="w"> </span>-f<span class="w"> </span>~/.ssh/github_clase<span class="w"> </span>-C<span class="w"> </span><span class="s2">&quot;github-clase-</span><span class="nv">$USER</span><span class="s2">&quot;</span>
+<a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>cat<span class="w"> </span>~/.ssh/github_clase.pub
+</code></pre></div>
+<p>Copia la línea que sale y añádela en tu <strong>segunda</strong> cuenta de GitHub: <em>Settings → SSH and GPG keys → New SSH key</em>.</p>
+<h3 id="paso-92-un-fichero-para-git">Paso 9.2. Un fichero para Git</h3>
+<p><strong>Haz:</strong> crea <code>~/.ssh/config.d/git.conf</code> con permisos <code>600</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>Host github.com
+<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>    User git
+<a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a>    IdentityFile ~/.ssh/id_ed25519
+<a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a>
+<a id="__codelineno-63-5" name="__codelineno-63-5" href="#__codelineno-63-5"></a>Host github-clase
+<a id="__codelineno-63-6" name="__codelineno-63-6" href="#__codelineno-63-6"></a>    HostName github.com
+<a id="__codelineno-63-7" name="__codelineno-63-7" href="#__codelineno-63-7"></a>    User git
+<a id="__codelineno-63-8" name="__codelineno-63-8" href="#__codelineno-63-8"></a>    IdentityFile ~/.ssh/github_clase
+</code></pre></div>
+<p>Cambia <code>~/.ssh/id_ed25519</code> por la clave que ya uses en tu cuenta personal.</p>
+<p><strong>Qué está pasando.</strong> Los dos alias van al mismo servidor, <code>github.com</code>, pero cada uno con su clave. Como GitHub reconoce la cuenta <strong>por la clave</strong>, eliges la cuenta eligiendo el alias.</p>
+<p><strong>Comprueba:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>ssh<span class="w"> </span>-T<span class="w"> </span>git@github.com
+<a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a>ssh<span class="w"> </span>-T<span class="w"> </span>github-clase
+</code></pre></div>
+<p>Cada uno saluda con <strong>un nombre de usuario distinto</strong>: <code>Hi usuario! You've successfully authenticated…</code>. Para clonar un repositorio de la segunda cuenta, usa el alias en lugar de <code>github.com</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>git<span class="w"> </span>clone<span class="w"> </span>github-clase:usuario/repositorio.git
+</code></pre></div>
+<h2 id="demostracion-final-al-profesor">Demostración final al profesor</h2>
+<p>Cuando termines, llama al profesor y enséñale en directo, en este orden, que todo funciona. Son unos 5 minutos. Ve marcando cada punto.</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Contenedores.</strong> <code>docker compose ps</code> muestra <code>bastion</code>, <code>web</code> y <code>bd</code> en marcha, y solo <code>bastion</code> tiene un puerto publicado, en <code>127.0.0.1:2222</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Alias.</strong> <code>ssh web hostname</code> y <code>ssh bd hostname</code> responden sin escribir ninguna opción.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Lo que calcula SSH.</strong> <code>ssh -G web | grep -E '^(user|identityfile|proxyjump) '</code> muestra <code>alumno</code>, <code>lab_interno</code> y <code>bastion</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Agente.</strong> <code>ssh-add -l</code> muestra la clave del bastión, y una conexión nueva no pide la <em>passphrase</em>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Túnel.</strong> <code>ssh -fN web-panel</code> y <code>curl http://localhost:8080</code> muestran el panel. Después lo cierras con <code>pgrep</code> y <code>kill</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Orden del fichero.</strong> <code>cat ~/.ssh/config</code>: el <code>Include</code> en la primera línea y <code>Host *</code> al final.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Permisos y claves.</strong> <code>ls -ld ~/.ssh/config ~/.ssh/config.d ~/.ssh/config.d/lab.conf</code> muestra <code>-rw-------</code> en los dos ficheros y <code>drwx------</code> en la carpeta, y en <code>~/lab-ssh/claves</code> solo hay ficheros <code>.pub</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Despliegue.</strong> Cambia tu <code>dist/index.html</code>, vuelve a hacer el <code>rsync</code> a <code>web</code> y enseña el cambio con <code>ssh web cat dist/index.html</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Explícalo.</strong> El profesor te hará una pregunta de las que aparecen en «Qué está pasando». Por ejemplo: por qué <code>Host *</code> va al final, quién resuelve el nombre <code>web</code>, dónde se interpreta el <code>127.0.0.1</code> de <code>LocalForward</code> o cuándo es peligroso borrar una huella.</li>
+</ul>
+<p>Sube después a la tarea del aula virtual tus ficheros <code>~/.ssh/config</code> y <code>~/.ssh/config.d/lab.conf</code>, <strong>como texto</strong>. Nunca subas un fichero de clave <strong>privada</strong>.</p>
+<h2 id="al-terminar">Al terminar</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a><span class="nb">cd</span><span class="w"> </span>~/lab-ssh
+<a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+</code></pre></div>
+<p>Para y borra los contenedores. Tus claves y tu configuración se quedan. Si vuelves a levantar el laboratorio otro día, los contenedores tendrán claves de host <strong>nuevas</strong> y verás el aviso del paso 8.2 en los tres servidores: ya sabes por qué y cómo resolverlo.</p>
+<h2 id="si-algo-falla">Si algo falla</h2>
+<p>Antes de preguntar, mira los logs: <code>docker compose logs bastion</code> (o <code>web</code>, o <code>bd</code>). Y para la configuración del cliente, <code>ssh -G</code> y <code>ssh -v</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Lo que ves</th>
+<th>Por qué pasa</th>
+<th>Qué hacer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docker compose up --build</code> muy lento o con <code>timeout</code></td>
+<td>Toda la clase descarga la imagen base a la vez</td>
+<td>Espera un poco y repítelo; solo se descarga una vez</td>
+</tr>
+<tr>
+<td>Un contenedor se para nada más arrancar y su log dice <code>install: omitting directory '/claves/authorized_keys'</code></td>
+<td>Arrancaste antes de copiar las <code>.pub</code>, y Docker creó <strong>carpetas</strong> con esos nombres</td>
+<td><code>docker compose down</code>, <code>rmdir claves/bastion.pub claves/interno.pub</code>, repite el paso 0.4 y vuelve a arrancar</td>
+</tr>
+<tr>
+<td><code>bind: address already in use</code> en el 2222</td>
+<td>Te quedó otro laboratorio arrancado</td>
+<td><code>docker ps</code> para verlo y <code>docker compose down</code> en su carpeta; si no es tuyo, avisa al profesor</td>
+</tr>
+<tr>
+<td><code>Permission denied (publickey)</code> al entrar en el bastión</td>
+<td>La clave pública que tiene el contenedor no es la tuya, o has copiado las <code>.pub</code> cruzadas</td>
+<td>Revisa el paso 0.4 y después <code>docker compose restart</code></td>
+</tr>
+<tr>
+<td><code>Bad owner or permissions</code></td>
+<td>Otros usuarios pueden modificar el fichero</td>
+<td><code>chmod 600</code> al fichero que indica el error</td>
+</tr>
+<tr>
+<td><code>Could not resolve hostname bastion</code></td>
+<td>SSH no encuentra el alias: errata en <code>Host</code>, el <code>Include</code> mal colocado o <code>lab.conf</code> con otro nombre</td>
+<td><code>ssh -G bastion</code> y revisa la parte 6</td>
+</tr>
+<tr>
+<td><code>Too many authentication failures</code></td>
+<td>Falta <code>IdentitiesOnly yes</code> y el agente ofrece demasiadas claves</td>
+<td>Revisa el <code>Host *</code> del paso 3.2</td>
+</tr>
+<tr>
+<td><code>REMOTE HOST IDENTIFICATION HAS CHANGED</code> sin haber recreado nada</td>
+<td>Has hecho <code>docker compose down</code> y <code>up</code>: los contenedores son nuevos</td>
+<td><code>ssh-keygen -R '[localhost]:2222'</code>, <code>ssh-keygen -R web</code> y <code>ssh-keygen -R bd</code></td>
+</tr>
+<tr>
+<td><code>bind [127.0.0.1]:8080: Address already in use</code> al abrir el túnel</td>
+<td>Te quedó un túnel abierto en segundo plano</td>
+<td><code>pgrep -af web-panel</code> y <code>kill</code> del número que salga</td>
+</tr>
+<tr>
+<td><code>Could not open a connection to your authentication agent</code></td>
+<td>No hay agente en ese terminal</td>
+<td><code>eval "$(ssh-agent -s)"</code></td>
+</tr>
+<tr>
+<td>La <em>passphrase</em> se pide en una ventana y no en el terminal</td>
+<td>Es el agente de tu escritorio</td>
+<td>Es normal: escríbela ahí</td>
+</tr>
+<tr>
+<td><code>ssh -T git@github.com</code> se queda colgado o da <code>timeout</code></td>
+<td>La red no deja salir por el puerto 22</td>
+<td>En <code>git.conf</code>, añade <code>HostName ssh.github.com</code> y <code>Port 443</code> a los dos bloques</td>
+</tr>
+</tbody>
+</table>
+<h2 id="anexo-que-hay-dentro-del-laboratorio">Anexo. Qué hay dentro del laboratorio</h2>
+<p>No tienes que tocar estos ficheros, pero así sabes qué estás arrancando.</p>
+<ul>
+<li><strong><code>compose.yaml</code></strong>: los tres servicios. Solo <code>bastion</code> publica un puerto, <code>127.0.0.1:2222</code>, y es el único que está en las dos redes. La red <code>interna</code> es <code>internal: true</code>: no tiene salida al exterior ni puertos publicados.</li>
+<li><strong><code>Dockerfile</code></strong>: una imagen Debian con el servidor SSH, <code>rsync</code> y el usuario <code>alumno</code>. No lleva claves de host: cada contenedor genera las suyas al arrancar, y por eso cambian al recrearlo.</li>
+<li><strong><code>sshd_lab.conf</code></strong>: la configuración del servidor SSH. Sin <code>root</code>, sin contraseñas, solo claves y solo el usuario <code>alumno</code>.</li>
+<li><strong><code>entrypoint.sh</code></strong>: lo que hace cada contenedor al arrancar. Genera las claves de host, instala tu clave pública como autorizada y, en <code>web</code>, arranca el panel en <code>127.0.0.1:8000</code>.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "toc.integrate", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
